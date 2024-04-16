@@ -24,3 +24,8 @@ jobs:
       run: chmod +x gradlew
     - name: Build with Gradle
       run: ./gradlew build -x lint
+    - name: Archive apk package
+      uses: actions/upload-artifact@v4
+      with:
+        name: save apk package
+        path: app/build/outputs/apk/release/
