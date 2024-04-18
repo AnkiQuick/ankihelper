@@ -37,7 +37,9 @@ public class DictionaryRegister {
             BingImage.class,
             DictionaryDotCom.class,
             UrbanDict.class,
-            IdiomDict.class
+            IdiomDict.class,
+            Oald10.class,
+            MerriamwebsterAdvancedLearner.class
     };
 
     private static List<IDictionary> dictList;

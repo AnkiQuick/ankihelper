@@ -23,9 +23,9 @@ import java.nio.charset.StandardCharsets;
  * Created by liao on 2017/3/15.
  */
 
-public class Oald10 extends SQLiteAssetHelper implements IDictionary {
+public class MerriamwebsterAdvancedLearner extends SQLiteAssetHelper implements IDictionary {
     //private static final String DATABASE_NAME = ".db";
-    private static final String DATABASE_NAME = "oald10.db";
+    private static final String DATABASE_NAME = "mwad2019.db";
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_DICT = "dict";
     private static final String FIELD_HWD = "hwd";
@@ -34,13 +34,13 @@ public class Oald10 extends SQLiteAssetHelper implements IDictionary {
     private static final String FIELD_DEF_EN = "def_en";
     private static final String FIELD_DEF_CN = "def_cn";
 
-    private static final String DICT_NAME = "牛津高阶英汉双解词典第10版完美版";
+    private static final String DICT_NAME = "韦氏高阶英汉双解词典2019完美版";
 
     private SQLiteDatabase db;
 
     private Context mContext;
 
-    public Oald10(Context context) {
+    public MerriamwebsterAdvancedLearner(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
         db = getReadableDatabase();
         mContext = context;
@@ -61,7 +61,7 @@ public class Oald10 extends SQLiteAssetHelper implements IDictionary {
     }
 
     public String getIntroduction() {
-        return "牛津高阶英汉双解词典第10版完美版,来自https://forum.freemdict.com/t/topic/25795";
+        return "韦氏高阶英汉双解词典2019完美版,来自https://forum.freemdict.com/t/topic/25795";
     }
 
     public String[] getExportElementsList() {
