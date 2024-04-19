@@ -162,15 +162,15 @@ public class Oald10 extends SQLiteAssetHelper implements IDictionary {
 
         //如果不是词组
         eleMap.put(EXP_ELE_LIST[0], hwd);
-        eleMap.put(EXP_ELE_LIST[1], sense);
+        eleMap.put(EXP_ELE_LIST[1], "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"+sense+"</span>");
         eleMap.put(EXP_ELE_LIST[2], phonetics);
-        eleMap.put(EXP_ELE_LIST[3], "<i>" + sense + "</i>" +  defEn);
-        eleMap.put(EXP_ELE_LIST[4], "<i>" + sense + "</i>" +  defCn);
+        eleMap.put(EXP_ELE_LIST[3], "<i>" + sense + "</i> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defEn+"</span>");
+        eleMap.put(EXP_ELE_LIST[4], "<i>" + sense + "</i> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defCn+"</span>");
         eleMap.put(EXP_ELE_LIST[5], getYoudaoAudioTag(hwd, 2));
         eleMap.put(EXP_ELE_LIST[6], getYoudaoAudioTag(hwd, 1));
         String displayHtml;
         StringBuilder sb = new StringBuilder();
-        sb.append(sense+ " "+ defEn + " " + defCn);
+        sb.append(sense+ " "+ "</i> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defEn+"</span>" + " " + "<i>" + sense + "</i> <span sytle=margin-right:3px; padding:0;margin:0; padding:0;>" +  defCn+"</span>");
         displayHtml = sb.toString();
         return new Definition(eleMap, displayHtml);
     }
