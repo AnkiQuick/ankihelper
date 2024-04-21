@@ -153,24 +153,24 @@ public class Oald10 extends SQLiteAssetHelper implements IDictionary {
 
     private Definition getDefFromCursor(Cursor cursor) {
         HashMap<String, String> eleMap = new HashMap<>();
-        String hwd = decodeHtmlContent(cursor.getString(0));
+        String hwd = cursor.getString(0);
         // df.setDisplayedHeadWord(cursor.getString(1).trim());
-        String sense = decodeHtmlContent(cursor.getString(1).trim());
-        String phonetics = decodeHtmlContent(cursor.getString(2).trim());
-        String defEn = decodeHtmlContent(cursor.getString(3).trim());
-        String defCn = decodeHtmlContent(cursor.getString(4).trim());
+        String sense = "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"+cursor.getString(1).trim()+"</span>";
+        String phonetics = cursor.getString(2).trim();
+        String defEn = cursor.getString(3).trim();
+        String defCn = cursor.getString(4).trim();
 
         //如果不是词组
         eleMap.put(EXP_ELE_LIST[0], hwd);
         eleMap.put(EXP_ELE_LIST[1], "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"+sense+"</span>");
-        eleMap.put(EXP_ELE_LIST[2], phonetics);
-        eleMap.put(EXP_ELE_LIST[3], "<i>" + sense + "</i> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defEn+"</span>");
+        eleMap.put(EXP_ELE_LIST[2], "<span >"+phonetics + "</span>");
+        eleMap.put(EXP_ELE_LIST[3],"<i>" + sense + "</i> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defEn+"</span>");
         eleMap.put(EXP_ELE_LIST[4], "<i>" + sense + "</i> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defCn+"</span>");
         eleMap.put(EXP_ELE_LIST[5], getYoudaoAudioTag(hwd, 2));
         eleMap.put(EXP_ELE_LIST[6], getYoudaoAudioTag(hwd, 1));
         String displayHtml;
         StringBuilder sb = new StringBuilder();
-        sb.append(sense+ " "+ "</i> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defEn+"</span>" + " " + "<i>" + sense + "</i> <span sytle=margin-right:3px; padding:0;margin:0; padding:0;>" +  defCn+"</span>");
+        sb.append("<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"+sense+" </span> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defEn + "</span> <span sytle=margin-right:3px; padding:0;margin:0; padding:0;>" + defCn + "</span>");
         displayHtml = sb.toString();
         return new Definition(eleMap, displayHtml);
     }
