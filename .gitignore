@@ -1,6 +1,7 @@
 *.iml
 .gradle
 *.apk
+*.keystore
 /local.properties
 /.idea/workspace.xml
 /.idea/libraries
