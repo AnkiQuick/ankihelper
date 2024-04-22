@@ -155,14 +155,14 @@ public class Oald10 extends SQLiteAssetHelper implements IDictionary {
         HashMap<String, String> eleMap = new HashMap<>();
         String hwd = cursor.getString(0);
         // df.setDisplayedHeadWord(cursor.getString(1).trim());
-        String sense = "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"+cursor.getString(1).trim()+"</span>";
+        String sense = cursor.getString(1).trim();
         String phonetics = cursor.getString(2).trim();
         String defEn = cursor.getString(3).trim();
         String defCn = cursor.getString(4).trim();
 
         //如果不是词组
         eleMap.put(EXP_ELE_LIST[0], hwd);
-        eleMap.put(EXP_ELE_LIST[1], "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"+sense+"</span>");
+        eleMap.put(EXP_ELE_LIST[1], sense);
         eleMap.put(EXP_ELE_LIST[2], "<span >"+phonetics + "</span>");
         eleMap.put(EXP_ELE_LIST[3],"<i>" + sense + "</i> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defEn+"</span>");
         eleMap.put(EXP_ELE_LIST[4], "<i>" + sense + "</i> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defCn+"</span>");

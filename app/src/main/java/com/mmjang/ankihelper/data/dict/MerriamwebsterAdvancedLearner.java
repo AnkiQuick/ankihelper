@@ -155,7 +155,7 @@ public class MerriamwebsterAdvancedLearner extends SQLiteAssetHelper implements 
         HashMap<String, String> eleMap = new HashMap<>();
         String hwd = cursor.getString(0);
         // df.setDisplayedHeadWord(cursor.getString(1).trim());
-        String sense = "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"+cursor.getString(1).trim()+"</span>";
+        String sense = cursor.getString(1).trim();
         String phonetics = cursor.getString(2).trim();
         String defEn = cursor.getString(3).trim();
         String defCn = cursor.getString(4).trim();
