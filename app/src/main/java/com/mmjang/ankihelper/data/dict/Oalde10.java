@@ -29,6 +29,7 @@ public class Oalde10 extends SQLiteAssetHelper implements IDictionary {
     private static final int DATABASE_VERSION = 1;
     private static final String TABLE_DICT = "dict";
     private static final String FIELD_HWD = "hwd";
+    private static final String FIELD_PHRASE = "phrase";
     private static final String FIELD_SENSE = "sense";
     private static final String FIELD_PHONETICS = "phonetics";
     private static final String FIELD_DEF_EN = "def_en";
@@ -142,8 +143,8 @@ public class Oalde10 extends SQLiteAssetHelper implements IDictionary {
             return re;
         }
         Cursor cursor = db.query(TABLE_DICT,
-                new String[]{FIELD_HWD, FIELD_SENSE, FIELD_PHONETICS, FIELD_DEF_EN, FIELD_DEF_CN},
-                FIELD_HWD + "=? COLLATE NOCASE", new String[]{q}, null, null, null);
+                new String[]{FIELD_HWD, FIELD_PHRASE,FIELD_SENSE, FIELD_PHONETICS, FIELD_DEF_EN, FIELD_DEF_CN},
+                FIELD_HWD + "=? COLLATE NOCASE", new String[]{q}, null, null, null, null);
         while (cursor.moveToNext()) {
             Definition def = getDefFromCursor(cursor);
             re.add(def);
@@ -155,22 +156,41 @@ public class Oalde10 extends SQLiteAssetHelper implements IDictionary {
         HashMap<String, String> eleMap = new HashMap<>();
         String hwd = cursor.getString(0);
         // df.setDisplayedHeadWord(cursor.getString(1).trim());
-        String sense = cursor.getString(1).trim();
-        String phonetics = cursor.getString(2).trim();
-        String defEn = cursor.getString(3).trim();
-        String defCn = cursor.getString(4).trim();
+        String phrase = cursor.getString(1).trim();
+        String sense = cursor.getString(2).trim();
+        String phonetics = cursor.getString(3).trim();
+        String defEn = cursor.getString(4).trim();
+        String defCn = cursor.getString(5).trim();
 
-        //如果不是词组
+
         eleMap.put(EXP_ELE_LIST[0], hwd);
         eleMap.put(EXP_ELE_LIST[1], "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>" + sense + "</span>");
         eleMap.put(EXP_ELE_LIST[2], "<span >"+phonetics + "</span>");
-        eleMap.put(EXP_ELE_LIST[3],"<i>" + sense + "</i> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defEn+"</span>");
-        eleMap.put(EXP_ELE_LIST[4], "<i>" + sense + "</i> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defCn+"</span>");
+        eleMap.put(EXP_ELE_LIST[0], hwd);
+        if (phrase.equals("")) {
+          eleMap.put(EXP_ELE_LIST[3],  "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>" + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defEn+"</span>");
+
+          eleMap.put(EXP_ELE_LIST[4],  "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>" +  sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defCn+"</span>");
+        } else {
+          eleMap.put(EXP_ELE_LIST[3],  "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"+phrase+" </span> <span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>" + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defEn+"</span>");
+
+          eleMap.put(EXP_ELE_LIST[4],  "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"+phrase+" </span> <span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>" +  sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defCn+"</span>");
+        }
+
+
+
         eleMap.put(EXP_ELE_LIST[5], getYoudaoAudioTag(hwd, 2));
         eleMap.put(EXP_ELE_LIST[6], getYoudaoAudioTag(hwd, 1));
         String displayHtml;
         StringBuilder sb = new StringBuilder();
-        sb.append("<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'> "+sense+"</span> <span> "+phonetics+"</span> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defEn + "</span> <span sytle=margin-right:3px; padding:0;margin:0; padding:0;>" + defCn + "</span>");
+
+        if (phrase.equals("")) {
+              sb.append("<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"+sense+" </span> <span> "+phonetics+"</span> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defEn + "</span> <span sytle=margin-right:3px; padding:0;margin:0; padding:0;>" + defCn + "</span>");
+        } else {
+              sb.append("<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"+phrase+" </span> </span> <span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"+sense+" </span> <span> "+phonetics+"</span> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defEn + "</span> <span sytle=margin-right:3px; padding:0;margin:0; padding:0;>" + defCn + "</span>");
+        }
+
+
         displayHtml = sb.toString();
         return new Definition(eleMap, displayHtml);
     }
