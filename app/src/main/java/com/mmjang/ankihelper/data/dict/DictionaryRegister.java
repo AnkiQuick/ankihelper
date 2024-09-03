@@ -39,7 +39,8 @@ public class DictionaryRegister {
             UrbanDict.class,
             IdiomDict.class,
             Oalde10.class,
-            Cdepe4.class
+            Cdepe4.class,
+            Maldpe.class
     };
 
     private static List<IDictionary> dictList;
