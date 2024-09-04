@@ -166,7 +166,6 @@ public class Maldpe extends SQLiteAssetHelper implements IDictionary {
         eleMap.put(EXP_ELE_LIST[0], hwd);
         eleMap.put(EXP_ELE_LIST[1], "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>" + sense + "</span>");
         eleMap.put(EXP_ELE_LIST[2], "<span >"+phonetics + "</span>");
-        eleMap.put(EXP_ELE_LIST[0], hwd);
         if (phrase.equals("")) {
           eleMap.put(EXP_ELE_LIST[3],  "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>" + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" +  defEn+"</span>");
 
