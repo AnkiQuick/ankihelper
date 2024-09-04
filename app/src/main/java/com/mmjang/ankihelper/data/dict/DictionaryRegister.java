@@ -3,7 +3,6 @@ package com.mmjang.ankihelper.data.dict;
 import android.content.Context;
 
 import com.mmjang.ankihelper.MyApplication;
-import com.mmjang.ankihelper.data.dict.customdict.CustomDictionaryManager;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
@@ -63,8 +62,6 @@ public class DictionaryRegister {
                 } catch (InvocationTargetException ite) {
                 }
             }
-            List<IDictionary> customDictionaries = (new CustomDictionaryManager(MyApplication.getContext(), "")).getDictionaryList();
-            dictList.addAll(customDictionaries);
         //}
         return dictList;
     }

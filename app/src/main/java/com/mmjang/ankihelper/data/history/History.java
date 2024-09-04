@@ -2,7 +2,7 @@ package com.mmjang.ankihelper.data.history;
 
 import org.litepal.annotation.Column;
 import org.litepal.crud.DataSupport;
-
+import org.litepal.LitePal;
 public class History extends DataSupport {
     @Column(unique = true)
     private long timeStamp;

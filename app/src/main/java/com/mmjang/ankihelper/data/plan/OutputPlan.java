@@ -3,7 +3,7 @@ package com.mmjang.ankihelper.data.plan;
 import com.mmjang.ankihelper.util.Utils;
 
 import org.litepal.crud.DataSupport;
-
+import org.litepal.LitePal;
 import java.util.HashMap;
 import java.util.Map;
 

@@ -7,11 +7,12 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Environment;
-import android.support.annotation.NonNull;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.content.ContextCompat;
-import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
+import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
+import androidx.core.content.ContextCompat;
+import androidx.appcompat.app.AlertDialog;
+import androidx.core.app.ActivityCompat;
+import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -42,7 +43,7 @@ import com.mmjang.ankihelper.util.Constant;
 import java.io.File;
 import java.util.List;
 
-public class LauncherActivity extends AppCompatActivity {
+public class LauncherActivity extends ActivityCompat {
 
     AnkiDroidHelper mAnkiDroid;
     Settings settings;
@@ -52,7 +53,6 @@ public class LauncherActivity extends AppCompatActivity {
     Switch switchLeftHandMode;
     Switch switchPinkTheme;
     TextView textViewOpenPlanManager;
-    TextView textViewCustomDictionary;
     TextView textViewAbout;
     TextView textViewHelp;
     TextView textViewAddDefaultPlan;
@@ -78,7 +78,6 @@ public class LauncherActivity extends AppCompatActivity {
         switchLeftHandMode = (Switch) findViewById(R.id.left_hand_mode);
         switchPinkTheme = (Switch) findViewById(R.id.pink_theme_switch);
         textViewOpenPlanManager = (TextView) findViewById(R.id.btn_open_plan_manager);
-        textViewCustomDictionary = (TextView) findViewById(R.id.btn_open_custom_dictionary);
         textViewAbout = (TextView) findViewById(R.id.btn_about_and_support);
         textViewHelp = (TextView) findViewById(R.id.btn_help);
         textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);

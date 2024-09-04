@@ -16,9 +16,9 @@ import android.graphics.Rect;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
-import android.support.v4.content.ContextCompat;
-import android.support.v4.view.MotionEventCompat;
-import android.support.v4.view.NestedScrollingChild;
+import androidx.core.content.ContextCompat;
+import androidx.core.view.MotionEventCompat;
+import androidx.core.view.NestedScrollingChild;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
@@ -631,7 +631,7 @@ boolean autoAddBlanks = false;
     @Override
     public boolean onTouchEvent(MotionEvent event) {
         Log.e("onTouchEvent", "onTouchEvent:" + event);
-        int actionMasked = MotionEventCompat.getActionMasked(event);
+        int actionMasked = event.getActionMasked();
         if (dragModeSelect){
             int x = (int) event.getX();
             int y = (int) event.getY();

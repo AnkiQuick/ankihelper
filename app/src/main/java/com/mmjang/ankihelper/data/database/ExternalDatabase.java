@@ -4,12 +4,11 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
-import android.support.annotation.Nullable;
+import androidx.annotation.Nullable;
 
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.book.Book;
 import com.mmjang.ankihelper.data.dict.JiSho;
-import com.mmjang.ankihelper.data.dict.customdict.CustomDictionaryInformation;
 import com.mmjang.ankihelper.data.history.HistoryPOJO;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
@@ -127,30 +126,6 @@ public class ExternalDatabase {
         return re;
     }
 
-    @Nullable  //if null, not found
-    public CustomDictionaryInformation getDictInfo(int dictId){
-        Cursor cursor = mDatabase.query(
-                TB_DICT,
-                new String[] {CL_ID, CL_NAME, CL_DESCRIPTION, CL_LANG, CL_TMPL, CL_ELEMENTS},
-                CL_ID + "=" + dictId,
-                null,
-                null,
-                null,
-                null
-        );
-        CustomDictionaryInformation customDictionaryInformation = null;
-        while(cursor.moveToNext()){
-            customDictionaryInformation = new CustomDictionaryInformation(
-                    cursor.getInt(0),
-                    cursor.getString(1),
-                    cursor.getString(2),
-                    cursor.getString(3),
-                    cursor.getString(4),
-                    fromFieldsString(cursor.getString(5))
-            );
-        }
-        return customDictionaryInformation;
-    }
 
     public void dropHwdIndex(){
         mDatabase.execSQL(SQL_DROP_INDEX);
