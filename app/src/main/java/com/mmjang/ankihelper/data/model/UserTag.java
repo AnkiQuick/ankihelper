@@ -2,13 +2,12 @@ package com.mmjang.ankihelper.data.model;
 
 import org.litepal.annotation.Column;
 import org.litepal.LitePal;
-import org.litepal.crud.DataSupport;
-
+import org.litepal.crud.LitePalSupport;
 /**
  * Created by liao on 2017/4/20.
  */
 
- public class UserTag extends DataSupport {
+ public class UserTag extends LitePalSupport {
      @Column(unique = true)
      private String tag;
 

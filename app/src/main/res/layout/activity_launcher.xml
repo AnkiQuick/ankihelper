@@ -10,7 +10,7 @@
     android:orientation="vertical"
     >
 
-    <androidx.appcompat.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -141,9 +141,9 @@
 
         </LinearLayout>
 
-    </androidx.appcompat.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <androidx.appcompat.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -230,9 +230,9 @@
 
         </LinearLayout>
 
-    </androidx.appcompat.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
-    <androidx.appcompat.widget.CardView
+    <androidx.cardview.widget.CardView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="16dp"
@@ -282,7 +282,7 @@
 
         </LinearLayout>
 
-    </androidx.appcompat.widget.CardView>
+    </androidx.cardview.widget.CardView>
 
     <TextView
         android:id="@+id/textview_version"

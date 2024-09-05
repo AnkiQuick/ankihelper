@@ -108,7 +108,7 @@ import com.tonyodev.fetch2core.Func;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.litepal.crud.DataSupport;
+import org.litepal.crud.LitePalSupport;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -120,9 +120,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-
+import org.litepal.LitePal;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
-
 import static com.mmjang.ankihelper.util.FieldUtil.getBlankSentence;
 import static com.mmjang.ankihelper.util.FieldUtil.getBoldSentence;
 import static com.mmjang.ankihelper.util.FieldUtil.getNormalSentence;
@@ -267,7 +266,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     @Override
                     public void run() {
                         try{
-                            MyApplication.getAnkiDroid().getApi().getDeckList();
+                            MyApplication.getAnkiDroid(MyApplication.getContext()).getApi().getDeckList();
                         }catch (Exception e){
                         }
                     }
@@ -751,8 +750,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                         mUpdateNoteId = Long.parseLong(updateId);
                         if(mUpdateNoteId > 0){
                             mTagEditedByUser =
-                                    MyApplication.getAnkiDroid()
-                                            .getApi().getNote(mUpdateNoteId)
+                                    MyApplication.getAnkiDroid(MyApplication.getContext()).getApi().getNote(mUpdateNoteId)
                                             .getTags();
                         }
                     }
@@ -1115,8 +1113,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                                 }
                             }
                             ///////////////////////////////////
-
-                            AnkiDroidHelper mAnkiDroid = MyApplication.getAnkiDroid();
+                            AnkiDroidHelper mAnkiDroid = MyApplication.getAnkiDroid(MyApplication.getContext());
                             String[] sharedExportElements = Constant.getSharedExportElements();
                             String[] exportFields = new String[currentOutputPlan.getFieldsMap().size()];
                             int i = 0;
@@ -1415,7 +1412,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             editTag.setSelection(text.length());
         }
         tagChipGroup.setSingleSelection(false);
-        final List<UserTag> userTags = DataSupport.findAll(UserTag.class);
+        final List<UserTag> userTags = LitePal.findAll(UserTag.class);
         for(UserTag userTag : userTags){
             final Chip chip = (Chip) inflater.inflate(R.layout.tag_chip_item, null);
             chip.setText(userTag.getTag());

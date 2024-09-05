@@ -1,7 +1,7 @@
 package com.mmjang.ankihelper.data.history;
 
 import org.litepal.annotation.Column;
-import org.litepal.crud.DataSupport;
+import org.litepal.crud.LitePalSupport;
 
 public class HistoryPOJO {
     private long timeStamp;

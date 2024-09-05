@@ -27,7 +27,7 @@ public class DialogUtil {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
 
-                                MyApplication.getAnkiDroid().startAnkiDroid();
+                                MyApplication.getAnkiDroid(MyApplication.getContext()).startAnkiDroid();
                             }
                         })
                 .show();

@@ -2,12 +2,12 @@ package com.mmjang.ankihelper.ui.plan;
 
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.support.annotation.NonNull;
+import androidx.annotation.NonNull;
 import androidx.core.app.NavUtils;
-import android.androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.LinearLayoutManager;
-import android.support.v7.widget.RecyclerView;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -32,7 +32,7 @@ import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.util.Utils;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.crud.LitePalSupport;
 
 import java.util.ArrayList;
 import java.util.Arrays;

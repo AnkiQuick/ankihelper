@@ -6,7 +6,7 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.androidx.core.app.ActivityCompat;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import android.util.SparseArray;
 

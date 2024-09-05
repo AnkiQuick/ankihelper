@@ -30,6 +30,7 @@ import com.github.mikephil.charting.interfaces.datasets.ILineDataSet;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.history.HistoryStat;
+import com.github.mikephil.charting.formatter.ValueFormatter;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,14 +163,18 @@ public class StatActivity extends AppCompatActivity {
         mLastDaysChart.getAxisRight().setEnabled(false);
         //mHourChart.getAxisLeft().setDrawGridLines(false);
         mLastDaysChart.getXAxis().setValueFormatter(
-                new IAxisValueFormatter() {
-                    @Override
-                    public String getFormattedValue(float value, AxisBase axis) {
-                        return  + ((int)(-mLastDays + value + 1)) + "d";
-                    }
+            new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value) {
+                    return  + ((int)(-mLastDays + value + 1)) + "d";
                 }
+            }
         );
-        mLastDaysChart.getLegend().setPosition(Legend.LegendPosition.BELOW_CHART_CENTER);
+
+        mLastDaysChart.getLegend().setHorizontalAlignment(Legend.LegendHorizontalAlignment.CENTER);
+        mLastDaysChart.getLegend().setVerticalAlignment(Legend.LegendVerticalAlignment.BOTTOM);
+        mLastDaysChart.getLegend().setOrientation(Legend.LegendOrientation.HORIZONTAL); // For horizontal alignment
+
         mLastDaysChart.invalidate();
     }
 
@@ -194,12 +199,12 @@ public class StatActivity extends AppCompatActivity {
         mHourChart.getAxisRight().setEnabled(false);
         //mHourChart.getAxisLeft().setDrawGridLines(false);
         mHourChart.getXAxis().setValueFormatter(
-                new IAxisValueFormatter() {
-                    @Override
-                    public String getFormattedValue(float value, AxisBase axis) {
-                        return ((int) value) + "";
-                    }
+            new ValueFormatter() {
+                @Override
+                public String getFormattedValue(float value) {
+                    return ((int) value) + "";
                 }
+            }
         );
         mHourChart.getXAxis().setLabelCount(24);
         mHourChart.getXAxis().setAxisMinimum(-0.5f);

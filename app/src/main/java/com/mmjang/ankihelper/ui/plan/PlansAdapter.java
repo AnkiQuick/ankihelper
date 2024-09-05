@@ -23,7 +23,7 @@ import com.mmjang.ankihelper.ui.plan.helper.ItemTouchHelperViewHolder;
 import com.mmjang.ankihelper.util.DialogUtil;
 import com.mmjang.ankihelper.util.Utils;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.crud.LitePalSupport;
 
 import java.util.List;
 
@@ -110,7 +110,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (MyApplication.getAnkiDroid().isAnkiDroidRunning()) {
+                        if (MyApplication.getAnkiDroid(MyApplication.getContext()).isAnkiDroidRunning()) {
                             int pos = holder.getAdapterPosition();
                             String planName = mPlansList.get(pos).getPlanName();
                             Intent intent = new Intent(mActivity, PlanEditorActivity.class);

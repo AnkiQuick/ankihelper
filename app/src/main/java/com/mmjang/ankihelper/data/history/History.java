@@ -1,9 +1,10 @@
 package com.mmjang.ankihelper.data.history;
 
 import org.litepal.annotation.Column;
-import org.litepal.crud.DataSupport;
+import org.litepal.crud.LitePalSupport;
 import org.litepal.LitePal;
-public class History extends DataSupport {
+
+public class History extends LitePalSupport {
     @Column(unique = true)
     private long timeStamp;
     private int type;
@@ -99,3 +100,4 @@ public class History extends DataSupport {
         this.tag = tag;
     }
 }
+

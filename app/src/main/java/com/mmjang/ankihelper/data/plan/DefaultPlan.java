@@ -25,7 +25,7 @@ public class DefaultPlan {
     VocabularyCardModel vc;
     Context mContext;
     public DefaultPlan(Context context){
-        mAnkidroid = MyApplication.getAnkiDroid();
+        mAnkidroid = MyApplication.getAnkiDroid(MyApplication.getContext());
         mContext = context;
     }
 

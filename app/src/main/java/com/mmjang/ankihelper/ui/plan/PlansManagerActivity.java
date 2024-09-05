@@ -29,7 +29,7 @@ import com.mmjang.ankihelper.ui.plan.helper.SimpleItemTouchHelperCallback;
 import com.mmjang.ankihelper.util.DialogUtil;
 import com.mmjang.ankihelper.util.Utils;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.crud.LitePalSupport;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +55,7 @@ public class PlansManagerActivity extends AppCompatActivity {
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                if (MyApplication.getAnkiDroid().isAnkiDroidRunning()) {
+                if (MyApplication.getAnkiDroid(getApplicationContext()).isAnkiDroidRunning()) {
                     Intent intent = new Intent(PlansManagerActivity.this, PlanEditorActivity.class);
                     startActivity(intent);
                 } else {
@@ -70,7 +70,7 @@ public class PlansManagerActivity extends AppCompatActivity {
                     @Override
                     public void run() {
                         try{
-                            MyApplication.getAnkiDroid().getApi().getDeckList();
+                            MyApplication.getAnkiDroid(getApplicationContext()).getApi().getDeckList();
                         }catch (Exception e){
                         }
                     }

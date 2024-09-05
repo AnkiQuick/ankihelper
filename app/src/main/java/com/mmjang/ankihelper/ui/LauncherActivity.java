@@ -11,7 +11,6 @@ import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
-import androidx.core.app.ActivityCompat;
 import androidx.appcompat.app.AppCompatActivity;
 import android.text.Html;
 import android.view.Menu;
@@ -34,7 +33,6 @@ import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.ui.about.AboutActivity;
 import com.mmjang.ankihelper.ui.content.ContentActivity;
-import com.mmjang.ankihelper.ui.customdict.CustomDictionaryActivity;
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
 import com.mmjang.ankihelper.ui.stat.StatActivity;
 import com.mmjang.ankihelper.ui.translation.CustomTranslationActivity;
@@ -43,7 +41,7 @@ import com.mmjang.ankihelper.util.Constant;
 import java.io.File;
 import java.util.List;
 
-public class LauncherActivity extends ActivityCompat {
+public class LauncherActivity extends AppCompatActivity {
 
     AnkiDroidHelper mAnkiDroid;
     Settings settings;
@@ -59,20 +57,29 @@ public class LauncherActivity extends ActivityCompat {
     TextView textViewAddQQGroup;
     TextView textViewRandomQuote;
     TextView textViewCustomTranslation;
+    TextView textViewCustomDictionary; // Declare this variable
 
     private static final int REQUEST_CODE_ANKI = 0;
     private static final int REQUEST_CODE_STORAGE = 1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        settings = Settings.getInstance(this);
+        super.onCreate(savedInstanceState);
+
+        settings = Settings.getInstance(LauncherActivity.this); // Use LauncherActivity.this
         if (settings.getPinkThemeQ()) {
             setTheme(R.style.AppThemePink);
         }
-        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher);
         setVersion();
-        checkAndRequestPermissions();
+
+        // Initialize AnkiDroidHelper in onCreate
+        mAnkiDroid = MyApplication.getAnkiDroid(this);
+
+        // Call checkAndRequestPermissions after AnkiDroidHelper is initialized
+        checkAndRequestPermissions(mAnkiDroid);
+        requestStoragePermission();
+
         switchMoniteClipboard = (Switch) findViewById(R.id.switch_monite_clipboard);
         switchCancelAfterAdd = (Switch) findViewById(R.id.switch_cancel_after_add);
         switchLeftHandMode = (Switch) findViewById(R.id.left_hand_mode);
@@ -143,39 +150,24 @@ public class LauncherActivity extends ActivityCompat {
                 }
         );
 
-        textViewOpenPlanManager.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (mAnkiDroid == null) {
-                            mAnkiDroid = new AnkiDroidHelper(LauncherActivity.this);
-                        }
-                        if (!AnkiDroidHelper.isApiAvailable(MyApplication.getContext())) {
-                            Toast.makeText(LauncherActivity.this, R.string.api_not_available_message, Toast.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        if (mAnkiDroid.shouldRequestPermission()) {
-                            mAnkiDroid.requestPermission(LauncherActivity.this, 0);
-                            return;
-                        } else {
-
-                        }
-                        Intent intent = new Intent(LauncherActivity.this, PlansManagerActivity.class);
-                        startActivity(intent);
-                    }
+        textViewOpenPlanManager.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (!mAnkiDroid.isAnkiDroidRunning()) {
+                    Toast.makeText(LauncherActivity.this, R.string.api_not_available_message, Toast.LENGTH_LONG).show();
+                    return;
                 }
-        );
 
-        textViewCustomDictionary.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(LauncherActivity.this, CustomDictionaryActivity.class);
-                        startActivity(intent);
-                    }
+                if (mAnkiDroid.shouldRequestPermission()) {
+                    mAnkiDroid.requestPermission(LauncherActivity.this, 0);
+                    return;
                 }
-        );
+
+                Intent intent = new Intent(LauncherActivity.this, PlansManagerActivity.class);
+                startActivity(intent);
+            }
+        });
+
 
         textViewAbout.setOnClickListener(
                 new View.OnClickListener() {
@@ -213,9 +205,6 @@ public class LauncherActivity extends ActivityCompat {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (mAnkiDroid == null) {
-                            mAnkiDroid = new AnkiDroidHelper(LauncherActivity.this);
-                        }
                         if (!AnkiDroidHelper.isApiAvailable(MyApplication.getContext())) {
                             Toast.makeText(LauncherActivity.this, R.string.api_not_available_message, Toast.LENGTH_LONG).show();
                             return;
@@ -268,17 +257,47 @@ public class LauncherActivity extends ActivityCompat {
 //        });
 //        thread.start();
     }
+    private void requestStoragePermission() {
+        if (Build.VERSION.SDK_INT >= 23) {
+            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+                if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
+                    // Show an explanation to the user *asynchronously* -- don't block
+                    // this thread waiting for the user's response! After the user
+                    // sees the explanation, try again to request the permission.
+                    new AlertDialog.Builder(this)
+                            .setTitle("Permission Needed")
+                            .setMessage("This app needs access to storage to function correctly.")
+                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    ActivityCompat.requestPermissions(LauncherActivity.this,
+                                            new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                                            REQUEST_CODE_STORAGE);
+                                }
+                            })
+                            .setNegativeButton("Cancel", null)
+                            .show();
 
-    private void checkAndRequestPermissions() {
-        if (mAnkiDroid == null) {
-            mAnkiDroid = new AnkiDroidHelper(this);
+                } else {
+                    // No explanation needed, we can request the permission.
+                    ActivityCompat.requestPermissions(this,
+                            new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
+                            REQUEST_CODE_STORAGE);
+                }
+            } else {
+                // Permission has already been granted
+                // Proceed with your code that requires storage access
+                ensureExternalDbDirectoryAndMigrate();
+            }
         }
-        if (!AnkiDroidHelper.isApiAvailable(MyApplication.getContext())) {
+    }
+    private void checkAndRequestPermissions(AnkiDroidHelper helper) {
+        if (!helper.isAnkiDroidRunning()) {
             Toast.makeText(this, R.string.api_not_available_message, Toast.LENGTH_LONG).show();
         }
 
-        if (mAnkiDroid.shouldRequestPermission()) {
-            mAnkiDroid.requestPermission(this, REQUEST_CODE_ANKI);
+        if (helper.shouldRequestPermission()) {
+            helper.requestPermission(this, REQUEST_CODE_ANKI);
         } else {
             initStoragePermission();
         }

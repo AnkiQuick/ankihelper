@@ -2,7 +2,7 @@ package com.mmjang.ankihelper.data.history;
 
 import com.mmjang.ankihelper.data.database.ExternalDatabase;
 
-import org.litepal.crud.DataSupport;
+import org.litepal.crud.LitePalSupport;
 import org.threeten.bp.Instant;
 import org.threeten.bp.LocalDate;
 import org.threeten.bp.LocalDateTime;
