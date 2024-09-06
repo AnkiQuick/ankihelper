@@ -57,10 +57,8 @@ public class LauncherActivity extends AppCompatActivity {
     TextView textViewAddQQGroup;
     TextView textViewRandomQuote;
     TextView textViewCustomTranslation;
-    TextView textViewCustomDictionary;
 
     private static final int REQUEST_CODE_ANKI = 0;
-    private static final int REQUEST_CODE_STORAGE = 1; // No longer needed
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -308,10 +306,8 @@ public class LauncherActivity extends AppCompatActivity {
 
         if (requestCode == REQUEST_CODE_ANKI ) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                initStoragePermission();
                 ensureExternalDbDirectoryAndMigrate();
             } else {
-                initStoragePermission();
                 //Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show();
                 new AlertDialog.Builder(LauncherActivity.this)
                         .setMessage(R.string.permission_denied)
@@ -441,17 +437,4 @@ public class LauncherActivity extends AppCompatActivity {
         }
     }
 
-    private void initStoragePermission() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            int result = ContextCompat.checkSelfPermission(LauncherActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE);
-            if (result != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(LauncherActivity.this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                } else {
-                    ActivityCompat.requestPermissions(LauncherActivity.this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE);
-                }
-            } else {
-                ensureExternalDbDirectoryAndMigrate();
-            }
-        }
-    }
 }

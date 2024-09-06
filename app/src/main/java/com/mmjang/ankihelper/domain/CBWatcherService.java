@@ -29,6 +29,7 @@ import android.app.PendingIntent;
 import static android.app.NotificationManager.IMPORTANCE_HIGH;
 
 public class CBWatcherService extends Service {
+    private static final int REQUEST_CODE_CBW = 0;
     private OnPrimaryClipChangedListener listener = new OnPrimaryClipChangedListener() {
         public void onPrimaryClipChanged() {
             performClipboardCheck();
