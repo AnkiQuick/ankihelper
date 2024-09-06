@@ -1,6 +1,6 @@
 package com.mmjang.ankihelper.data.history;
 
-import com.mmjang.ankihelper.data.database.ExternalDatabase;
+import com.mmjang.ankihelper.data.database.DatabaseManager;
 
 import org.litepal.crud.LitePalSupport;
 import org.threeten.bp.Instant;
@@ -28,7 +28,7 @@ public class HistoryStat {
                 .toInstant(OffsetDateTime.now().getOffset()).toEpochMilli();
 //        dataOfLastDays = DataSupport.where("timestamp > ?", Long.toString(startOfLastDays))
 //                .find(History.class);
-        dataOfLastDays = ExternalDatabase.getInstance().getHistoryAfter(startOfLastDays);
+        dataOfLastDays = DatabaseManager.getInstance().getHistoryAfter(startOfLastDays);
     }
 
 //    public int getDayCount(int type){

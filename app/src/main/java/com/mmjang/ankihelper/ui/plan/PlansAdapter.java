@@ -15,7 +15,7 @@ import android.widget.TextView;
 
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
-import com.mmjang.ankihelper.data.database.ExternalDatabase;
+import com.mmjang.ankihelper.data.database.DatabaseManager;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import com.mmjang.ankihelper.ui.plan.helper.ItemTouchHelperAdapter;
@@ -96,7 +96,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
                                     public void onClick(DialogInterface dialog, int whichButton) {
                                         int pos = holder.getAdapterPosition();
                                         //mPlansList.get(pos).delete();
-                                        ExternalDatabase.getInstance().deletePlanByName(mPlansList.get(pos).getPlanName());
+                                        DatabaseManager.getInstance().deletePlanByName(mPlansList.get(pos).getPlanName());
                                         mPlansList.remove(pos);
                                         notifyItemRemoved(pos);
                                     }
@@ -137,7 +137,7 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
 
     @Override
     public void onMoveFinished() {
-        ExternalDatabase.getInstance().refreshPlanWith(mPlansList);
+        DatabaseManager.getInstance().refreshPlanWith(mPlansList);
 //        List<OutputPlan> plansInDatabase = DataSupport.findAll(OutputPlan.class);
 //        for(int i = 0; i < plansInDatabase.size(); i ++){
 //            OutputPlan oldPlan = plansInDatabase.get(i);

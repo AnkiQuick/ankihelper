@@ -24,6 +24,8 @@ import com.mmjang.ankihelper.util.Constant;
 
 import java.sql.BatchUpdateException;
 
+import android.app.PendingIntent;
+
 import static android.app.NotificationManager.IMPORTANCE_HIGH;
 
 public class CBWatcherService extends Service {
@@ -75,7 +77,13 @@ public class CBWatcherService extends Service {
         intentStart.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intentStart.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         intentStart.putExtra(Intent.EXTRA_TEXT, Constant.USE_CLIPBOARD_CONTENT_FLAG);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intentStart, PendingIntent.FLAG_UPDATE_CURRENT);
+
+        PendingIntent pendingIntent = PendingIntent.getService(
+                this,
+                0,
+                intentStart,
+                PendingIntent.FLAG_MUTABLE
+        );
         //NotificationManager notiManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this)
                 .setChannelId(CHANNEL_ONE_ID)

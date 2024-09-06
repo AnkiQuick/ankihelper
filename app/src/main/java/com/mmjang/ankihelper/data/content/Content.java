@@ -7,26 +7,26 @@ import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
 import android.os.Environment;
 
-import com.mmjang.ankihelper.data.database.ExternalDatabase;
+import com.mmjang.ankihelper.data.database.DatabaseManager;
 import com.mmjang.ankihelper.util.Constant;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExternalContent {
+public class Content {
 
     private static final String suffix = ".db";
     private List<File> dbFileList;
     private SQLiteDatabase.OpenParams.Builder mParametersBuilder;
     private Context mContext;
-    private ExternalContentDatabaseHelper[] helperList;
+    private ContentDatabaseHelper[] helperList;
 
-    public ExternalContent(Context context){
+    public Content(Context context){
         mContext = context;
-        File contentFolder = new File(Environment.getExternalStorageDirectory().getAbsolutePath() + File.separator
-                + Constant.EXTERNAL_STORAGE_DIRECTORY + File.separator +
-                Constant.EXTERNAL_STORAGE_CONTENT_SUBDIRECTORY);
+        File contentFolder = new File(Environment.getDataDirectory().getAbsolutePath() + File.separator
+                + Constant.STORAGE_DIRECTORY + File.separator +
+                Constant.STORAGE_CONTENT_SUBDIRECTORY);
         File[] listOfFiles = contentFolder.listFiles();
         dbFileList = new ArrayList<>();
         for(File f : listOfFiles){
@@ -35,7 +35,7 @@ public class ExternalContent {
                 dbFileList.add(f);
             }
         }
-        helperList = new ExternalContentDatabaseHelper[dbFileList.size()];
+        helperList = new ContentDatabaseHelper[dbFileList.size()];
     }
 
     public List<String> getContentDBList(){
@@ -52,7 +52,7 @@ public class ExternalContent {
     public List<Long> getCountAt(int index){
         if(helperList[index] == null){
             String name = dbFileList.get(index).getName();
-            helperList[index] = new ExternalContentDatabaseHelper(mContext, name);
+            helperList[index] = new ContentDatabaseHelper(mContext, name);
         }
         SQLiteDatabase database;
         try {
@@ -86,7 +86,7 @@ public class ExternalContent {
     public ContentEntity getRandomContentAt(int index, boolean filterRead){
         if(helperList[index] == null){
             String name = dbFileList.get(index).getName();
-            helperList[index] = new ExternalContentDatabaseHelper(mContext, name);
+            helperList[index] = new ContentDatabaseHelper(mContext, name);
         }
         SQLiteDatabase database;
         try {

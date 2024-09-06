@@ -16,7 +16,7 @@ import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ExternalDatabase {
+public class DatabaseManager {
     private static final String TB_DICT = "dict";
     private static final String TB_ENTRY = "entry";
     private static final String CL_ID = "id";
@@ -31,18 +31,18 @@ public class ExternalDatabase {
     private static final String SPLITTER = "\t"; //original file is splitted by \t, so it's safe.
     private static final String SQL_CREATE_INDEX = "CREATE INDEX IF NOT EXISTS headword_index ON entry (headword)";
     private static final String SQL_DROP_INDEX = "DROP INDEX IF EXISTS headword_index";
-    Context mContext;
+    private static Context mContext;
     SQLiteDatabase mDatabase;
-    private static ExternalDatabase instance;
-    private ExternalDatabase(Context context){
+    private static DatabaseManager instance;
+    private DatabaseManager(Context context){
         mContext = context;
-        ExternalDatabaseHelper dbHelper = new ExternalDatabaseHelper(mContext);
+        DatabaseHelper dbHelper = new DatabaseHelper(mContext);
         mDatabase = dbHelper.getWritableDatabase();
     }
 
-    public static ExternalDatabase getInstance() {
+    public static DatabaseManager getInstance() {
         if(instance == null){
-            instance = new ExternalDatabase(MyApplication.getContext());
+            instance = new DatabaseManager(MyApplication.getContext());
         }
         return instance;
     }

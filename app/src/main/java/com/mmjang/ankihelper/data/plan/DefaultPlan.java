@@ -4,7 +4,7 @@ import android.content.Context;
 
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
-import com.mmjang.ankihelper.data.database.ExternalDatabase;
+import com.mmjang.ankihelper.data.database.DatabaseManager;
 import com.mmjang.ankihelper.data.dict.Collins;
 
 import java.util.HashMap;
@@ -59,7 +59,7 @@ public class DefaultPlan {
         defaultPlan.setOutputDeckId(getDefaultDeckId());
         defaultPlan.setDictionaryKey(collins.getDictionaryName());
         defaultPlan.setFieldsMap(fieldMap);
-        ExternalDatabase.getInstance().insertPlan(defaultPlan);
+        DatabaseManager.getInstance().insertPlan(defaultPlan);
     }
 
 

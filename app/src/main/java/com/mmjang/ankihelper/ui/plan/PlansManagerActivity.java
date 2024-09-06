@@ -22,7 +22,7 @@ import android.widget.Toast;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.Settings;
-import com.mmjang.ankihelper.data.database.ExternalDatabase;
+import com.mmjang.ankihelper.data.database.DatabaseManager;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import com.mmjang.ankihelper.ui.plan.helper.SimpleItemTouchHelperCallback;
@@ -81,7 +81,7 @@ public class PlansManagerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        List<OutputPlanPOJO> newList = ExternalDatabase.getInstance().getAllPlan();
+        List<OutputPlanPOJO> newList = DatabaseManager.getInstance().getAllPlan();
         mPlanList.clear();
         mPlanList.addAll(newList);
         mPlansAdapter.notifyDataSetChanged();
@@ -173,7 +173,7 @@ public class PlansManagerActivity extends AppCompatActivity {
                 outputPlan.setOutputModelId(modeld);
                 outputPlan.setDictionaryKey(dictKey);
                 outputPlan.setFieldsMap(Utils.fieldsStr2Map(fieldMapString));
-                ExternalDatabase.getInstance().insertPlan(outputPlan);
+                DatabaseManager.getInstance().insertPlan(outputPlan);
             }
             catch (Exception e){
                 Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();

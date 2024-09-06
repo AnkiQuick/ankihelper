@@ -19,7 +19,7 @@ import android.widget.Toast;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.content.ContentEntity;
-import com.mmjang.ankihelper.data.content.ExternalContent;
+import com.mmjang.ankihelper.data.content.Content;
 import com.mmjang.ankihelper.data.quote.Quote;
 import com.mmjang.ankihelper.data.quote.RandomQuote;
 import com.mmjang.ankihelper.ui.LauncherActivity;
@@ -33,7 +33,7 @@ public class ContentActivity extends AppCompatActivity {
 
     Switch switchShowContentAlreadyRead;
     LinearLayout contentCatagoryContainer;
-    ExternalContent externalContent;
+    Content Content;
     Settings settings;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -55,13 +55,13 @@ public class ContentActivity extends AppCompatActivity {
                     }
                 }
         );
-        externalContent = new ExternalContent(this);
+        Content = new Content(this);
     }
 
     @Override
     protected void onResume() {
         super.onResume();
-        List<String> contentDBList = externalContent.getContentDBList();
+        List<String> contentDBList = Content.getContentDBList();
         if (contentDBList.size() == 0) {
             new AlertDialog.Builder(ContentActivity.this)
                     .setMessage("无内容可刷，请将 .db 数据库复制到 sdcard/ankihelper/content 文件夹下")
@@ -79,7 +79,7 @@ public class ContentActivity extends AppCompatActivity {
             View view = LayoutInflater.from(this)
                     .inflate(R.layout.content_db_box, null);
             TextView tv = view.findViewById(R.id.textview_content_catagory);
-            List<Long> counts = externalContent.getCountAt(index);
+            List<Long> counts = Content.getCountAt(index);
             String countText = "";
             if (counts != null) {
                 countText = counts.get(1) + "/" + counts.get(0);
@@ -94,7 +94,7 @@ public class ContentActivity extends AppCompatActivity {
                                     new Runnable() {
                                         @Override
                                         public void run() {
-//                                            ContentEntity contentEntity = externalContent.getRandomContentAt(index,
+//                                            ContentEntity contentEntity = Content.getRandomContentAt(index,
 //                                                    !settings.getShowContentAlreadyRead());
 //                                            if(contentEntity == null){
 //                                                ContentActivity.this.runOnUiThread(

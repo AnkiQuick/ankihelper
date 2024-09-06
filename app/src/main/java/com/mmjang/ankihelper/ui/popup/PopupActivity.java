@@ -66,7 +66,7 @@ import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 import com.mmjang.ankihelper.data.Settings;
-import com.mmjang.ankihelper.data.database.ExternalDatabase;
+import com.mmjang.ankihelper.data.database.DatabaseManager;
 import com.mmjang.ankihelper.data.dict.BingImage;
 import com.mmjang.ankihelper.data.dict.Definition;
 import com.mmjang.ankihelper.data.dict.DictionaryDotCom;
@@ -329,7 +329,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
 
     private void loadData() {
         dictionaryList = DictionaryRegister.getDictionaryObjectList();
-        outputPlanList = ExternalDatabase.getInstance().getAllPlan();
+        outputPlanList = DatabaseManager.getInstance().getAllPlan();
         settings = Settings.getInstance(this);
         //load tag
         boolean loadQ = settings.getSetAsDefaultTag();

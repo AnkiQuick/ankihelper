@@ -1,6 +1,6 @@
 package com.mmjang.ankihelper.data.history;
 
-import com.mmjang.ankihelper.data.database.ExternalDatabase;
+import com.mmjang.ankihelper.data.database.DatabaseManager;
 
 //private long timeStamp;
 //private int type;
@@ -18,7 +18,7 @@ public class HistoryUtil {
         history.setType(HistoryType.POPUP_OPEN);
         history.setTimeStamp(System.currentTimeMillis());
         history.setSentence(sentence);
-        ExternalDatabase.getInstance().insertHistory(history);
+        DatabaseManager.getInstance().insertHistory(history);
         }
 
     public static void saveWordlookup(String sentence, String word){
@@ -27,7 +27,7 @@ public class HistoryUtil {
         history.setTimeStamp(System.currentTimeMillis());
         history.setSentence(sentence);
         history.setWord(word);
-        ExternalDatabase.getInstance().insertHistory(history);
+        DatabaseManager.getInstance().insertHistory(history);
     }
 
     public static void saveNoteAdd(String sentence, String word,
@@ -43,6 +43,6 @@ public class HistoryUtil {
         history.setTranslation(translation);
         history.setNote(note);
         history.setTag(tag);
-        ExternalDatabase.getInstance().insertHistory(history);
+        DatabaseManager.getInstance().insertHistory(history);
     }
 }

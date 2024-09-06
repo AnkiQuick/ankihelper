@@ -11,18 +11,24 @@ import com.mmjang.ankihelper.util.Constant;
 
 import java.io.File;
 
-public class ExternalDatabaseContext extends ContextWrapper {
+public class DatabaseContext extends ContextWrapper {
 
-    private static final String DEBUG_CONTEXT = "ExternalDatabaseContext";
+    private static final String DEBUG_CONTEXT = "DatabaseContext";
 
-    public ExternalDatabaseContext(Context base) {
+    public DatabaseContext(Context base) {
         super(base);
     }
 
     @Override
     public File getDatabasePath(String name)  {
-        File sdcard = Environment.getExternalStorageDirectory();
-        String dbfile = sdcard.getAbsolutePath() + File.separator+ Constant.EXTERNAL_STORAGE_DIRECTORY + File.separator + name;
+        File filesDir = this.getBaseContext().getFilesDir();
+        if (filesDir == null) {
+            Log.e("DatabaseContext", "filesDir is null!");
+            return null;
+        }
+        File storageDir = new File(filesDir, Constant.STORAGE_DIRECTORY);
+        String dbfile = new File(storageDir, name).getPath(); // Correct way to create File object
+
         if (!dbfile.endsWith(".db")) {
             dbfile += ".db" ;
         }

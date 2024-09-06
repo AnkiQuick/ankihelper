@@ -39,7 +39,7 @@ public class MigrationUtil {
                 np.setPlanName(outputPlan.getPlanName());
                 newPlan.add(np);
             }
-            ExternalDatabase.getInstance().refreshPlanWith(newPlan);
+            DatabaseManager.getInstance().refreshPlanWith(newPlan);
             LitePal.deleteAll(OutputPlan.class);
         }
         List<History> oldHistory = LitePal.findAll(History.class);
@@ -55,7 +55,7 @@ public class MigrationUtil {
             hpojo.setTimeStamp(history.getTimeStamp());
             newHistory.add(hpojo);
         }
-        ExternalDatabase.getInstance().insertManyHistory(newHistory);
+        DatabaseManager.getInstance().insertManyHistory(newHistory);
         LitePal.deleteAll(History.class);
     }
 }

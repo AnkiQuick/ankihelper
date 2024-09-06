@@ -38,8 +38,8 @@ public class Constant {
 
     public static final float FLOAT_ACTION_BUTTON_ALPHA = 0.3f;
 
-    public static final String EXTERNAL_STORAGE_DIRECTORY = "ankihelper";
-    public static final String EXTERNAL_STORAGE_CONTENT_SUBDIRECTORY = "content";
+    public static final String STORAGE_DIRECTORY = "ankihelper";
+    public static final String STORAGE_CONTENT_SUBDIRECTORY = "content";
     public static final String LEFT_BOLD_SUBSTITUDE = "☾";
     public static final String RIGHT_BOLD_SUBSTITUDE = "☽";
 
@@ -50,10 +50,10 @@ public class Constant {
     public static final String IMAGE_SUB_DIRECTORY = "ankihelper_image";
     public static final String AUDIO_SUB_DIRECTORY = "ankihelper_audio";
 
-    public static final String IMAGE_MEDIA_DIRECTORY = Environment.getExternalStorageDirectory()
+    public static final String IMAGE_MEDIA_DIRECTORY = Environment.getDataDirectory()
             + "/AnkiDroid/collection.media/ankihelper_image/";
 
-    public static final String AUDIO_MEDIA_DIRECTORY = Environment.getExternalStorageDirectory()
+    public static final String AUDIO_MEDIA_DIRECTORY = Environment.getDataDirectory()
             + "/AnkiDroid/collection.media/ankihelper_audio/";
 
     public static final String USE_CLIPBOARD_CONTENT_FLAG = "use_clipboard_content_flag";

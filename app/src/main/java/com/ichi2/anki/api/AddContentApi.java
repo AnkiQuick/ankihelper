@@ -96,12 +96,11 @@ public final class AddContentApi {
         }
         return addNoteForContentValues(deckId, values);
     }
-
     private Uri addNoteForContentValues(long deckId, ContentValues values) {
         Uri newNoteUri = null;
         try {
             newNoteUri = mResolver.insert(Note.CONTENT_URI, values);
-        }catch (Exception e){
+        } catch (Exception e) {
             com.mmjang.ankihelper.util.Utils.showMessage(mContext,
                     mContext.getString(R.string.str_check_ankidroid_permisson));
             return null;
@@ -117,11 +116,15 @@ public final class AddContentApi {
         }
         try {
             while (cardsCursor.moveToNext()) {
-                String ord = cardsCursor.getString(cardsCursor.getColumnIndex(Card.CARD_ORD));
-                ContentValues cardValues = new ContentValues();
-                cardValues.put(Card.DECK_ID, deckId);
-                Uri cardUri = Uri.withAppendedPath(Uri.withAppendedPath(newNoteUri, "cards"), ord);
-                mResolver.update(cardUri, cardValues, null, null);
+                // Check if the column exists
+                int columnIndex = cardsCursor.getColumnIndex(Card.CARD_ORD);
+                if (columnIndex != -1) {
+                    String ord = cardsCursor.getString(columnIndex);
+                    ContentValues cardValues = new ContentValues();
+                    cardValues.put(Card.DECK_ID, deckId);
+                    Uri cardUri = Uri.withAppendedPath(Uri.withAppendedPath(newNoteUri, "cards"), ord);
+                    mResolver.update(cardUri, cardValues, null, null);
+                }
             }
         } finally {
             cardsCursor.close();
@@ -283,13 +286,20 @@ public final class AddContentApi {
         try {
             while (cardsCursor.moveToNext()) {
                 // add question and answer for each card to map
-                final String n = cardsCursor.getString(cardsCursor.getColumnIndex(Card.CARD_NAME));
-                final String q = cardsCursor.getString(cardsCursor.getColumnIndex(Card.QUESTION));
-                final String a = cardsCursor.getString(cardsCursor.getColumnIndex(Card.ANSWER));
-                Map<String, String> html = new HashMap<>();
-                html.put("q", q);
-                html.put("a", a);
-                cards.put(n, html);
+                final int nameIndex = cardsCursor.getColumnIndex(Card.CARD_NAME);
+                final int answerIndex = cardsCursor.getColumnIndex(Card.ANSWER);
+                final int questionIndex = cardsCursor.getColumnIndex(Card.QUESTION);
+
+                if (nameIndex != -1 && answerIndex !=-1 ) {
+                    final String n = cardsCursor.getString(nameIndex);
+
+                    final String q = cardsCursor.getString(questionIndex);
+                    final String a = cardsCursor.getString(answerIndex);
+                    Map<String, String> html = new HashMap<>();
+                    html.put("q", q);
+                    html.put("a", a);
+                    cards.put(n, html);
+                 }
             }
         } finally {
             cardsCursor.close();
@@ -380,6 +390,8 @@ public final class AddContentApi {
         long modelId;
         try {
             singleModelCursor.moveToFirst();
+
+            final int singleModelIndex = singleModelCursor.getColumnIndex(Model._ID);
             modelId = singleModelCursor.getLong(singleModelCursor.getColumnIndex(Model._ID));
         } finally {
             singleModelCursor.close();

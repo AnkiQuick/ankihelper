@@ -16,7 +16,7 @@ import android.widget.TextView;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.content.ContentEntity;
-import com.mmjang.ankihelper.data.content.ExternalContent;
+import com.mmjang.ankihelper.data.content.Content;
 import com.mmjang.ankihelper.ui.popup.PopupActivity;
 import com.mmjang.ankihelper.util.Constant;
 import com.mmjang.ankihelper.util.Utils;
@@ -25,7 +25,7 @@ public class ContentViewerActivity extends AppCompatActivity {
 
     SwipeRefreshLayout swipeRefreshLayout;
     TextView contentTextView;
-    ExternalContent externalContent;
+    Content Content;
     int mIndex;
     FloatingActionButton floatingActionButton;
     String currentContent = "";
@@ -43,7 +43,7 @@ public class ContentViewerActivity extends AppCompatActivity {
         swipeRefreshLayout = findViewById(R.id.swipe_refresh);
         contentTextView = findViewById(R.id.context_text);
         floatingActionButton = findViewById(R.id.add_content);
-        externalContent = new ExternalContent(this);
+        Content = new Content(this);
 
         Intent intent = getIntent();
         mIndex = intent.getIntExtra(Constant.INTENT_ANKIHELPER_CONTENT_INDEX, 0);
@@ -89,7 +89,7 @@ public class ContentViewerActivity extends AppCompatActivity {
         @SuppressLint("StaticFieldLeak") AsyncTask<Integer, Void, ContentEntity> asyncTask = new AsyncTask<Integer, Void, ContentEntity>() {
             @Override
             protected ContentEntity doInBackground(Integer... integers) {
-                return externalContent.getRandomContentAt(integers[0],
+                return Content.getRandomContentAt(integers[0],
                         Settings.getInstance(ContentViewerActivity.this).getShowContentAlreadyRead());
             }
 

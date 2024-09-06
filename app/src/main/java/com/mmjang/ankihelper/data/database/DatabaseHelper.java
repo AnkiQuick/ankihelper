@@ -4,7 +4,7 @@ import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
-public class ExternalDatabaseHelper extends SQLiteOpenHelper {
+public class DatabaseHelper extends SQLiteOpenHelper {
 
     private static final String DB_NAME = "ankihelper.db";
     private static final int VERSION = 3;
@@ -48,8 +48,8 @@ public class ExternalDatabaseHelper extends SQLiteOpenHelper {
                 DBContract.Book.COLUMN_BOOK_PATH,
                 DBContract.Book.COLUMN_READ_POSITION);
 
-    public ExternalDatabaseHelper(Context context) {
-        super(new ExternalDatabaseContext(context), DB_NAME, null, VERSION);
+    public DatabaseHelper(Context context) {
+        super(new DatabaseContext(context), DB_NAME, null, VERSION);
         mContext = context;
     }
 

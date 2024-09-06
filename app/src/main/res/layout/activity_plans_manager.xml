@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -19,6 +19,11 @@
             <!--app:popupTheme="@style/AppTheme.PopupOverlay" />-->
 
     <!--</com.google.android.material.AppBarLayout>-->
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior">
+        </androidx.coordinatorlayout.widget.CoordinatorLayout>
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/plan_list"
@@ -29,7 +34,7 @@
 
     </androidx.recyclerview.widget.RecyclerView>
 
-    <com.google.android.material.FloatingActionButton
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/add_plan"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -37,4 +42,4 @@
         android:layout_margin="@dimen/fab_margin"
         app:srcCompat="@drawable/ic_add" />
 
-</com.google.android.material.CoordinatorLayout>
+</androidx.coordinatorlayout.widget.CoordinatorLayout>

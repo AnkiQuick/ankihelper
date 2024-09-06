@@ -6,7 +6,6 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.Environment;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
@@ -24,7 +23,7 @@ import android.widget.Toast;
 
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
-import com.mmjang.ankihelper.data.database.ExternalDatabase;
+import com.mmjang.ankihelper.data.database.DatabaseManager;
 import com.mmjang.ankihelper.data.database.MigrationUtil;
 import com.mmjang.ankihelper.data.plan.DefaultPlan;
 import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
@@ -36,15 +35,16 @@ import com.mmjang.ankihelper.ui.content.ContentActivity;
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
 import com.mmjang.ankihelper.ui.stat.StatActivity;
 import com.mmjang.ankihelper.ui.translation.CustomTranslationActivity;
-import com.mmjang.ankihelper.util.Constant;
 
-import java.io.File;
 import java.util.List;
+import java.util.ArrayList;
 
 public class LauncherActivity extends AppCompatActivity {
 
     AnkiDroidHelper mAnkiDroid;
     Settings settings;
+    DatabaseManager databaseManager;
+
     //views
     Switch switchMoniteClipboard;
     Switch switchCancelAfterAdd;
@@ -57,20 +57,20 @@ public class LauncherActivity extends AppCompatActivity {
     TextView textViewAddQQGroup;
     TextView textViewRandomQuote;
     TextView textViewCustomTranslation;
-    TextView textViewCustomDictionary; // Declare this variable
+    TextView textViewCustomDictionary;
 
     private static final int REQUEST_CODE_ANKI = 0;
-    private static final int REQUEST_CODE_STORAGE = 1;
+    private static final int REQUEST_CODE_STORAGE = 1; // No longer needed
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        settings = Settings.getInstance(LauncherActivity.this); // Use LauncherActivity.this
+        settings = Settings.getInstance(LauncherActivity.this);
         if (settings.getPinkThemeQ()) {
             setTheme(R.style.AppThemePink);
         }
-        setContentView(R.layout.activity_launcher);
+        setContentView(R.layout.activity_launcher); // Set the layout first
         setVersion();
 
         // Initialize AnkiDroidHelper in onCreate
@@ -78,7 +78,11 @@ public class LauncherActivity extends AppCompatActivity {
 
         // Call checkAndRequestPermissions after AnkiDroidHelper is initialized
         checkAndRequestPermissions(mAnkiDroid);
-        requestStoragePermission();
+
+        // Calculate the database path
+
+        // Initialize DatabaseManager after setting the layout
+        databaseManager = databaseManager.getInstance();
 
         switchMoniteClipboard = (Switch) findViewById(R.id.switch_monite_clipboard);
         switchCancelAfterAdd = (Switch) findViewById(R.id.switch_cancel_after_add);
@@ -257,49 +261,16 @@ public class LauncherActivity extends AppCompatActivity {
 //        });
 //        thread.start();
     }
-    private void requestStoragePermission() {
-        if (Build.VERSION.SDK_INT >= 23) {
-            if (ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
-                if (ActivityCompat.shouldShowRequestPermissionRationale(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
-                    // Show an explanation to the user *asynchronously* -- don't block
-                    // this thread waiting for the user's response! After the user
-                    // sees the explanation, try again to request the permission.
-                    new AlertDialog.Builder(this)
-                            .setTitle("Permission Needed")
-                            .setMessage("This app needs access to storage to function correctly.")
-                            .setPositiveButton("OK", new DialogInterface.OnClickListener() {
-                                @Override
-                                public void onClick(DialogInterface dialog, int which) {
-                                    ActivityCompat.requestPermissions(LauncherActivity.this,
-                                            new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                                            REQUEST_CODE_STORAGE);
-                                }
-                            })
-                            .setNegativeButton("Cancel", null)
-                            .show();
-
-                } else {
-                    // No explanation needed, we can request the permission.
-                    ActivityCompat.requestPermissions(this,
-                            new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE},
-                            REQUEST_CODE_STORAGE);
-                }
-            } else {
-                // Permission has already been granted
-                // Proceed with your code that requires storage access
-                ensureExternalDbDirectoryAndMigrate();
-            }
-        }
-    }
     private void checkAndRequestPermissions(AnkiDroidHelper helper) {
         if (!helper.isAnkiDroidRunning()) {
             Toast.makeText(this, R.string.api_not_available_message, Toast.LENGTH_LONG).show();
+            return;
         }
-
-        if (helper.shouldRequestPermission()) {
-            helper.requestPermission(this, REQUEST_CODE_ANKI);
-        } else {
-            initStoragePermission();
+        // Only check notification permission (for internal storage)
+        if (Build.VERSION.SDK_INT >= 23 &&
+            ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_ANKI);
+            return;
         }
     }
 
@@ -325,17 +296,22 @@ public class LauncherActivity extends AppCompatActivity {
         return true;
     }
 
+
     @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        // Call super.onRequestPermissionsResult() first
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         if (grantResults.length == 0) {
             return;
         }
 
-        if (requestCode == REQUEST_CODE_ANKI) {
+        if (requestCode == REQUEST_CODE_ANKI ) {
             if (grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                 initStoragePermission();
+                ensureExternalDbDirectoryAndMigrate();
             } else {
+                initStoragePermission();
                 //Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show();
                 new AlertDialog.Builder(LauncherActivity.this)
                         .setMessage(R.string.permission_denied)
@@ -347,34 +323,18 @@ public class LauncherActivity extends AppCompatActivity {
                         }).show();
             }
         }
-        if (requestCode == REQUEST_CODE_STORAGE) {
-            if (requestCode == REQUEST_CODE_STORAGE && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                ensureExternalDbDirectoryAndMigrate();
-                askIfAddDefaultPlan();
-            } else {
-                Toast.makeText(this, "storage permission denied, go to the settings and grant it manually!", Toast.LENGTH_SHORT).show();
-            }
-        }
-
+        // The REQUEST_CODE_STORAGE is no longer used for internal storage
+        // ...
     }
 
     private void ensureExternalDbDirectoryAndMigrate() {
-        File f = new File(Environment.getExternalStorageDirectory(), Constant.EXTERNAL_STORAGE_DIRECTORY);
-        if (!f.exists()) {
-            f.mkdirs();
-        }
-        //the content folder
-        File f2 = new File(f, Constant.EXTERNAL_STORAGE_CONTENT_SUBDIRECTORY);
-        if (!f2.exists()) {
-            f2.mkdir();
-        }
-
-        if (!settings.getOldDataMigrated() && MigrationUtil.needMigration()) {
-            Toast.makeText(this, "正在迁移旧版数据请稍等...", Toast.LENGTH_LONG).show();
-            MigrationUtil.migrate();
-            Toast.makeText(this, "旧版数据迁移完成！", Toast.LENGTH_SHORT).show();
-            settings.setOldDataMigrated(true);
-        }
+        // Check for storage permission
+        //if (Build.VERSION.SDK_INT >= 23 && ContextCompat.checkSelfPermission(this, android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
+        //    // Request permission
+        //    ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, REQUEST_CODE_STORAGE);
+        //    return; // Exit the function to wait for permission result
+        //}
+        // ... the rest of the function is no longer needed, as we are using internal storage now
     }
 
     private void startCBService() {
@@ -388,7 +348,9 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     void askIfAddDefaultPlan() {
-        List<OutputPlanPOJO> plans = ExternalDatabase.getInstance().getAllPlan();
+        List<OutputPlanPOJO> plans;
+        plans = databaseManager.getAllPlan(); // Access internal database by default
+
         for (OutputPlanPOJO plan : plans) {
             if (plan.getPlanName().equals(DefaultPlan.DEFAULT_PLAN_NAME)) {
                 new AlertDialog.Builder(LauncherActivity.this)
