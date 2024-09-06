@@ -15,7 +15,7 @@ public class Constant {
             "挖空的例句（全c1模式）",
             "笔记",
             "URL",
-            "所有释义",
+            "全部释义",
             "句子翻译"
             //"FBReader跳转链接"
     };
