@@ -78,7 +78,7 @@ public class CBWatcherService extends Service {
         intentStart.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
         intentStart.putExtra(Intent.EXTRA_TEXT, Constant.USE_CLIPBOARD_CONTENT_FLAG);
 
-        PendingIntent pendingIntent = PendingIntent.getService(
+        PendingIntent pendingIntent = PendingIntent.getActivity(
                 this,
                 0,
                 intentStart,
