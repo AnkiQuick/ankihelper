@@ -391,8 +391,13 @@ public final class AddContentApi {
         try {
             singleModelCursor.moveToFirst();
 
-            final int singleModelIndex = singleModelCursor.getColumnIndex(Model._ID);
-            modelId = singleModelCursor.getLong(singleModelCursor.getColumnIndex(Model._ID));
+            int modelIdIndex = singleModelCursor.getColumnIndex(Model._ID);
+            if (modelIdIndex != -1) {
+                modelId = singleModelCursor.getLong(modelIdIndex);
+            } else {
+                // Handle the case where the column is not found
+                modelId = -1; // Or a different default value
+            }
         } finally {
             singleModelCursor.close();
         }
@@ -415,9 +420,15 @@ public final class AddContentApi {
         String[] splitFlds = null;
         try {
             if (modelCursor.moveToNext()) {
-                String flds = modelCursor.getString(modelCursor.getColumnIndex(Model.FIELD_NAMES));
+            int fieldNamesIndex = modelCursor.getColumnIndex(Model.FIELD_NAMES);
+            if (fieldNamesIndex != -1) {
+                String flds = modelCursor.getString(fieldNamesIndex);
                 splitFlds = Utils.splitFields(flds);
+            } else {
+                // Handle the case where the column is not found
+                splitFlds = new String[0]; // Or a different default value
             }
+        }
         } finally {
             modelCursor.close();
         }
@@ -446,14 +457,20 @@ public final class AddContentApi {
         Map<Long, String> models = new HashMap<>();
         try {
             while (allModelsCursor.moveToNext()) {
-                long modelId = allModelsCursor.getLong(allModelsCursor.getColumnIndex(Model._ID));
-                String name = allModelsCursor.getString(allModelsCursor.getColumnIndex(Model.NAME));
-                String flds = allModelsCursor.getString(
-                        allModelsCursor.getColumnIndex(Model.FIELD_NAMES));
-                int numFlds = Utils.splitFields(flds).length;
-                if (numFlds >= minNumFields) {
-                    models.put(modelId, name);
-                }
+              int modelIdIndex = allModelsCursor.getColumnIndex(Model._ID);
+              int nameIndex = allModelsCursor.getColumnIndex(Model.NAME);
+              int fieldNamesIndex = allModelsCursor.getColumnIndex(Model.FIELD_NAMES);
+
+              if (modelIdIndex != -1 && nameIndex != -1 && fieldNamesIndex != -1) {
+                  long modelId = allModelsCursor.getLong(modelIdIndex);
+                  String name = allModelsCursor.getString(nameIndex);
+                  String flds = allModelsCursor.getString(fieldNamesIndex);
+                  int numFlds = Utils.splitFields(flds).length;
+
+                  if (numFlds >= minNumFields) {
+                      models.put(modelId, name);
+                  }
+              }
             }
         } finally {
             allModelsCursor.close();
@@ -507,7 +524,10 @@ public final class AddContentApi {
         String name = null;
         try {
             if (selectedDeckCursor.moveToNext()) {
-                name=selectedDeckCursor.getString(selectedDeckCursor.getColumnIndex(Deck.DECK_NAME));
+              int nameIndex = selectedDeckCursor.getColumnIndex(Deck.DECK_NAME);
+              if (nameIndex != -1) {
+                  name = selectedDeckCursor.getString(nameIndex);
+              }
             }
         } finally {
             selectedDeckCursor.close();
@@ -528,9 +548,15 @@ public final class AddContentApi {
         Map<Long, String> decks = new HashMap<>();
         try {
             while (allDecksCursor.moveToNext()) {
-                long deckId = allDecksCursor.getLong(allDecksCursor.getColumnIndex(Deck.DECK_ID));
-                String name =allDecksCursor.getString(allDecksCursor.getColumnIndex(Deck.DECK_NAME));
-                decks.put(deckId, name);
+              int deckIdIndex = allDecksCursor.getColumnIndex(Deck.DECK_ID);
+              int nameIndex = allDecksCursor.getColumnIndex(Deck.DECK_NAME);
+
+              if (deckIdIndex != -1 && nameIndex != -1) { // Check if both columns exist
+                  long deckId = allDecksCursor.getLong(deckIdIndex);
+                  String name = allDecksCursor.getString(nameIndex);
+                  decks.put(deckId, name);
+              }
+
             }
         } finally {
             allDecksCursor.close();
