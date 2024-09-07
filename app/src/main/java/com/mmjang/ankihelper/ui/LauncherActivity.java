@@ -282,15 +282,11 @@ public class LauncherActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-//                case R.id.menu_item_book_shelf:
-//                    Intent intent = new Intent(this, BookshelfActivity.class);
-//                    startActivity(intent);
-//                    break;
-            case R.id.menu_item_stat:
-                Intent intent2 = new Intent(this, StatActivity.class);
-                startActivity(intent2);
-        }
+
+      if (item.getItemId() == R.id.menu_item_stat) {
+          Intent intent2 = new Intent(this, StatActivity.class);
+          startActivity(intent2);
+      }
         return true;
     }
 

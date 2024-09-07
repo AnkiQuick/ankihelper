@@ -89,15 +89,13 @@ public class PlanEditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_item_save_plan_edit:
-                if (savePlan()) {
-                    finish();
-                }
-                break;
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
+        if (item.getItemId() == R.id.menu_item_save_plan_edit) {
+            if (savePlan()) {
+                finish();
+            }
+
+        }else if (item.getItemId() ==android.R.id.home){
+            NavUtils.navigateUpFromSameTask(this);
         }
         return true;
     }
@@ -157,7 +155,7 @@ public class PlanEditorActivity extends AppCompatActivity {
             dictionaryNameList[i] = dictionaryList.get(i).getDictionaryName();
         }
         ArrayAdapter<String> dictionarySpinnerAdapter = new ArrayAdapter<>(
-                this, R.layout.support_simple_spinner_dropdown_item, dictionaryNameList);
+                this, android.R.layout.simple_spinner_dropdown_item, dictionaryNameList);
         dictionarySpinner.setAdapter(dictionarySpinnerAdapter);
 
         if (planForEdit != null) {
@@ -206,10 +204,10 @@ public class PlanEditorActivity extends AppCompatActivity {
 
     private void populateDecksAndModels() {
         ArrayAdapter<String> deckSpinnerAdapter = new ArrayAdapter<>(
-                this, R.layout.support_simple_spinner_dropdown_item, Utils.getMapValueArray(deckList));
+                this, android.R.layout.simple_spinner_dropdown_item, Utils.getMapValueArray(deckList));
         deckSpinner.setAdapter(deckSpinnerAdapter);
         ArrayAdapter<String> modelSpinnerAdapter = new ArrayAdapter<>(
-                this, R.layout.support_simple_spinner_dropdown_item, Utils.getMapValueArray(modelList));
+                this, android.R.layout.simple_spinner_dropdown_item, Utils.getMapValueArray(modelList));
         modelSpinner.setAdapter(modelSpinnerAdapter);
 
         if (planForEdit != null) {

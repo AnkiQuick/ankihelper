@@ -111,17 +111,15 @@ public class PlansManagerActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_item_export_plan:
-                exportPlans();
-                break;
-            case R.id.menu_item_import_plan:
-                importPlans();
-                break;
-            case android.R.id.home:
-                NavUtils.navigateUpFromSameTask(this);
-                return true;
-        }
+
+      if (item.getItemId() ==R.id.menu_item_export_plan) {
+        exportPlans();
+      }else if (item.getItemId() == R.id.menu_item_import_plan) {
+        importPlans();
+      } else if (item.getItemId() ==android.R.id.home) {
+        NavUtils.navigateUpFromSameTask(this);
+      }
+
         return true;
     }
 

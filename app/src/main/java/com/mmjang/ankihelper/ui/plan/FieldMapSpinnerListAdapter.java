@@ -57,7 +57,7 @@ public class FieldMapSpinnerListAdapter
         holder.exportElementName.setText(item.getField());
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(
                 mActivity,
-                R.layout.support_simple_spinner_dropdown_item,
+                android.R.layout.simple_spinner_dropdown_item,
                 item.getExportedElementNames()
         );
         holder.fieldsSpinner.setAdapter(arrayAdapter);

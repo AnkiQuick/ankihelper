@@ -85,18 +85,14 @@ public class StatActivity extends AppCompatActivity {
                 new ChipGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(ChipGroup chipGroup, int i) {
-                        switch (i){
-                            case R.id.chip_1:
-                                mLastDays = dayMap[0];
-                                break;
-                            case R.id.chip_7:
-                                mLastDays = dayMap[1];
-                                break;
-                            case R.id.chip_30:
-                                mLastDays = dayMap[2];
-                                break;
-                            case R.id.chip_365:
-                                mLastDays = dayMap[3];
+                        if (i == R.id.chip_1) {
+                            mLastDays = dayMap[0];
+                        }else if (i == R.id.chip_7){
+                            mLastDays = dayMap[1];
+                        }else if (i == R.id.chip_30){
+                            mLastDays = dayMap[2];
+                        }else if (i == R.id.chip_365){
+                            mLastDays = dayMap[3];
                         }
                         mHistoryStat = new HistoryStat(mLastDays);
                         mLastDaysChart.clear();
