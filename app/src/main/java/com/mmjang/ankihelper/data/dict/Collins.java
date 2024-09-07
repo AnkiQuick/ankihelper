@@ -9,9 +9,16 @@ import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
+import com.mmjang.ankihelper.MyApplication;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +28,7 @@ import java.util.Map;
  * Created by liao on 2017/3/15.
  */
 
-public class Collins extends SQLiteAssetHelper implements IDictionary {
+public class Collins implements IDictionary {
     //private static final String DATABASE_NAME = ".db";
     private static final String DATABASE_NAME = "collins_v2.db";
     private static final int DATABASE_VERSION = 1;
@@ -42,9 +49,11 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
     private Context mContext;
 
     public Collins(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        db = getReadableDatabase();
         mContext = context;
+        // Initialize the database helper
+        CollinsDatabaseHelper dbHelper = new CollinsDatabaseHelper(context);
+        // Get a writable database
+        db = dbHelper.getReadableDatabase();
     }
 
     private static final String[] EXP_ELE_LIST = new String[]{
@@ -216,7 +225,7 @@ public class Collins extends SQLiteAssetHelper implements IDictionary {
     }
 
     private String[] getForms(String q) {
-        //SQLiteDatabase db = getReadableDatabase();
+        //SQLiteDatabase db = getReadableDatabase();  // Don't need this anymore
         Cursor cursor = db.query("forms", new String[]{"bases"}, "hwd=? ", new String[]{q.toLowerCase()}, null, null, null);
         String bases = "";
         while (cursor.moveToNext()) {

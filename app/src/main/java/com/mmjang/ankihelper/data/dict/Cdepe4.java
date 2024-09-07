@@ -9,21 +9,32 @@ import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
+import com.mmjang.ankihelper.MyApplication;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.net.URLDecoder;
-import java.io.UnsupportedEncodingException;
-import java.nio.charset.StandardCharsets;
+
 /**
  * Created by liao on 2017/3/15.
  */
 
-public class Cdepe4 extends SQLiteAssetHelper implements IDictionary {
+public class Cdepe4 implements IDictionary {
     //private static final String DATABASE_NAME = ".db";
     private static final String DATABASE_NAME = "cdepe4.db";
     private static final int DATABASE_VERSION = 1;
@@ -42,9 +53,11 @@ public class Cdepe4 extends SQLiteAssetHelper implements IDictionary {
     private Context mContext;
 
     public Cdepe4(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        db = getReadableDatabase();
         mContext = context;
+        // Initialize the database helper
+        Cdepe4DatabaseHelper dbHelper = new Cdepe4DatabaseHelper(context);
+        // Get a writable database
+        db = dbHelper.getReadableDatabase();
     }
 
     private static final String[] EXP_ELE_LIST = new String[]{

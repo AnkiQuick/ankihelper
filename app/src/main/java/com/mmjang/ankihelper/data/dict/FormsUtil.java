@@ -1,26 +1,19 @@
 package com.mmjang.ankihelper.data.dict;
 
 import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 
-import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
+import com.mmjang.ankihelper.data.dict.FormsDatabase; // Import FormsDatabase
+import com.mmjang.ankihelper.data.dict.Form; // Import Form
+import com.mmjang.ankihelper.data.dict.FormsDao; // Import FormsDao
 
-/**
- * Created by liao on 2017/8/13.
- */
+public class FormsUtil {
 
-public class FormsUtil extends SQLiteAssetHelper{
-    private static final String DATABASE_NAME = "forms.db";
-    private static final int DATABASE_VERSIOn = 1;
     private static FormsUtil instance = null;
-    Context mContext;
-    SQLiteDatabase db;
+    private FormsDatabase db; // Holds the Room database instance
 
     protected FormsUtil(Context context){
-        super(context, DATABASE_NAME, null, DATABASE_VERSIOn);
-        mContext = context;
-        db = getReadableDatabase();
+        // Initialize Room database
+        db = FormsDatabase.getInstance(context);
     }
 
     public static FormsUtil getInstance(Context context){
@@ -30,15 +23,11 @@ public class FormsUtil extends SQLiteAssetHelper{
         return instance;
     }
 
-
     public String[] getForms(String q) {
-        //SQLiteDatabase db = getReadableDatabase();
-        Cursor cursor = db.query("forms", new String[]{"bases"}, "hwd=? ", new String[]{q.toLowerCase()}, null, null, null);
-        String bases = "";
-        while (cursor.moveToNext()) {
-            bases = cursor.getString(0);
-        }
-        if(bases.isEmpty()){
+        // Get forms from Room database
+        String bases = db.formsDao().getForms(q.toLowerCase());
+
+        if(bases == null || bases.isEmpty()){
             return new String[0];
         }
         return bases.split("@@@");

@@ -9,9 +9,22 @@ import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
+import com.mmjang.ankihelper.MyApplication;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +34,7 @@ import java.util.Map;
  * Created by liao on 2017/3/15.
  */
 
-public class CollinsEnEn extends SQLiteAssetHelper implements IDictionary {
+public class CollinsEnEn implements IDictionary {
     //private static final String DATABASE_NAME = ".db";
     private static final String DATABASE_NAME = "collins_v2.db";
     private static final int DATABASE_VERSION = 1;
@@ -42,9 +55,11 @@ public class CollinsEnEn extends SQLiteAssetHelper implements IDictionary {
     private Context mContext;
 
     public CollinsEnEn(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        db = getReadableDatabase();
         mContext = context;
+        // Initialize the database helper
+        CollinsEnEnDatabaseHelper dbHelper = new CollinsEnEnDatabaseHelper(context);
+        // Get a writable database
+        db = dbHelper.getReadableDatabase();
     }
 
     private static final String[] EXP_ELE_LIST = new String[]{
@@ -90,7 +105,7 @@ public class CollinsEnEn extends SQLiteAssetHelper implements IDictionary {
                 re.add(toDefinition(YoudaoOnline.getDefinition(key)));
             }
             catch (IOException e){
-                Toast.makeText(mContext, "本地词典未查到，有道词典在线查询失败，请检查网络连接", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "本地词典未查到，有道词典在线查询失败，请检查网络连接", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -213,7 +228,7 @@ public class CollinsEnEn extends SQLiteAssetHelper implements IDictionary {
     }
 
     private String[] getForms(String q) {
-        //SQLiteDatabase db = getReadableDatabase();
+        //SQLiteDatabase db = getReadableDatabase();  // Don't need this anymore
         Cursor cursor = db.query("forms", new String[]{"bases"}, "hwd=? ", new String[]{q.toLowerCase()}, null, null, null);
         String bases = "";
         while (cursor.moveToNext()) {

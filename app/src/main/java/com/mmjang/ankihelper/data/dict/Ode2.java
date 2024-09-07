@@ -9,9 +9,22 @@ import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
-import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
+import com.mmjang.ankihelper.MyApplication;
 
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.parser.Parser;
+import org.jsoup.select.Elements;
+
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -21,7 +34,7 @@ import java.util.Map;
  * Created by liao on 2017/3/15.
  */
 
-public class Ode2 extends SQLiteAssetHelper implements IDictionary {
+public class Ode2 implements IDictionary {
     //private static final String DATABASE_NAME = "collins_v2.db";
     private static final String DATABASE_NAME = "ode2_v2.db";
     private static final int DATABASE_VERSION = 1;
@@ -42,9 +55,11 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary {
     private Context mContext;
 
     public Ode2(Context context) {
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        db = getReadableDatabase();
         mContext = context;
+        // Initialize the database helper
+        Ode2DatabaseHelper dbHelper = new Ode2DatabaseHelper(context);
+        // Get a writable database
+        db = dbHelper.getReadableDatabase();
     }
 
     private static final String[] EXP_ELE_LIST = new String[]{
@@ -90,7 +105,7 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary {
                 re.add(toDefinition(YoudaoOnline.getDefinition(key)));
             }
             catch (IOException e){
-                Toast.makeText(mContext, "本地词典未查到，有道词典在线查询失败，请检查网络连接", Toast.LENGTH_SHORT).show();
+                //Toast.makeText(mContext, "本地词典未查到，有道词典在线查询失败，请检查网络连接", Toast.LENGTH_SHORT).show();
             }
         }
         // db.close();
@@ -179,8 +194,8 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary {
             if (defEn.startsWith("■") || defEn.startsWith("●")) {
                 // don't add sense
             } else {
-                sb.append("<b>" + hwd + "</b>");
-                sb.append(" ");
+                //sb.append("<b>" + hwd + "</b>");
+                //sb.append(" ");
                 sb.append("<i>" + colorizeSense(sense) + "</i>");
                 sb.append("<br/>");
                 //sb.append(" ");
@@ -207,8 +222,15 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary {
         return new Definition(eleMap, displayHtml);
     }
 
+    private String getCombined(Map<String, String> eleMap) {
+        return "<div class='div_ode'><div class='ode_hwd'>" + eleMap.get(EXP_ELE_LIST[0]) + "</div> " +
+                "<div class='ode_ipa'>" +  eleMap.get(EXP_ELE_LIST[1]) + eleMap.get(EXP_ELE_LIST[3])  + "</div>"
+                + "<div class='ode_def'>"  + eleMap.get(EXP_ELE_LIST[2]).replace("<br/>"," ")
+                +"</div></div>";
+    }
+
     private String[] getForms(String q) {
-        //SQLiteDatabase db = getReadableDatabase();
+        //SQLiteDatabase db = getReadableDatabase();  // Don't need this anymore
         Cursor cursor = db.query("forms", new String[]{"bases"}, "hwd=? ", new String[]{q.toLowerCase()}, null, null, null);
         String bases = "";
         while (cursor.moveToNext()) {
@@ -270,14 +292,6 @@ public class Ode2 extends SQLiteAssetHelper implements IDictionary {
 
     String getYoudaoAudioTag(String word, int voiceType){
         return "[sound:https://dict.youdao.com/dictvoice?audio=" + word + "&type=" + voiceType +"]";
-    }
-
-    private String getCombined(Map<String, String> eleMap) {
-        return "<div class='div_ode'><div class='ode_hwd'>" + eleMap.get(EXP_ELE_LIST[0]) + "</div> " +
-                "<div class='ode_ipa'>" +  eleMap.get(EXP_ELE_LIST[1]) + eleMap.get(EXP_ELE_LIST[3])  + "</div>"
-                + "<div class='ode_def'>"  + eleMap.get(EXP_ELE_LIST[2]).replace("<br/>"," ")
-                +"</div></div>";
-
     }
 
 }

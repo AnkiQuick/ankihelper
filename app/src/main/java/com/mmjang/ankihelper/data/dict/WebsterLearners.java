@@ -10,7 +10,6 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.mmjang.ankihelper.MyApplication;
-import com.readystatesoftware.sqliteasset.SQLiteAssetHelper;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -18,7 +17,14 @@ import org.jsoup.nodes.Element;
 import org.jsoup.parser.Parser;
 import org.jsoup.select.Elements;
 
+import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -30,7 +36,7 @@ import okhttp3.Request;
  * Created by liao on 2017/4/28.
  */
 
-public class WebsterLearners extends SQLiteAssetHelper implements IDictionary {
+public class WebsterLearners implements IDictionary {
 
     private static final String AUDIO_TAG = "MP3";
     private static final String DICT_NAME = "韦氏学习词典";
@@ -45,9 +51,11 @@ public class WebsterLearners extends SQLiteAssetHelper implements IDictionary {
     private SQLiteDatabase db;
     private Context mContext;
     public WebsterLearners(Context context){
-        super(context, DATABASE_NAME, null, DATABASE_VERSION);
-        db = getReadableDatabase();
         mContext = context;
+        // Initialize the database helper
+        WebsterLearnersDatabaseHelper dbHelper = new WebsterLearnersDatabaseHelper(context);
+        // Get a writable database
+        db = dbHelper.getReadableDatabase();
     }
 
     public String getDictionaryName() {
@@ -86,7 +94,7 @@ public class WebsterLearners extends SQLiteAssetHelper implements IDictionary {
         return result;
     }
 
-        public List<Definition> queryDefinition(String key) {
+    public List<Definition> queryDefinition(String key) {
         try {
             if(key.isEmpty()){
                 return new ArrayList<Definition>();
@@ -145,7 +153,7 @@ public class WebsterLearners extends SQLiteAssetHelper implements IDictionary {
                         defMap.put(EXP_ELE[2], getMp3Tag(mp3Url));
                         defMap.put(EXP_ELE[3],
                                 String.format("%s<br/>%s",
-                                phrase_gram, def_text
+                                        phrase_gram, def_text
                                 ));
                         String displayedHtml =
                                 String.format("<span><font color=blue><b>%s</b></font> %s</span><span>%s</span>",
@@ -329,4 +337,3 @@ public class WebsterLearners extends SQLiteAssetHelper implements IDictionary {
         return "[sound:https://dict.youdao.com/dictvoice?audio=" + word + "&type=" + voiceType +"]";
     }
 }
-
