@@ -7,6 +7,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ClipboardManager;
+import android.content.ClipDescription;
 import android.content.ClipboardManager.OnPrimaryClipChangedListener;
 import android.content.Intent;
 import android.os.Build;
@@ -117,7 +118,7 @@ public class CBWatcherService extends Service {
         ClipboardManager cb = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
         if (cb.hasPrimaryClip()) {
             if (cb.hasText()) {
-                String text = cb.getText().toString();
+                String text = cb.getPrimaryClip().getItemAt(0).getText().toString();
                 if (/*isEnglish(text)*/true) {
                     long[] vibList = new long[1];
                     vibList[0] = 10L;
