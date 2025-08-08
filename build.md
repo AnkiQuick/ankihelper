@@ -16,3 +16,10 @@
     root@9ebf114d21a8:~# /opt/android-sdk/build-tools/34.0.0/apksigner sign --ks ankihelper-jennings.keystore  --out ankihelper-3.1.0-release-signed.apk app/build/outputs/apk/release/ankihelper-3.1.0-release-unsigned.apk
     ```
 docker run -v `pwd`:/project -it mingc/android-build-box bash -l
+
+
+## debug
+
+- use adb logcat to get the crash log
+  ```shell
+  adb logcat | grep "PopupActivity"
