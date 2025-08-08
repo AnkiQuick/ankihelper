@@ -56,3 +56,10 @@ pom.xml.*
 
 # Readium DRM LCP
 liblcp.aar
+
+*.idsig
+.zed
+.history
+.bash_history
+.bashrc
+.kotlin
