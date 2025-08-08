@@ -75,7 +75,7 @@ public class LauncherActivity extends AppCompatActivity {
         mAnkiDroid = MyApplication.getAnkiDroid(this);
 
         // Call checkAndRequestPermissions after AnkiDroidHelper is initialized
-        checkAndRequestPermissions(mAnkiDroid);
+        checkAndRequestPermissions();
 
         // Calculate the database path
 
@@ -259,11 +259,13 @@ public class LauncherActivity extends AppCompatActivity {
 //        });
 //        thread.start();
     }
-    private void checkAndRequestPermissions(AnkiDroidHelper helper) {
-        if (!helper.isAnkiDroidRunning()) {
-            Toast.makeText(this, R.string.api_not_available_message, Toast.LENGTH_LONG).show();
-            return;
-        }
+    private void checkAndRequestPermissions() {
+      if (mAnkiDroid == null) {
+          mAnkiDroid = new AnkiDroidHelper(this);
+      }
+      if (mAnkiDroid.shouldRequestPermission()) {
+          mAnkiDroid.requestPermission(this, REQUEST_CODE_ANKI);
+      }
         // Only check notification permission (for internal storage)
         if (Build.VERSION.SDK_INT >= 23 &&
             ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
