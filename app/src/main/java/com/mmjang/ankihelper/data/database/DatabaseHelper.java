@@ -3,6 +3,7 @@ package com.mmjang.ankihelper.data.database;
 import android.content.Context;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
 public class DatabaseHelper extends SQLiteOpenHelper {
 
@@ -48,6 +49,9 @@ public class DatabaseHelper extends SQLiteOpenHelper {
                 DBContract.Book.COLUMN_BOOK_PATH,
                 DBContract.Book.COLUMN_READ_POSITION);
 
+    private static final String SQL_CHECK_DICT_EXIST = "SELECT name FROM sqlite_master WHERE type='table' AND name='dict'";
+    private static final String SQL_CHECK_ENTRY_EXIST = "SELECT name FROM sqlite_master WHERE type='table' AND name='entry'";
+
     public DatabaseHelper(Context context) {
         super(new DatabaseContext(context), DB_NAME, null, VERSION);
         mContext = context;
@@ -55,11 +59,18 @@ public class DatabaseHelper extends SQLiteOpenHelper {
 
     @Override
     public void onCreate(SQLiteDatabase db) {
-        db.execSQL(SQL_CREATE_HISTORY);
-        db.execSQL(SQL_CREATE_PLAN);
-        db.execSQL(SQL_CREATE_DICT_TABLE);
-        db.execSQL(SQL_CREATE_ENTRY_TABLE);
-        db.execSQL(SQL_CREATE_BOOK_TABLE);
+        try {
+            db.execSQL(SQL_CREATE_HISTORY);
+            db.execSQL(SQL_CREATE_PLAN);
+            db.execSQL(SQL_CREATE_DICT_TABLE);
+            db.execSQL(SQL_CREATE_ENTRY_TABLE);
+            db.execSQL(SQL_CREATE_INDEX);
+            db.execSQL(SQL_CREATE_BOOK_TABLE);
+            android.util.Log.d("DatabaseHelper", "All tables created successfully");
+        } catch (Exception e) {
+            android.util.Log.e("DatabaseHelper", "Error creating tables: " + e.getMessage());
+            throw e;
+        }
     }
 
     @Override

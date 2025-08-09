@@ -35,6 +35,7 @@ import java.util.Map;
  */
 
 public class Ode2 implements IDictionary {
+    private static final String TAG = "Ode2";
     //private static final String DATABASE_NAME = "collins_v2.db";
     private static final String DATABASE_NAME = "ode2_v2.db";
     private static final int DATABASE_VERSION = 1;
@@ -58,7 +59,6 @@ public class Ode2 implements IDictionary {
         mContext = context;
         // Initialize the database helper
         Ode2DatabaseHelper dbHelper = new Ode2DatabaseHelper(context);
-        // Get a writable database
         db = dbHelper.getReadableDatabase();
     }
 

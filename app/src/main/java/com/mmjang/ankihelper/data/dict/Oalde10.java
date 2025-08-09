@@ -56,7 +56,6 @@ public class Oalde10 implements IDictionary {
         mContext = context;
         // Initialize the database helper
         Oalde10DatabaseHelper dbHelper = new Oalde10DatabaseHelper(context);
-        // Get a writable database
         db = dbHelper.getReadableDatabase();
     }
 

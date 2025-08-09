@@ -1,5 +1,7 @@
 package com.mmjang.ankihelper.data.database;
 
+import android.util.Log;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -31,6 +33,8 @@ public class DatabaseManager {
     private static final String SPLITTER = "\t"; //original file is splitted by \t, so it's safe.
     private static final String SQL_CREATE_INDEX = "CREATE INDEX IF NOT EXISTS headword_index ON entry (headword)";
     private static final String SQL_DROP_INDEX = "DROP INDEX IF EXISTS headword_index";
+    private static final String SQL_CHECK_DICT_TABLE = "SELECT name FROM sqlite_master WHERE type='table' AND name='dict'";
+    private static final String SQL_CHECK_ENTRY_TABLE = "SELECT name FROM sqlite_master WHERE type='table' AND name='entry'";
     private static Context mContext;
     SQLiteDatabase mDatabase;
     private static DatabaseManager instance;
@@ -54,6 +58,46 @@ public class DatabaseManager {
 
     public static String getHeadwordColumnName(){
         return CL_HEADWORD;
+    }
+
+    public boolean checkDictTableExists() {
+        try {
+            Cursor cursor = mDatabase.rawQuery(SQL_CHECK_DICT_TABLE, null);
+            boolean exists = cursor.getCount() > 0;
+            cursor.close();
+            return exists;
+        } catch (Exception e) {
+            android.util.Log.e("DatabaseManager", "Error checking dict table: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public boolean checkEntryTableExists() {
+        try {
+            Cursor cursor = mDatabase.rawQuery(SQL_CHECK_ENTRY_TABLE, null);
+            boolean exists = cursor.getCount() > 0;
+            cursor.close();
+            return exists;
+        } catch (Exception e) {
+            android.util.Log.e("DatabaseManager", "Error checking entry table: " + e.getMessage());
+            return false;
+        }
+    }
+
+    public void initializeDictTable() {
+        if (!checkDictTableExists()) {
+            mDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TB_DICT +
+                    "(id integer, name text, lang text, elements text, description text, tmpl text)");
+            mDatabase.execSQL("CREATE INDEX IF NOT EXISTS headword_index ON entry (headword)");
+        }
+    }
+
+    public void initializeEntryTable() {
+        if (!checkEntryTableExists()) {
+            mDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TB_ENTRY +
+                    "(dict_id integer, headword text, entry_texts text)");
+            mDatabase.execSQL("CREATE INDEX IF NOT EXISTS headword_index ON entry (headword)");
+        }
     }
 
     public void addDictionaryInformation(int id, String name, String lang, String[] elements, String description, String tmpl){

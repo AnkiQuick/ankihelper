@@ -50,7 +50,6 @@ public class Maldpe implements IDictionary {
         mContext = context;
         // Initialize the database helper
         MaldpeDatabaseHelper dbHelper = new MaldpeDatabaseHelper(context);
-        // Get a writable database
         db = dbHelper.getReadableDatabase();
     }
 

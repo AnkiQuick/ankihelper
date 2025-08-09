@@ -52,7 +52,6 @@ public class Collins implements IDictionary {
         mContext = context;
         // Initialize the database helper
         CollinsDatabaseHelper dbHelper = new CollinsDatabaseHelper(context);
-        // Get a writable database
         db = dbHelper.getReadableDatabase();
     }
 

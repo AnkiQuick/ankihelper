@@ -4,12 +4,16 @@ import android.content.Context;
 import android.content.ContextWrapper;
 import android.database.DatabaseErrorHandler;
 import android.database.sqlite.SQLiteDatabase;
+import android.database.sqlite.SQLiteDatabase.CursorFactory;
 import android.os.Environment;
 import android.util.Log;
 
 import com.mmjang.ankihelper.util.Constant;
 
 import java.io.File;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
 
 public class DatabaseContext extends ContextWrapper {
 
@@ -26,7 +30,7 @@ public class DatabaseContext extends ContextWrapper {
             Log.e("DatabaseContext", "filesDir is null!");
             return null;
         }
-        File storageDir = new File(filesDir, Constant.STORAGE_DIRECTORY);
+        File storageDir = new File(filesDir, Constant.STORAGE_DIRECTORY + "/databases");
         String dbfile = new File(storageDir, name).getPath(); // Correct way to create File object
 
         if (!dbfile.endsWith(".db")) {

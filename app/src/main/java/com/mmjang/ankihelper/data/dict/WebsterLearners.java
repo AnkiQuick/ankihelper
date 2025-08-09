@@ -50,11 +50,10 @@ public class WebsterLearners implements IDictionary {
     private static final int DATABASE_VERSION = 1;
     private SQLiteDatabase db;
     private Context mContext;
-    public WebsterLearners(Context context){
+    public WebsterLearners(Context context) {
         mContext = context;
         // Initialize the database helper
         WebsterLearnersDatabaseHelper dbHelper = new WebsterLearnersDatabaseHelper(context);
-        // Get a writable database
         db = dbHelper.getReadableDatabase();
     }
 

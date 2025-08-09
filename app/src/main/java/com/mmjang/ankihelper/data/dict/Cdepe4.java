@@ -56,7 +56,6 @@ public class Cdepe4 implements IDictionary {
         mContext = context;
         // Initialize the database helper
         Cdepe4DatabaseHelper dbHelper = new Cdepe4DatabaseHelper(context);
-        // Get a writable database
         db = dbHelper.getReadableDatabase();
     }
 

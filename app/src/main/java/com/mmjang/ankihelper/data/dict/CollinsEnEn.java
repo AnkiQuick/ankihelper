@@ -7,37 +7,14 @@ import android.util.Log;
 import android.widget.FilterQueryProvider;
 import android.widget.ListAdapter;
 import android.widget.SimpleCursorAdapter;
-import android.widget.Toast;
 
-import com.mmjang.ankihelper.MyApplication;
-
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.parser.Parser;
-import org.jsoup.select.Elements;
-
-import java.io.File;
-import java.io.FileOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLDecoder;
-import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-/**
- * Created by liao on 2017/3/15.
- */
-
 public class CollinsEnEn implements IDictionary {
-    //private static final String DATABASE_NAME = ".db";
     private static final String DATABASE_NAME = "collins_v2.db";
-    private static final int DATABASE_VERSION = 1;
     private static final String TABLE_DICT = "dict";
     private static final String FIELD_HWD = "hwd";
     private static final String FIELD_DISPLAYED_HWD = "display_hwd";
@@ -48,19 +25,8 @@ public class CollinsEnEn implements IDictionary {
     private static final String FIELD_DEF_EN = "def_en";
     private static final String FIELD_DEF_CN = "def_cn";
 
-    private static final String DICT_NAME = "柯林斯英英";
-
-    private SQLiteDatabase db;
-
-    private Context mContext;
-
-    public CollinsEnEn(Context context) {
-        mContext = context;
-        // Initialize the database helper
-        CollinsEnEnDatabaseHelper dbHelper = new CollinsEnEnDatabaseHelper(context);
-        // Get a writable database
-        db = dbHelper.getReadableDatabase();
-    }
+    private final Context mContext;
+    private final SQLiteDatabase db;
 
     private static final String[] EXP_ELE_LIST = new String[]{
             "单词",
@@ -71,12 +37,21 @@ public class CollinsEnEn implements IDictionary {
             "复合项"
     };
 
+    private static final String DICT_NAME = "柯林斯英英";
+    private static final String DICT_INTRO = "数据来自柯林斯COBUILD高级词典，释义权威地道";
+
+    public CollinsEnEn(Context context) {
+        mContext = context;
+        CollinsEnEnDatabaseHelper dbHelper = new CollinsEnEnDatabaseHelper(context);
+        db = dbHelper.getReadableDatabase();
+    }
+
     public String getDictionaryName() {
         return DICT_NAME;
     }
 
     public String getIntroduction() {
-        return "柯林斯词典，释义简单，适合初学者。“复合项”指单词、音标、释义、发音的组合";
+        return DICT_INTRO;
     }
 
     public String[] getExportElementsList() {
@@ -84,90 +59,65 @@ public class CollinsEnEn implements IDictionary {
     }
 
     public List<Definition> wordLookup(String key) {
-        //db = getReadableDatabase(); // according to stackoverflow, it's alright to let the database open
         key = keyCleanup(key);
-        List<Definition> re = queryDefinition(key);
-        Log.d("", "单词需要查找变形表");
-        String[] deflectResult = getForms(key);
-        for (String s : deflectResult) {
-            Log.d("", "已变形单词" + s);
-        }
-        if (deflectResult.length == 0) {
-            //
-        } else {
-            for (String deflectedWord : deflectResult) {
-                re.addAll(queryDefinition(deflectedWord));
-            }
+        List<Definition> definitions = new ArrayList<>();
+
+        if (key.isEmpty()) {
+            return definitions;
         }
 
-        if(re.isEmpty()){
-            try{
-                re.add(toDefinition(YoudaoOnline.getDefinition(key)));
+        Cursor cursor = db.query(
+                TABLE_DICT,
+                new String[]{FIELD_HWD, FIELD_DISPLAYED_HWD, FIELD_PHRASE,
+                           FIELD_PHONETICS, FIELD_SENSE, FIELD_EXT, FIELD_DEF_EN, FIELD_DEF_CN},
+                FIELD_HWD + "=? COLLATE NOCASE",
+                new String[]{key},
+                null,
+                null,
+                null
+        );
+
+        try {
+            while (cursor.moveToNext()) {
+                Definition definition = getDefFromCursor(cursor);
+                definitions.add(definition);
             }
-            catch (IOException e){
-                //Toast.makeText(mContext, "本地词典未查到，有道词典在线查询失败，请检查网络连接", Toast.LENGTH_SHORT).show();
-            }
+        } finally {
+            cursor.close();
         }
 
-        // db.close();
-        return re;
+        return definitions;
     }
 
-    /**
-     * @param context this
-     * @param layout  support_simple_spinner_dropdown_item
-     * @return
-     */
     public ListAdapter getAutoCompleteAdapter(Context context, int layout) {
-        SimpleCursorAdapter adapter =
-                new SimpleCursorAdapter(context, layout,
-                        null,
-                        new String[]{FIELD_HWD},
-                        new int[]{android.R.id.text1},
-                        0
-                );
-        adapter.setFilterQueryProvider(
-                new FilterQueryProvider() {
-                    @Override
-                    public Cursor runQuery(CharSequence constraint) {
-                        return getFilterCursor(constraint.toString());
-                    }
-                }
+        SimpleCursorAdapter adapter = new SimpleCursorAdapter(
+            context,
+            layout,
+            null,
+            new String[]{FIELD_HWD},
+            new int[]{android.R.id.text1},
+            0
         );
-        adapter.setCursorToStringConverter(
-                new SimpleCursorAdapter.CursorToStringConverter() {
-                    @Override
-                    public CharSequence convertToString(Cursor cursor) {
-                        return cursor.getString(1);
-                    }
-                }
-        );
+
+        adapter.setFilterQueryProvider(new FilterQueryProvider() {
+            public Cursor runQuery(CharSequence constraint) {
+                return getFilterCursor(constraint.toString());
+            }
+        });
+
+        adapter.setCursorToStringConverter(new SimpleCursorAdapter.CursorToStringConverter() {
+            public CharSequence convertToString(Cursor cursor) {
+                return cursor.getString(cursor.getColumnIndexOrThrow("hwd"));
+            }
+        });
 
         return adapter;
     }
 
-    /**
-     * @param q word to lookup
-     * @return a array of definitions, retrun ArrayList<>() if none was found
-     */
-    private ArrayList<Definition> queryDefinition(String q) {
-        //SQLiteDatabase db = getReadableDatabase();
-        ArrayList<Definition> re = new ArrayList<>();
-        Cursor cursor = db.query(TABLE_DICT,
-                new String[]{FIELD_HWD, FIELD_DISPLAYED_HWD, FIELD_PHRASE,
-                        FIELD_PHONETICS, FIELD_SENSE, FIELD_EXT, FIELD_DEF_EN, FIELD_DEF_CN},
-                FIELD_HWD + "=? COLLATE NOCASE", new String[]{q}, null, null, null);
-        while (cursor.moveToNext()) {
-            Definition def = getDefFromCursor(cursor);
-            re.add(def);
-        }
-        return re;
-    }
-
     private Definition getDefFromCursor(Cursor cursor) {
-        HashMap<String, String> eleMap = new HashMap<>();
+        Map<String, String> elementMap = new HashMap<>();
+
         String hwd = cursor.getString(0);
-        // df.setDisplayedHeadWord(cursor.getString(1).trim());
         String phrase = cursor.getString(2).trim();
         String phonetics = cursor.getString(3).trim();
         String sense = cursor.getString(4).trim();
@@ -175,119 +125,61 @@ public class CollinsEnEn implements IDictionary {
         String defEn = cursor.getString(6).trim();
         String defCn = cursor.getString(7).trim();
 
-        //如果不是词组
-        if (phrase.equals("")) {
-            eleMap.put(EXP_ELE_LIST[0], hwd);
+        elementMap.put(EXP_ELE_LIST[0], phrase.isEmpty() ? hwd : phrase);
+        elementMap.put(EXP_ELE_LIST[1], phonetics);
+        elementMap.put(EXP_ELE_LIST[2], "<i>" + sense + "</i><br/>" + ext + "<br/>" + defEn);
+        elementMap.put(EXP_ELE_LIST[3], getYoudaoAudioTag(hwd, 2));
+        elementMap.put(EXP_ELE_LIST[4], getYoudaoAudioTag(hwd, 1));
+
+        String combined = getCombinedElement(elementMap);
+        elementMap.put(EXP_ELE_LIST[5], combined);
+
+        String displayHtml = buildDisplayHtml(phrase, hwd, defEn, defCn);
+
+        return new Definition(elementMap, displayHtml);
+    }
+
+    private Cursor getFilterCursor(String query) {
+        try {
+            return db.query(
+                "hwds",
+                new String[]{"rowid as _id", "hwd"},
+                "hwd LIKE ?",
+                new String[]{query + "%"},
+                null,
+                null,
+                null
+            );
+        } catch (Exception e) {
+            Log.e("CollinsEnEn", "Filter query error: " + e.getMessage());
+            return null;
+        }
+    }
+
+    private String getCombinedElement(Map<String, String> elements) {
+        return "<div class='div_collins'>" +
+               "<div class='collins_hwd'>" + elements.get(EXP_ELE_LIST[0]) + "</div> " +
+               "<div class='collins_ipa'>" + elements.get(EXP_ELE_LIST[1]) + elements.get(EXP_ELE_LIST[3]) + "</div>" +
+               "<div class='collins_def'>" + elements.get(EXP_ELE_LIST[2]).replace("<br/>", " ") + "</div></div>";
+    }
+
+    private String buildDisplayHtml(String phrase, String hwd, String defEn, String defCn) {
+        StringBuilder displayHtml = new StringBuilder();
+        if (phrase.isEmpty()) {
+            displayHtml.append("<b>").append(hwd).append("</b><br/>");
+            displayHtml.append(defEn);
         } else {
-            eleMap.put(EXP_ELE_LIST[0], phrase);
+            displayHtml.append("<b>").append(phrase).append("</b><br/>");
+            displayHtml.append(defEn).append(" ").append(defCn);
         }
-        eleMap.put(EXP_ELE_LIST[1], phonetics);
-        eleMap.put(EXP_ELE_LIST[2], "<i>" + sense + "</i>" + "<br/>" + ext + "<br/>" + defEn);
-        eleMap.put(EXP_ELE_LIST[3], getYoudaoAudioTag(hwd, 2));
-        eleMap.put(EXP_ELE_LIST[4], getYoudaoAudioTag(hwd, 1));
-        eleMap.put(EXP_ELE_LIST[5], getCombined(eleMap));
-        String displayHtml;
-        if (phrase.equals("")) {
-            StringBuilder sb = new StringBuilder();
-            if (defEn.startsWith("■") || defEn.startsWith("●")) {
-                // don't add sense
-            } else {
-                //sb.append("<b>" + hwd + "</b>");
-                //sb.append(" ");
-                sb.append("<i>" + colorizeSense(sense) + "</i>");
-                sb.append("<br/>");
-                //sb.append(" ");
-                //sb.append(def.Ext);
-                //sb.append("<br/>");
-            }
-
-            sb.append(defEn);
-            displayHtml = sb.toString();
-        } else {
-            StringBuilder sb = new StringBuilder();
-            //sb.append(def.Phonetics);
-            //sb.append(" ");
-            //sb.append(def.Sense);
-            //sb.append(" ");
-            //sb.append(def.Ext);
-            sb.append("<b><i>" + phrase + "</i></b>");
-            sb.append("<br/>");
-            sb.append(defEn + " " + defCn);
-            Log.d("phrase", sb.toString());
-            displayHtml = sb.toString();
-        }
-
-        return new Definition(eleMap, displayHtml);
+        return displayHtml.toString();
     }
 
-    private String getCombined(Map<String, String> eleMap) {
-        return "<div class='div_collins'><div class='collins_hwd'>" + eleMap.get(EXP_ELE_LIST[0]) + "</div> " +
-                "<div class='collins_ipa'>" +  eleMap.get(EXP_ELE_LIST[1]) + eleMap.get(EXP_ELE_LIST[3])  + "</div>"
-                + "<div class='collins_def'>"  + eleMap.get(EXP_ELE_LIST[2]).replace("<br/>"," ")
-                +"</div></div>";
-    }
-
-    private String[] getForms(String q) {
-        //SQLiteDatabase db = getReadableDatabase();  // Don't need this anymore
-        Cursor cursor = db.query("forms", new String[]{"bases"}, "hwd=? ", new String[]{q.toLowerCase()}, null, null, null);
-        String bases = "";
-        while (cursor.moveToNext()) {
-            bases = cursor.getString(0);
-        }
-        return bases.split("@@@");
-    }
-
-    private String colorizeSense(String sense) {
-        String result = sense.replaceAll("noun", "<font color=#e3412f>n.</font>");
-        result = result.replaceAll("adjective", "<font color=#f8b002>adj.</font>");
-        result = result.replaceAll("verb", "<font color=#539007>v.</font>");
-        result = result.replaceAll("adverb", "<font color=#684b9d>adv.</font>");
-        return result;
-    }
-
-    private Cursor getFilterCursor(String q) {
-        Log.d("databse", "getFilterCursor" + q);
-        Cursor cursor = db.query("hwds", new String[]{"rowid _id", "hwd"}, "hwd LIKE ?", new String[]{q + "%"}, null, null, null);
-        return cursor;
-    }
-
-    /**
-     * 去除左右两边空格，标点
-     *
-     * @param key
-     * @return
-     */
     private String keyCleanup(String key) {
         return key.trim().replaceAll("[,.!?()\"'“”’？]", "").toLowerCase();
     }
 
-    private Definition toDefinition(YoudaoResult youdaoResult){
-        String notiString = "<font color='gray'>本地词典未查到，以下是有道在线释义</font><br/>";
-        String definition = "<b>" + youdaoResult.returnPhrase + "</b><br/>";
-        for(String def : youdaoResult.translation){
-            definition += def + "<br/>";
-        }
-
-        definition += "<font color='gray'>网络释义</font><br/>";
-        for(String key : youdaoResult.webTranslation.keySet()){
-            String joined = "";
-            for(String value : youdaoResult.webTranslation.get(key)){
-                joined += value + "; ";
-            }
-            definition += "<b>" + key + "</b>: " + joined + "<br/>";
-        }
-
-        Map<String, String> exp = new HashMap<>();
-        exp.put(EXP_ELE_LIST[0], youdaoResult.returnPhrase);
-        exp.put(EXP_ELE_LIST[1], youdaoResult.phonetic);
-        exp.put(EXP_ELE_LIST[2], definition);
-        exp.put(EXP_ELE_LIST[3], getYoudaoAudioTag(youdaoResult.returnPhrase, 2));
-        exp.put(EXP_ELE_LIST[4], getYoudaoAudioTag(youdaoResult.returnPhrase, 1));
-        exp.put(EXP_ELE_LIST[5], getCombined(exp));
-        return new Definition(exp, notiString + definition);
-    }
-
-    String getYoudaoAudioTag(String word, int voiceType){
-        return "[sound:https://dict.youdao.com/dictvoice?audio=" + word + "&type=" + voiceType +"]";
+    private String getYoudaoAudioTag(String word, int voiceType) {
+        return "[sound:https://dict.youdao.com/dictvoice?audio=" + word + "&type=" + voiceType + "]";
     }
 }
