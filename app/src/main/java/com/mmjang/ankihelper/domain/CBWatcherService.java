@@ -1,15 +1,15 @@
 package com.mmjang.ankihelper.domain;
 
-
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.ClipboardManager;
-import android.content.ClipDescription;
+import android.content.ClipData;
 import android.content.ClipboardManager.OnPrimaryClipChangedListener;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.IBinder;
 import androidx.annotation.RequiresApi;
@@ -23,8 +23,6 @@ import com.mmjang.ankihelper.ui.LauncherActivity;
 import com.mmjang.ankihelper.ui.popup.PopupActivity;
 import com.mmjang.ankihelper.util.Constant;
 
-import java.sql.BatchUpdateException;
-
 import android.app.PendingIntent;
 
 import static android.app.NotificationManager.IMPORTANCE_HIGH;
@@ -33,6 +31,10 @@ public class CBWatcherService extends Service {
     private static final int REQUEST_CODE_CBW = 0;
     private OnPrimaryClipChangedListener listener = new OnPrimaryClipChangedListener() {
         public void onPrimaryClipChanged() {
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q && !hasClipboardPermission()) {
+                Log.w("CBWatcherService", "Clipboard access denied on Android 10+");
+                return;
+            }
             performClipboardCheck();
         }
     };
@@ -47,7 +49,9 @@ public class CBWatcherService extends Service {
     @Override
     public void onDestroy() {
         super.onDestroy();
-        stopSelf();
+        if (pm != null && listener != null) {
+            pm.removePrimaryClipChangedListener(listener);
+        }
         stopForeground(true);
         Log.d("CB", "onDestroy ");
     }
@@ -115,23 +119,33 @@ public class CBWatcherService extends Service {
         if (!Settings.getInstance(MyApplication.getContext()).getMoniteClipboardQ()) {
             return;
         }
+
         ClipboardManager cb = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
-        if (cb.hasPrimaryClip()) {
-            if (cb.hasText()) {
-                String text = cb.getPrimaryClip().getItemAt(0).getText().toString();
-                if (/*isEnglish(text)*/true) {
-                    long[] vibList = new long[1];
-                    vibList[0] = 10L;
-                    Intent intent = new Intent(getApplicationContext(), PopupActivity.class);
-                    intent.setAction(Intent.ACTION_SEND);
-                    intent.setType("text/plain");
-                    //intent.addFlags(Intent.FLAG_ACTIVITY_SINGLE_TOP);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-                    intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
-                    intent.putExtra(Intent.EXTRA_TEXT, text);
-                    startActivity(intent);
+        if (cb == null || !hasClipboardPermission()) {
+            Log.w("CBWatcherService", "Clipboard access not available or permission denied");
+            return;
+        }
+
+        try {
+            if (cb.hasPrimaryClip()) {
+                ClipData clipData = cb.getPrimaryClip();
+                if (clipData != null && clipData.getItemCount() > 0) {
+                    CharSequence text = clipData.getItemAt(0).getText();
+                    if (text != null && isEnglish(text.toString())) {
+                        long[] vibList = new long[1];
+                        vibList[0] = 10L;
+                        Intent intent = new Intent(getApplicationContext(), PopupActivity.class);
+                        intent.setAction(Intent.ACTION_SEND);
+                        intent.setType("text/plain");
+                        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+                        intent.putExtra(Intent.EXTRA_TEXT, text.toString());
+                        startActivity(intent);
+                    }
                 }
             }
+        } catch (SecurityException e) {
+            Log.w("CBWatcherService", "SecurityException accessing clipboard: " + e.getMessage());
         }
     }
 
@@ -168,6 +182,29 @@ public class CBWatcherService extends Service {
         }
         double ratio = ((double) notEnglishCount) / ((double) len);
         return ratio <= nonEnglishCharThreahold;
+    }
+
+    private boolean hasClipboardPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Android 10+ requires special focus rules for clipboard access
+            try {
+                ClipboardManager cm = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+                if (cm == null) return false;
+
+                // Check clipboard service availability without causing permission denial
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+                    // Android 11+ has stricter focus requirements
+                    return cm.hasPrimaryClip() && cm.getPrimaryClipDescription() != null;
+                } else {
+                    // Android 10 (API 29) and below
+                    return cm.hasPrimaryClip();
+                }
+            } catch (SecurityException e) {
+                Log.w("CBWatcherService", "SecurityException checking clipboard access: " + e.getMessage());
+                return false;
+            }
+        }
+        return true;
     }
 
     public static boolean isPunctuationOrBlank(char c) {

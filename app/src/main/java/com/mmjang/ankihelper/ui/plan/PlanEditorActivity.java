@@ -126,15 +126,17 @@ public class PlanEditorActivity extends AppCompatActivity {
         Intent intent = getIntent();
         if (intent != null) {
             String action = intent.getAction();
-            String type = intent.getType();
             if (action != null && action.equals(Intent.ACTION_SEND)) {
-                planNameToEdit = intent.getStringExtra(Intent.EXTRA_TEXT);
-                OutputPlanPOJO re = DatabaseManager.getInstance().getPlanByName(planNameToEdit);
-                if (re != null) {
-                    planForEdit = re;
-                    //set plan name unable to edit
-                    planNameEditText.setText(planNameToEdit);
-                    //planNameEditText.setEnabled(false);
+                String text = intent.getStringExtra(Intent.EXTRA_TEXT);
+                if (text != null && !text.isEmpty()) {
+                    planNameToEdit = text;
+                    OutputPlanPOJO re = DatabaseManager.getInstance().getPlanByName(planNameToEdit);
+                    if (re != null) {
+                        planForEdit = re;
+                        //set plan name unable to edit
+                        planNameEditText.setText(planNameToEdit);
+                        //planNameEditText.setEnabled(false);
+                    }
                 }
             }
         }

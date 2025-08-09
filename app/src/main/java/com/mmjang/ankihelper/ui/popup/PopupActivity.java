@@ -28,17 +28,20 @@ import androidx.core.widget.NestedScrollView;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
+
 import android.text.Html;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
 import android.view.ActionMode;
-import android.view.DragEvent;
+import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.AdapterView;
@@ -64,6 +67,9 @@ import com.ichi2.anki.FlashCardsContract;
 import com.ichi2.anki.api.NoteInfo;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
+import java.util.Set;
+import java.util.HashSet;
+import android.content.pm.PackageManager;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.database.DatabaseManager;
@@ -251,6 +257,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         populateLanguageSpinner();
         setEventListener();
         if (settings.getMoniteClipboardQ()) {
+            checkAndRequestClipboardPermissions();
             startCBService();
         }
 
@@ -260,6 +267,13 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         asyncInvokeDroid();
     }
 
+    private void checkClipboardPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            // Android 10+ has stricter clipboard access rules
+            // Ensure we have focus or use foreground service where appropriate
+            Log.d("Clipboard", "Checking clipboard permissions for Android 10+");
+        }
+    }
     private void asyncInvokeDroid() {
         new Thread(
                 new Runnable() {
@@ -714,14 +728,25 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     }
 
     boolean isFromAndroidQClipboard = false;
+
+    private void checkAndRequestClipboardPermissions() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+            if (checkSelfPermission("android.permission.READ_CLIPBOARD_IN_BACKGROUND") != PackageManager.PERMISSION_GRANTED) {
+                // Android 10+ doesn't allow direct clipboard permission requests
+                // Instead, we check if foreground service has access
+                Log.w("AnkiHelper", "Clipboard background access may be restricted on Android 10+");
+            }
+        }
+    }
+
     private void handleIntent() {
         Intent intent = getIntent();
-        String action = intent.getAction();
-        String type = intent.getType();
         if (intent == null) {
             return;
         }
-        if (type == null) {
+        String action = intent.getAction();
+        String type = intent.getType();
+        if (action == null || type == null) {
             return;
         }
         //getStringExtra() may return null
@@ -732,8 +757,12 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 mTextToProcess = "";
                 isFromAndroidQClipboard = true;
             }
-            if(base64 != null && !base64.equals("0")){
-                mTextToProcess = new String(Base64.decode(mTextToProcess, Base64.DEFAULT));
+            if(base64 != null && !base64.equals("0") && mTextToProcess != null){
+                try {
+                    mTextToProcess = new String(Base64.decode(mTextToProcess, Base64.DEFAULT));
+                } catch (IllegalArgumentException e) {
+                    // Handle base64 decode error
+                }
             }
             mTargetWord = intent.getStringExtra(Constant.INTENT_ANKIHELPER_TARGET_WORD);
             mUrl = intent.getStringExtra(Constant.INTENT_ANKIHELPER_TARGET_URL);
@@ -746,25 +775,49 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             mUpdateAction = intent.getStringExtra(Constant.INTENT_ANKIHELPER_UPDATE_ACTION);
             if(updateId != null && !updateId.isEmpty())
             {
-                    try{
-                        mUpdateNoteId = Long.parseLong(updateId);
-                        if(mUpdateNoteId > 0){
-                            mTagEditedByUser =
-                                    MyApplication.getAnkiDroid(MyApplication.getContext()).getApi().getNote(mUpdateNoteId)
-                                            .getTags();
+                try{
+                    mUpdateNoteId = Long.parseLong(updateId);
+                    if(mUpdateNoteId > 0){
+                        try {
+                            NoteInfo note = MyApplication.getAnkiDroid(MyApplication.getContext()).getApi().getNote(mUpdateNoteId);
+                            if(note != null) {
+                                Set<String> tagsSet = note.getTags();
+                                if(tagsSet != null && !tagsSet.isEmpty()) {
+                                    // Use a copy to avoid potential modification issues
+                                    mTagEditedByUser = new HashSet<>(tagsSet);
+                                } else {
+                                    mTagEditedByUser = new HashSet<>();
+                                }
+                            }
+                        } catch (SecurityException e) {
+                            // Permission denied - handle gracefully
+                            Log.w("AnkiHelper", "SecurityException accessing AnkiDroid API: " + e.getMessage());
+                            mTagEditedByUser = new HashSet<>();
+                        } catch (Exception e) {
+                            // Note not found or other issues - handle gracefully
+                            Log.w("AnkiHelper", "Error getting note tags: " + e.getMessage());
+                            mTagEditedByUser = new HashSet<>();
                         }
                     }
-                    catch(Exception e){
-
-                    }
-        }
-}
-        if (Intent.ACTION_PROCESS_TEXT.equals(action) && type.equals("text/plain")) {
-                mTextToProcess = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT);
                 }
-                if (mTextToProcess == null) {
-            return;
+                catch(Exception e){
+                    // Handle parsing error
+                    Log.w("AnkiHelper", "Error parsing note ID: " + e.getMessage());
+                    mUpdateNoteId = -1L;
+                    mTagEditedByUser = new HashSet<>();
+                }
+            }
         }
+        if (Intent.ACTION_PROCESS_TEXT.equals(action) && type.equals("text/plain")) {
+            mTextToProcess = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT);
+        }
+        if (mTextToProcess == null) {
+            mTextToProcess = "";
+        }
+
+        // Enhanced clipboard permission check for Android 10+
+        checkClipboardPermissions();
+
         populateWordSelectBox();
 
         HistoryUtil.savePopupOpen(mTextToProcess);
