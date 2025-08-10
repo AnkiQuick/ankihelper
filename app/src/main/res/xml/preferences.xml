@@ -1,0 +1,132 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <PreferenceCategory
+        android:title="@string/settings_category_general"
+        android:key="pref_cat_general">
+
+        <SwitchPreferenceCompat
+            android:key="monitor_clipboard"
+            android:title="@string/settings_monitor_clipboard"
+            android:summary="@string/settings_monitor_clipboard_summary"
+            android:defaultValue="false" />
+
+        <SwitchPreferenceCompat
+            android:key="auto_cancel_popup"
+            android:title="@string/settings_auto_cancel_popup"
+            android:summary="@string/settings_auto_cancel_popup_summary"
+            android:defaultValue="false" />
+
+        <SwitchPreferenceCompat
+            android:key="left_hand_mode"
+            android:title="@string/settings_left_hand_mode"
+            android:summary="@string/settings_left_hand_mode_summary"
+            android:defaultValue="false" />
+
+        <SwitchPreferenceCompat
+            android:key="show_read_content"
+            android:title="@string/settings_show_read_content"
+            android:summary="@string/settings_show_read_content_summary"
+            android:defaultValue="false" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_category_appearance"
+        android:key="pref_cat_appearance">
+
+        <SwitchPreferenceCompat
+            android:key="pink_theme"
+            android:title="@string/settings_pink_theme"
+            android:summary="@string/settings_pink_theme_summary"
+            android:defaultValue="false" />
+
+        <ListPreference
+            android:key="pronounce_language"
+            android:title="@string/settings_pronounce_language"
+            android:summary="@string/settings_pronounce_language_summary"
+            android:entries="@array/pronounce_languages"
+            android:entryValues="@array/pronounce_languages_values"
+            android:defaultValue="0" />
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_category_integration"
+        android:key="pref_cat_integration">
+
+        <EditTextPreference
+            android:key="default_tag"
+            android:title="@string/settings_default_tag"
+            android:summary="@string/settings_default_tag_summary"
+            android:dialogTitle="@string/settings_default_tag_dialog" />
+
+        <Preference
+            android:key="custom_dictionary"
+            android:title="@string/settings_custom_dictionary"
+            android:summary="@string/settings_custom_dictionary_summary" >
+            <intent
+                android:targetPackage="com.mmjang.ankihelper"
+                android:targetClass="com.mmjang.ankihelper.ui.about.AboutActivity"/>
+        </Preference>
+
+        <Preference
+            android:key="custom_translation"
+            android:title="@string/settings_custom_translation"
+            android:summary="@string/settings_custom_translation_summary">
+            <intent
+                android:targetPackage="com.mmjang.ankihelper"
+                android:targetClass="com.mmjang.ankihelper.ui.translation.CustomTranslationActivity" />
+        </Preference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_category_dictionaries"
+        android:key="pref_cat_dictionaries">
+
+        <Preference
+            android:key="plan_manager"
+            android:title="@string/settings_plan_manager"
+            android:summary="@string/settings_plan_manager_summary">
+            <intent
+                android:targetPackage="com.mmjang.ankihelper"
+                android:targetClass="com.mmjang.ankihelper.ui.plan.PlansManagerActivity" />
+        </Preference>
+    </PreferenceCategory>
+
+    <PreferenceCategory
+        android:title="@string/settings_category_support"
+        android:key="pref_cat_support">
+
+        <Preference
+            android:key="help"
+            android:title="@string/settings_help"
+            android:summary="@string/settings_help_summary">
+            <intent
+                android:targetPackage="com.mmjang.ankihelper"
+                android:targetClass="com.mmjang.ankihelper.ui.about.AboutActivity" />
+        </Preference>
+
+        <Preference
+            android:key="join_qq_group"
+            android:title="@string/settings_join_qq"
+            android:summary="@string/settings_join_qq_summary" />
+
+        <Preference
+            android:key="about"
+            android:title="@string/settings_about"
+            android:summary="@string/settings_about_summary">
+            <intent
+                android:targetPackage="com.mmjang.ankihelper"
+                android:targetClass="com.mmjang.ankihelper.ui.about.AboutActivity"/>
+        </Preference>
+
+        <Preference
+            android:key="version"
+            android:title="@string/settings_version"
+            android:summary="@string/settings_version_summary"
+            android:selectable="false"
+            />
+
+    </PreferenceCategory>
+
+</PreferenceScreen>

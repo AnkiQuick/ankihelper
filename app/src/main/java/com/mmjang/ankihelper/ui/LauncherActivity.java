@@ -395,10 +395,7 @@ public class LauncherActivity extends AppCompatActivity {
     }
 
     private void openSettingsPage() {
-        Intent intent = new Intent();
-        intent.setAction(android.provider.Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
-        Uri uri = Uri.fromParts("package", getPackageName(), null);
-        intent.setData(uri);
+        Intent intent = new Intent(this, com.mmjang.ankihelper.ui.settings.SettingsActivity.class);
         startActivity(intent);
     }
 

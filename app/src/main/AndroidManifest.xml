@@ -25,12 +25,20 @@
         android:networkSecurityConfig="@xml/network"
         android:roundIcon="@drawable/icon_light"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/Theme.AnkiHelper"
+        android:forceDarkAllowed="false">
 
         <activity android:name=".ui.translation.CustomTranslationActivity"
             android:label="@string/set_custom_fanyi_api"
-            android:parentActivityName=".ui.LauncherActivity"
-            ></activity>
+            android:parentActivityName=".ui.LauncherActivity" />
+
+        <activity android:name=".ui.settings.SettingsActivity"
+            android:label="@string/settings_title"
+            android:parentActivityName=".ui.LauncherActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+        </activity>
         <activity
             android:name=".ui.popup.PopupActivity"
             android:excludeFromRecents="true"

@@ -1,31 +1,77 @@
 <?xml version="1.0" encoding="utf-8"?>
-<resources>
-    <!--<color name="colorPrimary">#3F51B5</color>-->
-    <!--<color name="colorPrimaryDark">#303F9F</color>-->
+<resources xmlns:tools="http://schemas.android.com/tools">
+    <!-- Original theme colors for backward compatibility -->
     <color name="colorPrimary">#227D51</color>
     <color name="colorPrimaryDark">#2D6D4B</color>
-    <!--<color name="colorAccent">#FF4081</color>-->
     <color name="colorAccent">#2D6D4B</color>
-
     <color name="colorPrimaryPink">#e39090</color>
     <color name="colorPrimaryDarkPink">#e68080</color>
-    <!--<color name="colorAccent">#FF4081</color>-->
     <color name="colorAccentPink">#e58080</color>
 
+    <!-- Material Design 3 Light Theme Colors -->
+    <color name="md_theme_light_primary">#006D42</color>
+    <color name="md_theme_light_onPrimary">#FFFFFF</color>
+    <color name="md_theme_light_primaryContainer">#92F7BD</color>
+    <color name="md_theme_light_onPrimaryContainer">#002111</color>
+    <color name="md_theme_light_secondary">#4E6357</color>
+    <color name="md_theme_light_onSecondary">#FFFFFF</color>
+    <color name="md_theme_light_secondaryContainer">#D0E8D8</color>
+    <color name="md_theme_light_onSecondaryContainer">#0B1F15</color>
+    <color name="md_theme_light_tertiary">#3B6470</color>
+    <color name="md_theme_light_onTertiary">#FFFFFF</color>
+    <color name="md_theme_light_tertiaryContainer">#BFE9F9</color>
+    <color name="md_theme_light_onTertiaryContainer">#001F27</color>
+    <color name="md_theme_light_error">#BA1A1A</color>
+    <color name="md_theme_light_onError">#FFFFFF</color>
+    <color name="md_theme_light_errorContainer">#FFDAD6</color>
+    <color name="md_theme_light_onErrorContainer">#410002</color>
+    <color name="md_theme_light_background">#FCFDF7</color>
+    <color name="md_theme_light_onBackground">#191C1A</color>
+    <color name="md_theme_light_surface">#FCFDF7</color>
+    <color name="md_theme_light_onSurface">#191C1A</color>
+    <color name="md_theme_light_surfaceVariant">#DCE5DC</color>
+    <color name="md_theme_light_onSurfaceVariant">#404943</color>
+    <color name="md_theme_light_outline">#707973</color>
+    <color name="md_theme_light_outlineVariant">#BFC9C0</color>
+
+    <!-- Material Design 3 Dark Theme Colors -->
+    <color name="md_theme_dark_primary">#75DBA2</color>
+    <color name="md_theme_dark_onPrimary">#003920</color>
+    <color name="md_theme_dark_primaryContainer">#005230</color>
+    <color name="md_theme_dark_onPrimaryContainer">#92F7BD</color>
+    <color name="md_theme_dark_secondary">#B4CCBD</color>
+    <color name="md_theme_dark_onSecondary">#203529</color>
+    <color name="md_theme_dark_secondaryContainer">#364B3F</color>
+    <color name="md_theme_dark_onSecondaryContainer">#D0E8D8</color>
+    <color name="md_theme_dark_tertiary">#A4CDDD</color>
+    <color name="md_theme_dark_onTertiary">#053543</color>
+    <color name="md_theme_dark_tertiaryContainer">#214C59</color>
+    <color name="md_theme_dark_onTertiaryContainer">#BFE9F9</color>
+    <color name="md_theme_dark_error">#FFB4AB</color>
+    <color name="md_theme_dark_onError">#690005</color>
+    <color name="md_theme_dark_errorContainer">#93000A</color>
+    <color name="md_theme_dark_onErrorContainer">#FFDAD6</color>
+    <color name="md_theme_dark_background">#191C1A</color>
+    <color name="md_theme_dark_onBackground">#E1E3DE</color>
+    <color name="md_theme_dark_surface">#191C1A</color>
+    <color name="md_theme_dark_onSurface">#E1E3DE</color>
+    <color name="md_theme_dark_surfaceVariant">#404943</color>
+    <color name="md_theme_dark_onSurfaceVariant">#BFC9C0</color>
+    <color name="md_theme_dark_outline">#8A938B</color>
+    <color name="md_theme_dark_outlineVariant">#404943</color>
+
+    <!-- Text colors -->
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
 
+    <!-- Status colors -->
     <color name="transparent">#00000000</color>
     <color name="popup_background">#E0E0E0</color>
     <color name="popup_background_pink">#f4e7e7</color>
-
     <color name="divider">#cee9e9e9</color>
-
     <color name="footer_background">#e0e0e0</color>
     <color name="footer_background_pink">#e1bcbc</color>
-
     <color name="footer_pressed">#4f8069</color>
     <color name="footer_pressed_pink">#c5a4a4</color>
-
     <color name="bottom_panel_icon">#808080</color>
 </resources>
