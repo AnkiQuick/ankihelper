@@ -4,6 +4,10 @@ import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.ClipboardManager;
+import android.content.ClipData;
+import android.view.ActionMode;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -29,16 +33,13 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
-import android.text.Html;
+import androidx.core.text.HtmlCompat;
 import android.text.TextUtils;
 import android.util.Base64;
 import android.util.Log;
-import android.view.ActionMode;
 import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
@@ -133,7 +134,7 @@ import static com.mmjang.ankihelper.util.FieldUtil.getBoldSentence;
 import static com.mmjang.ankihelper.util.FieldUtil.getNormalSentence;
 
 
-public class PopupActivity extends Activity implements BigBangLayoutWrapper.ActionListener{
+public class PopupActivity extends AppCompatActivity implements BigBangLayoutWrapper.ActionListener{
 
     List<IDictionary> dictionaryList;
     IDictionary currentDicitonary;
@@ -574,7 +575,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        setupEditTagDialog();
+                        setupTagDialog();
                     }
                 }
         );
@@ -708,10 +709,11 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
             if (!Settings.getInstance(MyApplication.getContext()).getMoniteClipboardQ()) {
                 return;
             }
-            ClipboardManager cb = (ClipboardManager) getSystemService(CLIPBOARD_SERVICE);
+            ClipboardManager cb = this.getSystemService(ClipboardManager.class);
             if (cb.hasPrimaryClip()) {
-                if (cb.hasText()) {
-                    String text = cb.getText().toString();
+                ClipData clipData = cb.getPrimaryClip();
+                if (clipData != null && clipData.getItemCount() > 0) {
+                    String text = clipData.getItemAt(0).getText().toString();
                     mTextToProcess = text;
                 }
             }
@@ -985,15 +987,9 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                         btnAddDefinition.callOnClick();
                     }
                 }
-        );
-        //final Definition def = mDefinitionList.get(position);
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-            textVeiwDefinition.setText(Html.fromHtml(def.getDisplayHtml(), Html.FROM_HTML_MODE_COMPACT));
-        }
-        else{
-            textVeiwDefinition.setText(Html.fromHtml(def.getDisplayHtml()));
-
-        }
+            );
+            //final Definition def = mDefinitionList.get(position);
+            textVeiwDefinition.setText(HtmlCompat.fromHtml(def.getDisplayHtml(), HtmlCompat.FROM_HTML_MODE_COMPACT));
 
         if(def.getDisplayHtml().isEmpty()){
             textVeiwDefinition.setVisibility(View.GONE);
@@ -1451,7 +1447,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
         b.show();
     }
 
-    private void setupEditTagDialog() {
+    private void setupTagDialog() {
         AlertDialog.Builder dialogBuilder = new AlertDialog.Builder(PopupActivity.this);
         LayoutInflater inflater = PopupActivity.this.getLayoutInflater();
         final View dialogView = inflater.inflate(R.layout.dialog_edit_tag, null);
@@ -1644,8 +1640,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
                     x >= currentFocus.getRight() ||
                     y < currentFocus.getTop() ||
                     y > currentFocus.getBottom())) {
-                InputMethodManager imm =
-                        (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(getWindow().getCurrentFocus().getWindowToken(), 0);
                 v.clearFocus();
             }
@@ -1764,7 +1759,10 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     }
 
     void vibarate(int ms) {
-        ((Vibrator) getSystemService(VIBRATOR_SERVICE)).vibrate(ms);
+        Vibrator vibrator = (Vibrator) getSystemService(Context.VIBRATOR_SERVICE);
+        if (vibrator.hasVibrator()) {
+            vibrator.vibrate(ms);
+        }
     }
 
     void clearBigbangSelection(){

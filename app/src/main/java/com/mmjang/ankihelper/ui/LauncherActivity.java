@@ -17,7 +17,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.CompoundButton;
-import android.widget.Switch;
+import com.google.android.material.materialswitch.MaterialSwitch;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -46,10 +46,10 @@ public class LauncherActivity extends AppCompatActivity {
     DatabaseManager databaseManager;
 
     //views
-    Switch switchMoniteClipboard;
-    Switch switchCancelAfterAdd;
-    Switch switchLeftHandMode;
-    Switch switchPinkTheme;
+    MaterialSwitch switchMoniteClipboard;
+    MaterialSwitch switchCancelAfterAdd;
+    MaterialSwitch switchLeftHandMode;
+    MaterialSwitch switchPinkTheme;
     TextView textViewOpenPlanManager;
     TextView textViewAddDefaultPlan;
 
@@ -57,12 +57,13 @@ public class LauncherActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
         settings = Settings.getInstance(LauncherActivity.this);
         if (settings.getPinkThemeQ()) {
-            setTheme(R.style.AppThemePink);
+            setTheme(R.style.Theme_AnkiHelperPink);
+        } else {
+            setTheme(R.style.Theme_AnkiHelper);
         }
+        super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher); // Set the layout first
         setVersion();
 
@@ -77,10 +78,10 @@ public class LauncherActivity extends AppCompatActivity {
         // Initialize DatabaseManager after setting the layout
         databaseManager = databaseManager.getInstance();
 
-        switchMoniteClipboard = (Switch) findViewById(R.id.switch_monite_clipboard);
-        switchCancelAfterAdd = (Switch) findViewById(R.id.switch_cancel_after_add);
-        switchLeftHandMode = (Switch) findViewById(R.id.left_hand_mode);
-        switchPinkTheme = (Switch) findViewById(R.id.pink_theme_switch);
+        switchMoniteClipboard = findViewById(R.id.switch_monite_clipboard);
+        switchCancelAfterAdd = findViewById(R.id.switch_cancel_after_add);
+        switchLeftHandMode = findViewById(R.id.left_hand_mode);
+        switchPinkTheme = findViewById(R.id.pink_theme_switch);
         textViewOpenPlanManager = (TextView) findViewById(R.id.btn_open_plan_manager);
         textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
 

@@ -61,7 +61,8 @@
         <activity
             android:name=".ui.plan.PlansManagerActivity"
             android:label="@string/title_activity_plans_manager"
-            android:theme="@style/AppTheme">
+            android:theme="@style/Theme.AnkiHelper">
+
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
@@ -84,7 +85,7 @@
 
         <activity
             android:name=".ui.LauncherActivity"
-            android:theme="@style/AppTheme"
+            android:theme="@style/Theme.AnkiHelper"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

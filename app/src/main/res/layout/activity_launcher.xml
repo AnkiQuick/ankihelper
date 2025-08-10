@@ -1,159 +1,179 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    xmlns:android="http://schemas.android.com/apk/res/android">
-<LinearLayout
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:orientation="vertical"
-    >
+    android:layout_height="match_parent"
+    android:padding="16dp">
 
-    <androidx.cardview.widget.CardView
+    <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginTop="12dp"
-        android:elevation="8dp"
-        app:cardCornerRadius="4dp">
+        android:layout_height="wrap_content">
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical">
+        <!-- Page Title -->
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Anki Helper"
+            android:textAppearance="?attr/textAppearanceDisplaySmall"
+            android:textColor="?attr/colorOnBackground"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
-            <com.balysv.materialripple.MaterialRippleLayout
+        <!-- Settings Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/settings_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/title">
+
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <TextView
+                <!-- Plan Manager Button -->
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_open_plan_manager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:layout_gravity="center_vertical"
                     android:text="@string/plan_manager_str"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp" />
+                    app:icon="@drawable/ic_settings_outline"
+                    style="@style/Widget.Material3.Button.OutlinedButton" />
 
-            </com.balysv.materialripple.MaterialRippleLayout>
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp" />
 
-            <View style="@style/Divider" />
-
-            <com.balysv.materialripple.MaterialRippleLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp">
-
-                <TextView
+                <!-- Add Default Plan Button -->
+                <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_add_default_plan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:layout_gravity="center_vertical"
                     android:text="@string/btn_add_default_plan_str"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp" />
+                    app:icon="@drawable/ic_add"
+                    style="@style/Widget.Material3.Button.OutlinedButton" />
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-            </com.balysv.materialripple.MaterialRippleLayout>
+        <!-- Settings Switches Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/switches_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settings_card">
 
-            <View style="@style/Divider" />
-
-
-
-            <com.balysv.materialripple.MaterialRippleLayout
+            <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="48dp">
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="16dp">
 
-                <Switch
-                    android:duplicateParentState="false"
-                    android:id="@+id/switch_monite_clipboard"
+                <!-- Monitor Clipboard Toggle -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/monite_clipboard"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp" />
-            </com.balysv.materialripple.MaterialRippleLayout>
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
 
-            <View style="@style/Divider" />
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/monite_clipboard"
+                        android:textAppearance="?attr/textAppearanceBodyLarge" />
 
-            <com.balysv.materialripple.MaterialRippleLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp">
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switch_monite_clipboard"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-                <Switch
-                    android:duplicateParentState="false"
-                    android:id="@+id/switch_cancel_after_add"
+                </LinearLayout>
+
+                <!-- Auto Close Toggle -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/cancel_after_add"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp" />
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
 
-            </com.balysv.materialripple.MaterialRippleLayout>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/cancel_after_add"
+                        android:textAppearance="?attr/textAppearanceBodyLarge" />
 
-            <View style="@style/Divider" />
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/switch_cancel_after_add"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-            <com.balysv.materialripple.MaterialRippleLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp">
+                </LinearLayout>
 
-                <Switch
-                    android:duplicateParentState="false"
-                    android:id="@+id/left_hand_mode"
+                <!-- Left Hand Mode Toggle -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/left_hand_mode"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp" />
+                    android:layout_marginBottom="12dp"
+                    android:orientation="horizontal">
 
-            </com.balysv.materialripple.MaterialRippleLayout>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/left_hand_mode"
+                        android:textAppearance="?attr/textAppearanceBodyLarge" />
 
-            <View style="@style/Divider" />
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/left_hand_mode"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-            <com.balysv.materialripple.MaterialRippleLayout
-                android:layout_width="match_parent"
-                android:layout_height="48dp">
+                </LinearLayout>
 
-                <Switch
-                    android:duplicateParentState="false"
-                    android:id="@+id/pink_theme_switch"
+                <!-- Pink Theme Toggle -->
+                <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingLeft="16dp"
-                    android:paddingRight="16dp"
-                    android:layout_gravity="center_vertical"
-                    android:text="@string/str_pink_theme_q"
-                    android:textColor="@color/primary_text"
-                    android:textSize="16sp" />
+                    android:orientation="horizontal">
 
-            </com.balysv.materialripple.MaterialRippleLayout>
+                    <com.google.android.material.textview.MaterialTextView
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:text="@string/str_pink_theme_q"
+                        android:textAppearance="?attr/textAppearanceBodyLarge" />
 
-        </LinearLayout>
+                    <com.google.android.material.materialswitch.MaterialSwitch
+                        android:id="@+id/pink_theme_switch"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content" />
 
-    </androidx.cardview.widget.CardView>
+                </LinearLayout>
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
 
-    <TextView
-        android:id="@+id/textview_version"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textColor="@color/secondary_text"
-        android:textSize="12sp"
-        android:layout_marginLeft="16dp"
-        android:layout_marginRight="16dp"
-        android:layout_marginBottom="12dp"
-        />
-</LinearLayout>
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/textview_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:textAppearance="?attr/textAppearanceBodySmall"
+            android:textColor="?attr/colorPrimary"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/settings_card" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 </ScrollView>
