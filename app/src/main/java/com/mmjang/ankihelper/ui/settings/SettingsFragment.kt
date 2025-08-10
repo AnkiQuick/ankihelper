@@ -47,12 +47,6 @@ class SettingsFragment :
         // Restart activity to apply theme change
         activity?.recreate()
       }
-      "default_tag" -> {
-        legacySettings.setDefaultTag(sharedPreferences?.getString(key, "") ?: "")
-      }
-      "show_read_content" -> {
-        legacySettings.setShowContentAlreadyRead(sharedPreferences?.getBoolean(key, false) ?: false)
-      }
       "pronounce_language" -> {
         val languageIndex = sharedPreferences?.getString(key, "0")?.toInt() ?: 0
         legacySettings.setLastPronounceLanguage(languageIndex)

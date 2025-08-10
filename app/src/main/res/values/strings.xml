@@ -25,23 +25,16 @@
     <string name="confirm_deletion">Delete?</string>
     <string name="save_plan_error_all_blank">Failed to save. All fields are empty!</string>
     <string name="plan_anki_not_started">please start ankidroid first!</string>
-    <string name="btn_open_custom_dicitonary_str">Custom Dictionaries</string>
-    <string name="add_custom_dictionary_str">Import custom dictionary</string>
-    <string name="delete_all_custom_dictionary">Clear imported dictionaries</string>
     <string name="confirm_add_default_plan">No plans found, add default?</string>
     <string name="default_plan_added">Default plan added, check out at plans manager</string>
-    <string name="btn_help_str">Help</string>
-    <string name="btn_about_and_support_str">Donate</string>
     <string name="confirm_add_default_plan_when_exists_already">Add default plan(Collins dictionary)?</string>
     <string name="btn_add_default_plan_str">add default plan</string>
     <string name="duplicate_plan_name_complain">Default plan already exists, delete it in plans manager first.</string>
-    <string name="toast_no_available_plan">No usable plan, add one in the main window of ankihelper.</string>
     <string name="left_hand_mode">Left Hand Mode</string>
-    <string name="str_add_qq_group">Join QQ Group</string>
     <string name="str_clipboard_service_running">Clipboard Monitor is Running</string>
     <string name="str_field_map">Fields Mapping:</string>
     <string name="str_only_one_plan_cant_switch">There is only one plan, not switchable.</string>
-    <string name="str_btn_open_random_quote">Random Content</string>
+    <string name="toast_no_available_plan">No usable plan, add one in the main window of ankihelper.</string>
     <string name="str_pink_theme_q">Pink Theme</string>
     <string name="str_error_noteid">failed to add note id</string>
     <string name="str_error_notetype_noncompatible">note failed to update. Note type not compatible</string>
@@ -63,7 +56,5 @@
     <string name="epub_reader_label">EPUB Reader</string>
     <string name="menu_title_statistics">Statistics</string>
     <string name="str_use_as_default_tags">作为默认标签</string>
-    <string name="set_custom_fanyi_api">Set Custom Baidu Translation Api</string>
-    <string name="custom_translation_introduction">本应用自带的翻译功能调用的是百度翻译的api，存在每月200万总字符的限额，如果使用翻译功能时出现带 recharge 字样的报错，则需要自行申请一个<a href="https://jingyan.baidu.com/article/219f4bf7bdb028de442d38e1.html">百度翻译API秘钥</a>填入下方，申请后每月的200万字符限额完全能满足个人使用。</string>
     <string name="str_clipboard_service_running_version_q">Copy text and click this notification</string>
 </resources>

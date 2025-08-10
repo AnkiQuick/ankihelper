@@ -201,6 +201,7 @@ public class PopupActivity extends Activity implements BigBangLayoutWrapper.Acti
     private static final int TAG_NOTE_ID_LONG = 5;
     //async
     @SuppressLint("HandlerLeak")
+    @SuppressWarnings("unchecked")
     final Handler mHandler = new Handler() {
         @Override
         public void handleMessage(Message msg) {

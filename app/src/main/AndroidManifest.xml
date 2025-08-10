@@ -4,7 +4,6 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:installLocation="auto">
 
-
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
@@ -17,6 +16,7 @@
     <uses-permission android:name="android.permission.READ_CLIPBOARD_IN_BACKGROUND" />
     <uses-permission android:name="android.permission.WRITE_CLIPBOARD" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+
     <application
         android:name=".MyApplication"
         android:allowBackup="true"
@@ -28,10 +28,6 @@
         android:theme="@style/Theme.AnkiHelper"
         android:forceDarkAllowed="false">
 
-        <activity android:name=".ui.translation.CustomTranslationActivity"
-            android:label="@string/set_custom_fanyi_api"
-            android:parentActivityName=".ui.LauncherActivity" />
-
         <activity android:name=".ui.settings.SettingsActivity"
             android:label="@string/settings_title"
             android:parentActivityName=".ui.LauncherActivity">
@@ -39,6 +35,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
         </activity>
+
         <activity
             android:name=".ui.popup.PopupActivity"
             android:excludeFromRecents="true"
@@ -49,21 +46,18 @@
             android:windowSoftInputMode="stateAlwaysHidden">
             <intent-filter>
                 <action android:name="android.intent.action.SEND" />
-
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="text/plain" />
             </intent-filter>
             <intent-filter>
                 <action android:name="android.intent.action.PROCESS_TEXT" />
-
                 <category android:name="android.intent.category.BROWSABLE" />
                 <category android:name="android.intent.category.DEFAULT" />
-
                 <data android:mimeType="text/plain" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".ui.plan.PlansManagerActivity"
             android:label="@string/title_activity_plans_manager"
@@ -72,6 +66,7 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
         </activity>
+
         <activity
             android:name=".ui.plan.PlanEditorActivity"
             android:label="@string/title_activity_plan_editor"
@@ -93,14 +88,9 @@
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ui.about.AboutActivity" />
-
-
-
 
         <activity
             android:name=".ui.stat.StatActivity"
@@ -111,19 +101,6 @@
                 android:name="android.support.PARENT_ACTIVITY"
                 android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
         </activity>
-        <activity
-            android:name=".ui.content.ContentActivity"
-            android:label="@string/str_btn_open_random_quote"
-            android:theme="@style/AppTheme">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
-        </activity>
-        <activity
-            android:name=".ui.content.ContentViewerActivity"
-            android:label="@string/str_btn_open_random_quote"
-            android:parentActivityName=".ui.content.ContentActivity"
-            tools:targetApi="strict"/>
 
     </application>
 

@@ -11,7 +11,7 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import android.text.Html;
+
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -30,11 +30,11 @@ import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import com.mmjang.ankihelper.domain.CBWatcherService;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.Settings;
-import com.mmjang.ankihelper.ui.about.AboutActivity;
-import com.mmjang.ankihelper.ui.content.ContentActivity;
+
+
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
 import com.mmjang.ankihelper.ui.stat.StatActivity;
-import com.mmjang.ankihelper.ui.translation.CustomTranslationActivity;
+
 
 import java.util.List;
 import java.util.ArrayList;
@@ -51,12 +51,7 @@ public class LauncherActivity extends AppCompatActivity {
     Switch switchLeftHandMode;
     Switch switchPinkTheme;
     TextView textViewOpenPlanManager;
-    TextView textViewAbout;
-    TextView textViewHelp;
     TextView textViewAddDefaultPlan;
-    TextView textViewAddQQGroup;
-    TextView textViewRandomQuote;
-    TextView textViewCustomTranslation;
 
     private static final int REQUEST_CODE_ANKI = 0;
 
@@ -87,13 +82,8 @@ public class LauncherActivity extends AppCompatActivity {
         switchLeftHandMode = (Switch) findViewById(R.id.left_hand_mode);
         switchPinkTheme = (Switch) findViewById(R.id.pink_theme_switch);
         textViewOpenPlanManager = (TextView) findViewById(R.id.btn_open_plan_manager);
-        textViewAbout = (TextView) findViewById(R.id.btn_about_and_support);
-        textViewHelp = (TextView) findViewById(R.id.btn_help);
         textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
-        textViewAddQQGroup = (TextView) findViewById(R.id.btn_qq_group);
-        textViewRandomQuote = (TextView) findViewById(R.id.btn_show_random_content);
-        textViewCustomTranslation = findViewById(R.id.btn_set_custom_fanyi);
-        textViewAbout.setText(Html.fromHtml("<font color='red'>❤</font>" + getResources().getString(R.string.btn_about_and_support_str)));
+
         switchMoniteClipboard.setChecked(
                 settings.getMoniteClipboardQ()
         );
@@ -170,39 +160,6 @@ public class LauncherActivity extends AppCompatActivity {
             }
         });
 
-
-        textViewAbout.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        Intent intent = new Intent(LauncherActivity.this, AboutActivity.class);
-                        startActivity(intent);
-                    }
-                }
-        );
-
-        textViewCustomTranslation.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(LauncherActivity.this, CustomTranslationActivity.class);
-                        startActivity(intent);
-                    }
-                }
-        );
-
-        textViewHelp.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        String url = "https://github.com/mmjang/ankihelper/blob/master/README.md";
-                        Intent i = new Intent(Intent.ACTION_VIEW);
-                        i.setData(Uri.parse(url));
-                        startActivity(i);
-                    }
-                }
-        );
-
         textViewAddDefaultPlan.setOnClickListener(
                 new View.OnClickListener() {
                     @Override
@@ -222,29 +179,6 @@ public class LauncherActivity extends AppCompatActivity {
                     }
                 }
         );
-
-        textViewAddQQGroup.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        joinQQGroup("-1JxtFYckXpYUMpZKRbrMWuceCgM23R7");
-                    }
-                }
-        );
-        if (settings.getMoniteClipboardQ()) {
-            startCBService();
-        }
-
-        textViewRandomQuote.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-                        Intent intent = new Intent(LauncherActivity.this, ContentActivity.class);
-                        startActivity(intent);
-                    }
-                }
-        );
-
         //debug new feature
 //        Thread thread = new Thread(new Runnable() {
 //            @Override
@@ -278,7 +212,7 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_about_menu_entry, menu);
+        inflater.inflate(R.menu.menu_main, menu);
         return true;
     }
 
@@ -399,26 +333,7 @@ public class LauncherActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    /****************
-     *
-     * 发起添加群流程。群号：安卓划词助手用户群(871406754) 的 key 为： -1JxtFYckXpYUMpZKRbrMWuceCgM23R7
-     * 调用 joinQQGroup(-1JxtFYckXpYUMpZKRbrMWuceCgM23R7) 即可发起手Q客户端申请加群 安卓划词助手用户群(871406754)
-     *
-     * @param key 由官网生成的key
-     * @return 返回true表示呼起手Q成功，返回fals表示呼起失败
-     ******************/
-    public boolean joinQQGroup(String key) {
-        Intent intent = new Intent();
-        intent.setData(Uri.parse("mqqopensdkapi://bizAgent/qm/qr?url=http%3A%2F%2Fqm.qq.com%2Fcgi-bin%2Fqm%2Fqr%3Ffrom%3Dapp%26p%3Dandroid%26k%3D" + key));
-        // 此Flag可根据具体产品需要自定义，如设置，则在加群界面按返回，返回手Q主界面，不设置，按返回会返回到呼起产品界面    //intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        try {
-            startActivity(intent);
-            return true;
-        } catch (Exception e) {
-            // 未安装手Q或安装的版本不支持
-            return false;
-        }
-    }
+
 
     public void setVersion() {
         try {

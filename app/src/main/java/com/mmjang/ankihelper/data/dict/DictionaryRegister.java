@@ -14,7 +14,7 @@ import java.util.List;
 
 public class DictionaryRegister {
     //在这里注册词典类
-    private static Class[] classList = new Class[]{
+    private static Class<?>[] classList = new Class<?>[]{
             Ode2.class,
             Collins.class,
             CollinsEnEn.class,
@@ -51,15 +51,19 @@ public class DictionaryRegister {
     public static List<IDictionary> getDictionaryObjectList() {
         //if (dictList == null) {
             dictList = new ArrayList<>();
-            for (Class c : classList) {
+            for (Class<?> c : classList) {
                 try {
                     dictList.add(
-                            (IDictionary) c.getConstructor(Context.class).newInstance(MyApplication.getContext())
+                            (IDictionary) c.getDeclaredConstructor(Context.class).newInstance(MyApplication.getContext())
                     );
                 } catch (NoSuchMethodException nsme) {
+                    // Handle missing constructor
                 } catch (InstantiationException ie) {
+                    // Handle instantiation issues
                 } catch (IllegalAccessException ie) {
+                    // Handle access issues
                 } catch (InvocationTargetException ite) {
+                    // Handle invocation issues
                 }
             }
         //}

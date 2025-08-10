@@ -6,9 +6,7 @@
     <!-- Settings Categories -->
     <string name="settings_category_general">General</string>
     <string name="settings_category_appearance">Appearance</string>
-    <string name="settings_category_integration">Integration</string>
-    <string name="settings_category_dictionaries">Dictionaries</string>
-    <string name="settings_category_support">Support</string>
+    <string name="settings_category_essential">Essential</string>
 
     <!-- General Settings -->
     <string name="settings_monitor_clipboard">Monitor Clipboard</string>
@@ -26,26 +24,10 @@
     <string name="settings_pronounce_language">Pronunciation Language</string>
     <string name="settings_pronounce_language_summary">Choose pronunciation language for text</string>
 
-    <!-- Integration Settings -->
-    <string name="settings_default_tag">Default Tags</string>
-    <string name="settings_default_tag_summary">Tags automatically added to new notes</string>
-    <string name="settings_default_tag_dialog">Set default tags</string>
-    <string name="settings_custom_dictionary">Custom Dictionaries</string>
-    <string name="settings_custom_dictionary_summary">Import and manage custom dictionaries</string>
-    <string name="settings_custom_translation">Custom Translation</string>
-    <string name="settings_custom_translation_summary">Configure Baidu Translate API</string>
 
-    <!-- Dictionaries Settings -->
-    <string name="settings_plan_manager">Plan Manager</string>
-    <string name="settings_plan_manager_summary">Manage your word capture plans</string>
 
-    <!-- Support Settings -->
-    <string name="settings_help">Help</string>
-    <string name="settings_help_summary">Get help and tutorials</string>
-    <string name="settings_join_qq">Join QQ Group</string>
-    <string name="settings_join_qq_summary">Join community discussion</string>
-    <string name="settings_about">About</string>
-    <string name="settings_about_summary">About Anki Helper and support</string>
-    <string name="settings_version">Version</string>
-    <string name="settings_version_summary">Current app version</string>
+
+
+
+
 </resources>

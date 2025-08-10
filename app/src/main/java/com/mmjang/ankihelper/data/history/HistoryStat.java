@@ -3,11 +3,12 @@ package com.mmjang.ankihelper.data.history;
 import com.mmjang.ankihelper.data.database.DatabaseManager;
 
 import org.litepal.crud.LitePalSupport;
-import org.threeten.bp.Instant;
-import org.threeten.bp.LocalDate;
-import org.threeten.bp.LocalDateTime;
-import org.threeten.bp.OffsetDateTime;
-import org.threeten.bp.ZoneId;
+
+import java.time.Instant;
+import java.time.LocalDate;
+import java.time.LocalDateTime;
+import java.time.ZoneId;
+import java.time.ZoneOffset;
 
 import java.util.List;
 
@@ -21,11 +22,11 @@ public class HistoryStat {
 
     public HistoryStat(int days){
         lastDays = days;
-        startOfToday = LocalDate.now().atStartOfDay().toInstant(OffsetDateTime.now().getOffset()).toEpochMilli();
+        startOfToday = LocalDate.now().atStartOfDay(ZoneOffset.systemDefault()).toInstant().toEpochMilli();
         startOfThisMonth = LocalDate.now().withDayOfMonth(1).atStartOfDay()
-                .toInstant(OffsetDateTime.now().getOffset()).toEpochMilli();
+                .atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli();
         startOfLastDays = LocalDate.now().minusDays(days - 1).atStartOfDay()
-                .toInstant(OffsetDateTime.now().getOffset()).toEpochMilli();
+                .atZone(ZoneOffset.systemDefault()).toInstant().toEpochMilli();
 //        dataOfLastDays = DataSupport.where("timestamp > ?", Long.toString(startOfLastDays))
 //                .find(History.class);
         dataOfLastDays = DatabaseManager.getInstance().getHistoryAfter(startOfLastDays);
