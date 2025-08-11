@@ -43,7 +43,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/plan_manager_str"
+                    android:gravity="start|center_vertical"
                     app:icon="@drawable/ic_settings_outline"
+                    app:iconGravity="end"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
 
                 <com.google.android.material.divider.MaterialDivider
@@ -57,7 +59,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:text="@string/btn_add_default_plan_str"
+                    android:gravity="start|center_vertical"
                     app:icon="@drawable/ic_add"
+                    app:iconGravity="end"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
@@ -163,17 +167,26 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/textview_version"
-            android:layout_width="wrap_content"
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/version_card"
+            android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
-            android:textAppearance="?attr/textAppearanceBodySmall"
-            android:textColor="?attr/colorPrimary"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/settings_card" />
+            app:layout_constraintTop_toBottomOf="@+id/switches_card">
 
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/textview_version"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
+                android:layout_margin="8dp"
+                android:textAppearance="?attr/textAppearanceBodySmall"
+                android:textColor="?attr/colorPrimary" />
+
+        </com.google.android.material.card.MaterialCardView>
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 </ScrollView>
