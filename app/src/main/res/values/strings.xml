@@ -57,4 +57,5 @@
     <string name="menu_title_statistics">Statistics</string>
     <string name="str_use_as_default_tags">作为默认标签</string>
     <string name="str_clipboard_service_running_version_q">Copy text and click this notification</string>
+    <string name="acknowledge_text">Copyright: 2024-2025 Jennings Liu\nCopyright: 2017-2021 mmjang</string>
 </resources>

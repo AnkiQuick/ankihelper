@@ -52,6 +52,7 @@ public class LauncherActivity extends AppCompatActivity {
     MaterialSwitch switchPinkTheme;
     TextView textViewOpenPlanManager;
     TextView textViewAddDefaultPlan;
+    TextView textViewAcknowledge;
 
     private static final int REQUEST_CODE_ANKI = 0;
 
@@ -84,6 +85,7 @@ public class LauncherActivity extends AppCompatActivity {
         switchPinkTheme = findViewById(R.id.pink_theme_switch);
         textViewOpenPlanManager = (TextView) findViewById(R.id.btn_open_plan_manager);
         textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
+        textViewAcknowledge = (TextView) findViewById(R.id.textview_acknowledge);
 
         switchMoniteClipboard.setChecked(
                 settings.getMoniteClipboardQ()
