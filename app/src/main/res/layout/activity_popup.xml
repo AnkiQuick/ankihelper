@@ -130,15 +130,85 @@
                         android:layout_gravity="center"
                         app:cardElevation="2dp"
                         app:cardCornerRadius="4dp">
+
                         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:orientation="vertical">
 
+                        <!-- Select Mode Content -->
                         <com.mmjang.ankihelper.ui.widget.BigBangLayoutWrapper
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:id="@+id/bigbang_wrapper"/>
+                            android:id="@+id/bigbang_wrapper"
+                            android:layout_toLeftOf="@+id/btn_edit_mode"
+                            android:layout_toStartOf="@+id/btn_edit_mode" />
+
+                        <!-- Select Mode Controls -->
+                        <ImageButton
+                            android:id="@+id/btn_edit_mode"
+                            android:layout_width="36dp"
+                            android:layout_height="36dp"
+                            android:src="?attr/icon_edit"
+                            android:background="?attr/button_background_selector"
+                            android:visibility="visible"
+                            android:contentDescription="Edit text"
+                            android:scaleType="centerInside"
+                            android:padding="6dp"
+                            android:layout_margin="4dp"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true"
+                            android:layout_centerVertical="true" />
+
+                        <!-- Edit Mode Content -->
+                        <EditText
+                            android:id="@+id/edit_text_area"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:visibility="gone"
+                            android:inputType="textMultiLine|textCapSentences"
+                            android:scrollbars="vertical"
+                            android:gravity="top|start"
+                            android:background="@color/transparent"
+                            android:padding="8dp"
+                            android:textSize="16sp"
+                            android:lineSpacingExtra="2dp"
+                            android:layout_toLeftOf="@+id/edit_mode_controls"
+                            android:layout_toStartOf="@+id/edit_mode_controls" />
+
+                        <!-- Edit Mode Controls -->
+                        <LinearLayout
+                            android:id="@+id/edit_mode_controls"
+                            android:layout_width="48dp"
+                            android:layout_height="match_parent"
+                            android:orientation="vertical"
+                            android:weightSum="2"
+                            android:layout_alignParentRight="true"
+                            android:layout_alignParentEnd="true">
+
+                            <ImageButton
+                                android:id="@+id/btn_save_changes"
+                                android:layout_width="36dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:src="?attr/icon_save"
+                                android:background="?attr/button_background_selector"
+                                android:visibility="gone"
+                                android:contentDescription="Save changes"
+                                android:scaleType="centerInside" />
+
+                            <ImageButton
+                                android:id="@+id/btn_discard_changes"
+                                android:layout_width="36dp"
+                                android:layout_height="0dp"
+                                android:layout_weight="1"
+                                android:src="?attr/icon_discard"
+                                android:background="?attr/button_background_selector"
+                                android:visibility="gone"
+                                android:contentDescription="Discard changes"
+                                android:scaleType="centerInside"/>
+                        </LinearLayout>
+
                         </RelativeLayout>
                     </androidx.cardview.widget.CardView>
 

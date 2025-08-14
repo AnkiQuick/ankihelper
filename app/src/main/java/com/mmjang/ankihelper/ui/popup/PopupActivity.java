@@ -62,6 +62,9 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.text.TextWatcher;
+import android.text.Editable;
+import android.view.inputmethod.InputMethodManager;
 
 import com.bumptech.glide.Glide;
 import com.ichi2.anki.FlashCardsContract;
@@ -179,6 +182,12 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
     ProgressBar progressBar;
     ProgressBar mAudioProgress;
 
+    // Edit mode views
+    EditText mEditTextArea;
+    ImageButton mBtnEditMode;
+    ImageButton mBtnSaveChanges;
+    ImageButton mBtnDiscardChanges;
+
     CardView mCardViewTranslation;
     EditText mEditTextTranslation;
     //fab
@@ -197,6 +206,16 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
     private static final int ASYNC_SEARCH_FAILED = 2;
     private static final int TRANSLATION_DONE = 3;
     private static final int TRANSLATIOn_FAILED = 4;
+
+    // Edit mode state
+    private enum EditMode {
+        SELECT_MODE,
+        EDIT_MODE
+    }
+
+    private EditMode currentEditMode = EditMode.SELECT_MODE;
+    private String originalText; // Backup for discard functionality
+    private int lastScrollPosition = 0; // Preserve scroll position between modes
 
     //view tag
     private static final int TAG_NOTE_ID_LONG = 5;
@@ -341,6 +360,19 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
         mBtnFooterRotateRight= (ImageButton) findViewById(R.id.footer_rotate_right);
         mBtnFooterScrollup = (ImageButton) findViewById(R.id.footer_scroll_up);
         mAudioProgress = findViewById(R.id.audio_progress);
+
+        // Edit mode views
+        mEditTextArea = (EditText) findViewById(R.id.edit_text_area);
+        mBtnEditMode = (ImageButton) findViewById(R.id.btn_edit_mode);
+        mBtnSaveChanges = (ImageButton) findViewById(R.id.btn_save_changes);
+        mBtnDiscardChanges = (ImageButton) findViewById(R.id.btn_discard_changes);
+        
+        // Initialize edit mode views to correct initial state
+        bigBangLayoutWrapper.setVisibility(View.VISIBLE);
+        mEditTextArea.setVisibility(View.GONE);
+        mBtnEditMode.setVisibility(View.VISIBLE);
+        mBtnSaveChanges.setVisibility(View.GONE);
+        mBtnDiscardChanges.setVisibility(View.GONE);
     }
 
     private void loadData() {
@@ -471,8 +503,8 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
         bigBangLayout.setShowSymbol(true);
         bigBangLayout.setShowSpace(true);
         bigBangLayout.setShowSection(true);
-        bigBangLayout.setItemSpace(0);
-        bigBangLayout.setLineSpace(0);
+        bigBangLayout.setItemSpace(4);
+        bigBangLayout.setLineSpace(2);
         bigBangLayout.setTextPadding(5);
         bigBangLayout.setTextPaddingPort(5);
         bigBangLayoutWrapper.setStickHeader(true);
@@ -661,6 +693,127 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                     }
                 }
         );
+        
+        // Add edit mode event listeners
+        setupEditModeListeners();
+    }
+
+    private void setupEditModeListeners() {
+        // Add TextWatcher to show/hide pronunciation button based on text content
+        act.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+                // Not needed
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                // Not needed
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+                // Show pronunciation button if there's text, hide it if empty
+                showPronounce(s.length() > 0);
+            }
+        });
+
+        // Edit mode toggle button
+        mBtnEditMode.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                switchToEditMode();
+            }
+        });
+
+        // Save changes button
+        mBtnSaveChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                saveChangesAndReturnToSelectMode();
+            }
+        });
+
+        // Discard changes button
+        mBtnDiscardChanges.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                discardChangesAndReturnToSelectMode();
+            }
+        });
+    }
+
+    private void switchToEditMode() {
+        // Backup current state
+        originalText = getCurrentTextFromBigBangLayout();
+        
+        // Switch UI components
+        bigBangLayoutWrapper.setVisibility(View.GONE);
+        mBtnEditMode.setVisibility(View.GONE);
+        mEditTextArea.setVisibility(View.VISIBLE);
+        mBtnSaveChanges.setVisibility(View.VISIBLE);
+        mBtnDiscardChanges.setVisibility(View.VISIBLE);
+        
+        // Populate edit text
+        mEditTextArea.setText(originalText);
+        mEditTextArea.requestFocus();
+        
+        // Show keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.showSoftInput(mEditTextArea, InputMethodManager.SHOW_IMPLICIT);
+        
+        currentEditMode = EditMode.EDIT_MODE;
+    }
+
+    private void saveChangesAndReturnToSelectMode() {
+        // Capture modified text from edit_text_area
+        String modifiedText = mEditTextArea.getText().toString();
+        
+        // Update data model
+        mTextToProcess = modifiedText;
+        
+        // Reprocess text
+        populateWordSelectBox();
+        
+        // Switch UI back to select mode
+        mEditTextArea.setVisibility(View.GONE);
+        mBtnSaveChanges.setVisibility(View.GONE);
+        mBtnDiscardChanges.setVisibility(View.GONE);
+        bigBangLayoutWrapper.setVisibility(View.VISIBLE);
+        mBtnEditMode.setVisibility(View.VISIBLE);
+        
+        // Hide keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEditTextArea.getWindowToken(), 0);
+        
+        currentEditMode = EditMode.SELECT_MODE;
+    }
+
+    private void discardChangesAndReturnToSelectMode() {
+        // Restore original text state
+        mTextToProcess = originalText;
+        
+        // Reprocess text with original content
+        populateWordSelectBox();
+        
+        // Switch UI back to select mode
+        mEditTextArea.setVisibility(View.GONE);
+        mBtnSaveChanges.setVisibility(View.GONE);
+        mBtnDiscardChanges.setVisibility(View.GONE);
+        bigBangLayoutWrapper.setVisibility(View.VISIBLE);
+        mBtnEditMode.setVisibility(View.VISIBLE);
+        
+        // Hide keyboard
+        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(mEditTextArea.getWindowToken(), 0);
+        
+        currentEditMode = EditMode.SELECT_MODE;
+    }
+
+    private String getCurrentTextFromBigBangLayout() {
+        // Instead of reconstructing from BigBangLayout segments, 
+        // we should use the original mTextToProcess which contains the unsegmented text
+        return mTextToProcess;
     }
 
     private IDictionary getDictionaryFromOutputPlan(OutputPlanPOJO outputPlan) {

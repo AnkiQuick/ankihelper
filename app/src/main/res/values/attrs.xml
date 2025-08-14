@@ -27,5 +27,8 @@
     <attr name="icon_search" format="reference"/>
     <attr name="icon_add" format="reference"/>
     <attr name="icon_add_done" format="reference"/>
+    <attr name="icon_edit" format="reference"/>
+    <attr name="icon_save" format="reference"/>
+    <attr name="icon_discard" format="reference"/>
 
 </resources>

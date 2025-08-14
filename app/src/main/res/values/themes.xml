@@ -36,6 +36,9 @@
         <item name="icon_search">@drawable/ic_search</item>
         <item name="icon_add">@drawable/ic_add_grey</item>
         <item name="icon_add_done">@drawable/ic_ok</item>
+        <item name="icon_edit">@drawable/ic_edit</item>
+        <item name="icon_save">@drawable/ic_save</item>
+        <item name="icon_discard">@drawable/ic_delete</item>
     </style>
 
     <!-- Pink theme variant -->
@@ -70,6 +73,9 @@
         <item name="icon_search">@drawable/ic_search</item>
         <item name="icon_add">@drawable/ic_add_blue</item>
         <item name="icon_add_done">@drawable/ic_ok</item>
+        <item name="icon_edit">@drawable/ic_edit</item>
+        <item name="icon_save">@drawable/ic_save</item>
+        <item name="icon_discard">@drawable/ic_delete</item>
 
         <!-- CardView support via Material3 theme -->
     </style>
@@ -105,6 +111,9 @@
         <item name="icon_search">@drawable/ic_search</item>
         <item name="icon_add">@drawable/ic_add_grey</item>
         <item name="icon_add_done">@drawable/ic_ok</item>
+        <item name="icon_edit">@drawable/ic_edit</item>
+        <item name="icon_save">@drawable/ic_save</item>
+        <item name="icon_discard">@drawable/ic_delete</item>
 
         <!-- CardView support and transparent window styling -->
         <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
@@ -141,6 +150,9 @@
         <item name="icon_search">@drawable/ic_search</item>
         <item name="icon_add">@drawable/ic_add_blue</item>
         <item name="icon_add_done">@drawable/ic_ok</item>
+        <item name="icon_edit">@drawable/ic_edit</item>
+        <item name="icon_save">@drawable/ic_save</item>
+        <item name="icon_discard">@drawable/ic_delete</item>
 
         <!-- CardView support -->
         <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>

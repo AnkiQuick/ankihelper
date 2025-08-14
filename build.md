@@ -23,3 +23,13 @@ docker run -v `pwd`:/project -it mingc/android-build-box bash -l
 - use adb logcat to get the crash log
   ```shell
   adb logcat | grep "PopupActivity"
+
+
+## qwen code
+
+ask it to compile without sdk
+
+```
+check if Java compilation works without the full Android SDK:
+javac -cp "app/src/main/java:app/build/generated/source/buildConfig/debug" app/src/main/java/com/mmjang/ankihelper/ui/popup/PopupActivity.java -d /tmp
+```
