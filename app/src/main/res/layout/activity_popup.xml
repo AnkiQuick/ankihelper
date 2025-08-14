@@ -270,6 +270,7 @@
                                 android:textSize="18sp"
                                 android:paddingTop="7dp"
                                 android:paddingBottom="10dp"
+                                android:popupBackground="@drawable/spinner_dropdown_bg"
                                 />
 
                             <Button
