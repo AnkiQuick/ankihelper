@@ -103,7 +103,8 @@
                                 android:id="@+id/language_spinner"
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
-                                android:scrollbarSize="20dp" />
+                                android:scrollbarSize="20dp"
+                                android:popupBackground="@drawable/spinner_dropdown_bg" />
                         </LinearLayout>
 
                         <ImageButton
