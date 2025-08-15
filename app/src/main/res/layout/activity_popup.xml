@@ -193,10 +193,11 @@
                                 android:layout_height="0dp"
                                 android:layout_weight="1"
                                 android:src="?attr/icon_save"
-                                android:background="?attr/button_background_selector"
+                                android:background="@null"
                                 android:visibility="gone"
                                 android:contentDescription="Save changes"
-                                android:scaleType="centerInside" />
+                                android:scaleType="centerInside"
+                                android:layout_margin="6dp" />
 
                             <ImageButton
                                 android:id="@+id/btn_discard_changes"
@@ -204,10 +205,11 @@
                                 android:layout_height="0dp"
                                 android:layout_weight="1"
                                 android:src="?attr/icon_discard"
-                                android:background="?attr/button_background_selector"
+                                android:background="@null"
                                 android:visibility="gone"
                                 android:contentDescription="Discard changes"
-                                android:scaleType="centerInside"/>
+                                android:scaleType="centerInside"
+                                android:layout_margin="6dp" />
                         </LinearLayout>
 
                         </RelativeLayout>
@@ -273,12 +275,14 @@
                                 android:popupBackground="@drawable/spinner_dropdown_bg"
                                 />
 
-                            <Button
+                            <ImageButton
                                 android:id="@+id/btn_search"
                                 android:layout_width="30dp"
                                 android:layout_height="30dp"
                                 android:layout_margin="5dp"
-                                android:background="?attr/icon_search" />
+                                android:src="?attr/icon_search"
+                                android:background="@null"
+                                android:scaleType="centerInside" />
 
                             <ProgressBar
                                 android:id="@+id/progress_bar"

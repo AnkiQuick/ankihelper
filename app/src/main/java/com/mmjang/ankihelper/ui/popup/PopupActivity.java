@@ -168,7 +168,7 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
     boolean needTranslation = false;
     //views
     AutoCompleteTextView act;
-    Button btnSearch;
+    ImageButton btnSearch;
     ImageButton btnPronounce;
     Spinner planSpinner;
     Spinner pronounceLanguageSpinner;
@@ -341,7 +341,7 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
 
     private void assignViews() {
         act = (AutoCompleteTextView) findViewById(R.id.edit_text_hwd);
-        btnSearch = (Button) findViewById(R.id.btn_search);
+        btnSearch = (ImageButton) findViewById(R.id.btn_search);
         btnPronounce = ((ImageButton) findViewById(R.id.btn_pronounce));
         planSpinner = (Spinner) findViewById(R.id.plan_spinner);
         pronounceLanguageSpinner = (Spinner) findViewById(R.id.language_spinner);
@@ -366,6 +366,8 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
         mBtnEditMode = (ImageButton) findViewById(R.id.btn_edit_mode);
         mBtnSaveChanges = (ImageButton) findViewById(R.id.btn_save_changes);
         mBtnDiscardChanges = (ImageButton) findViewById(R.id.btn_discard_changes);
+        
+        // Icons are set in layout XML using src attribute
         
         // Initialize edit mode views to correct initial state
         bigBangLayoutWrapper.setVisibility(View.VISIBLE);
@@ -753,6 +755,8 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
         mEditTextArea.setVisibility(View.VISIBLE);
         mBtnSaveChanges.setVisibility(View.VISIBLE);
         mBtnDiscardChanges.setVisibility(View.VISIBLE);
+        
+        // Icons are set in layout XML using src attribute
         
         // Populate edit text
         mEditTextArea.setText(originalText);
@@ -1267,11 +1271,9 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                             if (noteIdAdded != null) {
                                 if (mUpdateNoteId == 0) {
                                     if (Utils.deleteNote(PopupActivity.this, noteIdAdded.longValue())) {
-                                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                            btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                                    PopupActivity.this,
-                                                    Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add)));
-                                        }
+                                        btnAddDefinition.setImageDrawable(ContextCompat.getDrawable(
+                                                PopupActivity.this,
+                                                Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add)));
                                         btnAddDefinition.setTag(R.id.TAG_NOTE_ID, null);
                                         Toast.makeText(PopupActivity.this, R.string.str_cancel_note_add, Toast.LENGTH_SHORT).show();
 
@@ -1479,10 +1481,8 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                                 Long result = mAnkiDroid.getApi().addNote(modelId, deckId, exportFields, mTagEditedByUser);
                                 if (result != null) {
                                     Toast.makeText(PopupActivity.this, R.string.str_added, Toast.LENGTH_SHORT).show();
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                        btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                                PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_remove)));
-                                    }
+                                    btnAddDefinition.setImageDrawable(ContextCompat.getDrawable(
+                                            PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_remove)));
                                     clearBigbangSelection();
                                     mNoteEditedByUser = "";
                                     //attach the noteid to the button
@@ -1547,10 +1547,8 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                                 boolean successTag = mAnkiDroid.getApi().updateNoteTags(mUpdateNoteId, tags);
                                 if (success && successTag) {
                                     Toast.makeText(PopupActivity.this, R.string.str_note_updated, Toast.LENGTH_SHORT).show();
-                                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
-                                        btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                                PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_remove)));
-                                    }
+                                    btnAddDefinition.setImageDrawable(ContextCompat.getDrawable(
+                                            PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_remove)));
                                     //btnAddDefinition.setEnabled(false);
                                 } else {
                                     Toast.makeText(PopupActivity.this, R.string.str_error_note_update, Toast.LENGTH_SHORT).show();

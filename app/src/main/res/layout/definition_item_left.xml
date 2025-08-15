@@ -30,8 +30,10 @@
                android:layout_width="25dp"
                android:layout_height="25dp"
                android:layout_margin="5dp"
-               android:padding="10dp"
-               android:background="?attr/icon_add"
+               android:padding="2dp"
+               android:src="?attr/icon_add"
+               android:background="@null"
+               android:scaleType="centerInside"
                />
         </LinearLayout>
         <LinearLayout

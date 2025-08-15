@@ -39,7 +39,7 @@
         <item name="icon_remove">@drawable/ic_minus</item>
         <item name="icon_edit">@drawable/ic_edit</item>
         <item name="icon_save">@drawable/ic_save</item>
-        <item name="icon_discard">@drawable/ic_delete</item>
+        <item name="icon_discard">@drawable/ic_undo</item>
     </style>
 
     <!-- Pink theme variant -->
@@ -77,7 +77,7 @@
         <item name="icon_remove">@drawable/ic_minus</item>
         <item name="icon_edit">@drawable/ic_edit</item>
         <item name="icon_save">@drawable/ic_save</item>
-        <item name="icon_discard">@drawable/ic_delete</item>
+        <item name="icon_discard">@drawable/ic_undo</item>
 
         <!-- CardView support via Material3 theme -->
     </style>
@@ -116,7 +116,7 @@
         <item name="icon_remove">@drawable/ic_minus</item>
         <item name="icon_edit">@drawable/ic_edit</item>
         <item name="icon_save">@drawable/ic_save</item>
-        <item name="icon_discard">@drawable/ic_delete</item>
+        <item name="icon_discard">@drawable/ic_undo</item>
 
         <!-- CardView support and transparent window styling -->
         <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
@@ -156,7 +156,7 @@
         <item name="icon_remove">@drawable/ic_minus</item>
         <item name="icon_edit">@drawable/ic_edit</item>
         <item name="icon_save">@drawable/ic_save</item>
-        <item name="icon_discard">@drawable/ic_delete</item>
+        <item name="icon_discard">@drawable/ic_undo</item>
 
         <!-- CardView support -->
         <item name="colorSurfaceVariant">@color/md_theme_light_surfaceVariant</item>
