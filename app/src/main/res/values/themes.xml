@@ -36,6 +36,7 @@
         <item name="icon_search">@drawable/ic_search</item>
         <item name="icon_add">@drawable/ic_add_grey</item>
         <item name="icon_add_done">@drawable/ic_ok</item>
+        <item name="icon_remove">@drawable/ic_minus</item>
         <item name="icon_edit">@drawable/ic_edit</item>
         <item name="icon_save">@drawable/ic_save</item>
         <item name="icon_discard">@drawable/ic_delete</item>
@@ -73,6 +74,7 @@
         <item name="icon_search">@drawable/ic_search</item>
         <item name="icon_add">@drawable/ic_add_blue</item>
         <item name="icon_add_done">@drawable/ic_ok</item>
+        <item name="icon_remove">@drawable/ic_minus</item>
         <item name="icon_edit">@drawable/ic_edit</item>
         <item name="icon_save">@drawable/ic_save</item>
         <item name="icon_discard">@drawable/ic_delete</item>
@@ -111,6 +113,7 @@
         <item name="icon_search">@drawable/ic_search</item>
         <item name="icon_add">@drawable/ic_add_grey</item>
         <item name="icon_add_done">@drawable/ic_ok</item>
+        <item name="icon_remove">@drawable/ic_minus</item>
         <item name="icon_edit">@drawable/ic_edit</item>
         <item name="icon_save">@drawable/ic_save</item>
         <item name="icon_discard">@drawable/ic_delete</item>
@@ -150,6 +153,7 @@
         <item name="icon_search">@drawable/ic_search</item>
         <item name="icon_add">@drawable/ic_add_blue</item>
         <item name="icon_add_done">@drawable/ic_ok</item>
+        <item name="icon_remove">@drawable/ic_minus</item>
         <item name="icon_edit">@drawable/ic_edit</item>
         <item name="icon_save">@drawable/ic_save</item>
         <item name="icon_discard">@drawable/ic_delete</item>

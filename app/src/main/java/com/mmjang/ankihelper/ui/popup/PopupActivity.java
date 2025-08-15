@@ -1481,7 +1481,7 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                                     Toast.makeText(PopupActivity.this, R.string.str_added, Toast.LENGTH_SHORT).show();
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                         btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                                PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add_done)));
+                                                PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_remove)));
                                     }
                                     clearBigbangSelection();
                                     mNoteEditedByUser = "";
@@ -1549,7 +1549,7 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                                     Toast.makeText(PopupActivity.this, R.string.str_note_updated, Toast.LENGTH_SHORT).show();
                                     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN) {
                                         btnAddDefinition.setBackground(ContextCompat.getDrawable(
-                                                PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_add_done)));
+                                                PopupActivity.this, Utils.getResIdFromAttribute(PopupActivity.this, R.attr.icon_remove)));
                                     }
                                     //btnAddDefinition.setEnabled(false);
                                 } else {
