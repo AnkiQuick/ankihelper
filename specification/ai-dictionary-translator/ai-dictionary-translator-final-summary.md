@@ -78,6 +78,8 @@ Implemented default prompts for both AI dictionary and translator services:
 - Added service classes for AI operations
 - Added manager class for coordinating AI services
 - Modified existing activities to integrate AI features
+- Fixed PopupActivity to correctly handle AI dictionary selection and prevent crashes
+- Enhanced AI dictionary response parsing to handle markdown-wrapped JSON from LLMs
 
 ### Resource Files
 - Updated `AndroidManifest.xml` to include new activities

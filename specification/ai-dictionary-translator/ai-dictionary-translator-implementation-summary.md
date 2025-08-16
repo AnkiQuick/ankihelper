@@ -36,6 +36,9 @@ This document summarizes the implementation of the AI Dictionary and Translator 
 
 ### 7. Integration
 - PopupActivity: Updated to use AI translation when available, with fallback to existing translation method
+- Fixed AI dictionary selection crash in PopupActivity
+- Improved PopupActivity UI with visible plan selection dropdown
+- Enhanced AI dictionary response parsing to handle markdown-wrapped JSON from LLMs
 
 ## Key Implementation Details
 
