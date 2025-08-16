@@ -28,6 +28,7 @@ import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import com.mmjang.ankihelper.util.Constant;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
 import com.mmjang.ankihelper.data.dict.IDictionary;
+import com.mmjang.ankihelper.data.dict.AIDictionary; // Add this import
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.util.Utils;
@@ -165,7 +166,13 @@ public class PlanEditorActivity extends AppCompatActivity {
             boolean find = false;
             for (int i = 0; i < dictionaryList.size(); i++) {
                 IDictionary dict = dictionaryList.get(i);
-                String key2 = dict.getDictionaryName();
+                String key2;
+                // Check if it's an AI dictionary
+                if (dict instanceof AIDictionary) {
+                    key2 = ((AIDictionary) dict).getDictionaryKey();
+                } else {
+                    key2 = dict.getDictionaryName();
+                }
                 Log.d("Editor", dict.getDictionaryName() + "haha");
                 if (key1.equals(key2)) {
                     currentDictionary = dictionaryList.get(i);
@@ -343,7 +350,14 @@ public class PlanEditorActivity extends AppCompatActivity {
         }
         //new OutputPlan();
         plan.setPlanName(planName);
-        plan.setDictionaryKey(currentDictionary.getDictionaryName());
+        // Set dictionary key - handle AI dictionaries differently
+        String dictionaryKey;
+        if (currentDictionary instanceof AIDictionary) {
+            dictionaryKey = ((AIDictionary) currentDictionary).getDictionaryKey();
+        } else {
+            dictionaryKey = currentDictionary.getDictionaryName();
+        }
+        plan.setDictionaryKey(dictionaryKey);
         plan.setOutputDeckId(currentDeckId);
         plan.setOutputModelId(currentModelId);
 

@@ -103,6 +103,87 @@
                 android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
         </activity>
 
+        <activity android:name=".ui.ai.AIConfigActivity"
+            android:label="AI Configuration"
+            android:theme="@style/Theme.AnkiHelper"
+            android:parentActivityName=".ui.LauncherActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+        </activity>
+
+        <activity android:name=".ui.ai.LLMConfigListActivity"
+            android:label="LLM Configurations"
+            android:theme="@style/Theme.AnkiHelper"
+            android:parentActivityName=".ui.ai.AIConfigActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.ai.AIConfigActivity" />
+        </activity>
+
+        <activity android:name=".ui.ai.LLMConfigEditorActivity"
+            android:label="LLM Configuration"
+            android:theme="@style/Theme.AnkiHelper"
+            android:parentActivityName=".ui.ai.LLMConfigListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.ai.LLMConfigListActivity" />
+        </activity>
+
+        <activity android:name=".ui.ai.TTSConfigListActivity"
+            android:label="TTS Configurations"
+            android:theme="@style/Theme.AnkiHelper"
+            android:parentActivityName=".ui.ai.AIConfigActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.ai.AIConfigActivity" />
+        </activity>
+
+        <activity android:name=".ui.ai.TTSConfigEditorActivity"
+            android:label="TTS Configuration"
+            android:theme="@style/Theme.AnkiHelper"
+            android:parentActivityName=".ui.ai.TTSConfigListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.ai.TTSConfigListActivity" />
+        </activity>
+
+        <activity android:name=".ui.ai.AIDictionaryConfigListActivity"
+            android:label="AI Dictionary Configurations"
+            android:theme="@style/Theme.AnkiHelper"
+            android:parentActivityName=".ui.ai.AIConfigActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.ai.AIConfigActivity" />
+        </activity>
+
+        <activity android:name=".ui.ai.AIDictionaryConfigEditorActivity"
+            android:label="AI Dictionary Configuration"
+            android:theme="@style/Theme.AnkiHelper"
+            android:parentActivityName=".ui.ai.AIDictionaryConfigListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.ai.AIDictionaryConfigListActivity" />
+        </activity>
+
+        <activity android:name=".ui.ai.AITranslatorConfigListActivity"
+            android:label="AI Translator Configurations"
+            android:theme="@style/Theme.AnkiHelper"
+            android:parentActivityName=".ui.ai.AIConfigActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.ai.AIConfigActivity" />
+        </activity>
+
+        <activity android:name=".ui.ai.AITranslatorConfigEditorActivity"
+            android:label="AI Translator Configuration"
+            android:theme="@style/Theme.AnkiHelper"
+            android:parentActivityName=".ui.ai.AITranslatorConfigListActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.ai.AITranslatorConfigListActivity" />
+        </activity>
+
     </application>
 
 </manifest>

@@ -9,6 +9,7 @@ import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 
 import org.litepal.LitePalApplication;
 import org.litepal.LitePal;
+import org.litepal.LitePalDB;
 import okhttp3.OkHttpClient;
 import androidx.work.WorkManager;
 import org.litepal.LitePal; // Import for LitePal initialization
@@ -31,6 +32,11 @@ public class MyApplication extends MultiDexApplication {
         context = getApplicationContext();
         application = this;
         LitePal.initialize(this);
+        
+        // Initialize AI cache database
+        LitePalDB aiDB = LitePalDB.fromDefault("ai_cache");
+        LitePal.use(aiDB);
+        
 //        CrashReport.initCrashReport(getApplicationContext(), "398dc6145b", false);
 
     }

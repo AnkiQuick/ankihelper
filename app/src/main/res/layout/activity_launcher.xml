@@ -53,6 +53,22 @@
                     android:layout_height="wrap_content"
                     android:layout_marginVertical="8dp" />
 
+                <!-- AI Configuration Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_open_ai_config"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:text="AI Configuration"
+                    android:gravity="start|center_vertical"
+                    app:icon="@drawable/ic_settings_outline"
+                    app:iconGravity="end"
+                    style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                <com.google.android.material.divider.MaterialDivider
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginVertical="8dp" />
+
                 <!-- Add Default Plan Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_add_default_plan"

@@ -82,6 +82,12 @@
         <!-- CardView support via Material3 theme -->
     </style>
 
+    <!-- No Action Bar pink theme variant -->
+    <style name="Theme.AnkiHelperPink.NoActionBar" parent="Theme.AnkiHelperPink">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style>
+
     <!-- Legacy compatibility - maps to Theme.AnkiHelper -->
     <style name="AppTheme" parent="Theme.AnkiHelper" />
 

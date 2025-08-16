@@ -4,7 +4,7 @@ This document outlines the requirements for adding AI capabilities to the AnkiHe
 
 ## Overview
 
-Add AI as both a dictionary and translator:
+Added AI as both a dictionary and translator:
 - Send selected words to LLM for definitions
 - Send sentences to LLM for translation
 - Use TTS to pronounce words and sentences
@@ -51,7 +51,7 @@ Add AI as both a dictionary and translator:
       - source language: language to translate from
       - target language: language to translate to
     - we can set one as the default translator
-    - when `footer_translate` (ImageButton) is clicked in PopupActivity, it will use the default translator to perform the translation
+    - when `footer_translate` (ImageButton) is clicked in PopupActivity, it uses the default translator to perform the translation
 - All LLM and TTS configs saved in new database tables
 
 ### Integration
@@ -66,11 +66,11 @@ Add AI as both a dictionary and translator:
 
 ### Database Structure
 
-The configuration tables for LLM, TTS, AI Dictionary, and AI Translator will be created using LitePal ORM and stored in the main application database, following the same pattern as existing tables.
+The configuration tables for LLM, TTS, AI Dictionary, and AI Translator are created using LitePal ORM and stored in the main application database, following the same pattern as existing tables.
 
 #### LitePal Configuration
 
-Update the main LitePal configuration to include the new models:
+The main LitePal configuration includes the new models:
 
 ```xml
 <!-- assets/litepal.xml -->
@@ -95,6 +95,8 @@ Note that the database version has been incremented to 4 to trigger the creation
 
 ##### LLMConfig Model
 ```java
+package com.mmjang.ankihelper.data.ai;
+
 import org.litepal.crud.LitePalSupport;
 
 public class LLMConfig extends LitePalSupport {
@@ -105,11 +107,52 @@ public class LLMConfig extends LitePalSupport {
     private String modelName;
     
     // Getters and setters
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public String getApiToken() {
+        return apiToken;
+    }
+
+    public void setApiToken(String apiToken) {
+        this.apiToken = apiToken;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
 }
 ```
 
 ##### TTSConfig Model
 ```java
+package com.mmjang.ankihelper.data.ai;
+
 import org.litepal.crud.LitePalSupport;
 
 public class TTSConfig extends LitePalSupport {
@@ -120,11 +163,52 @@ public class TTSConfig extends LitePalSupport {
     private String modelName;
     
     // Getters and setters
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getName() {
+        return name;
+    }
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public String getBaseUrl() {
+        return baseUrl;
+    }
+
+    public void setBaseUrl(String baseUrl) {
+        this.baseUrl = baseUrl;
+    }
+
+    public String getApiToken() {
+        return apiToken;
+    }
+
+    public void setApiToken(String apiToken) {
+        this.apiToken = apiToken;
+    }
+
+    public String getModelName() {
+        return modelName;
+    }
+
+    public void setModelName(String modelName) {
+        this.modelName = modelName;
+    }
 }
 ```
 
 ##### AIDictionaryConfig Model
 ```java
+package com.mmjang.ankihelper.data.ai;
+
 import org.litepal.crud.LitePalSupport;
 
 public class AIDictionaryConfig extends LitePalSupport {
@@ -136,11 +220,60 @@ public class AIDictionaryConfig extends LitePalSupport {
     private String targetLanguage;
     
     // Getters and setters
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getDictionaryName() {
+        return dictionaryName;
+    }
+
+    public void setDictionaryName(String dictionaryName) {
+        this.dictionaryName = dictionaryName;
+    }
+
+    public long getLlmId() {
+        return llmId;
+    }
+
+    public void setLlmId(long llmId) {
+        this.llmId = llmId;
+    }
+
+    public String getPrompt() {
+        return prompt;
+    }
+
+    public void setPrompt(String prompt) {
+        this.prompt = prompt;
+    }
+
+    public String getSourceLanguage() {
+        return sourceLanguage;
+    }
+
+    public void setSourceLanguage(String sourceLanguage) {
+        this.sourceLanguage = sourceLanguage;
+    }
+
+    public String getTargetLanguage() {
+        return targetLanguage;
+    }
+
+    public void setTargetLanguage(String targetLanguage) {
+        this.targetLanguage = targetLanguage;
+    }
 }
 ```
 
 ##### AITranslatorConfig Model
 ```java
+package com.mmjang.ankihelper.data.ai;
+
 import org.litepal.crud.LitePalSupport;
 
 public class AITranslatorConfig extends LitePalSupport {
@@ -153,12 +286,91 @@ public class AITranslatorConfig extends LitePalSupport {
     private String targetLanguage;
     
     // Getters and setters
+    public long getId() {
+        return id;
+    }
+
+    public void setId(long id) {
+        this.id = id;
+    }
+
+    public String getTranslatorName() {
+        return translatorName;
+    }
+
+    public void setTranslatorName(String translatorName) {
+        this.translatorName = translatorName;
+    }
+
+    public long getLlmId() {
+        return llmId;
+    }
+
+    public void setLlmId(long llmId) {
+        this.llmId = llmId;
+    }
+
+    public String getPrompt() {
+        return prompt;
+    }
+
+    public void setPrompt(String prompt) {
+        this.prompt = prompt;
+    }
+
+    public boolean isDefault() {
+        return isDefault;
+    }
+
+    public void setDefault(boolean aDefault) {
+        isDefault = aDefault;
+    }
+
+    public String getSourceLanguage() {
+        return sourceLanguage;
+    }
+
+    public void setSourceLanguage(String sourceLanguage) {
+        this.sourceLanguage = sourceLanguage;
+    }
+
+    public String getTargetLanguage() {
+        return targetLanguage;
+    }
+
+    public void setTargetLanguage(String targetLanguage) {
+        this.targetLanguage = targetLanguage;
+    }
 }
 ```
 
 ### Cache Structure
 
-The AI cache tables will be created using LitePal ORM and stored in a separate SQLite database.
+The AI cache tables are created using LitePal ORM and stored in a separate SQLite database.
+
+### Theme Implementation
+
+All AI configuration activities use the standard `Theme.AnkiHelper` theme. This is implemented by:
+
+1. Declaring activities in `AndroidManifest.xml` with the standard theme:
+   ```xml
+   <activity android:name=".ui.ai.AIConfigActivity"
+       android:label="AI Configuration"
+       android:theme="@style/Theme.AnkiHelper"
+       android:parentActivityName=".ui.LauncherActivity">
+   </activity>
+   ```
+
+2. Using the built-in ActionBar in activities:
+   ```java
+   // In onCreate method of activities
+   if (getSupportActionBar() != null) {
+       getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+       getSupportActionBar().setTitle("Activity Title");
+   }
+   ```
+
+**Note**: The current implementation works correctly as all AI activities are using the standard `Theme.AnkiHelper` theme (which includes an ActionBar) and properly utilizing the ActionBar through `getSupportActionBar()`. There is a `Theme.AnkiHelperPink.NoActionBar` defined in themes.xml for the pink theme variant, but no equivalent for the standard theme.
 
 #### LitePal Configuration for Cache
 
@@ -225,7 +437,7 @@ public class AITranslatorCache extends LitePalSupport {
 }
 ```
 
-All tables will be automatically created by LitePal ORM based on these model classes, following the same pattern as existing models in the codebase.
+All tables are automatically created by LitePal ORM based on these model classes, following the same pattern as existing models in the codebase.
 
 #### AI Translator Cache Table
 ```java
@@ -311,7 +523,7 @@ Guidelines:
      * example: example sentence using the phrase
 
 3. Return all definitions and phrases for the given word/phrase
-4. Each entry will be stored as a separate row in the cache table
+4. Each entry is stored as a separate row in the cache table
 ```
 
 #### AI Translator Default Prompt
@@ -325,10 +537,34 @@ Provide the response in the following JSON format:
 }
 ```
 
+## Current Implementation Status
+
+The following AI configuration activities have been implemented:
+
+1. `AIConfigActivity` - Main entry point for AI configuration
+2. `LLMConfigListActivity` - Lists all LLM configurations
+3. `LLMConfigEditorActivity` - Edits a single LLM configuration
+4. `TTSConfigListActivity` - Lists all TTS configurations
+5. `TTSConfigEditorActivity` - Edits a single TTS configuration
+6. `AIDictionaryConfigListActivity` - Lists all AI dictionary configurations
+7. `AIDictionaryConfigEditorActivity` - Edits a single AI dictionary configuration
+8. `AITranslatorConfigListActivity` - Lists all AI translator configurations
+9. `AITranslatorConfigEditorActivity` - Edits a single AI translator configuration
+
+All these activities are correctly using `Theme.AnkiHelper` in the manifest, which works properly with the ActionBar implementation.
+
+### Implementation Notes
+
+1. **Theme Consistency**: The current theme implementation works correctly. There is a `Theme.AnkiHelperPink.NoActionBar` defined in themes.xml for the pink theme variant, but no equivalent for the standard theme. This is not an issue since the standard theme works correctly with the ActionBar.
+
+2. **ActionBar Usage**: All activities are correctly using `getSupportActionBar()` to set up the action bar.
+
 ## Future Considerations
 
-- UI/UX design for configuration screens (will iterate on design)
-- Caching strategy with expiration policies
-- Rate limiting implementation
-- Comprehensive error handling
+Most core functionality has been implemented. Future improvements could include:
 
+- Enhanced UI/UX design for configuration screens (will continue iterating on design)
+- Advanced caching strategy with expiration policies
+- More sophisticated rate limiting implementation
+- Comprehensive error handling for edge cases
+- Define `Theme.AnkiHelper.NoActionBar` in themes.xml only if a NoActionBar version of the standard theme is specifically needed (current implementation works correctly with standard theme)

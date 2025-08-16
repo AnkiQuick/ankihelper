@@ -51,6 +51,7 @@ public class LauncherActivity extends AppCompatActivity {
     MaterialSwitch switchLeftHandMode;
     MaterialSwitch switchPinkTheme;
     TextView textViewOpenPlanManager;
+    TextView textViewOpenAIConfig;
     TextView textViewAddDefaultPlan;
     TextView textViewAcknowledge;
 
@@ -84,6 +85,7 @@ public class LauncherActivity extends AppCompatActivity {
         switchLeftHandMode = findViewById(R.id.left_hand_mode);
         switchPinkTheme = findViewById(R.id.pink_theme_switch);
         textViewOpenPlanManager = (TextView) findViewById(R.id.btn_open_plan_manager);
+        textViewOpenAIConfig = (TextView) findViewById(R.id.btn_open_ai_config);
         textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
         textViewAcknowledge = (TextView) findViewById(R.id.textview_acknowledge);
 
@@ -159,6 +161,14 @@ public class LauncherActivity extends AppCompatActivity {
                 }
 
                 Intent intent = new Intent(LauncherActivity.this, PlansManagerActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        textViewOpenAIConfig.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LauncherActivity.this, com.mmjang.ankihelper.ui.ai.AIConfigActivity.class);
                 startActivity(intent);
             }
         });
