@@ -107,7 +107,7 @@ public class AIService {
             throw new AIException(AIErrorType.INVALID_RESPONSE, "Error creating request messages", e);
         }
         
-        // Create the request body with JSON response format
+        // Create the request body
         JSONObject jsonBody = new JSONObject();
         try {
             jsonBody.put("model", config.getModelName());
@@ -115,10 +115,18 @@ public class AIService {
             jsonBody.put("temperature", 0.3);
             jsonBody.put("max_tokens", 1000);
             
-            // Add response format for structured output
-            JSONObject responseFormat = new JSONObject();
-            responseFormat.put("type", "json_object");
-            jsonBody.put("response_format", responseFormat);
+            // Add response format for structured output (supported by OpenAI-compatible APIs)
+            // We conditionally include this based on the provider to maintain compatibility
+            String baseUrl = config.getBaseUrl();
+            if (baseUrl != null && (baseUrl.contains("openai.com") || 
+                    baseUrl.contains("api.openai.com"))) {
+                JSONObject responseFormat = new JSONObject();
+                responseFormat.put("type", "json_object");
+                jsonBody.put("response_format", responseFormat);
+                Log.d(TAG, "Added response_format parameter for OpenAI-compatible API");
+            } else {
+                Log.d(TAG, "Skipping response_format parameter for non-OpenAI API: " + baseUrl);
+            }
             
         } catch (JSONException e) {
             Log.e(TAG, "Error creating JSON body", e);
@@ -132,6 +140,20 @@ public class AIService {
         }
         
         Log.d(TAG, "Calling LLM API at URL: " + apiUrl);
+        Log.d(TAG, "Request body: " + jsonBody.toString());
+        Log.d(TAG, "Model name: " + config.getModelName());
+        Log.d(TAG, "API token present: " + (apiToken != null && !apiToken.isEmpty()));
+        
+        // Mask the API token for security in logs (show first 4 chars if available)
+        String maskedToken = "NOT_SET";
+        if (apiToken != null && !apiToken.isEmpty()) {
+            if (apiToken.length() > 4) {
+                maskedToken = apiToken.substring(0, 4) + "...";
+            } else {
+                maskedToken = "***";
+            }
+        }
+        Log.d(TAG, "API token (masked): " + maskedToken);
         
         // Create the request
         Request request = new Request.Builder()
@@ -208,7 +230,20 @@ public class AIService {
               ", Body: " + errorBody);
         
         AIErrorType errorType = AIErrorType.API_ERROR;
-        if (response.code() == 429) {
+        if (response.code() == 400) {
+            errorType = AIErrorType.API_ERROR;
+            errorMessage = "Bad Request (400): " + response.message() + 
+                          ". Please check your LLM configuration including model name, API key, and base URL. " +
+                          "Response body: " + errorBody;
+        } else if (response.code() == 401) {
+            errorType = AIErrorType.API_ERROR;
+            errorMessage = "Unauthorized (401): Invalid API key or authentication failed. " +
+                          "Please check your API key in the LLM configuration.";
+        } else if (response.code() == 404) {
+            errorType = AIErrorType.API_ERROR;
+            errorMessage = "Not Found (404): The requested endpoint was not found. " +
+                          "Please check your base URL and endpoint configuration.";
+        } else if (response.code() == 429) {
             errorType = AIErrorType.RATE_LIMIT;
             errorMessage = "Rate limit exceeded. Please try again later.";
         } else if (response.code() >= 500) {

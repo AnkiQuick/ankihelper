@@ -45,8 +45,12 @@ public class AIDictionaryService {
         String systemMessage = "You are an experienced dictionary assistant. Your task is to provide accurate and " +
             "comprehensive definitions for words and phrases. You should be able to handle complex " +
             "queries and provide detailed explanations. Your responses should be clear, concise, " +
-            "and easy to understand.";
-        String userMessage = "Please provide the definitions of the word or phrase \"" + word + "\".";
+            "and easy to understand. IMPORTANT: You MUST respond with valid JSON format. " +
+            "Your response should be a JSON object with a 'definitions' array containing definition objects. " +
+            "Each definition object should have: 'headword', 'phrase', 'sense', 'phonetics', 'def_en', 'def_cn', and 'example' fields.";
+        String userMessage = "Please provide the definitions of the word or phrase \"" + word + "\" in JSON format " +
+            "with a 'definitions' array containing definition objects. Each definition should have: " +
+            "'headword', 'phrase', 'sense', 'phonetics', 'def_en', 'def_cn', and 'example' fields.";
         
         Log.d(TAG, "Calling LLM with system message: " + systemMessage);
         Log.d(TAG, "Calling LLM with user message: " + userMessage);
@@ -80,52 +84,124 @@ public class AIDictionaryService {
         List<AIDictionaryCache> results = new ArrayList<>();
         
         try {
-            // Parse the JSON response
+            Log.d(TAG, "Attempting to parse LLM response: " + response);
+            
+            // Try to parse the JSON response
             JSONObject jsonResponse = new JSONObject(response);
             
             // Check if response is an error
             if (jsonResponse.has("error")) {
-                handleErrorResponse(jsonResponse.getJSONObject("error"));
+                JSONObject errorObj = jsonResponse.getJSONObject("error");
+                handleErrorResponse(errorObj);
+                return results; // Should not reach here as handleErrorResponse throws exception
             }
             
-            JSONArray choices = jsonResponse.getJSONArray("choices");
-            if (choices.length() > 0) {
-                JSONObject choice = choices.getJSONObject(0);
-                JSONObject message = choice.getJSONObject("message");
-                String content = message.getString("content");
-                
-                // Try to parse content as JSON
-                try {
-                    JSONObject contentJson = new JSONObject(content);
-                    if (contentJson.has("definitions")) {
-                        JSONArray definitions = contentJson.getJSONArray("definitions");
-                        parseDefinitionsArray(definitions, results, word, llmConfigId);
+            // Handle different response formats
+            if (jsonResponse.has("choices")) {
+                // Standard OpenAI-style response
+                JSONArray choices = jsonResponse.getJSONArray("choices");
+                if (choices.length() > 0) {
+                    JSONObject choice = choices.getJSONObject(0);
+                    String content = "";
+                    
+                    // Try different ways to get content
+                    if (choice.has("message")) {
+                        JSONObject message = choice.getJSONObject("message");
+                        content = message.getString("content");
+                    } else if (choice.has("text")) {
+                        content = choice.getString("text");
                     } else {
-                        // Handle case where content is directly the definitions array
-                        JSONArray definitions = new JSONArray(content);
-                        parseDefinitionsArray(definitions, results, word, llmConfigId);
+                        // Try to get content directly from choice
+                        content = choice.toString();
                     }
-                } catch (Exception e) {
-                    // If content is not JSON, try to parse as array directly
-                    try {
-                        JSONArray definitions = new JSONArray(content);
-                        parseDefinitionsArray(definitions, results, word, llmConfigId);
-                    } catch (Exception innerE) {
-                        Log.e(TAG, "Error parsing dictionary response content", e);
-                        throw new AIException(AIErrorType.INVALID_RESPONSE, 
-                            "Invalid response format from AI service", e);
-                    }
+                    
+                    parseContent(content, results, word, llmConfigId);
                 }
+            } else if (jsonResponse.has("content")) {
+                // Direct content response
+                String content = jsonResponse.getString("content");
+                parseContent(content, results, word, llmConfigId);
+            } else if (jsonResponse.has("text")) {
+                // Direct text response
+                String content = jsonResponse.getString("text");
+                parseContent(content, results, word, llmConfigId);
+            } else {
+                // Try to parse the entire response as content
+                parseContent(response, results, word, llmConfigId);
             }
+            
         } catch (AIException e) {
             throw e; // Re-throw AI exceptions
         } catch (Exception e) {
-            Log.e(TAG, "Error parsing dictionary response", e);
+            Log.e(TAG, "Error parsing dictionary response. Raw response: " + response, e);
+            // Try to create a basic result from the raw response
+            try {
+                AIDictionaryCache cache = new AIDictionaryCache();
+                cache.setHwd(word);
+                cache.setDefEn("Response from AI: " + response.substring(0, Math.min(200, response.length())));
+                cache.setLlmConfigId(llmConfigId);
+                cache.setTimestamp(System.currentTimeMillis());
+                results.add(cache);
+                Log.w(TAG, "Created fallback result from raw response");
+            } catch (Exception fallbackE) {
+                Log.e(TAG, "Error creating fallback result", fallbackE);
+            }
             throw new AIException(AIErrorType.INVALID_RESPONSE, 
-                "Error parsing dictionary response", e);
+                "Error parsing dictionary response. Raw response: " + response, e);
         }
         
+        Log.d(TAG, "Successfully parsed " + results.size() + " results");
         return results;
+    }
+    
+    private void parseContent(String content, List<AIDictionaryCache> results, String word, long llmConfigId) 
+            throws Exception {
+        Log.d(TAG, "Parsing content: " + content);
+        
+        if (content == null || content.trim().isEmpty()) {
+            Log.w(TAG, "Empty content received from LLM");
+            return;
+        }
+        
+        // Try to parse content as JSON
+        try {
+            // First try to parse as JSON object
+            JSONObject contentJson = new JSONObject(content);
+            if (contentJson.has("definitions")) {
+                JSONArray definitions = contentJson.getJSONArray("definitions");
+                parseDefinitionsArray(definitions, results, word, llmConfigId);
+            } else {
+                // Check if it's a single definition object
+                if (contentJson.has("headword") || contentJson.has("def_en") || contentJson.has("defEn")) {
+                    JSONArray definitions = new JSONArray();
+                    definitions.put(contentJson);
+                    parseDefinitionsArray(definitions, results, word, llmConfigId);
+                } else {
+                    // Treat as a generic JSON object and convert to string definition
+                    AIDictionaryCache cache = new AIDictionaryCache();
+                    cache.setHwd(word);
+                    cache.setDefEn(contentJson.toString());
+                    cache.setLlmConfigId(llmConfigId);
+                    cache.setTimestamp(System.currentTimeMillis());
+                    results.add(cache);
+                }
+            }
+        } catch (Exception e) {
+            // If not JSON object, try as JSON array
+            try {
+                JSONArray contentArray = new JSONArray(content);
+                parseDefinitionsArray(contentArray, results, word, llmConfigId);
+            } catch (Exception arrayE) {
+                // If not JSON at all, treat as plain text
+                Log.d(TAG, "Treating content as plain text");
+                AIDictionaryCache cache = new AIDictionaryCache();
+                cache.setHwd(word);
+                cache.setDefEn(content);
+                cache.setLlmConfigId(llmConfigId);
+                cache.setTimestamp(System.currentTimeMillis());
+                results.add(cache);
+            }
+        }
     }
     
     private void parseDefinitionsArray(JSONArray definitions, List<AIDictionaryCache> results, 
