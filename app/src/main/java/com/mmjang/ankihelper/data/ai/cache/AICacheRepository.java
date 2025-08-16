@@ -1,27 +1,45 @@
 package com.mmjang.ankihelper.data.ai.cache;
 
+import android.util.Log;
+
 import org.litepal.LitePal;
 import org.litepal.LitePalDB;
 import org.litepal.Operator;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class AICacheRepository {
     
-    // Initialize the AI cache database
-    static {
-        LitePalDB aiDB = LitePalDB.fromDefault("ai_cache");
-        LitePal.use(aiDB);
-    }
+    // AI cache database will be initialized in MyApplication
+    // This avoids potential conflicts with multiple LitePal.use() calls
     
     // AI Dictionary Cache methods
     public static List<AIDictionaryCache> getDictionaryCache(String word, long llmConfigId) {
-        return LitePal.where("hwd = ? and llmConfigId = ?", word, String.valueOf(llmConfigId))
-                .find(AIDictionaryCache.class);
+        Log.d("AICacheRepository", "Querying cache for word: " + word + ", llmConfigId: " + llmConfigId);
+        try {
+            // Check if we can access the database
+            Log.d("AICacheRepository", "Current database: " + LitePal.getDatabase().getPath());
+            
+            List<AIDictionaryCache> results = LitePal.where("hwd = ? and llmConfigId = ?", word, String.valueOf(llmConfigId))
+                    .find(AIDictionaryCache.class);
+            Log.d("AICacheRepository", "Found " + results.size() + " cached results for word: " + word);
+            return results;
+        } catch (Exception e) {
+            Log.e("AICacheRepository", "Error querying cache for word: " + word, e);
+            // Return empty list on error
+            return new ArrayList<>();
+        }
     }
     
     public static void saveDictionaryCache(AIDictionaryCache cache) {
-        cache.save();
+        try {
+            Log.d("AICacheRepository", "Saving cache entry for word: " + cache.getHwd());
+            cache.save();
+            Log.d("AICacheRepository", "Successfully saved cache entry for word: " + cache.getHwd());
+        } catch (Exception e) {
+            Log.e("AICacheRepository", "Error saving cache entry for word: " + cache.getHwd(), e);
+        }
     }
     
     public static void clearExpiredDictionaryCache(long expirationTime) {

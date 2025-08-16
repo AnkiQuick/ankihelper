@@ -84,6 +84,7 @@ import com.mmjang.ankihelper.data.dict.DictionaryRegister;
 import com.mmjang.ankihelper.data.dict.Dub91Sentence;
 import com.mmjang.ankihelper.data.dict.EudicSentence;
 import com.mmjang.ankihelper.data.dict.IDictionary;
+import com.mmjang.ankihelper.data.dict.AIDictionary;
 import com.mmjang.ankihelper.data.dict.RenRenCiDianSentence;
 import com.mmjang.ankihelper.data.dict.SolrDictionary;
 import com.mmjang.ankihelper.data.dict.UrbanAutoCompleteAdapter;
@@ -465,8 +466,9 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                             currentOutputPlan.getPlanName(),
                             currentOutputPlan.getDictionaryKey());
                     Utils.showMessage(PopupActivity.this, message);
+                } else {
+                    setActAdapter(currentDicitonary);
                 }
-                setActAdapter(currentDicitonary);
             }
         } else {
             //if find, then current plan and dictionary must have been set above.
@@ -542,7 +544,9 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         currentOutputPlan = outputPlanList.get(position);
                         currentDicitonary = getDictionaryFromOutputPlan(currentOutputPlan);
-                        setActAdapter(currentDicitonary);
+                        if (currentDicitonary != null) {
+                            setActAdapter(currentDicitonary);
+                        }
                         //memorise last selected plan
                         settings.setLastSelectedPlan(currentOutputPlan.getPlanName());
                         String actContent = act.getText().toString();
@@ -821,9 +825,17 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
     }
 
     private IDictionary getDictionaryFromOutputPlan(OutputPlanPOJO outputPlan) {
-        String dictionaryName = outputPlan.getDictionaryKey();
+        String dictionaryKey = outputPlan.getDictionaryKey();
         for (IDictionary dict : dictionaryList) {
-            if (dict.getDictionaryName().equals(dictionaryName)) {
+            // Handle AI dictionaries differently
+            String dictKey;
+            if (dict instanceof AIDictionary) {
+                dictKey = ((AIDictionary) dict).getDictionaryKey();
+            } else {
+                dictKey = dict.getDictionaryName();
+            }
+            
+            if (dictKey.equals(dictionaryKey)) {
                 return dict;
             }
         }

@@ -8,6 +8,7 @@ public class LLMConfig extends LitePalSupport {
     private String baseUrl;
     private String apiToken; // Encrypted
     private String modelName;
+    private String endpointPath; // Optional endpoint path, defaults to "/v1/chat/completions"
     
     // Getters and setters
     public long getId() {
@@ -48,5 +49,42 @@ public class LLMConfig extends LitePalSupport {
 
     public void setModelName(String modelName) {
         this.modelName = modelName;
+    }
+    
+    public String getEndpointPath() {
+        return endpointPath;
+    }
+    
+    public void setEndpointPath(String endpointPath) {
+        this.endpointPath = endpointPath;
+    }
+    
+    /**
+     * Gets the full chat completion API URL by appending the endpoint to the base URL
+     * @return Full API URL for chat completions
+     */
+    public String getChatCompletionUrl() {
+        String baseUrl = this.baseUrl;
+        if (baseUrl == null || baseUrl.isEmpty()) {
+            return null;
+        }
+        
+        // Remove trailing slash if present
+        if (baseUrl.endsWith("/")) {
+            baseUrl = baseUrl.substring(0, baseUrl.length() - 1);
+        }
+        
+        // Use custom endpoint path if provided, otherwise use default
+        String endpoint = this.endpointPath;
+        if (endpoint == null || endpoint.isEmpty()) {
+            endpoint = "/v1/chat/completions"; // Default OpenAI-style endpoint
+        }
+        
+        // Ensure endpoint starts with "/"
+        if (!endpoint.startsWith("/")) {
+            endpoint = "/" + endpoint;
+        }
+        
+        return baseUrl + endpoint;
     }
 }

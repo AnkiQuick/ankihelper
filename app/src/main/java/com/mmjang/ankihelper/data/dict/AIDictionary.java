@@ -1,6 +1,7 @@
 package com.mmjang.ankihelper.data.dict;
 
 import android.content.Context;
+import android.util.Log;
 import android.widget.ListAdapter;
 import android.widget.ArrayAdapter;
 
@@ -8,7 +9,9 @@ import com.mmjang.ankihelper.data.ai.AIDictionaryConfig;
 import com.mmjang.ankihelper.data.ai.LLMConfig;
 import com.mmjang.ankihelper.data.ai.AIConfigRepository;
 import com.mmjang.ankihelper.data.ai.service.AIDictionaryService;
+import com.mmjang.ankihelper.data.ai.AIException;
 import com.mmjang.ankihelper.data.ai.cache.AIDictionaryCache;
+import com.mmjang.ankihelper.data.dict.Definition;
 
 import java.util.List;
 import java.util.ArrayList;
@@ -53,14 +56,21 @@ public class AIDictionary implements IDictionary {
         List<Definition> definitions = new ArrayList<>();
         
         try {
+            Log.d("AIDictionary", "Starting word lookup for: " + key);
+            
             // Get the LLM config
             LLMConfig llmConfig = AIConfigRepository.getLLMConfigById(config.getLlmId());
             if (llmConfig == null) {
+                Log.w("AIDictionary", "LLM config not found for config ID: " + config.getLlmId());
                 return definitions;
             }
             
+            Log.d("AIDictionary", "LLM config found: " + llmConfig.getName());
+            
             // Get the word definition from the AI service
             List<AIDictionaryCache> cacheResults = service.getWordDefinition(key, config, llmConfig);
+            
+            Log.d("AIDictionary", "Received " + cacheResults.size() + " cache results");
             
             // Convert AIDictionaryCache results to Definition objects
             for (AIDictionaryCache cache : cacheResults) {
@@ -96,8 +106,27 @@ public class AIDictionary implements IDictionary {
                 Definition def = new Definition(exportElements, displayHtml.toString());
                 definitions.add(def);
             }
+            
+            Log.d("AIDictionary", "Returning " + definitions.size() + " definitions");
+        } catch (AIException e) {
+            Log.e("AIDictionary", "AI Error during dictionary lookup for word: " + key, e);
+            // Create a Definition object to show the error to the user
+            Map<String, String> exportElements = new HashMap<>();
+            exportElements.put("Error", "AI Dictionary Error: " + e.getMessage());
+            Definition errorDef = new Definition(exportElements, 
+                "<b>AI Dictionary Error</b><br/>" + e.getMessage() + 
+                "<br/><br/>Please check your LLM configuration and ensure the API is accessible.");
+            definitions.add(errorDef);
         } catch (Exception e) {
+            Log.e("AIDictionary", "Error during dictionary lookup for word: " + key, e);
             e.printStackTrace();
+            // Create a Definition object to show the error to the user
+            Map<String, String> exportElements = new HashMap<>();
+            exportElements.put("Error", "Error: " + e.getMessage());
+            Definition errorDef = new Definition(exportElements, 
+                "<b>Error</b><br/>" + e.getMessage() + 
+                "<br/><br/>Please check the logs for more details.");
+            definitions.add(errorDef);
         }
         
         return definitions;

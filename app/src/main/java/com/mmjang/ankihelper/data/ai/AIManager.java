@@ -28,7 +28,7 @@ public class AIManager {
         return instance;
     }
     
-    public List<AIDictionaryCache> getWordDefinition(String word, long dictionaryConfigId) throws IOException {
+    public List<AIDictionaryCache> getWordDefinition(String word, long dictionaryConfigId) throws IOException, AIException {
         // Check network connectivity
         if (!NetworkUtil.isNetworkAvailable(MyApplication.getContext())) {
             throw new IOException("No network connection. Please check your internet connection and try again.");
@@ -47,7 +47,7 @@ public class AIManager {
         return dictionaryService.getWordDefinition(word, dictionaryConfig, llmConfig);
     }
     
-    public String translateText(String text, long translatorConfigId) throws IOException {
+    public String translateText(String text, long translatorConfigId) throws IOException, AIException {
         // Check network connectivity
         if (!NetworkUtil.isNetworkAvailable(MyApplication.getContext())) {
             throw new IOException("No network connection. Please check your internet connection and try again.");
@@ -67,7 +67,7 @@ public class AIManager {
                 translatorConfig.getTargetLanguage(), translatorConfig, llmConfig);
     }
     
-    public String translateTextWithDefaultTranslator(String text) throws IOException {
+    public String translateTextWithDefaultTranslator(String text) throws IOException, AIException {
         // Check network connectivity
         if (!NetworkUtil.isNetworkAvailable(MyApplication.getContext())) {
             throw new IOException("No network connection. Please check your internet connection and try again.");
