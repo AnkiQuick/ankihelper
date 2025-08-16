@@ -115,6 +115,7 @@ public class AIDictionaryService {
                         content = choice.toString();
                     }
                     
+                    Log.d(TAG, "Extracted content from LLM response: " + content);
                     parseContent(content, results, word, llmConfigId);
                 }
             } else if (jsonResponse.has("content")) {
@@ -163,19 +164,29 @@ public class AIDictionaryService {
             return;
         }
         
+        // Clean up markdown formatting if present
+        String cleanedContent = cleanMarkdownFormatting(content);
+        Log.d(TAG, "Cleaned content: " + cleanedContent);
+        
         // Try to parse content as JSON
         try {
             // First try to parse as JSON object
-            JSONObject contentJson = new JSONObject(content);
+            JSONObject contentJson = new JSONObject(cleanedContent);
+            Log.d(TAG, "Successfully parsed content as JSON object. Keys: " + contentJson.keys().toString());
+            
             if (contentJson.has("definitions")) {
+                // Handle the case where content contains a definitions array
                 JSONArray definitions = contentJson.getJSONArray("definitions");
+                Log.d(TAG, "Found definitions array with " + definitions.length() + " items");
                 parseDefinitionsArray(definitions, results, word, llmConfigId);
+                Log.d(TAG, "Parsed " + definitions.length() + " definitions from definitions array");
             } else {
                 // Check if it's a single definition object
                 if (contentJson.has("headword") || contentJson.has("def_en") || contentJson.has("defEn")) {
                     JSONArray definitions = new JSONArray();
                     definitions.put(contentJson);
                     parseDefinitionsArray(definitions, results, word, llmConfigId);
+                    Log.d(TAG, "Parsed single definition object");
                 } else {
                     // Treat as a generic JSON object and convert to string definition
                     AIDictionaryCache cache = new AIDictionaryCache();
@@ -184,24 +195,71 @@ public class AIDictionaryService {
                     cache.setLlmConfigId(llmConfigId);
                     cache.setTimestamp(System.currentTimeMillis());
                     results.add(cache);
+                    Log.d(TAG, "Treated content as generic JSON object");
                 }
             }
         } catch (Exception e) {
+            Log.d(TAG, "Content is not a JSON object, trying as JSON array", e);
             // If not JSON object, try as JSON array
             try {
-                JSONArray contentArray = new JSONArray(content);
+                JSONArray contentArray = new JSONArray(cleanedContent);
+                Log.d(TAG, "Successfully parsed content as JSON array with " + contentArray.length() + " items");
                 parseDefinitionsArray(contentArray, results, word, llmConfigId);
+                Log.d(TAG, "Parsed " + contentArray.length() + " definitions from JSON array");
             } catch (Exception arrayE) {
+                Log.d(TAG, "Content is not a JSON array, treating as plain text", arrayE);
                 // If not JSON at all, treat as plain text
                 Log.d(TAG, "Treating content as plain text");
                 AIDictionaryCache cache = new AIDictionaryCache();
                 cache.setHwd(word);
-                cache.setDefEn(content);
+                cache.setDefEn(cleanedContent);
                 cache.setLlmConfigId(llmConfigId);
                 cache.setTimestamp(System.currentTimeMillis());
                 results.add(cache);
             }
         }
+    }
+    
+    /**
+     * Cleans up markdown formatting from LLM responses
+     * Removes leading/trailing whitespace, markdown code block markers, and other formatting
+     * 
+     * @param content The raw content from LLM
+     * @return Cleaned content ready for JSON parsing
+     */
+    private String cleanMarkdownFormatting(String content) {
+        if (content == null || content.isEmpty()) {
+            return content;
+        }
+        
+        String cleaned = content.trim();
+        
+        // Remove leading word if it's just the search term (common with some LLMs)
+        if (cleaned.startsWith("Watch")) {
+            // Check if the rest is JSON or markdown-wrapped JSON
+            String rest = cleaned.substring(5).trim();
+            if (rest.startsWith("```json") || rest.startsWith("```")) {
+                cleaned = rest;
+            }
+        }
+        
+        // Remove markdown code block markers
+        if (cleaned.startsWith("```json")) {
+            cleaned = cleaned.substring(7); // Remove ```json
+        } else if (cleaned.startsWith("```")) {
+            cleaned = cleaned.substring(3); // Remove ```
+        }
+        
+        if (cleaned.endsWith("```")) {
+            cleaned = cleaned.substring(0, cleaned.length() - 3); // Remove trailing ```
+        }
+        
+        // Remove any remaining leading/trailing whitespace
+        cleaned = cleaned.trim();
+        
+        Log.d(TAG, "Cleaned markdown formatting. Original: " + content + " | Cleaned: " + cleaned);
+        
+        return cleaned;
     }
     
     private void parseDefinitionsArray(JSONArray definitions, List<AIDictionaryCache> results, 
