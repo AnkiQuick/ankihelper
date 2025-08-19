@@ -33,9 +33,7 @@ public class MyApplication extends MultiDexApplication {
         application = this;
         LitePal.initialize(this);
         
-        // Initialize AI cache database
-        LitePalDB aiDB = LitePalDB.fromDefault("ai_cache");
-        LitePal.use(aiDB);
+        
         
 //        CrashReport.initCrashReport(getApplicationContext(), "398dc6145b", false);
 
