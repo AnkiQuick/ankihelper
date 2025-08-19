@@ -50,8 +50,10 @@
                     android:id="@+id/btn_manage_llm"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Manage LLM Configurations"
+                    android:text="@string/llm_manager_str"
+                    android:gravity="start|center_vertical"
                     app:icon="@drawable/ic_settings_outline"
+                    app:iconGravity="end"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
 
             </LinearLayout>
@@ -88,8 +90,10 @@
                     android:id="@+id/btn_manage_tts"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Manage TTS Configurations"
+                    android:text="@string/tts_manager_str"
+                    android:gravity="start|center_vertical"
                     app:icon="@drawable/ic_settings_outline"
+                    app:iconGravity="end"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
 
             </LinearLayout>
@@ -126,8 +130,10 @@
                     android:id="@+id/btn_manage_ai_dictionary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Manage AI Dictionaries"
+                    android:text="@string/ai_dictionary_manager_str"
+                    android:gravity="start|center_vertical"
                     app:icon="@drawable/ic_settings_outline"
+                    app:iconGravity="end"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
 
             </LinearLayout>
@@ -155,6 +161,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Configure AI translators for sentence translation"
+
                     android:textAppearance="?attr/textAppearanceBodyMedium"
                     android:textColor="?attr/colorOnSurfaceVariant"
                     android:layout_marginBottom="16dp" />
@@ -163,8 +170,10 @@
                     android:id="@+id/btn_manage_ai_translator"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="Manage AI Translators"
+                    android:text="@string/ai_translator_manager_str"
+                    android:gravity="start|center_vertical"
                     app:icon="@drawable/ic_settings_outline"
+                    app:iconGravity="end"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
 
             </LinearLayout>

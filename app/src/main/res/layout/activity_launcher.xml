@@ -58,7 +58,7 @@
                     android:id="@+id/btn_open_ai_config"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:text="AI Configuration"
+                    android:text="@string/ai_manager_str"
                     android:gravity="start|center_vertical"
                     app:icon="@drawable/ic_settings_outline"
                     app:iconGravity="end"

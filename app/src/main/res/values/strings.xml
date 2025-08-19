@@ -50,12 +50,17 @@
     <string name="str_chart_title_hour_stat">By Hours</string>
     <string name="str_time_period">Period: </string>
     <string name="str_last_days_stat">By Days</string>
-    <string name="str_show_already_read">不显示已阅内容</string>
-    <string name="str_check_ankidroid_permisson">无法连接 Ankidroid 数据库，请检查并打开 Ankidroid 的自启动和应用间唤醒等权限</string>
+    <string name="str_show_already_read">Do not show read content</string>
+    <string name="str_check_ankidroid_permisson">Failed to connect to Ankidroid database. Please check and enable auto-start and inter-app wake-up permissions in Ankidroid.</string>
     <string name="epub_reader">EPUB Reader</string>
     <string name="epub_reader_label">EPUB Reader</string>
     <string name="menu_title_statistics">Statistics</string>
-    <string name="str_use_as_default_tags">作为默认标签</string>
+    <string name="str_use_as_default_tags">Use as default tags</string>
     <string name="str_clipboard_service_running_version_q">Copy text and click this notification</string>
     <string name="acknowledge_text">Copyright: 2024-2025 Jennings Liu\nCopyright: 2017-2021 mmjang</string>
+    <string name="ai_manager_str">AI Manager</string>
+    <string name="llm_manager_str">LLM Manager</string>
+    <string name="tts_manager_str">TTS Manager</string>
+    <string name="ai_dictionary_manager_str">AI Dictionary Manager</string>
+    <string name="ai_translator_manager_str">AI Translator Manager</string>
 </resources>

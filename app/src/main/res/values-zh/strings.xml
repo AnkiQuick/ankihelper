@@ -59,4 +59,10 @@
     <string name="str_use_as_default_tags">作为默认标签</string>
     <string name="str_clipboard_service_running_version_q">复制文本后点此通知划词</string>
     <string name="action_settings">设置</string>
+    <string name="ai_manager_str">AI 配置</string>
+    <string name="llm_manager_str">LLM 配置</string>
+    <string name="tts_manager_str">TTS 配置</string>
+    <string name="ai_dictionary_manager_str">AI Dictionary 配置</string>
+    <string name="ai_translator_manager_str">AI Translator 配置</string>
+
 </resources>
