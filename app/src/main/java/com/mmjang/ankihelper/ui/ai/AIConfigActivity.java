@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import androidx.appcompat.app.AppCompatActivity;
 import android.view.MenuItem;
+import androidx.core.app.NavUtils;
 import android.view.View;
 import android.widget.Button;
 
@@ -17,14 +18,13 @@ public class AIConfigActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (com.mmjang.ankihelper.data.Settings.getInstance(this).getPinkThemeQ()) {
+            setTheme(R.style.AppThemePink);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ai_config);
 
-        // Set up the action bar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("AI Configuration");
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initViews();
         setListeners();
@@ -76,7 +76,7 @@ public class AIConfigActivity extends AppCompatActivity {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == android.R.id.home) {
-            finish();
+            NavUtils.navigateUpFromSameTask(this);
             return true;
         }
         return super.onOptionsItemSelected(item);

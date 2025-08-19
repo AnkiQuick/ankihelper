@@ -2,8 +2,10 @@ package com.mmjang.ankihelper.ui.ai;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
@@ -22,14 +24,13 @@ public class TTSConfigListActivity extends AppCompatActivity implements TTSConfi
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (com.mmjang.ankihelper.data.Settings.getInstance(this).getPinkThemeQ()) {
+            setTheme(R.style.AppThemePink);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_tts_config_list);
 
-        // Set up the action bar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("TTS Configurations");
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initViews();
         loadTTSConfigs();
@@ -82,8 +83,11 @@ public class TTSConfigListActivity extends AppCompatActivity implements TTSConfi
     }
 
     @Override
-    public boolean onSupportNavigateUp() {
-        finish();
-        return true;
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -9,6 +9,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NavUtils;
 
 import com.google.android.material.textfield.TextInputEditText;
 
@@ -41,14 +42,13 @@ public class AIDictionaryConfigEditorActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        if (com.mmjang.ankihelper.data.Settings.getInstance(this).getPinkThemeQ()) {
+            setTheme(R.style.AppThemePink);
+        }
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_ai_dictionary_config_editor);
 
-        // Set up the action bar
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("AI Dictionary Configuration");
-        }
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         initViews();
         loadLLMConfigs();
@@ -147,7 +147,7 @@ public class AIDictionaryConfigEditorActivity extends AppCompatActivity {
     public boolean onOptionsItemSelected(MenuItem item) {
         int itemId = item.getItemId();
         if (itemId == android.R.id.home) {
-            finish();
+            NavUtils.navigateUpFromSameTask(this);
             return true;
         } else if (itemId == R.id.action_save) {
             saveConfig();
