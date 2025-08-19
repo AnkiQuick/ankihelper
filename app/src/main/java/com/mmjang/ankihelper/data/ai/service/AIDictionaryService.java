@@ -52,9 +52,8 @@ public class AIDictionaryService {
             "hwd: the key word to look up. " +
             "phrase: the phase that the word belong to. if not empty, the definition_cn and definition_en wiil be definition of the phase. "
             +
-            "sense: is the Part of Speech, which refers to the grammatical category a word belongs to based on its function within a sentence, Common POS categories in English include nouns, verbs, adjectives, adverbs, pronouns, prepositions, conjunctions, and interjections"
-            +
-            "phonetics: contain both English and American English phonetics";
+            "sense: is the Part of Speech, which refers to the grammatical category a word belongs to based on its function within a sentence, Common POS categories in English include nouns, verbs, adjectives, adverbs, pronouns, prepositions, conjunctions, and interjections" +
+            "phonetics: contains both English and American English phonetics in a string, not map, like 'UK/kaɪnd/ US/kaɪnd/',";
         String userMessage = "Please provide the definitions of the word or phrase \"" + word + "\" in JSON format " +
             "with a 'definitions' array containing definition objects. Each definition should have: " +
             "'headword', 'phrase', 'sense', 'phonetics', 'def_en', 'def_cn', and 'example' fields.";
