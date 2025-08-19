@@ -10,23 +10,13 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <!-- Page Title -->
-        <com.google.android.material.textview.MaterialTextView
-            android:id="@+id/title"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Anki Helper"
-            android:textAppearance="?attr/textAppearanceDisplaySmall"
-            android:textColor="?attr/colorOnBackground"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
         <!-- Settings Card -->
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/settings_card"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:strokeWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/title">
@@ -35,45 +25,39 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="0dp">
 
                 <!-- Plan Manager Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_open_plan_manager"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:strokeWidth="0dp"
                     android:text="@string/plan_manager_str"
                     android:gravity="start|center_vertical"
                     app:icon="@drawable/ic_settings_outline"
                     app:iconGravity="end"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
 
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp" />
 
                 <!-- AI Configuration Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_open_ai_config"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:strokeWidth="0dp"
                     android:text="@string/ai_manager_str"
                     android:gravity="start|center_vertical"
                     app:icon="@drawable/ic_settings_outline"
                     app:iconGravity="end"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
 
-                <com.google.android.material.divider.MaterialDivider
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_marginVertical="8dp" />
-
                 <!-- Add Default Plan Button -->
                 <com.google.android.material.button.MaterialButton
                     android:id="@+id/btn_add_default_plan"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    app:strokeWidth="0dp"
                     android:text="@string/btn_add_default_plan_str"
                     android:gravity="start|center_vertical"
                     app:icon="@drawable/ic_add"
@@ -88,6 +72,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:strokeWidth="0dp"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/settings_card">
@@ -96,13 +81,14 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="24dp">
 
                 <!-- Monitor Clipboard Toggle -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <com.google.android.material.textview.MaterialTextView
@@ -110,7 +96,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/monite_clipboard"
-                        android:textAppearance="?attr/textAppearanceBodyLarge" />
+                        android:textColor="?attr/colorPrimary"
+                        android:textAppearance="?attr/textAppearanceLabelLarge" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/switch_monite_clipboard"
@@ -124,6 +111,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <com.google.android.material.textview.MaterialTextView
@@ -131,7 +119,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/cancel_after_add"
-                        android:textAppearance="?attr/textAppearanceBodyLarge" />
+                        android:textColor="?attr/colorPrimary"
+                        android:textAppearance="?attr/textAppearanceLabelLarge" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/switch_cancel_after_add"
@@ -145,6 +134,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginBottom="12dp"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <com.google.android.material.textview.MaterialTextView
@@ -152,7 +142,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/left_hand_mode"
-                        android:textAppearance="?attr/textAppearanceBodyLarge" />
+                        android:textColor="?attr/colorPrimary"
+                        android:textAppearance="?attr/textAppearanceLabelLarge" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/left_hand_mode"
@@ -165,6 +156,7 @@
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:gravity="center_vertical"
                     android:orientation="horizontal">
 
                     <com.google.android.material.textview.MaterialTextView
@@ -172,7 +164,8 @@
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/str_pink_theme_q"
-                        android:textAppearance="?attr/textAppearanceBodyLarge" />
+                        android:textColor="?attr/colorPrimary"
+                        android:textAppearance="?attr/textAppearanceLabelLarge" />
 
                     <com.google.android.material.materialswitch.MaterialSwitch
                         android:id="@+id/pink_theme_switch"
@@ -188,6 +181,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginTop="16dp"
+            app:strokeWidth="0dp"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

@@ -63,4 +63,13 @@
     <string name="tts_manager_str">TTS Manager</string>
     <string name="ai_dictionary_manager_str">AI Dictionary Manager</string>
     <string name="ai_translator_manager_str">AI Translator Manager</string>
+    <string name="title_activity_ai_manager">AI Manager</string>
+    <string name="title_activity_llm_configurations">LLM Configurations</string>
+    <string name="title_activity_llm_editor">LLM Editor</string>
+    <string name="title_activity_tts_configurations">TTS Configurations</string>
+    <string name="title_activity_tts_editor">TTS Editor</string>
+    <string name="title_activity_ai_dictionary_configurations">AI Dictionary Configurations</string>
+    <string name="title_activity_ai_dictionary_editor">AI Dictionary Editor</string>
+    <string name="title_activity_ai_translator_configurations">AI Translator Configurations</string>
+    <string name="title_activity_ai_translator_editor">AI Translator Editor</string>
 </resources>

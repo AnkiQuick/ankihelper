@@ -59,10 +59,18 @@
     <string name="str_use_as_default_tags">作为默认标签</string>
     <string name="str_clipboard_service_running_version_q">复制文本后点此通知划词</string>
     <string name="action_settings">设置</string>
-    <string name="ai_manager_str">AI 配置</string>
-    <string name="llm_manager_str">LLM 配置</string>
-    <string name="tts_manager_str">TTS 配置</string>
-    <string name="ai_dictionary_manager_str">AI Dictionary 配置</string>
-    <string name="ai_translator_manager_str">AI Translator 配置</string>
-
+    <string name="ai_manager_str">AI 管理</string>
+    <string name="llm_manager_str">LLM 管理</string>
+    <string name="tts_manager_str">TTS 管理</string>
+    <string name="ai_dictionary_manager_str">AI 词典管理</string>
+    <string name="ai_translator_manager_str">AI 翻译管理</string>
+    <string name="title_activity_ai_manager">AI 管理</string>
+    <string name="title_activity_llm_configurations">LLM 配置</string>
+    <string name="title_activity_llm_editor">LLM 编辑器</string>
+    <string name="title_activity_tts_configurations">TTS 配置</string>
+    <string name="title_activity_tts_editor">TTS 编辑器</string>
+    <string name="title_activity_ai_dictionary_configurations">AI 词典配置</string>
+    <string name="title_activity_ai_dictionary_editor">AI 词典编辑器</string>
+    <string name="title_activity_ai_translator_configurations">AI 翻译配置</string>
+    <string name="title_activity_ai_translator_editor">AI 翻译编辑器</string>
 </resources>
