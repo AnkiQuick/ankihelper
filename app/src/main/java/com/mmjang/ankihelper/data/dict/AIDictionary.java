@@ -93,27 +93,27 @@ public class AIDictionary implements IDictionary {
                 String defCn = cache.getDefCn() != null ? cache.getDefCn() : "";
 
                 exportElements.put(EXP_ELE_LIST[0], determinedWord);
-                exportElements.put(EXP_ELE_LIST[1], "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>" + sense + "</span>");
+                exportElements.put(EXP_ELE_LIST[1], "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>" + sense + "</span>");
                 exportElements.put(EXP_ELE_LIST[2], "<span >"+phonetics + "</span>");
                 if (phrase.equals("")) {
                   exportElements.put(EXP_ELE_LIST[3],
-                      "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"
+                      "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defEn + "</span>");
 
                   exportElements.put(EXP_ELE_LIST[4],
-                      "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"
+                      "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defCn + "</span>");
                 } else {
                   exportElements.put(EXP_ELE_LIST[3],
-                      "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"
+                      "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + phrase
-                          + " </span> <span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"
+                          + " </span> <span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defEn + "</span>");
 
                   exportElements.put(EXP_ELE_LIST[4],
-                      "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"
+                      "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + phrase
-                          + " </span> <span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"
+                          + " </span> <span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defCn + "</span>");
                 }
                 exportElements.put(EXP_ELE_LIST[5], getYoudaoAudioTag(determinedWord, 2));
@@ -123,15 +123,15 @@ public class AIDictionary implements IDictionary {
                 StringBuilder displayHtml = new StringBuilder();
                 if (phrase.equals("")) {
                   displayHtml.append(
-                      "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"
+                      "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + sense + " </span> &nbsp;<span> " + phonetics
                           + "</span> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defEn
                           + "</span> <span sytle=margin-right:3px; padding:0;margin:0; padding:0;>" + defCn + "</span>");
                 } else {
                   displayHtml.append(
-                      "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"
+                      "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + phrase
-                          + " </span>&nbsp; </span> <span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#0d47a1; border-radius:3px;'>"
+                          + " </span>&nbsp; </span> <span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + sense + " </span> &nbsp; <span> " + phonetics
                           + "</span> <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defEn
                           + "</span> <span sytle=margin-right:3px; padding:0;margin:0; padding:0;>" + defCn + "</span>");
