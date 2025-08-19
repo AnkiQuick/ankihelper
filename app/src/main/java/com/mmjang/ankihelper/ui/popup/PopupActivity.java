@@ -1071,26 +1071,15 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                     @Override
                     public void run() {
                         try{
-                            String result;
-                            // Try to use AI translator first
-                            try {
-                                com.mmjang.ankihelper.data.ai.AIManager aiManager = com.mmjang.ankihelper.data.ai.AIManager.getInstance();
-                                result = aiManager.translateTextWithDefaultTranslator(mTextToProcess);
-                            } catch (Exception e) {
-                                // Fallback to the existing translation method
-                                if(RegexUtil.isChineseSentence(mTextToProcess)){
-                                    result = Translator.translate(mTextToProcess, "zh", "en");
-                                }else {
-                                    result = Translator.translate(mTextToProcess, "auto", "zh");
-                                }
-                            }
+                            com.mmjang.ankihelper.data.ai.AIManager aiManager = com.mmjang.ankihelper.data.ai.AIManager.getInstance();
+                            String result = aiManager.translateTextWithDefaultTranslator(mTextToProcess);
                             Message message = mHandler.obtainMessage();
                             message.obj = result;
                             message.what = TRANSLATION_DONE;
                             mHandler.sendMessage(message);
                         }
                         catch(Exception e){
-                            String error = e.getMessage();
+                            String error = "AI Translation Failed: " + e.getMessage();
                             Message message = mHandler.obtainMessage();
                             message.obj = error;
                             message.what = TRANSLATIOn_FAILED;
