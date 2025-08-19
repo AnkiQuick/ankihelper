@@ -46,11 +46,9 @@ public class AITranslatorService {
 
     // Parse the response
     JSONObject parsedResponse = parseTranslationResponse(response);
-    String translatedText = parsedResponse.optString("translatedText", parsedResponse.optString("translatedText", ""));
-    String parsedSourceLanguage = parsedResponse.optString("sourceLanguage",
-        parsedResponse.optString("sourceLanguage", sourceLanguage));
-    String parsedTargetLanguage = parsedResponse.optString("targetLanguage",
-        parsedResponse.optString("targetLanguage", targetLanguage));
+    String translatedText = parsedResponse.optString("translatedText",text);
+    String parsedSourceLanguage = parsedResponse.optString("sourceLanguage",sourceLanguage);
+    String parsedTargetLanguage = parsedResponse.optString("targetLanguage",targetLanguage);
 
     // Cache the result
     AITranslatorCache cache = new AITranslatorCache();
@@ -62,40 +60,62 @@ public class AITranslatorService {
     cache.setTimestamp(System.currentTimeMillis());
     AICacheRepository.saveTranslatorCache(cache);
 
-    return response;
+    return translatedText;
   }
 
   private JSONObject parseTranslationResponse(String response) throws IOException, AIException {
+    JSONObject translationObject = new JSONObject();
     try {
       // Clean up markdown formatting if present
-      String cleanedContent = cleanMarkdownFormatting(response);
 
-      // Parse the cleaned content as JSON
-      JSONObject jsonResponse = new JSONObject(cleanedContent);
+      Log.d(TAG, "Attempting to parse LLM response: " + response);
 
-      // Check if response is an error (if the LLM returns an error in the content
-      // itself)
+      // Try to parse the JSON response
+      JSONObject jsonResponse = new JSONObject(response);
+
+      // Check if response is an error
       if (jsonResponse.has("error")) {
-        handleErrorResponse(jsonResponse.getJSONObject("error"));
+          JSONObject errorObj = jsonResponse.getJSONObject("error");
+          handleErrorResponse(errorObj);
+          return translationObject; // Should not reach here as handleErrorResponse throws exception
       }
 
-      // Get the nested 'translation' object
-      JSONObject translationObject = jsonResponse.getJSONObject("translation");
-
-      // Validate required fields within the nested object
-      if (!translationObject.has("translatedText") && !translationObject.has("translated_text")) {
-        throw new AIException(AIErrorType.INVALID_RESPONSE,
-            "Missing 'translatedText' or 'translated_text' in nested translation object");
+      if (jsonResponse.has("choices")){
+        JSONArray choices = jsonResponse.getJSONArray("choices");
+       if (choices.length() > 0) {
+          JSONObject choice = choices.getJSONObject(0);
+          if (choice.has("message")) {
+            JSONObject message = choice.getJSONObject("message");
+            if (message.has("content")) {
+              String content = message.getString("content");
+              String cleanedContent = cleanMarkdownFormatting(content);
+              JSONObject cleanedContentObject = new JSONObject(cleanedContent);
+              if (cleanedContentObject.has("translation") ){
+                 translationObject = cleanedContentObject.getJSONObject("translation");
+              }
+            }
+          }
+        }
+      }else if (jsonResponse.has("content")) {
+          // Direct content response
+          String content = jsonResponse.getString("content");
+          String cleanedContent = cleanMarkdownFormatting(content);
+          JSONObject cleanedContentObject = new JSONObject(cleanedContent);
+          if (cleanedContentObject.has("translation") ){
+             translationObject = cleanedContentObject.getJSONObject("translation");
+          }
+      } else if (jsonResponse.has("text")) {
+          // Direct text response
+          String content = jsonResponse.getString("text");
+          String cleanedContent = cleanMarkdownFormatting(content);
+          JSONObject cleanedContentObject = new JSONObject(cleanedContent);
+          if (cleanedContentObject.has("translation") ){
+             translationObject = cleanedContentObject.getJSONObject("translation");
+          }
+      } else {
+          // Try to parse the entire response as content
+          translationObject = translationObject.getJSONObject("translation");
       }
-      if (!translationObject.has("sourceLanguage") && !translationObject.has("source_language")) {
-        throw new AIException(AIErrorType.INVALID_RESPONSE,
-            "Missing 'sourceLanguage' or 'source_language' in nested translation object");
-      }
-      if (!translationObject.has("targetLanguage") && !translationObject.has("target_language")) {
-        throw new AIException(AIErrorType.INVALID_RESPONSE,
-            "Missing 'targetLanguage' or 'target_language' in nested translation object");
-      }
-
       return translationObject;
     } catch (AIException e) {
       throw e; // Re-throw AI exceptions
@@ -124,6 +144,11 @@ public class AITranslatorService {
       cleaned = cleaned.substring(0, cleaned.length() - 3); // Remove trailing ```
     }
 
+    // Handle case where content is wrapped in triple quotes ("""json""" or just """)
+    if (cleaned.startsWith("\"\"\"") && cleaned.endsWith("\"\"\"")) {
+      cleaned = cleaned.substring(3, cleaned.length() - 3); // Remove surrounding triple quotes
+    }
+
     // Remove any remaining leading/trailing whitespace
     cleaned = cleaned.trim();
 
@@ -143,4 +168,6 @@ public class AITranslatorService {
 
     throw new AIException(type, errorMessage);
   }
+
 }
+
