@@ -36,7 +36,7 @@ public class AITranslatorService {
     // Prepare the system and user messages
     String systemMessage = "You are an experienced translator. Your task is to translate text from one language " +
         "to another accurately and fluently. You should be able to handle complex sentences " +
-        "and idioms. Your responses should be clear, concise, and easy to understand.IMPORTANT: You MUST respond with valid JSON format. Your response should be a JSON object with a 'translation' map containing translation object, which contains translatedText, sourceLanguage, targetLanguage";
+        "and idioms. Your responses should be clear, concise, and easy to understand. Key Points: Accuracy is Paramount; Fluent and Natural Writing; Standardized Terminology. IMPORTANT: You MUST respond with valid JSON format. Your response should be a JSON object with a 'translation' map containing translation object, which contains translatedText, sourceLanguage, targetLanguage";
     String userMessage = "Please provide the translation of the text \"" + text + "\" from " +
         sourceLanguage + " to " + targetLanguage + ".";
 
