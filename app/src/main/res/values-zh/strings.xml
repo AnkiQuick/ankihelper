@@ -73,22 +73,21 @@
     <string name="title_activity_ai_dictionary_editor">AI 词典编辑器</string>
     <string name="title_activity_ai_translator_configurations">AI 翻译配置</string>
     <string name="title_activity_ai_translator_editor">AI 翻译编辑器</string>
-    
+
     <!-- AI Dictionary and Translator Editor Labels -->
     <string name="dictionary_name">词典名称</string>
     <string name="translator_name">翻译器名称</string>
     <string name="model_name">模型名称</string>
     <string name="source_language">源语言</string>
     <string name="target_language">目标语言</string>
-    
+
     <!-- LLM and TTS Editor Labels -->
     <string name="llm_name">LLM 名称</string>
     <string name="tts_name">TTS 名称</string>
     <string name="base_url">基础 URL</string>
     <string name="api_token">API 令牌</string>
-    
-    <string name="acknowledge_text">Copyright: 2024-2025 Jennings Liu
-Copyright: 2017-2021 mmjang</string>
+
+    <string name="acknowledge_text">Copyright: 2024-2025 Jennings Liu\nCopyright: 2017-2021 mmjang</string>
     <string name="settings_title">设置</string>
     <string name="settings_category_general">通用</string>
     <string name="settings_category_appearance">外观</string>
