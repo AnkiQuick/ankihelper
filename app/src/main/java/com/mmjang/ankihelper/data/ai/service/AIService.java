@@ -115,18 +115,12 @@ public class AIService {
             jsonBody.put("temperature", 0.3);
             jsonBody.put("max_tokens", 1000);
             
-            // Add response format for structured output (supported by OpenAI-compatible APIs)
-            // We conditionally include this based on the provider to maintain compatibility
-            String baseUrl = config.getBaseUrl();
-            if (baseUrl != null && (baseUrl.contains("openai.com") || 
-                    baseUrl.contains("api.openai.com"))) {
-                JSONObject responseFormat = new JSONObject();
-                responseFormat.put("type", "json_object");
-                jsonBody.put("response_format", responseFormat);
-                Log.d(TAG, "Added response_format parameter for OpenAI-compatible API");
-            } else {
-                Log.d(TAG, "Skipping response_format parameter for non-OpenAI API: " + baseUrl);
-            }
+            // Add response format for structured output (now default for all providers)
+            // This ensures consistent behavior across all LLM providers
+            JSONObject responseFormat = new JSONObject();
+            responseFormat.put("type", "json_object");
+            jsonBody.put("response_format", responseFormat);
+            Log.d(TAG, "Added response_format parameter for structured output");
             
         } catch (JSONException e) {
             Log.e(TAG, "Error creating JSON body", e);

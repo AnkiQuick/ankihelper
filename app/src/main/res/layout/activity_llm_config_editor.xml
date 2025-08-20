@@ -45,6 +45,36 @@
 
             </LinearLayout>
 
+            <!-- Provider Selection -->
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:layout_marginBottom="16dp">
+
+                <TextView
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:text="@string/provider"
+                    android:textAppearance="?attr/textAppearanceBodyLarge"
+                    android:layout_gravity="center_vertical" />
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="2"
+                    android:hint="@string/provider">
+
+                    <androidx.appcompat.widget.AppCompatSpinner
+                        android:id="@+id/spinner_provider"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content" />
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
