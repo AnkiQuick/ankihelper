@@ -23,7 +23,6 @@ import java.util.List;
 public class AIDictionaryConfigEditorActivity extends AppCompatActivity {
     private TextInputEditText editTextDictionaryName;
     private Spinner spinnerLLM;
-    private TextInputEditText editTextPrompt;
     private Spinner spinnerSourceLanguage;
     private Spinner spinnerTargetLanguage;
     private AIDictionaryConfig currentConfig;
@@ -59,7 +58,6 @@ public class AIDictionaryConfigEditorActivity extends AppCompatActivity {
     private void initViews() {
         editTextDictionaryName = findViewById(R.id.edit_text_dictionary_name);
         spinnerLLM = findViewById(R.id.spinner_llm);
-        editTextPrompt = findViewById(R.id.edit_text_prompt);
         spinnerSourceLanguage = findViewById(R.id.spinner_source_language);
         spinnerTargetLanguage = findViewById(R.id.spinner_target_language);
     }
@@ -98,13 +96,11 @@ public class AIDictionaryConfigEditorActivity extends AppCompatActivity {
             }
         } else {
             // Set default prompt for new configurations
-            editTextPrompt.setText(AIConfigRepository.DEFAULT_DICTIONARY_PROMPT);
         }
     }
 
     private void populateFields() {
         editTextDictionaryName.setText(currentConfig.getDictionaryName());
-        editTextPrompt.setText(currentConfig.getPrompt());
         
         // Select the correct LLM in the spinner
         for (int i = 0; i < llmConfigs.size(); i++) {
@@ -159,7 +155,6 @@ public class AIDictionaryConfigEditorActivity extends AppCompatActivity {
 
     private void saveConfig() {
         String dictionaryName = editTextDictionaryName.getText().toString().trim();
-        String prompt = editTextPrompt.getText().toString().trim();
         String sourceLanguage = LANGUAGE_CODES[spinnerSourceLanguage.getSelectedItemPosition()];
         String targetLanguage = LANGUAGE_CODES[spinnerTargetLanguage.getSelectedItemPosition()];
 
@@ -173,18 +168,12 @@ public class AIDictionaryConfigEditorActivity extends AppCompatActivity {
             return;
         }
 
-        if (TextUtils.isEmpty(prompt)) {
-            editTextPrompt.setError("Prompt is required");
-            return;
-        }
-
         if (currentConfig == null) {
             currentConfig = new AIDictionaryConfig();
         }
 
         currentConfig.setDictionaryName(dictionaryName);
         currentConfig.setLlmId(llmConfigs.get(spinnerLLM.getSelectedItemPosition()).getId());
-        currentConfig.setPrompt(prompt);
         currentConfig.setSourceLanguage(sourceLanguage);
         currentConfig.setTargetLanguage(targetLanguage);
 
