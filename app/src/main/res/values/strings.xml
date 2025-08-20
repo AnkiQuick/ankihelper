@@ -72,4 +72,17 @@
     <string name="title_activity_ai_dictionary_editor">AI Dictionary Editor</string>
     <string name="title_activity_ai_translator_configurations">AI Translator Configurations</string>
     <string name="title_activity_ai_translator_editor">AI Translator Editor</string>
+    
+    <!-- AI Dictionary and Translator Editor Labels -->
+    <string name="dictionary_name">Dictionary Name</string>
+    <string name="translator_name">Translator Name</string>
+    <string name="model_name">Model Name</string>
+    <string name="source_language">Source Language</string>
+    <string name="target_language">Target Language</string>
+    
+    <!-- LLM and TTS Editor Labels -->
+    <string name="llm_name">LLM Name</string>
+    <string name="tts_name">TTS Name</string>
+    <string name="base_url">Base URL</string>
+    <string name="api_token">API Token</string>
 </resources>
