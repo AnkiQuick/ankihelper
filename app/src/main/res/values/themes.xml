@@ -28,6 +28,8 @@
         <item name="button_background_selector">@drawable/selector</item>
         <item name="icon_scroll_up">@drawable/ic_up_arrow</item>
         <item name="icon_translate_normal">@drawable/icon_translate_normal</item>
+        <item name="icon_translate_wait">@drawable/ic_ali_wait</item>
+        <item name="icon_translate_done">@drawable/icon_translate_done</item>
         <item name="icon_left_arrow">@drawable/ic_left_arrow</item>
         <item name="icon_right_arrow">@drawable/ic_right_arrow</item>
         <item name="icon_note">@drawable/ic_note_black</item>
@@ -66,6 +68,8 @@
         <item name="button_background_selector">@drawable/selector_pink</item>
         <item name="icon_scroll_up">@drawable/ic_up_arrow</item>
         <item name="icon_translate_normal">@drawable/icon_translate_normal</item>
+        <item name="icon_translate_wait">@drawable/ic_ali_wait_pink</item>
+        <item name="icon_translate_done">@drawable/icon_translate_done</item>
         <item name="icon_left_arrow">@drawable/ic_left_arrow</item>
         <item name="icon_right_arrow">@drawable/ic_right_arrow</item>
         <item name="icon_note">@drawable/ic_note_black</item>
@@ -111,6 +115,8 @@
         <item name="button_background_selector">@drawable/selector</item>
         <item name="icon_scroll_up">@drawable/ic_up_arrow</item>
         <item name="icon_translate_normal">@drawable/icon_translate_normal</item>
+        <item name="icon_translate_wait">@drawable/ic_ali_wait</item>
+        <item name="icon_translate_done">@drawable/icon_translate_done</item>
         <item name="icon_left_arrow">@drawable/ic_left_arrow</item>
         <item name="icon_right_arrow">@drawable/ic_right_arrow</item>
         <item name="icon_note">@drawable/ic_note_black</item>
@@ -151,6 +157,8 @@
         <item name="button_background_selector">@drawable/selector_pink</item>
         <item name="icon_scroll_up">@drawable/ic_up_arrow</item>
         <item name="icon_translate_normal">@drawable/icon_translate_normal</item>
+        <item name="icon_translate_wait">@drawable/ic_ali_wait_pink</item>
+        <item name="icon_translate_done">@drawable/icon_translate_done</item>
         <item name="icon_left_arrow">@drawable/ic_left_arrow</item>
         <item name="icon_right_arrow">@drawable/ic_right_arrow</item>
         <item name="icon_note">@drawable/ic_note_black</item>
@@ -174,4 +182,5 @@
         <item name="android:windowIsFloating">false</item>
         <item name="android:backgroundDimEnabled">false</item>
     </style>
+
 </resources>

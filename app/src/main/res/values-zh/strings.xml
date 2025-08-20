@@ -73,4 +73,22 @@
     <string name="title_activity_ai_dictionary_editor">AI 词典编辑器</string>
     <string name="title_activity_ai_translator_configurations">AI 翻译配置</string>
     <string name="title_activity_ai_translator_editor">AI 翻译编辑器</string>
+    <string name="acknowledge_text">Copyright: 2024-2025 Jennings Liu
+Copyright: 2017-2021 mmjang</string>
+    <string name="settings_title">设置</string>
+    <string name="settings_category_general">通用</string>
+    <string name="settings_category_appearance">外观</string>
+    <string name="settings_category_essential">基本</string>
+    <string name="settings_monitor_clipboard">监控剪贴板</string>
+    <string name="settings_monitor_clipboard_summary">自动检测复制的文本</string>
+    <string name="settings_auto_cancel_popup">自动关闭弹窗</string>
+    <string name="settings_auto_cancel_popup_summary">添加笔记后关闭弹窗</string>
+    <string name="settings_left_hand_mode">左手模式</string>
+    <string name="settings_left_hand_mode_summary">优化左手用户界面</string>
+    <string name="settings_show_read_content">显示已读内容</string>
+    <string name="settings_show_read_content_summary">显示已阅读过的内容</string>
+    <string name="settings_pink_theme">粉色主题</string>
+    <string name="settings_pink_theme_summary">使用粉色主题代替绿色</string>
+    <string name="settings_pronounce_language">发音语言</string>
+    <string name="settings_pronounce_language_summary">选择文本发音语言</string>
 </resources>

@@ -41,6 +41,10 @@ android {
     configurations.all {
       exclude group: 'com.google.guava', module: 'listenablefuture'
     }
+
+    kotlinOptions {
+        jvmTarget = '17'
+    }
 }
 
 dependencies {

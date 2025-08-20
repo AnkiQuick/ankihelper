@@ -242,15 +242,19 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                     String[] splitted = result.split("\n");
                     if(splitted.length > 0 && splitted[0].equals("error")){
                         Toast.makeText(PopupActivity.this, result, Toast.LENGTH_SHORT).show();
+                        mBtnTranslation.setEnabled(true); // Re-enable button on error
+                        showTranslateNormal(); // Show normal state on error
                         break;
                     }
                     mEditTextTranslation.setText((result));
                     showTranslateDone();
                     showTranslationCardView(true);
+                    mBtnTranslation.setEnabled(true); // Re-enable button on success
                     break;
-                default:
+                case TRANSLATIOn_FAILED:
                     showTranslateNormal();
                     Toast.makeText(PopupActivity.this, (String) msg.obj, Toast.LENGTH_SHORT).show();
+                    mBtnTranslation.setEnabled(true); // Re-enable button on failure
                     break;
             }
         }
@@ -640,6 +644,8 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                     @Override
                     public void onClick(View view) {
                         if(mEditTextTranslation.getText().toString().equals("")){
+                            mBtnTranslation.setEnabled(false); // Disable button
+                            showTranslateLoading(); // Show loading state
                             asyncTranslate(mTextToProcess);
                         }
                     }
