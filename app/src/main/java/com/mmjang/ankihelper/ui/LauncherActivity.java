@@ -54,6 +54,7 @@ public class LauncherActivity extends AppCompatActivity {
     TextView textViewOpenAIConfig;
     TextView textViewAddDefaultPlan;
     TextView textViewAcknowledge;
+    TextView textViewOpenStatistics;
 
     private static final int REQUEST_CODE_ANKI = 0;
 
@@ -88,6 +89,7 @@ public class LauncherActivity extends AppCompatActivity {
         textViewOpenAIConfig = (TextView) findViewById(R.id.btn_open_ai_config);
         textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
         textViewAcknowledge = (TextView) findViewById(R.id.textview_acknowledge);
+        textViewOpenStatistics = (TextView) findViewById(R.id.btn_open_statistics);
 
         switchMoniteClipboard.setChecked(
                 settings.getMoniteClipboardQ()
@@ -192,6 +194,14 @@ public class LauncherActivity extends AppCompatActivity {
                     }
                 }
         );
+        
+        textViewOpenStatistics.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(LauncherActivity.this, StatActivity.class);
+                startActivity(intent);
+            }
+        });
         //debug new feature
 //        Thread thread = new Thread(new Runnable() {
 //            @Override
@@ -231,12 +241,7 @@ public class LauncherActivity extends AppCompatActivity {
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-
-      if (item.getItemId() == R.id.menu_item_stat) {
-          Intent intent2 = new Intent(this, StatActivity.class);
-          startActivity(intent2);
-      }
-        return true;
+        return super.onOptionsItemSelected(item);
     }
 
 

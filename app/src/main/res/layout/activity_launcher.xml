@@ -176,6 +176,38 @@
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
+        <!-- Statistics Card -->
+        <com.google.android.material.card.MaterialCardView
+            android:id="@+id/statistics_card"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            app:strokeWidth="0dp"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/switches_card">
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:padding="0dp">
+
+                <!-- Statistics Button -->
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_open_statistics"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:strokeWidth="0dp"
+                    android:text="@string/menu_title_statistics"
+                    android:gravity="start|center_vertical"
+                    app:icon="@android:drawable/ic_menu_agenda"
+                    app:iconGravity="end"
+                    style="@style/Widget.Material3.Button.OutlinedButton" />
+
+            </LinearLayout>
+        </com.google.android.material.card.MaterialCardView>
+
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/version_card"
             android:layout_width="0dp"
@@ -185,7 +217,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/switches_card">
+            app:layout_constraintTop_toBottomOf="@+id/statistics_card">
 
             <LinearLayout
                 android:layout_width="match_parent"
