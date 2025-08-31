@@ -90,4 +90,14 @@
     <string name="provider_deepseek">DeepSeek</string>
     <string name="provider_openai">OpenAI</string>
     <string name="provider_aliyun">Aliyun</string>
+    
+    <string name="history_management">History Management</string>
+    <!-- Clean AI History -->
+    <string name="title_clean_ai_history">Clean AI History</string>
+    <string name="ai_dictionary">AI Dictionary</string>
+    <string name="ai_translator">AI Translator</string>
+    <string name="total_records">Total records</string>
+    <string name="records_to_clean">Records to clean</string>
+    <string name="clean_all">Clean All</string>
+    <string name="clean">Clean</string>
 </resources>

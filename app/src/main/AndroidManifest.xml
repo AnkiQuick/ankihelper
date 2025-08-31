@@ -184,6 +184,15 @@
                 android:value="com.mmjang.ankihelper.ui.ai.AITranslatorConfigListActivity" />
         </activity>
 
+        <activity android:name=".ui.ai.CleanAIHistoryActivity"
+            android:label="@string/title_clean_ai_history"
+            android:theme="@style/Theme.AnkiHelper"
+            android:parentActivityName=".ui.LauncherActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+        </activity>
+
     </application>
 
 </manifest>

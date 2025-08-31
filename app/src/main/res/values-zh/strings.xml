@@ -88,6 +88,16 @@
     <string name="api_token">API 令牌</string>
 
     <string name="acknowledge_text">Copyright: 2024-2025 Jennings Liu\nCopyright: 2017-2021 mmjang</string>
+    
+    <string name="history_management">历史记录管理</string>
+    <!-- Clean AI History -->
+    <string name="title_clean_ai_history">清理 AI 历史记录</string>
+    <string name="ai_dictionary">AI 词典</string>
+    <string name="ai_translator">AI 翻译器</string>
+    <string name="total_records">总记录数</string>
+    <string name="records_to_clean">要清理的记录数</string>
+    <string name="clean_all">全部清理</string>
+    <string name="clean">清理</string>
     <string name="settings_title">设置</string>
     <string name="settings_category_general">通用</string>
     <string name="settings_category_appearance">外观</string>

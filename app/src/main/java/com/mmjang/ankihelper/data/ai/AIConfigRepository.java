@@ -2,6 +2,8 @@ package com.mmjang.ankihelper.data.ai;
 
 import android.content.ContentValues;
 
+import com.mmjang.ankihelper.data.ai.cache.AICacheRepository;
+
 import org.litepal.LitePal;
 
 import java.util.List;
@@ -98,5 +100,23 @@ public class AIConfigRepository {
     
     public static void deleteAITranslatorConfig(long id) {
         LitePal.delete(AITranslatorConfig.class, id);
+    }
+    
+    // AI Dictionary Cache methods
+    public static int deleteOldestAIDictionaryCache(int count) {
+        return AICacheRepository.deleteOldestDictionaryCache(count);
+    }
+    
+    public static int deleteAllAIDictionaryCache() {
+        return AICacheRepository.deleteAllDictionaryCache();
+    }
+    
+    // AI Translator Cache methods
+    public static int deleteOldestAITranslatorCache(int count) {
+        return AICacheRepository.deleteOldestTranslatorCache(count);
+    }
+    
+    public static int deleteAllAITranslatorCache() {
+        return AICacheRepository.deleteAllTranslatorCache();
     }
 }

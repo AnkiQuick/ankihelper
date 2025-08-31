@@ -66,6 +66,17 @@
                     app:icon="@drawable/ic_settings_outline"
                     app:iconGravity="end"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
+
+                <com.google.android.material.button.MaterialButton
+                    android:id="@+id/btn_manage_ai_history"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    app:strokeWidth="0dp"
+                    android:text="@string/history_management"
+                    android:gravity="start|center_vertical"
+                    app:icon="@android:drawable/ic_menu_delete"
+                    app:iconGravity="end"
+                    style="@style/Widget.Material3.Button.OutlinedButton" />
             </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 

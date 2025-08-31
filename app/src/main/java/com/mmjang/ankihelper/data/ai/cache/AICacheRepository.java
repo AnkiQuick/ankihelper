@@ -46,6 +46,22 @@ public class AICacheRepository {
         LitePal.deleteAll(AIDictionaryCache.class, "timestamp < ?", String.valueOf(expirationTime));
     }
     
+    public static int deleteOldestDictionaryCache(int count) {
+        List<AIDictionaryCache> oldestRecords = LitePal.order("timestamp asc").limit(count).find(AIDictionaryCache.class);
+        int deletedCount = 0;
+        for (AIDictionaryCache cache : oldestRecords) {
+            int result = cache.delete();
+            if (result > 0) {
+                deletedCount++;
+            }
+        }
+        return deletedCount;
+    }
+    
+    public static int deleteAllDictionaryCache() {
+        return LitePal.deleteAll(AIDictionaryCache.class);
+    }
+    
     // AI Translator Cache methods
     public static AITranslatorCache getTranslatorCache(String sourceText, String sourceLanguage, 
                                                        String targetLanguage, long llmConfigId) {
@@ -61,5 +77,21 @@ public class AICacheRepository {
     
     public static void clearExpiredTranslatorCache(long expirationTime) {
         LitePal.deleteAll(AITranslatorCache.class, "timestamp < ?", String.valueOf(expirationTime));
+    }
+    
+    public static int deleteOldestTranslatorCache(int count) {
+        List<AITranslatorCache> oldestRecords = LitePal.order("timestamp asc").limit(count).find(AITranslatorCache.class);
+        int deletedCount = 0;
+        for (AITranslatorCache cache : oldestRecords) {
+            int result = cache.delete();
+            if (result > 0) {
+                deletedCount++;
+            }
+        }
+        return deletedCount;
+    }
+    
+    public static int deleteAllTranslatorCache() {
+        return LitePal.deleteAll(AITranslatorCache.class);
     }
 }

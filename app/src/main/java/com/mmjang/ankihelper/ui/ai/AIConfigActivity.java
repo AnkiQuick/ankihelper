@@ -15,6 +15,7 @@ public class AIConfigActivity extends AppCompatActivity {
     private Button btnManageTTS;
     private Button btnManageAIDictionary;
     private Button btnManageAITranslator;
+    private Button btnManageAIHistory;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -36,6 +37,7 @@ public class AIConfigActivity extends AppCompatActivity {
         btnManageTTS = findViewById(R.id.btn_manage_tts);
         btnManageAIDictionary = findViewById(R.id.btn_manage_ai_dictionary);
         btnManageAITranslator = findViewById(R.id.btn_manage_ai_translator);
+        btnManageAIHistory = findViewById(R.id.btn_manage_ai_history);
     }
 
     private void setListeners() {
@@ -68,6 +70,14 @@ public class AIConfigActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(AIConfigActivity.this, AITranslatorConfigListActivity.class);
+                startActivity(intent);
+            }
+        });
+
+        btnManageAIHistory.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(AIConfigActivity.this, CleanAIHistoryActivity.class);
                 startActivity(intent);
             }
         });
