@@ -10,6 +10,9 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.data.ai.AIDictionaryConfig;
+import com.mmjang.ankihelper.data.ai.AIConfigRepository;
+import com.mmjang.ankihelper.data.dict.AIDictionary;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -100,11 +103,15 @@ public class Oalde10 implements IDictionary {
     }
 
     if (re.isEmpty()) {
+      // Try to use AI dictionary as fallback
       try {
-        re.add(toDefinition(YoudaoOnline.getDefinition(key)));
-      } catch (IOException e) {
-        // Toast.makeText(mContext, "本地词典未查到，有道词典在线查询失败，请检查网络连接",
-        // Toast.LENGTH_SHORT).show();
+        List<AIDictionaryConfig> aiConfigs = AIConfigRepository.getAllAIDictionaryConfigs();
+        if (!aiConfigs.isEmpty()) {
+          AIDictionary aiDict = new AIDictionary(aiConfigs.get(0)); // Use the first AI dictionary config
+          re.addAll(aiDict.wordLookup(key));
+        }
+      } catch (Exception e) {
+        // If AI lookup fails, continue with empty result
       }
     }
 
@@ -251,29 +258,14 @@ public class Oalde10 implements IDictionary {
     return key.trim().replaceAll("[,.!?()\"'“”’？]", "").toLowerCase();
   }
 
-  private Definition toDefinition(YoudaoResult youdaoResult) {
-    String notiString = "<font color='gray'>本地词典未查到，以下是有道在线释义</font><br/>";
-    String definition = "<b>" + youdaoResult.returnPhrase + "</b><br/>";
-    for (String def : youdaoResult.translation) {
-      definition += def + "<br/>";
-    }
-
-    definition += "<font color='gray'>网络释义</font><br/>";
-    for (String key : youdaoResult.webTranslation.keySet()) {
-      String joined = "";
-      for (String value : youdaoResult.webTranslation.get(key)) {
-        joined += value + "; ";
-      }
-      definition += "<b>" + key + "</b>: " + joined + "<br/>";
-    }
-
+  private Definition toDefinition(String word, String phonetic, String definitionHtml) {
     Map<String, String> exp = new HashMap<>();
-    exp.put(EXP_ELE_LIST[0], youdaoResult.returnPhrase);
-    exp.put(EXP_ELE_LIST[1], youdaoResult.phonetic);
-    exp.put(EXP_ELE_LIST[2], definition);
-    exp.put(EXP_ELE_LIST[3], getYoudaoAudioTag(youdaoResult.returnPhrase, 2));
-    exp.put(EXP_ELE_LIST[4], getYoudaoAudioTag(youdaoResult.returnPhrase, 1));
-    return new Definition(exp, notiString + definition);
+    exp.put(EXP_ELE_LIST[0], word);
+    exp.put(EXP_ELE_LIST[1], phonetic);
+    exp.put(EXP_ELE_LIST[2], definitionHtml);
+    exp.put(EXP_ELE_LIST[3], getYoudaoAudioTag(word, 2));
+    exp.put(EXP_ELE_LIST[4], getYoudaoAudioTag(word, 1));
+    return new Definition(exp, definitionHtml);
   }
 
   String getYoudaoAudioTag(String word, int voiceType) {

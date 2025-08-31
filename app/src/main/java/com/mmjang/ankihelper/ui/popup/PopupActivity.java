@@ -77,18 +77,11 @@ import android.content.pm.PackageManager;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.database.DatabaseManager;
-import com.mmjang.ankihelper.data.dict.BingImage;
 import com.mmjang.ankihelper.data.dict.Definition;
-import com.mmjang.ankihelper.data.dict.DictionaryDotCom;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
-import com.mmjang.ankihelper.data.dict.Dub91Sentence;
-import com.mmjang.ankihelper.data.dict.EudicSentence;
 import com.mmjang.ankihelper.data.dict.IDictionary;
 import com.mmjang.ankihelper.data.dict.AIDictionary;
-import com.mmjang.ankihelper.data.dict.RenRenCiDianSentence;
-import com.mmjang.ankihelper.data.dict.SolrDictionary;
 import com.mmjang.ankihelper.data.dict.UrbanAutoCompleteAdapter;
-import com.mmjang.ankihelper.data.dict.VocabCom;
 import com.mmjang.ankihelper.data.history.HistoryUtil;
 import com.mmjang.ankihelper.data.model.UserTag;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
@@ -1171,9 +1164,7 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
             defImage.setVisibility(View.VISIBLE);
         }
 
-        if((currentDicitonary instanceof EudicSentence ||
-                currentDicitonary instanceof SolrDictionary ||
-                currentDicitonary instanceof RenRenCiDianSentence) && def.getAudioUrl()!=null && !def.getAudioUrl().isEmpty()){
+        if(def.getAudioUrl()!=null && !def.getAudioUrl().isEmpty()){
             textVeiwDefinition.setTextIsSelectable(false);
             textVeiwDefinition.setOnClickListener(
                     new View.OnClickListener() {
@@ -1302,10 +1293,7 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
 
                             //save image
                             if (def.getImageUrl() != null && !def.getImageUrl().isEmpty()) {
-                                if (defImage.getDrawable() != null &&
-                                        (currentDicitonary instanceof BingImage ||
-                                                currentDicitonary instanceof RenRenCiDianSentence ||
-                                                currentDicitonary instanceof Dub91Sentence)) {
+                                if (defImage.getDrawable() != null) {
                                     BitmapDrawable drawable = (BitmapDrawable) defImage.getDrawable();
                                     Bitmap bm = drawable.getBitmap();
 
@@ -1404,8 +1392,7 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                                 i++;
                             }
                             //handle download; audio or image
-                            if (currentDicitonary instanceof EudicSentence ||
-                                    currentDicitonary instanceof RenRenCiDianSentence) {
+                            if (def.getAudioUrl() != null && !def.getAudioUrl().isEmpty()) {
                                 if (fetch == null) {
                                     initFetch();
                                 }
@@ -1433,7 +1420,7 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                                 }
                             }
 
-                            if (currentDicitonary instanceof SolrDictionary) {
+                            if (def.getAudioUrl() != null && !def.getAudioUrl().isEmpty()) {
                                 if (fetch == null) {
                                     initFetch();
                                 }
@@ -1461,7 +1448,7 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                                 }
                             }
 
-                            if (currentDicitonary instanceof VocabCom) {
+                            if (def.getAudioUrl() != null && !def.getAudioUrl().isEmpty()) {
                                 if (fetch == null) {
                                     initFetch();
                                 }

@@ -5,7 +5,7 @@ import android.content.Context;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 import com.mmjang.ankihelper.data.database.DatabaseManager;
-import com.mmjang.ankihelper.data.dict.Collins;
+import com.mmjang.ankihelper.data.dict.Oalde10;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
@@ -20,7 +20,7 @@ public class DefaultPlan {
     private static final String DEFAULT_VOCABULARY_MODEL_NAME = "划词助手Antimoon模板";
     private static final String DEFAULT_CLOZE_MODEL_NAME = "ankihelper_default_cloze_card";
     private static final String DEFAULT_DECK_NAME = "划词助手默认牌组";
-    public static final String DEFAULT_PLAN_NAME = "Collins(默认方案)";
+    public static final String DEFAULT_PLAN_NAME = "Oxford(默认方案)";
     AnkiDroidHelper mAnkidroid;
     VocabularyCardModel vc;
     Context mContext;
@@ -30,7 +30,7 @@ public class DefaultPlan {
     }
 
     public void addDefaultPlan(){
-        Collins collins = new Collins(mContext);
+        Oalde10 oxford = new Oalde10(mContext);
         String[] elements = new String[]{
                 "单词",
                 "音标",
@@ -57,7 +57,7 @@ public class DefaultPlan {
         defaultPlan.setPlanName(DEFAULT_PLAN_NAME);
         defaultPlan.setOutputModelId(getDefaultModelId());
         defaultPlan.setOutputDeckId(getDefaultDeckId());
-        defaultPlan.setDictionaryKey(collins.getDictionaryName());
+        defaultPlan.setDictionaryKey(oxford.getDictionaryName());
         defaultPlan.setFieldsMap(fieldMap);
         DatabaseManager.getInstance().insertPlan(defaultPlan);
     }

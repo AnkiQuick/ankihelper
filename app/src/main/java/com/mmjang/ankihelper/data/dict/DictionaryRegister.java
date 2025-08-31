@@ -17,28 +17,6 @@ import java.util.List;
 public class DictionaryRegister {
     //在这里注册词典类
     private static Class<?>[] classList = new Class<?>[]{
-            Ode2.class,
-            Collins.class,
-            CollinsEnEn.class,
-            EudicSentence.class,
-            SolrDictionary.class,
-            RenRenCiDianSentence.class,
-            Dub91Sentence.class,
-            Esdict.class,
-            Frdict.class,
-            Dedict.class,
-            Cloze.class,
-            JiSho.class,
-            VocabCom.class,
-            Mnemonic.class,
-            WebsterLearners.class,
-            HujiangJapanese.class,
-            Handian.class,
-            BingOxford.class,
-            BingImage.class,
-            DictionaryDotCom.class,
-            UrbanDict.class,
-            IdiomDict.class,
             Oalde10.class,
             Cdepe4.class,
             Maldpe.class

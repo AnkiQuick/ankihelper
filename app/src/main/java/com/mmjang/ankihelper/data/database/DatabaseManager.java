@@ -10,7 +10,6 @@ import androidx.annotation.Nullable;
 
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.book.Book;
-import com.mmjang.ankihelper.data.dict.JiSho;
 import com.mmjang.ankihelper.data.history.HistoryPOJO;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
