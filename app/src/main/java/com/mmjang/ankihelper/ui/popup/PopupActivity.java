@@ -119,6 +119,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
+import java.lang.ref.WeakReference;
 import java.net.URLDecoder;
 import java.util.HashSet;
 import java.util.List;
@@ -213,45 +214,58 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
 
     //view tag
     private static final int TAG_NOTE_ID_LONG = 5;
-    //async
-    @SuppressLint("HandlerLeak")
-    @SuppressWarnings("unchecked")
-    final Handler mHandler = new Handler() {
+    
+    // Memory-leak-safe Handler implementation
+    private static class PopupHandler extends Handler {
+        private final WeakReference<PopupActivity> activityRef;
+        
+        PopupHandler(PopupActivity activity) {
+            this.activityRef = new WeakReference<>(activity);
+        }
+        
         @Override
+        @SuppressWarnings("unchecked")
         public void handleMessage(Message msg) {
+            PopupActivity activity = activityRef.get();
+            if (activity == null) {
+                return; // Activity has been garbage collected
+            }
+            
             switch (msg.what) {
                 case PROCESS_DEFINITION_LIST:
-                    showSearchButton();
-                    //scrollView.fullScroll(ScrollView.FOCUS_UP);
-                    mDefinitionList = (List<Definition>) msg.obj;
-                    processDefinitionList(mDefinitionList);
+                    activity.showSearchButton();
+                    activity.mDefinitionList = (List<Definition>) msg.obj;
+                    activity.processDefinitionList(activity.mDefinitionList);
                     break;
                 case ASYNC_SEARCH_FAILED:
-                    showSearchButton();
-                    Toast.makeText(PopupActivity.this, (String) msg.obj, Toast.LENGTH_LONG).show();
+                    activity.showSearchButton();
+                    Toast.makeText(activity, (String) msg.obj, Toast.LENGTH_LONG).show();
                     break;
                 case TRANSLATION_DONE:
                     String result = (String) msg.obj;
                     String[] splitted = result.split("\n");
                     if(splitted.length > 0 && splitted[0].equals("error")){
-                        Toast.makeText(PopupActivity.this, result, Toast.LENGTH_SHORT).show();
-                        mBtnTranslation.setEnabled(true); // Re-enable button on error
-                        showTranslateNormal(); // Show normal state on error
+                        Toast.makeText(activity, result, Toast.LENGTH_SHORT).show();
+                        activity.mBtnTranslation.setEnabled(true); // Re-enable button on error
+                        activity.showTranslateNormal(); // Show normal state on error
                         break;
                     }
-                    mEditTextTranslation.setText((result));
-                    showTranslateDone();
-                    showTranslationCardView(true);
-                    mBtnTranslation.setEnabled(true); // Re-enable button on success
+                    activity.mEditTextTranslation.setText((result));
+                    activity.showTranslateDone();
+                    activity.showTranslationCardView(true);
+                    activity.mBtnTranslation.setEnabled(true); // Re-enable button on success
                     break;
                 case TRANSLATIOn_FAILED:
-                    showTranslateNormal();
-                    Toast.makeText(PopupActivity.this, (String) msg.obj, Toast.LENGTH_SHORT).show();
-                    mBtnTranslation.setEnabled(true); // Re-enable button on failure
+                    activity.showTranslateNormal();
+                    Toast.makeText(activity, (String) msg.obj, Toast.LENGTH_SHORT).show();
+                    activity.mBtnTranslation.setEnabled(true); // Re-enable button on failure
                     break;
             }
         }
-    };
+    }
+    
+    //async
+    private final PopupHandler mHandler = new PopupHandler(this);
     private BigBangLayout bigBangLayout;
     private BigBangLayoutWrapper bigBangLayoutWrapper;
 
@@ -779,10 +793,7 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
         // Update data model
         mTextToProcess = modifiedText;
         
-        // Reprocess text
-        populateWordSelectBox();
-        
-        // Switch UI back to select mode
+        // Switch UI back to select mode first for better UX
         mEditTextArea.setVisibility(View.GONE);
         mBtnSaveChanges.setVisibility(View.GONE);
         mBtnDiscardChanges.setVisibility(View.GONE);
@@ -794,16 +805,16 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
         imm.hideSoftInputFromWindow(mEditTextArea.getWindowToken(), 0);
         
         currentEditMode = EditMode.SELECT_MODE;
+        
+        // Reprocess text asynchronously
+        populateWordSelectBox();
     }
 
     private void discardChangesAndReturnToSelectMode() {
         // Restore original text state
         mTextToProcess = originalText;
         
-        // Reprocess text with original content
-        populateWordSelectBox();
-        
-        // Switch UI back to select mode
+        // Switch UI back to select mode first for better UX
         mEditTextArea.setVisibility(View.GONE);
         mBtnSaveChanges.setVisibility(View.GONE);
         mBtnDiscardChanges.setVisibility(View.GONE);
@@ -815,6 +826,9 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
         imm.hideSoftInputFromWindow(mEditTextArea.getWindowToken(), 0);
         
         currentEditMode = EditMode.SELECT_MODE;
+        
+        // Reprocess text with original content asynchronously
+        populateWordSelectBox();
     }
 
     private String getCurrentTextFromBigBangLayout() {
@@ -1005,24 +1019,64 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
     }
 
     private void populateWordSelectBox() {
-        List<String> localSegments = TextSplitter.getLocalSegments(mTextToProcess);
+        populateWordSelectBoxAsync(mTextToProcess);
+    }
+
+    private void populateWordSelectBoxAsync(final String textToProcess) {
+        // Show loading indicator
+        progressBar.setVisibility(View.VISIBLE);
+        
+        // Process text segmentation in background thread
+        Thread textProcessingThread = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // Heavy text processing in background
+                    final List<String> localSegments = TextSplitter.getLocalSegments(textToProcess);
+                    
+                    // Update UI on main thread
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            updateBigBangLayoutWithSegments(localSegments);
+                        }
+                    });
+                } catch (Exception e) {
+                    // Handle errors on main thread
+                    runOnUiThread(new Runnable() {
+                        @Override
+                        public void run() {
+                            progressBar.setVisibility(View.GONE);
+                            Toast.makeText(PopupActivity.this, "Error processing text: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                        }
+                    });
+                }
+            }
+        });
+        textProcessingThread.start();
+    }
+
+    private void updateBigBangLayoutWithSegments(List<String> localSegments) {
+        // Hide loading indicator
+        progressBar.setVisibility(View.GONE);
+        
+        // Update UI with processed segments
         bigBangLayout.removeAllViews();
         for (String localSegment : localSegments) {
             bigBangLayout.addTextItem(localSegment);
         }
-        bigBangLayout.post(
-                new Runnable() {
-                    @Override
-                    public void run() {
-                        String currentWord = FieldUtil.getSelectedText(bigBangLayout.getLines());
-                        if (!currentWord.equals("")&&!currentWord.equals(act.getText().toString())) {
-                            mCurrentKeyWord = currentWord;
-                            act.setText(currentWord);
-                            asyncSearch(currentWord);
-                        }
-                    }
+        
+        bigBangLayout.post(new Runnable() {
+            @Override
+            public void run() {
+                String currentWord = FieldUtil.getSelectedText(bigBangLayout.getLines());
+                if (!currentWord.equals("") && !currentWord.equals(act.getText().toString())) {
+                    mCurrentKeyWord = currentWord;
+                    act.setText(currentWord);
+                    asyncSearch(currentWord);
                 }
-        );
+            }
+        });
     }
 
 
@@ -1805,6 +1859,12 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
     @Override
     public void onDestroy() {
         super.onDestroy();
+        
+        // Clean up handler to prevent memory leaks
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+        }
+        
         Runtime.getRuntime().gc();
     }
 

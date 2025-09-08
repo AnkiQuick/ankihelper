@@ -100,4 +100,8 @@
     <string name="records_to_clean">Records to clean</string>
     <string name="clean_all">Clean All</string>
     <string name="clean">Clean</string>
+    
+    <!-- Shortcuts -->
+    <string name="shortcut_add_to_anki_short">Add to Anki</string>
+    <string name="shortcut_add_to_anki_long">Add selected text to Anki</string>
 </resources>

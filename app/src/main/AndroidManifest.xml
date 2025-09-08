@@ -27,6 +27,8 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AnkiHelper"
         android:forceDarkAllowed="false">
+        <meta-data android:name="android.service.chooser.chooser_target_service"
+           android:value="androidx.sharetarget.ChooserTargetServiceCompat" />
 
         <activity android:name=".ui.settings.SettingsActivity"
             android:label="@string/settings_title"
@@ -40,19 +42,17 @@
             android:name=".ui.popup.PopupActivity"
             android:excludeFromRecents="true"
             android:exported="true"
-            android:launchMode="singleInstance"
+            android:launchMode="singleTop"
             android:noHistory="true"
             android:theme="@style/Transparent"
             android:windowSoftInputMode="stateAlwaysHidden">
-            <intent-filter>
-                <action android:name="android.intent.action.SEND" />
-                <category android:name="android.intent.category.BROWSABLE" />
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.PROCESS_TEXT" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
-            <intent-filter>
-                <action android:name="android.intent.action.PROCESS_TEXT" />
-                <category android:name="android.intent.category.BROWSABLE" />
+            <intent-filter android:priority="1000">
+                <action android:name="android.intent.action.SEND" />
                 <category android:name="android.intent.category.DEFAULT" />
                 <data android:mimeType="text/plain" />
             </intent-filter>
@@ -91,6 +91,8 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+            <meta-data android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <activity

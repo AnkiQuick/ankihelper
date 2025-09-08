@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="add_to_anki"
+        android:enabled="true"
+        android:icon="@drawable/icon_light"
+        android:shortcutShortLabel="@string/shortcut_add_to_anki_short"
+        android:shortcutLongLabel="@string/shortcut_add_to_anki_long">
+        <intent
+            android:action="android.intent.action.PROCESS_TEXT"
+            android:targetPackage="com.mmjang.ankihelper"
+            android:targetClass="com.mmjang.ankihelper.ui.popup.PopupActivity" />
+        <categories android:name="android.shortcut.conversation" />
+    </shortcut>
+</shortcuts>
