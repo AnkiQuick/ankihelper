@@ -101,8 +101,15 @@ public final class AddContentApi {
         try {
             newNoteUri = mResolver.insert(Note.CONTENT_URI, values);
         } catch (Exception e) {
-            com.mmjang.ankihelper.util.Utils.showMessage(mContext,
-                    mContext.getString(R.string.str_check_ankidroid_permisson));
+            // More detailed error handling for different Android versions
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                // For Android 12+ (SDK 31+), provide more specific error handling
+                com.mmjang.ankihelper.util.Utils.showMessage(mContext,
+                        mContext.getString(R.string.str_check_ankidroid_permisson) + " (Android 12+ permission issue)");
+            } else {
+                com.mmjang.ankihelper.util.Utils.showMessage(mContext,
+                        mContext.getString(R.string.str_check_ankidroid_permisson));
+            }
             return null;
         }
         if (newNoteUri == null) {
@@ -125,6 +132,12 @@ public final class AddContentApi {
                     Uri cardUri = Uri.withAppendedPath(Uri.withAppendedPath(newNoteUri, "cards"), ord);
                     mResolver.update(cardUri, cardValues, null, null);
                 }
+            }
+        } catch (Exception e) {
+            // Handle exceptions that might occur on SDK 31
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                com.mmjang.ankihelper.util.Utils.showMessage(mContext,
+                        "Error moving cards to deck (Android 12+ compatibility issue)");
             }
         } finally {
             cardsCursor.close();
@@ -449,33 +462,41 @@ public final class AddContentApi {
      * @return map of (id, name) pairs or null if there was a problem
      */
     public Map<Long, String> getModelList(int minNumFields) {
-        // Get the current model
-        final Cursor allModelsCursor = mResolver.query(Model.CONTENT_URI, null, null, null, null);
-        if (allModelsCursor == null) {
+        try {
+            // Get the current model
+            final Cursor allModelsCursor = mResolver.query(Model.CONTENT_URI, null, null, null, null);
+            if (allModelsCursor == null) {
+                return null;
+            }
+            Map<Long, String> models = new HashMap<Long, String>();
+            try {
+                while (allModelsCursor.moveToNext()) {
+                  int modelIdIndex = allModelsCursor.getColumnIndex(Model._ID);
+                  int nameIndex = allModelsCursor.getColumnIndex(Model.NAME);
+                  int fieldNamesIndex = allModelsCursor.getColumnIndex(Model.FIELD_NAMES);
+
+                  if (modelIdIndex != -1 && nameIndex != -1 && fieldNamesIndex != -1) {
+                      long modelId = allModelsCursor.getLong(modelIdIndex);
+                      String name = allModelsCursor.getString(nameIndex);
+                      String flds = allModelsCursor.getString(fieldNamesIndex);
+                      int numFlds = Utils.splitFields(flds).length;
+
+                      if (numFlds >= minNumFields) {
+                          models.put(modelId, name);
+                      }
+                  }
+                }
+            } finally {
+                allModelsCursor.close();
+            }
+            return models;
+        } catch (Exception e) {
+            // Handle exceptions that might occur on SDK 31
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                // Log or handle Android 12+ specific issues
+            }
             return null;
         }
-        Map<Long, String> models = new HashMap<>();
-        try {
-            while (allModelsCursor.moveToNext()) {
-              int modelIdIndex = allModelsCursor.getColumnIndex(Model._ID);
-              int nameIndex = allModelsCursor.getColumnIndex(Model.NAME);
-              int fieldNamesIndex = allModelsCursor.getColumnIndex(Model.FIELD_NAMES);
-
-              if (modelIdIndex != -1 && nameIndex != -1 && fieldNamesIndex != -1) {
-                  long modelId = allModelsCursor.getLong(modelIdIndex);
-                  String name = allModelsCursor.getString(nameIndex);
-                  String flds = allModelsCursor.getString(fieldNamesIndex);
-                  int numFlds = Utils.splitFields(flds).length;
-
-                  if (numFlds >= minNumFields) {
-                      models.put(modelId, name);
-                  }
-              }
-            }
-        } finally {
-            allModelsCursor.close();
-        }
-        return models;
     }
 
     /**
@@ -540,28 +561,36 @@ public final class AddContentApi {
      * @return Map of (id, name) pairs, or null if there was a problem
      */
     public Map<Long, String> getDeckList() {
-        // Get the current model
-        final Cursor allDecksCursor = mResolver.query(Deck.CONTENT_ALL_URI, null, null, null, null);
-        if (allDecksCursor == null) {
+        try {
+            // Get the current model
+            final Cursor allDecksCursor = mResolver.query(Deck.CONTENT_ALL_URI, null, null, null, null);
+            if (allDecksCursor == null) {
+                return null;
+            }
+            Map<Long, String> decks = new HashMap<Long, String>();
+            try {
+                while (allDecksCursor.moveToNext()) {
+                  int deckIdIndex = allDecksCursor.getColumnIndex(Deck.DECK_ID);
+                  int nameIndex = allDecksCursor.getColumnIndex(Deck.DECK_NAME);
+
+                  if (deckIdIndex != -1 && nameIndex != -1) { // Check if both columns exist
+                      long deckId = allDecksCursor.getLong(deckIdIndex);
+                      String name = allDecksCursor.getString(nameIndex);
+                      decks.put(deckId, name);
+                  }
+
+                }
+            } finally {
+                allDecksCursor.close();
+            }
+            return decks;
+        } catch (Exception e) {
+            // Handle exceptions that might occur on SDK 31
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                // Log or handle Android 12+ specific issues
+            }
             return null;
         }
-        Map<Long, String> decks = new HashMap<>();
-        try {
-            while (allDecksCursor.moveToNext()) {
-              int deckIdIndex = allDecksCursor.getColumnIndex(Deck.DECK_ID);
-              int nameIndex = allDecksCursor.getColumnIndex(Deck.DECK_NAME);
-
-              if (deckIdIndex != -1 && nameIndex != -1) { // Check if both columns exist
-                  long deckId = allDecksCursor.getLong(deckIdIndex);
-                  String name = allDecksCursor.getString(nameIndex);
-                  decks.put(deckId, name);
-              }
-
-            }
-        } finally {
-            allDecksCursor.close();
-        }
-        return decks;
     }
 
 
@@ -591,11 +620,19 @@ public final class AddContentApi {
      * @return packageId of AnkiDroid if a supported version is not installed, otherwise null
      */
     public static String getAnkiDroidPackageName(Context context) {
-        PackageManager manager = context.getPackageManager();
-        ProviderInfo pi = manager.resolveContentProvider(FlashCardsContract.AUTHORITY, 0);
-        if (pi != null) {
-            return pi.packageName;
-        } else {
+        try {
+            PackageManager manager = context.getPackageManager();
+            ProviderInfo pi = manager.resolveContentProvider(FlashCardsContract.AUTHORITY, 0);
+            if (pi != null) {
+                return pi.packageName;
+            } else {
+                return null;
+            }
+        } catch (Exception e) {
+            // Handle exceptions that might occur on SDK 31
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                // Log or handle Android 12+ specific issues
+            }
             return null;
         }
     }

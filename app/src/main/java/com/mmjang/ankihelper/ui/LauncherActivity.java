@@ -153,7 +153,13 @@ public class LauncherActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 if (!mAnkiDroid.isAnkiDroidRunning()) {
-                    Toast.makeText(LauncherActivity.this, R.string.api_not_available_message, Toast.LENGTH_LONG).show();
+                    // Try to start AnkiDroid if it's not running
+                    if (!mAnkiDroid.startAnkiDroid()) {
+                        Toast.makeText(LauncherActivity.this, R.string.api_not_available_message, Toast.LENGTH_LONG).show();
+                    } else {
+                        // Give AnkiDroid some time to start
+                        Toast.makeText(LauncherActivity.this, R.string.plan_anki_not_started, Toast.LENGTH_SHORT).show();
+                    }
                     return;
                 }
 
@@ -179,16 +185,20 @@ public class LauncherActivity extends AppCompatActivity {
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        if (!AnkiDroidHelper.isApiAvailable(MyApplication.getContext())) {
-                            Toast.makeText(LauncherActivity.this, R.string.api_not_available_message, Toast.LENGTH_LONG).show();
+                        if (!mAnkiDroid.isAnkiDroidRunning()) {
+                            // Try to start AnkiDroid if it's not running
+                            if (!mAnkiDroid.startAnkiDroid()) {
+                                Toast.makeText(LauncherActivity.this, R.string.api_not_available_message, Toast.LENGTH_LONG).show();
+                            } else {
+                                // Give AnkiDroid some time to start
+                                Toast.makeText(LauncherActivity.this, R.string.plan_anki_not_started, Toast.LENGTH_SHORT).show();
+                            }
                             return;
                         }
 
                         if (mAnkiDroid.shouldRequestPermission()) {
                             mAnkiDroid.requestPermission(LauncherActivity.this, 0);
                             return;
-                        } else {
-
                         }
                         askIfAddDefaultPlan();
                     }
@@ -220,15 +230,24 @@ public class LauncherActivity extends AppCompatActivity {
       if (mAnkiDroid == null) {
           mAnkiDroid = new AnkiDroidHelper(this);
       }
+      
+      // Check if AnkiDroid is available before requesting permissions
+      if (!mAnkiDroid.isAnkiDroidRunning() && !AnkiDroidHelper.isApiAvailable(MyApplication.getContext())) {
+          // Try to start AnkiDroid
+          mAnkiDroid.startAnkiDroid();
+          return;
+      }
+      
       if (mAnkiDroid.shouldRequestPermission()) {
           mAnkiDroid.requestPermission(this, REQUEST_CODE_ANKI);
       }
-        // Only check notification permission (for internal storage)
-        if (Build.VERSION.SDK_INT >= 23 &&
-            ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
-            ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_ANKI);
-            return;
-        }
+      
+      // Only check notification permission (for internal storage)
+      if (Build.VERSION.SDK_INT >= 33 &&  // Android 13 (Tiramisu) and above
+          ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
+          ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.POST_NOTIFICATIONS}, REQUEST_CODE_ANKI);
+          return;
+      }
     }
 
 

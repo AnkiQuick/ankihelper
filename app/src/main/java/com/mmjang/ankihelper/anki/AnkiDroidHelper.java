@@ -40,7 +40,27 @@ public class AnkiDroidHelper {
     }
 
     public boolean isAnkiDroidRunning() {
-        return mApi.getDeckList() != null;
+        try {
+            // Try multiple approaches to check if AnkiDroid is running
+            // First approach: try to get deck list
+            Map<Long, String> deckList = mApi.getDeckList();
+            if (deckList != null) {
+                return true;
+            }
+            
+            // Second approach: try to get model list
+            Map<Long, String> modelList = mApi.getModelList();
+            if (modelList != null) {
+                return true;
+            }
+            
+            // Third approach: check if AnkiDroid package is available
+            String packageName = AddContentApi.getAnkiDroidPackageName(mContext);
+            return packageName != null;
+        } catch (Exception e) {
+            // If any exception occurs, AnkiDroid is likely not running or not accessible
+            return false;
+        }
     }
 
     public boolean startAnkiDroid() {

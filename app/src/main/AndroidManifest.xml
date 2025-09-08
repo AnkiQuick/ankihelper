@@ -197,4 +197,12 @@
 
     </application>
 
+    <!-- Queries for Android 11+ to allow access to AnkiDroid -->
+    <queries>
+        <package android:name="com.ichi2.anki" />
+        <intent>
+            <action android:name="android.intent.action.MAIN" />
+        </intent>
+    </queries>
+
 </manifest>
