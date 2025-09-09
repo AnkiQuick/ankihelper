@@ -114,4 +114,13 @@
     <string name="settings_pink_theme_summary">使用粉色主题代替绿色</string>
     <string name="settings_pronounce_language">发音语言</string>
     <string name="settings_pronounce_language_summary">选择文本发音语言</string>
+    
+    <!-- Theme Display Names -->
+    <string name="str_theme_label">主题</string>
+    <string name="theme_change_title">更改主题</string>
+    <string name="theme_change_message">应用 %s 主题？应用将重启以应用新主题。</string>
+    <string name="theme_name_default">默认</string>
+    <string name="theme_name_pink">粉色</string>
+    <string name="theme_name_eink">电子墨水</string>
+    <string name="apply">应用</string>
 </resources>

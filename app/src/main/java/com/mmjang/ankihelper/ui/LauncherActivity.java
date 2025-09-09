@@ -11,6 +11,8 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
+import com.google.android.material.snackbar.Snackbar;
 
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -20,6 +22,9 @@ import android.widget.CompoundButton;
 import com.google.android.material.materialswitch.MaterialSwitch;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
+import android.widget.Spinner;
 
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
@@ -30,6 +35,8 @@ import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import com.mmjang.ankihelper.domain.CBWatcherService;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.Settings;
+import com.mmjang.ankihelper.data.AppTheme;
+import com.mmjang.ankihelper.data.ThemeManager;
 
 
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
@@ -49,7 +56,7 @@ public class LauncherActivity extends AppCompatActivity {
     MaterialSwitch switchMoniteClipboard;
     MaterialSwitch switchCancelAfterAdd;
     MaterialSwitch switchLeftHandMode;
-    MaterialSwitch switchPinkTheme;
+    Spinner themeSpinner;
     TextView textViewOpenPlanManager;
     TextView textViewOpenAIConfig;
     TextView textViewAddDefaultPlan;
@@ -61,11 +68,7 @@ public class LauncherActivity extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         settings = Settings.getInstance(LauncherActivity.this);
-        if (settings.getPinkThemeQ()) {
-            setTheme(R.style.Theme_AnkiHelperPink);
-        } else {
-            setTheme(R.style.Theme_AnkiHelper);
-        }
+        ThemeManager.applyTheme(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher); // Set the layout first
         setVersion();
@@ -84,7 +87,7 @@ public class LauncherActivity extends AppCompatActivity {
         switchMoniteClipboard = findViewById(R.id.switch_monite_clipboard);
         switchCancelAfterAdd = findViewById(R.id.switch_cancel_after_add);
         switchLeftHandMode = findViewById(R.id.left_hand_mode);
-        switchPinkTheme = findViewById(R.id.pink_theme_switch);
+        themeSpinner = findViewById(R.id.theme_spinner);
         textViewOpenPlanManager = (TextView) findViewById(R.id.btn_open_plan_manager);
         textViewOpenAIConfig = (TextView) findViewById(R.id.btn_open_ai_config);
         textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
@@ -103,9 +106,8 @@ public class LauncherActivity extends AppCompatActivity {
                 settings.getLeftHandModeQ()
         );
 
-        switchPinkTheme.setChecked(
-                settings.getPinkThemeQ()
-        );
+        // Setup theme spinner
+        setupThemeSpinner();
 
         switchMoniteClipboard.setOnCheckedChangeListener(
                 new CompoundButton.OnCheckedChangeListener() {
@@ -139,16 +141,7 @@ public class LauncherActivity extends AppCompatActivity {
                 }
         );
 
-        switchPinkTheme.setOnCheckedChangeListener(
-                new CompoundButton.OnCheckedChangeListener() {
-                    @Override
-                    public void onCheckedChanged(CompoundButton compoundButton, boolean b) {
-                        settings.setPinkThemeQ(b);
-                        recreate();
-                    }
-                }
-        );
-
+        
         textViewOpenPlanManager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -370,8 +363,57 @@ public class LauncherActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
+    /**
+     * Setup theme selection spinner
+     */
+    private void setupThemeSpinner() {
+        // Create adapter with theme display names
+        String[] themeNames = new String[AppTheme.values().length];
+        for (int i = 0; i < AppTheme.values().length; i++) {
+            themeNames[i] = AppTheme.values()[i].getDisplayName(this);
+        }
 
+        ArrayAdapter<String> themeAdapter = new ArrayAdapter<>(this,
+                android.R.layout.simple_spinner_item, themeNames);
+        themeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        themeSpinner.setAdapter(themeAdapter);
 
+        // Set current selection
+        AppTheme currentTheme = settings.getSelectedTheme();
+        themeSpinner.setSelection(currentTheme.ordinal());
+
+        // Handle theme selection changes
+        themeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                AppTheme selectedTheme = AppTheme.values()[position];
+                AppTheme currentTheme = settings.getSelectedTheme();
+
+                if (selectedTheme != currentTheme) {
+                    settings.setSelectedTheme(selectedTheme);
+                    
+                    // Apply theme change immediately without confirmation
+                    applyThemeChange(selectedTheme);
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+    }
+
+    /**
+     * Apply theme change immediately using modern Android practices
+     */
+    private void applyThemeChange(AppTheme newTheme) {
+        // Apply theme dynamically using modern Android approach
+        ThemeManager.applyThemeDynamically(this);
+    }
+    
+        
+    
     public void setVersion() {
         try {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;

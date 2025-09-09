@@ -98,6 +98,54 @@
     <!-- Legacy pink compatibility - maps to Theme.AnkiHelperPink -->
     <style name="AppThemePink" parent="Theme.AnkiHelperPink" />
 
+    <!-- E-ink theme variant -->
+    <style name="Theme.AnkiHelperEink" parent="Theme.Material3.Light">
+        <item name="colorPrimary">@color/color_eink_primary</item>
+        <item name="colorOnPrimary">@color/color_eink_on_primary</item>
+        <item name="colorPrimaryContainer">@color/color_eink_primary_container</item>
+        <item name="colorOnPrimaryContainer">@color/color_eink_on_primary_container</item>
+
+        <item name="colorSecondary">@color/color_eink_secondary</item>
+        <item name="colorOnSecondary">@color/color_eink_on_secondary</item>
+
+        <item name="android:colorBackground">@color/color_eink_background</item>
+        <item name="colorOnBackground">@color/color_eink_on_background</item>
+        <item name="colorSurface">@color/color_eink_surface</item>
+        <item name="colorOnSurface">@color/color_eink_on_surface</item>
+        <item name="android:windowBackground">@color/color_eink_background</item>
+        <item name="android:statusBarColor">@color/color_eink_surface</item>
+        <item name="colorPrimaryDark">@color/color_eink_primary</item>
+
+        <!-- Custom popup attributes for e-ink theme -->
+        <item name="color_popup_background">@color/color_eink_surface</item>
+        <item name="color_footer_background">@color/color_eink_surface</item>
+        <item name="button_background_selector">@drawable/selector</item>
+        <item name="icon_scroll_up">@drawable/ic_up_arrow</item>
+        <item name="icon_translate_normal">@drawable/icon_translate_normal</item>
+        <item name="icon_translate_wait">@drawable/ic_ali_wait</item>
+        <item name="icon_translate_done">@drawable/icon_translate_done</item>
+        <item name="icon_left_arrow">@drawable/ic_left_arrow</item>
+        <item name="icon_right_arrow">@drawable/ic_right_arrow</item>
+        <item name="icon_note">@drawable/ic_note_black</item>
+        <item name="icon_tag">@drawable/ic_tag_black</item>
+        <item name="icon_play">@drawable/ic_ali_play</item>
+        <item name="icon_search">@drawable/ic_search</item>
+        <item name="icon_add">@drawable/ic_add_grey</item>
+        <item name="icon_add_done">@drawable/ic_ok</item>
+        <item name="icon_remove">@drawable/ic_minus</item>
+        <item name="icon_edit">@drawable/ic_edit</item>
+        <item name="icon_save">@drawable/ic_save</item>
+        <item name="icon_discard">@drawable/ic_undo</item>
+
+        <!-- Remove animations and shadows for e-ink -->
+        <item name="android:buttonStyle">@style/Widget.App.Button.Primary.Eink</item>
+        <item name="android:windowAnimationStyle">@null</item>
+        <item name="android:windowContentOverlay">@null</item>
+    </style>
+
+    <!-- Legacy e-ink compatibility -->
+    <style name="AppThemeEink" parent="Theme.AnkiHelperEink" />
+
     <!-- Transparent Activity theme - properly extended for CardView and all required attributes -->
     <style name="Transparent" parent="Theme.Material3.Light.NoActionBar">
         <item name="colorPrimary">@color/colorPrimary</item>

@@ -5,6 +5,7 @@ import android.os.Bundle
 import androidx.preference.*
 import com.mmjang.ankihelper.R
 import com.mmjang.ankihelper.data.Settings
+import com.mmjang.ankihelper.data.ThemeManager
 
 class SettingsFragment :
         PreferenceFragmentCompat(), SharedPreferences.OnSharedPreferenceChangeListener {
@@ -44,8 +45,8 @@ class SettingsFragment :
         val enabled = sharedPreferences?.getBoolean(key, false) ?: false
         legacySettings.setPinkThemeQ(enabled)
 
-        // Restart activity to apply theme change
-        activity?.recreate()
+        // Apply theme change using modern approach
+        activity?.let { ThemeManager.applyThemeDynamically(it) }
       }
       "pronounce_language" -> {
         val languageIndex = sharedPreferences?.getString(key, "0")?.toInt() ?: 0

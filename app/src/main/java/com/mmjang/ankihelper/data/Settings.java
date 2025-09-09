@@ -32,6 +32,8 @@ public class Settings {
     private final static String LAST_PRONOUNCE_LANGUAGE = "last_pronounce_language";
     private final static String LEFT_HAND_MODE_Q = "left_hand_mode_q";
     private final static String PINK_THEME_Q = "pink_theme_q";
+    private final static String SELECTED_THEME = "selected_theme";
+    private final static String THEME_MIGRATED = "theme_migrated";
     private final static String OLD_DATA_MIGRATED = "old_data_migrated";
     private final static String SHOW_CONTENT_ALREADY_READ = "show_content_already_read";
     private final static String FIRST_TIME_RUNNING_READER = "first_time_running_reader";
@@ -186,11 +188,50 @@ public class Settings {
     }
 
     public boolean getPinkThemeQ(){
-        return  sp.getBoolean(PINK_THEME_Q, false);
+        // Use new theme system if available, fall back to old setting
+        if (sp.getBoolean(THEME_MIGRATED, false)) {
+            return getSelectedTheme() == AppTheme.PINK;
+        }
+        return sp.getBoolean(PINK_THEME_Q, false);
     }
 
     public void setPinkThemeQ(boolean pinkThemeQ){
         editor.putBoolean(PINK_THEME_Q, pinkThemeQ);
+        editor.commit();
+    }
+
+    /**
+     * Get the currently selected theme
+     */
+    public AppTheme getSelectedTheme() {
+        // Handle migration from old pink theme setting
+        if (!sp.getBoolean(THEME_MIGRATED, false)) {
+            migrateThemeSettings();
+        }
+        
+        String themeKey = sp.getString(SELECTED_THEME, AppTheme.DEFAULT.getKey());
+        return AppTheme.fromKey(themeKey);
+    }
+    
+    /**
+     * Set the selected theme
+     */
+    public void setSelectedTheme(AppTheme theme) {
+        editor.putString(SELECTED_THEME, theme.getKey());
+        editor.commit();
+    }
+    
+    /**
+     * Migrate from old pink theme boolean to new theme system
+     */
+    private void migrateThemeSettings() {
+        if (sp.getBoolean(PINK_THEME_Q, false)) {
+            setSelectedTheme(AppTheme.PINK);
+        } else {
+            setSelectedTheme(AppTheme.DEFAULT);
+        }
+        
+        editor.putBoolean(THEME_MIGRATED, true);
         editor.commit();
     }
 
