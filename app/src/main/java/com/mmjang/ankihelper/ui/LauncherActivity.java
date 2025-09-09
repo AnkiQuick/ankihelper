@@ -36,10 +36,11 @@ import com.mmjang.ankihelper.data.AppTheme;
 import com.mmjang.ankihelper.data.AppLanguage;
 import com.mmjang.ankihelper.data.ThemeManager;
 import com.mmjang.ankihelper.data.LanguageManager;
-
+import com.mmjang.ankihelper.util.StorageManager;
 
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
 import com.mmjang.ankihelper.ui.stat.StatActivity;
+import com.mmjang.ankihelper.ui.storage.StorageMigrationActivity;
 
 
 import java.util.List;
@@ -72,6 +73,9 @@ public class LauncherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher); // Set the layout first
         setVersion();
+
+        // Check for storage migration requirement
+        checkStorageMigration();
 
         // Initialize AnkiDroidHelper in onCreate
         mAnkiDroid = MyApplication.getAnkiDroid(this);
@@ -180,6 +184,19 @@ public class LauncherActivity extends AppCompatActivity {
             }
         });
       }
+    
+    private void checkStorageMigration() {
+        StorageManager storageManager = new StorageManager(this, getSharedPreferences("ankihelper_prefs", MODE_PRIVATE));
+        
+        // Check if migration is needed
+        if (!storageManager.isMigrationCompleted()) {
+            Intent intent = new Intent(this, StorageMigrationActivity.class);
+            startActivity(intent);
+            finish(); // Close launcher activity
+            return;
+        }
+    }
+    
     private void checkAndRequestPermissions() {
       if (mAnkiDroid == null) {
           mAnkiDroid = new AnkiDroidHelper(this);

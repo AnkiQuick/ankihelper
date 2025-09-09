@@ -2,13 +2,16 @@ package com.mmjang.ankihelper.data.content;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.database.sqlite.SQLiteDatabase;
-import android.os.Environment;
+import android.database.sqlite.SQLiteOpenHelper;
+import android.util.Log;
 
+import com.mmjang.ankihelper.data.database.DatabaseContext;
 import com.mmjang.ankihelper.data.database.DatabaseManager;
-import com.mmjang.ankihelper.util.Constant;
+import com.mmjang.ankihelper.util.StorageManager;
 
 import java.io.File;
 import java.util.ArrayList;
@@ -20,19 +23,23 @@ public class Content {
     private List<File> dbFileList;
     private SQLiteDatabase.OpenParams.Builder mParametersBuilder;
     private Context mContext;
+    private StorageManager storageManager;
     private ContentDatabaseHelper[] helperList;
 
     public Content(Context context){
         mContext = context;
-        File contentFolder = new File(Environment.getDataDirectory().getAbsolutePath() + File.separator
-                + Constant.STORAGE_DIRECTORY + File.separator +
-                Constant.STORAGE_CONTENT_SUBDIRECTORY);
+        SharedPreferences preferences = context.getSharedPreferences("ankihelper_prefs", Context.MODE_PRIVATE);
+        this.storageManager = new StorageManager(context, preferences);
+        
+        File contentFolder = new File(storageManager.getContentDir(), "content");
         File[] listOfFiles = contentFolder.listFiles();
         dbFileList = new ArrayList<>();
-        for(File f : listOfFiles){
-            String fileName = f.getName();
-            if(fileName.endsWith(suffix)){
-                dbFileList.add(f);
+        if(listOfFiles != null){
+            for(File f : listOfFiles){
+                String fileName = f.getName();
+                if(fileName.endsWith(suffix)){
+                    dbFileList.add(f);
+                }
             }
         }
         helperList = new ContentDatabaseHelper[dbFileList.size()];
@@ -131,5 +138,27 @@ public class Content {
         }
     }
 
+    // Helper class for content databases
+    private static class ContentDatabaseHelper extends SQLiteOpenHelper {
+        private static final int DATABASE_VERSION = 1;
+        
+        public ContentDatabaseHelper(Context context, String databaseName) {
+            super(new DatabaseContext(context), databaseName, null, DATABASE_VERSION);
+        }
 
+        @Override
+        public void onCreate(SQLiteDatabase db) {
+            // Create content table if it doesn't exist
+            db.execSQL("CREATE TABLE IF NOT EXISTS content (" +
+                    "id INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    "txt TEXT, " +
+                    "note TEXT, " +
+                    "is_read INTEGER DEFAULT 0)");
+        }
+
+        @Override
+        public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+            // Handle database upgrades if needed
+        }
+    }
 }

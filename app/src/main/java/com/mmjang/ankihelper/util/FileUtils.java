@@ -4,6 +4,7 @@ import android.content.ContentResolver;
 import android.content.ContentUris;
 import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.database.DatabaseUtils;
 import android.graphics.Bitmap;
@@ -494,11 +495,14 @@ public class FileUtils {
         return intent;
     }
 
-    public static void EnsureAnkiImageDirectory(){
-        File f = new File(Environment.getExternalStorageDirectory(), "AnkiDroid" + File.separator +
-                "collection.media" + File.separator + Constant.IMAGE_SUB_DIRECTORY + File.separator);
-            if (!f.exists()) {
-            f.mkdirs();
+    public static void EnsureAnkiImageDirectory(Context context){
+        SharedPreferences preferences = context.getSharedPreferences("ankihelper_prefs", Context.MODE_PRIVATE);
+        StorageManager storageManager = new StorageManager(context, preferences);
+        
+        // Always use external storage - no fallback to internal storage
+        File imageDir = storageManager.getImageDir();
+        if (!imageDir.exists()) {
+            imageDir.mkdirs();
         }
     }
 }

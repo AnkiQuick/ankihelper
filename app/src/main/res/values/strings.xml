@@ -132,4 +132,20 @@
     <string name="no_plans_found_title">No Plans Available</string>
     <string name="no_plans_found_message">You don\'t have any plans yet. Go to Plan Manager to create your first plan.</string>
     <string name="go_to_plan_manager">Go to Plan Manager</string>
+
+    <!-- Storage Migration -->
+    <string name="title_storage_migration">Storage Migration</string>
+    <string name="storage_migration_title">Migrate to External Storage</string>
+    <string name="storage_migration_description">This will move all app data to external storage. This is required for the app to function properly.</string>
+    <string name="storage_info_format" formatted="false">Internal data: %s | Available space: %s</string>
+    <string name="storage_permission_required">Storage permission is required to migrate data.</string>
+    <string name="storage_migration_ready">Ready to migrate to external storage.</string>
+    <string name="storage_migration_in_progress">Migration in progress...</string>
+    <string name="storage_migration_completed">Migration completed successfully!</string>
+    <string name="storage_migration_failed">Migration failed: %s</string>
+    <string name="storage_migration_success">Data migrated successfully to external storage.</string>
+    <string name="storage_migration_error_unknown">Unknown error occurred during migration.</string>
+    <string name="storage_migrate_button">Start Migration</string>
+    <string name="storage_request_permission_button">Request Permission</string>
+    <string name="storage_permission_denied">Storage permission denied. Please grant permission to continue.</string>
 </resources>

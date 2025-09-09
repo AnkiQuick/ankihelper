@@ -16,6 +16,14 @@
     
     <uses-permission android:name="android.permission.WRITE_CLIPBOARD" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE_SPECIAL_USE" />
+    
+    <!-- Storage permissions for external storage migration -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.MANAGE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
+    <uses-permission android:name="android.permission.READ_MEDIA_AUDIO" />
+    <uses-permission android:name="android.permission.READ_MEDIA_VIDEO" />
 
     <application
         android:name=".MyApplication"
@@ -188,6 +196,15 @@
 
         <activity android:name=".ui.ai.CleanAIHistoryActivity"
             android:label="@string/title_clean_ai_history"
+            android:theme="@style/Theme.AnkiHelper"
+            android:parentActivityName=".ui.LauncherActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+        </activity>
+
+        <activity android:name=".ui.storage.StorageMigrationActivity"
+            android:label="@string/title_storage_migration"
             android:theme="@style/Theme.AnkiHelper"
             android:parentActivityName=".ui.LauncherActivity">
             <meta-data
