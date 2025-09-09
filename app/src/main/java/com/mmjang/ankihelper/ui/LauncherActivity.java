@@ -34,7 +34,9 @@ import com.mmjang.ankihelper.domain.CBWatcherService;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.AppTheme;
+import com.mmjang.ankihelper.data.AppLanguage;
 import com.mmjang.ankihelper.data.ThemeManager;
+import com.mmjang.ankihelper.data.LanguageManager;
 
 
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
@@ -55,6 +57,7 @@ public class LauncherActivity extends AppCompatActivity {
     MaterialSwitch switchCancelAfterAdd;
     MaterialSwitch switchLeftHandMode;
     Spinner themeSpinner;
+    Spinner languageSpinner;
     TextView textViewOpenPlanManager;
     TextView textViewOpenAIConfig;
     TextView textViewAddDefaultPlan;
@@ -67,6 +70,7 @@ public class LauncherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         settings = Settings.getInstance(LauncherActivity.this);
         ThemeManager.applyTheme(this);
+        LanguageManager.applyLanguage(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher); // Set the layout first
         setVersion();
@@ -86,6 +90,7 @@ public class LauncherActivity extends AppCompatActivity {
         switchCancelAfterAdd = findViewById(R.id.switch_cancel_after_add);
         switchLeftHandMode = findViewById(R.id.left_hand_mode);
         themeSpinner = findViewById(R.id.theme_spinner);
+        languageSpinner = findViewById(R.id.language_spinner);
         textViewOpenPlanManager = (TextView) findViewById(R.id.btn_open_plan_manager);
         textViewOpenAIConfig = (TextView) findViewById(R.id.btn_open_ai_config);
         textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
@@ -106,6 +111,9 @@ public class LauncherActivity extends AppCompatActivity {
 
         // Setup theme spinner
         setupThemeSpinner();
+        
+        // Setup language spinner
+        setupLanguageSpinner();
 
         switchMoniteClipboard.setOnCheckedChangeListener(
                 new CompoundButton.OnCheckedChangeListener() {
@@ -370,9 +378,7 @@ public class LauncherActivity extends AppCompatActivity {
 
                 if (selectedTheme != currentTheme) {
                     settings.setSelectedTheme(selectedTheme);
-                    
-                    // Show confirmation dialog for theme change
-                    showThemeChangeDialog(selectedTheme);
+                    applyThemeWithoutRestart();
                 }
             }
 
@@ -383,23 +389,72 @@ public class LauncherActivity extends AppCompatActivity {
         });
     }
 
+    
     /**
-     * Show theme change confirmation dialog
+     * Apply theme changes without requiring app restart
+     * Uses modern Android practices for dynamic theme switching
      */
-    private void showThemeChangeDialog(AppTheme newTheme) {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.theme_change_title)
-                .setMessage(getString(R.string.theme_change_message, newTheme.getDisplayName()))
-                .setPositiveButton(R.string.apply, (dialog, which) -> {
-                    // Apply theme immediately
-                    recreate();
-                })
-                .setNegativeButton(R.string.cancel, (dialog, which) -> {
-                    // Revert spinner selection
-                    AppTheme currentTheme = settings.getSelectedTheme();
-                    themeSpinner.setSelection(currentTheme.ordinal());
-                })
-                .show();
+    private void applyThemeWithoutRestart() {
+        // Get the new theme
+        AppTheme newTheme = settings.getSelectedTheme();
+        
+        // Apply theme to the current activity
+        setTheme(newTheme.getThemeResId());
+        
+        // Recreate the activity to apply the new theme
+        recreate();
+    }
+
+    /**
+     * Setup language selection spinner
+     */
+    private void setupLanguageSpinner() {
+        // Create adapter with language display names
+        String[] languageNames = new String[AppLanguage.values().length];
+        for (int i = 0; i < AppLanguage.values().length; i++) {
+            languageNames[i] = AppLanguage.values()[i].getDisplayName(this);
+        }
+
+        ArrayAdapter<String> languageAdapter = new ArrayAdapter<>(this,
+                R.layout.custom_spinner_item, languageNames);
+        languageAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+        languageSpinner.setAdapter(languageAdapter);
+
+        // Set current selection
+        AppLanguage currentLanguage = settings.getSelectedLanguage();
+        languageSpinner.setSelection(currentLanguage.ordinal());
+
+        // Handle language selection changes
+        languageSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+            @Override
+            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                AppLanguage selectedLanguage = AppLanguage.values()[position];
+                AppLanguage currentLanguage = settings.getSelectedLanguage();
+
+                if (selectedLanguage != currentLanguage) {
+                    settings.setSelectedLanguage(selectedLanguage);
+                    applyLanguageWithoutRestart();
+                }
+            }
+
+            @Override
+            public void onNothingSelected(AdapterView<?> parent) {
+                // Do nothing
+            }
+        });
+    }
+
+    
+    /**
+     * Apply language changes without requiring app restart
+     * Uses modern Android practices for dynamic language switching
+     */
+    private void applyLanguageWithoutRestart() {
+        // Apply language configuration immediately
+        LanguageManager.applyLanguage(this);
+        
+        // Recreate the activity to apply the new language
+        recreate();
     }
 
     public void setVersion() {

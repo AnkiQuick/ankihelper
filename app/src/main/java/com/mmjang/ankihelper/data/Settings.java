@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import com.mmjang.ankihelper.domain.PronounceManager;
 
 import java.util.HashSet;
+import java.util.Locale;
 
 /**
  * 单例，getInstance()得到实例
@@ -35,6 +36,9 @@ public class Settings {
     private final static String SELECTED_THEME = "selected_theme";
     private final static String THEME_MIGRATED = "theme_migrated";
     private final static String OLD_DATA_MIGRATED = "old_data_migrated";
+    
+    // Language management settings
+    private final static String SELECTED_LANGUAGE = "selected_language";
     private final static String SHOW_CONTENT_ALREADY_READ = "show_content_already_read";
     private final static String FIRST_TIME_RUNNING_READER = "first_time_running_reader";
 
@@ -233,6 +237,33 @@ public class Settings {
         
         editor.putBoolean(THEME_MIGRATED, true);
         editor.commit();
+    }
+    
+    /**
+     * Get the currently selected language
+     */
+    public AppLanguage getSelectedLanguage() {
+        String languageKey = sp.getString(SELECTED_LANGUAGE, AppLanguage.SYSTEM.getKey());
+        return AppLanguage.fromKey(languageKey);
+    }
+    
+    /**
+     * Set the selected language
+     */
+    public void setSelectedLanguage(AppLanguage language) {
+        editor.putString(SELECTED_LANGUAGE, language.getKey());
+        editor.commit();
+    }
+    
+    /**
+     * Get the effective locale for the app
+     */
+    public Locale getEffectiveLocale() {
+        AppLanguage language = getSelectedLanguage();
+        if (language == AppLanguage.SYSTEM) {
+            return Locale.getDefault();
+        }
+        return language.getLocale();
     }
 
     public boolean getOldDataMigrated(){

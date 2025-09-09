@@ -37,7 +37,7 @@
     <string name="toast_no_available_plan">No usable plan, add one in the main window of ankihelper.</string>
     <string name="str_theme_label">Theme</string>
     <string name="theme_change_title">Change Theme</string>
-    <string name="theme_change_message">Apply %s theme? The app will restart to apply the new theme.</string>
+    <string name="theme_change_message">Apply %s theme?</string>
     <string name="apply">Apply</string>
     <string name="str_error_noteid">failed to add note id</string>
     <string name="str_error_notetype_noncompatible">note failed to update. Note type not compatible</string>
@@ -117,4 +117,12 @@
     <string name="ok">OK</string>
     <string name="delete">Delete</string>
     <string name="delete_confirm_message">Are you sure you want to delete "%s"?</string>
+    
+    <!-- Language Management -->
+    <string name="language_label">Language</string>
+    <string name="language_change_title">Change Language</string>
+    <string name="language_change_message">Change app language to %s?</string>
+    <string name="language_system">System</string>
+    <string name="language_english">English</string>
+    <string name="language_chinese">中文</string>
 </resources>
