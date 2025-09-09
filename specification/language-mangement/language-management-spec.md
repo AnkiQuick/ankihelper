@@ -183,6 +183,41 @@ Add language selection dropdown to the settings switches card:
 </LinearLayout>
 ```
 
+### Centered Layout Files
+
+**Centered Spinner Item (for selected item display):**
+```xml
+<!-- app/src/main/res/layout/centered_spinner_item.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:padding="8dp"
+    android:textSize="16sp"
+    android:textColor="?attr/colorOnSurface"
+    android:ellipsize="marquee"
+    android:singleLine="true" />
+```
+
+**Centered Dropdown Item (for dropdown list):**
+```xml
+<!-- app/src/main/res/layout/centered_spinner_dropdown_item.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:padding="12dp"
+    android:textSize="16sp"
+    android:textColor="?attr/colorOnSurface"
+    android:ellipsize="marquee"
+    android:singleLine="true"
+    android:background="?attr/colorSurface" />
+```
+
 ### 5. Language Selection Logic in LauncherActivity
 
 ```java
@@ -208,12 +243,13 @@ public class LauncherActivity extends AppCompatActivity {
         // Create adapter with language display names
         String[] languageNames = new String[AppLanguage.values().length];
         for (int i = 0; i < AppLanguage.values().length; i++) {
-            languageNames[i] = AppLanguage.values()[i].getDisplayName();
+            languageNames[i] = AppLanguage.values()[i].getDisplayName(this);
         }
         
+        // Use centered layouts for launcher activity
         languageAdapter = new ArrayAdapter<>(this,
-                R.layout.custom_spinner_item, languageNames);
-        languageAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+                R.layout.centered_spinner_item, languageNames);
+        languageAdapter.setDropDownViewResource(R.layout.centered_spinner_dropdown_item);
         languageSpinner.setAdapter(languageAdapter);
         
         // Set current selection
@@ -230,8 +266,8 @@ public class LauncherActivity extends AppCompatActivity {
                 if (selectedLanguage != currentLanguage) {
                     settings.setSelectedLanguage(selectedLanguage);
                     
-                    // Show confirmation dialog for language change
-                    showLanguageChangeDialog(selectedLanguage);
+                    // Apply language immediately without confirmation dialog
+                    applyLanguageWithoutRestart();
                 }
             }
             
@@ -242,20 +278,16 @@ public class LauncherActivity extends AppCompatActivity {
         });
     }
     
-    private void showLanguageChangeDialog(AppLanguage newLanguage) {
-        new AlertDialog.Builder(this)
-                .setTitle(R.string.language_change_title)
-                .setMessage(getString(R.string.language_change_message, newLanguage.getDisplayName()))
-                .setPositiveButton(R.string.apply, (dialog, which) -> {
-                    // Apply language immediately
-                    LanguageManager.restartActivityForLanguageChange(this);
-                })
-                .setNegativeButton(R.string.cancel, (dialog, which) -> {
-                    // Revert spinner selection
-                    AppLanguage currentLanguage = settings.getSelectedLanguage();
-                    languageSpinner.setSelection(currentLanguage.ordinal());
-                })
-                .show();
+    /**
+     * Apply language changes without requiring app restart
+     * Uses modern Android practices for dynamic language switching
+     */
+    private void applyLanguageWithoutRestart() {
+        // Apply language configuration immediately
+        LanguageManager.applyLanguage(this);
+        
+        // Recreate the activity to apply the new language
+        recreate();
     }
 }
 ```
@@ -558,5 +590,68 @@ The implementation evolved through several iterations based on user feedback:
 4. **Localized Display**: Added localized language names in dropdown items
 5. **UI Spacing**: Added consistent 12dp margins between dropdowns
 6. **Confirmation Removal**: Removed confirmation dialogs for immediate theme/language changes
+7. **Dropdown Icon Enhancement**: Added custom vector dropdown icons for clear visual indicators
 
-This specification provides a comprehensive overview of the successfully implemented language management system in AnkiHelper, enabling users to switch between English and Chinese languages dynamically within the application using modern Android best practices.
+### Dropdown Icon Implementation Details
+
+#### Custom Vector Drawable
+Created a crisp 16dp x 16dp vector dropdown arrow (`ic_dropdown_arrow.xml`) to prevent blurriness:
+```xml
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="16dp"
+    android:height="16dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="?attr/colorOnSurface"
+        android:pathData="M7,10L12,15L17,10H7Z"/>
+</vector>
+```
+
+#### Consistent Width Layout
+Implemented fixed 120dp width for all dropdown items to ensure consistent icon positioning:
+```xml
+<LinearLayout
+    android:layout_width="120dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="8dp"
+    android:paddingEnd="0dp">
+
+    <TextView
+        android:id="@android:id/text1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/dropdown_icon"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_dropdown_arrow"
+        android:scaleType="center" />
+</LinearLayout>
+```
+
+#### ArrayAdapter Configuration
+Fixed ArrayAdapter initialization to properly reference TextView ID:
+```java
+ArrayAdapter<String> languageAdapter = new ArrayAdapter<>(this,
+        R.layout.custom_spinner_item, android.R.id.text1, languageNames);
+```
+
+#### Key Improvements
+- **Visual Indicators**: Clear dropdown arrow icons indicate interactive elements
+- **Consistent Width**: All dropdown items have uniform 120dp width regardless of text length
+- **Right-Aligned Icons**: Dropdown icons positioned at rightmost edge for clean appearance
+- **Crisp Graphics**: Vector icons prevent blurriness and scaling issues
+- **Fixed Chinese Text Width**: Eliminated spacing issues with shorter Chinese text
+
+#### Code Cleanup
+- Removed debug code including commented Thread and YoudaoOnline API calls
+- Added missing default string resource (`str_pink_theme_q`) to eliminate build warnings
+- Ensured no unused resources or imports remain in codebase
+
+This specification provides a comprehensive overview of the successfully implemented language management system in AnkiHelper, enabling users to switch between English and Chinese languages dynamically within the application using modern Android best practices, with enhanced user experience through professional dropdown icon indicators.

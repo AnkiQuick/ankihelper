@@ -29,10 +29,17 @@
     <string name="str_clipboard_service_running">Clipboard Monitor is Running</string>
     <string name="str_field_map">Fields Mapping:</string>
     <string name="str_only_one_plan_cant_switch">There is only one plan, not switchable.</string>
+    <string name="str_pink_theme_q">Pink Theme</string>
     <string name="toast_no_available_plan">No usable plan, add one in the main window of ankihelper.</string>
     <string name="str_theme_label">Theme</string>
     <string name="theme_change_title">Change Theme</string>
     <string name="theme_change_message">Apply %s theme?</string>
+    
+    <!-- Theme Names -->
+    <string name="theme_default">Default</string>
+    <string name="theme_pink">Pink</string>
+    <string name="theme_eink">E-ink</string>
+    <string name="theme_dark">Dark</string>
     <string name="apply">Apply</string>
     <string name="str_error_noteid">failed to add note id</string>
     <string name="str_error_notetype_noncompatible">note failed to update. Note type not compatible</string>
@@ -70,14 +77,14 @@
     <string name="title_activity_ai_dictionary_editor">AI Dictionary Editor</string>
     <string name="title_activity_ai_translator_configurations">AI Translator Configurations</string>
     <string name="title_activity_ai_translator_editor">AI Translator Editor</string>
-    
+
     <!-- AI Dictionary and Translator Editor Labels -->
     <string name="dictionary_name">Dictionary Name</string>
     <string name="translator_name">Translator Name</string>
     <string name="model_name">Model Name</string>
     <string name="source_language">Source Language</string>
     <string name="target_language">Target Language</string>
-    
+
     <!-- LLM and TTS Editor Labels -->
     <string name="llm_name">LLM Name</string>
     <string name="tts_name">TTS Name</string>
@@ -88,7 +95,7 @@
     <string name="provider_deepseek">DeepSeek</string>
     <string name="provider_openai">OpenAI</string>
     <string name="provider_aliyun">Aliyun</string>
-    
+
     <string name="history_management">History Management</string>
     <!-- Clean AI History -->
     <string name="title_clean_ai_history">Clean AI History</string>
@@ -98,11 +105,11 @@
     <string name="records_to_clean">Records to clean</string>
     <string name="clean_all">Clean All</string>
     <string name="clean">Clean</string>
-    
+
     <!-- Shortcuts -->
     <string name="shortcut_add_to_anki_short">Add to Anki</string>
     <string name="shortcut_add_to_anki_long">Add selected text to Anki</string>
-    
+
     <!-- Dialog Strings -->
     <string name="loading">Loading...</string>
     <string name="unsaved_changes">Unsaved Changes</string>
@@ -112,15 +119,15 @@
     <string name="ok">OK</string>
     <string name="delete">Delete</string>
     <string name="delete_confirm_message">Are you sure you want to delete "%s"?</string>
-    
+
     <!-- Language Management -->
     <string name="language_label">Language</string>
     <string name="language_change_title">Change Language</string>
     <string name="language_change_message">Change app language to %s?</string>
     <string name="language_system">System</string>
     <string name="language_english">English</string>
-    <string name="language_chinese">中文</string>
-    
+    <string name="language_chinese">Chinese</string>
+
     <!-- No Plans Guidance -->
     <string name="no_plans_found_title">No Plans Available</string>
     <string name="no_plans_found_message">You don\'t have any plans yet. Go to Plan Manager to create your first plan.</string>

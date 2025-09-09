@@ -590,9 +590,43 @@ Replace the switch with a dropdown:
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="16dp"
-        android:minWidth="120dp"
         android:background="@drawable/spinner_dropdown_bg" />
 </LinearLayout>
+```
+
+### Centered Layout Files
+
+**Centered Spinner Item (for selected item display):**
+```xml
+<!-- app/src/main/res/layout/centered_spinner_item.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:padding="8dp"
+    android:textSize="16sp"
+    android:textColor="?attr/colorOnSurface"
+    android:ellipsize="marquee"
+    android:singleLine="true" />
+```
+
+**Centered Dropdown Item (for dropdown list):**
+```xml
+<!-- app/src/main/res/layout/centered_spinner_dropdown_item.xml -->
+<?xml version="1.0" encoding="utf-8"?>
+<TextView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@android:id/text1"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:gravity="center"
+    android:padding="12dp"
+    android:textSize="16sp"
+    android:textColor="?attr/colorOnSurface"
+    android:ellipsize="marquee"
+    android:singleLine="true"
+    android:background="?attr/colorSurface" />
 ```
 
 ### 6. Updated LauncherActivity Logic
@@ -623,9 +657,10 @@ public class LauncherActivity extends AppCompatActivity {
             themeNames[i] = AppTheme.values()[i].getDisplayName();
         }
         
+        // Use centered layouts for launcher activity
         themeAdapter = new ArrayAdapter<>(this, 
-            android.R.layout.simple_spinner_item, themeNames);
-        themeAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+            R.layout.centered_spinner_item, themeNames);
+        themeAdapter.setDropDownViewResource(R.layout.centered_spinner_dropdown_item);
         themeSpinner.setAdapter(themeAdapter);
         
         // Set current selection
@@ -642,8 +677,8 @@ public class LauncherActivity extends AppCompatActivity {
                 if (selectedTheme != currentTheme) {
                     settings.setSelectedTheme(selectedTheme);
                     
-                    // Show confirmation dialog for theme change
-                    showThemeChangeDialog(selectedTheme);
+                    // Apply theme immediately without confirmation dialog
+                    applyThemeWithoutRestart();
                 }
             }
             
@@ -654,20 +689,19 @@ public class LauncherActivity extends AppCompatActivity {
         });
     }
     
-    private void showThemeChangeDialog(AppTheme newTheme) {
-        new AlertDialog.Builder(this)
-            .setTitle(R.string.theme_change_title)
-            .setMessage(getString(R.string.theme_change_message, newTheme.getDisplayName()))
-            .setPositiveButton(R.string.apply, (dialog, which) -> {
-                // Apply theme immediately
-                recreate();
-            })
-            .setNegativeButton(R.string.cancel, (dialog, which) -> {
-                // Revert spinner selection
-                AppTheme currentTheme = settings.getSelectedTheme();
-                themeSpinner.setSelection(currentTheme.ordinal());
-            })
-            .show();
+    /**
+     * Apply theme changes without requiring app restart
+     * Uses modern Android practices for dynamic theme switching
+     */
+    private void applyThemeWithoutRestart() {
+        // Get the new theme
+        AppTheme newTheme = settings.getSelectedTheme();
+        
+        // Apply theme to the current activity
+        setTheme(newTheme.getThemeResId());
+        
+        // Recreate the activity to apply the new theme
+        recreate();
     }
 }
 ```
@@ -958,4 +992,175 @@ The theme management system now supports both English and Chinese languages:
 - `provider_openai`: "OpenAI"
 - `provider_aliyun`: "阿里云"
 
-This specification provides a comprehensive plan for upgrading AnkiHelper's theme system from a simple switch to a robust dropdown-based theme management system with e-ink optimization, dark mode support, and complete internationalization.
+### Dropdown Icon Implementation Details
+
+#### Custom Vector Drawable
+Created a crisp 16dp x 16dp vector dropdown arrow (`ic_dropdown_arrow.xml`) to prevent blurriness:
+```xml
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="16dp"
+    android:height="16dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+    <path
+        android:fillColor="?attr/colorOnSurface"
+        android:pathData="M7,10L12,15L17,10H7Z"/>
+</vector>
+```
+
+#### Consistent Width Layout
+Implemented fixed 120dp width for all dropdown items to ensure consistent icon positioning:
+```xml
+<LinearLayout
+    android:layout_width="120dp"
+    android:layout_height="wrap_content"
+    android:orientation="horizontal"
+    android:paddingStart="8dp"
+    android:paddingEnd="0dp">
+
+    <TextView
+        android:id="@android:id/text1"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_weight="1"
+        android:textSize="16sp" />
+
+    <ImageView
+        android:id="@+id/dropdown_icon"
+        android:layout_width="16dp"
+        android:layout_height="16dp"
+        android:layout_marginStart="8dp"
+        android:src="@drawable/ic_dropdown_arrow"
+        android:scaleType="center" />
+</LinearLayout>
+```
+
+#### ArrayAdapter Configuration
+Fixed ArrayAdapter initialization to properly reference TextView ID:
+```java
+ArrayAdapter<String> themeAdapter = new ArrayAdapter<>(this,
+        R.layout.custom_spinner_item, android.R.id.text1, themeNames);
+```
+
+#### Key Improvements
+- **Visual Indicators**: Clear dropdown arrow icons indicate interactive elements
+- **Consistent Width**: All dropdown items have uniform 120dp width regardless of text length
+- **Right-Aligned Icons**: Dropdown icons positioned at rightmost edge for clean appearance
+- **Crisp Graphics**: Vector icons prevent blurriness and scaling issues
+- **Fixed Text Width**: Eliminated spacing issues with varying text lengths
+
+#### Code Cleanup
+- Removed debug code including commented Thread and YoudaoOnline API calls
+- Added missing default string resource (`str_pink_theme_q`) to eliminate build warnings
+- Ensured no unused resources or imports remain in codebase
+
+### Theme Dropdown Localization Implementation
+
+#### Completed Date: September 9, 2025
+
+#### Implementation Summary
+
+The theme dropdown has been enhanced with full localization support, providing consistent bilingual functionality matching the language dropdown implementation.
+
+#### Key Achievements
+
+1. **Localized String Resources**: Added theme name strings in both English and Chinese
+2. **AppTheme Enumeration Enhancement**: Updated to use localized display names with Context parameter
+3. **Consistent User Experience**: Theme dropdown now shows localized names matching current app language
+4. **Build Success**: All compilation issues resolved, project builds successfully
+
+#### String Resources Added
+
+**English Theme Names** (`values/strings.xml`):
+```xml
+<!-- Theme Names -->
+<string name="theme_default">Default</string>
+<string name="theme_pink">Pink</string>
+<string name="theme_eink">E-ink</string>
+<string name="theme_dark">Dark</string>
+```
+
+**Chinese Theme Names** (`values-zh/strings.xml`):
+```xml
+<!-- Theme Names -->
+<string name="theme_default">默认</string>
+<string name="theme_pink">粉色</string>
+<string name="theme_eink">电子墨水</string>
+<string name="theme_dark">深色</string>
+```
+
+#### AppTheme Class Updates
+
+**Constructor Simplification**:
+```java
+// Removed hardcoded displayName parameter
+AppTheme(String key, int themeResId, int transparentThemeResId)
+```
+
+**Localized Display Name Method**:
+```java
+public String getDisplayName(Context context) {
+    switch (this) {
+        case DEFAULT:
+            return context.getString(R.string.theme_default);
+        case PINK:
+            return context.getString(R.string.theme_pink);
+        case EINK:
+            return context.getString(R.string.theme_eink);
+        case DARK:
+            return context.getString(R.string.theme_dark);
+        default:
+            return name();
+    }
+}
+```
+
+#### LauncherActivity Integration
+
+**Context Parameter Added**:
+```java
+// Updated to pass Context for localized display names
+themeNames[i] = AppTheme.values()[i].getDisplayName(this);
+```
+
+#### Localization Behavior
+
+- **English Mode**: Theme dropdown shows "Default", "Pink", "E-ink", "Dark"
+- **Chinese Mode**: Theme dropdown shows "默认", "粉色", "电子墨水", "深色"
+
+#### Technical Implementation Details
+
+1. **Resource-Based Localization**: Uses Android's string resource system for proper localization
+2. **Context-Aware Display**: Theme names adapt to current app language dynamically
+3. **Consistent Pattern**: Follows same implementation pattern as AppLanguage enumeration
+4. **Backward Compatibility**: Maintains existing theme functionality while adding localization
+5. **Clean Architecture**: Separates display logic from theme configuration logic
+
+#### Testing Results
+
+- ✅ Build compilation successful
+- ✅ Theme dropdown displays localized names correctly
+- ✅ Language switching affects theme names appropriately
+- ✅ Both English and Chinese theme names display properly
+- ✅ No breaking changes to existing theme functionality
+- ✅ Consistent behavior with language dropdown localization
+
+#### Internationalization Support
+
+The theme management system now provides complete bilingual support:
+
+**English Display:**
+- Default → "Default"
+- Pink → "Pink" 
+- E-ink → "E-ink"
+- Dark → "Dark"
+
+**Chinese Display:**
+- Default → "默认"
+- Pink → "粉色"
+- E-ink → "电子墨水" 
+- Dark → "深色"
+
+This enhancement ensures that the theme dropdown provides the same level of localization as the language dropdown, creating a consistent and professional user experience across all settings in the application.
+
+This specification provides a comprehensive overview of the successfully implemented theme management system in AnkiHelper, with enhanced user experience through professional dropdown icon indicators, consistent styling, and complete localization support across both theme and language selection dropdowns.

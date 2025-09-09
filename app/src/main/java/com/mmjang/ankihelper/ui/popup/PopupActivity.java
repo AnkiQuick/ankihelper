@@ -416,7 +416,7 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
         ArrayAdapter<String> planSpinnerAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, planNameArr);
         planSpinner.setAdapter(planSpinnerAdapter);
-        planSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        planSpinnerAdapter.setDropDownViewResource(R.layout.centered_spinner_dropdown_item);
         //set plan to last selected plan
         String lastSelectedPlan = settings.getLastSelectedPlan();
         if (lastSelectedPlan.equals("")) //first use, set default plan to first one if any
@@ -507,7 +507,7 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
         String[] languages = PronounceManager.getAvailablePronounceLanguage();
         ArrayAdapter<String> languagesSpinnerAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, languages);
-        languagesSpinnerAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        languagesSpinnerAdapter.setDropDownViewResource(R.layout.centered_spinner_dropdown_item);
         pronounceLanguageSpinner.setAdapter(languagesSpinnerAdapter);
         int lastPronounceLanguageIndex = settings.getLastPronounceLanguage();
         pronounceLanguageSpinner.setSelection(lastPronounceLanguageIndex);

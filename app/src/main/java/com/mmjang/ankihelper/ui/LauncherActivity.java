@@ -179,20 +179,7 @@ public class LauncherActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //debug new feature
-//        Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    YoudaoOnline.getDefinition("dedicate");
-//                }
-//                catch (IOException e){
-//
-//                }
-//            }
-//        });
-//        thread.start();
-    }
+      }
     private void checkAndRequestPermissions() {
       if (mAnkiDroid == null) {
           mAnkiDroid = new AnkiDroidHelper(this);
@@ -299,12 +286,12 @@ public class LauncherActivity extends AppCompatActivity {
         // Create adapter with theme display names
         String[] themeNames = new String[AppTheme.values().length];
         for (int i = 0; i < AppTheme.values().length; i++) {
-            themeNames[i] = AppTheme.values()[i].getDisplayName();
+            themeNames[i] = AppTheme.values()[i].getDisplayName(this);
         }
 
         ArrayAdapter<String> themeAdapter = new ArrayAdapter<>(this,
-                R.layout.custom_spinner_item, themeNames);
-        themeAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+                R.layout.centered_spinner_item, themeNames);
+        themeAdapter.setDropDownViewResource(R.layout.centered_spinner_dropdown_item);
         themeSpinner.setAdapter(themeAdapter);
 
         // Set current selection
@@ -358,8 +345,8 @@ public class LauncherActivity extends AppCompatActivity {
         }
 
         ArrayAdapter<String> languageAdapter = new ArrayAdapter<>(this,
-                R.layout.custom_spinner_item, languageNames);
-        languageAdapter.setDropDownViewResource(R.layout.custom_spinner_dropdown_item);
+                R.layout.centered_spinner_item, languageNames);
+        languageAdapter.setDropDownViewResource(R.layout.centered_spinner_dropdown_item);
         languageSpinner.setAdapter(languageAdapter);
 
         // Set current selection

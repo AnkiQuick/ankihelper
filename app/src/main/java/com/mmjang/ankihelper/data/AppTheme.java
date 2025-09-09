@@ -8,27 +8,44 @@ import com.mmjang.ankihelper.R;
  * Defines available themes and their properties
  */
 public enum AppTheme {
-    DEFAULT("default", "Default", R.style.Theme_AnkiHelper, R.style.Transparent),
-    PINK("pink", "Pink", R.style.Theme_AnkiHelperPink, R.style.TransparentPink),
-    EINK("eink", "E-ink", R.style.Theme_AnkiHelperEink, R.style.Transparent),
-    DARK("dark", "Dark", R.style.Theme_AnkiHelperDark, R.style.TransparentDark);
+    DEFAULT("default", R.style.Theme_AnkiHelper, R.style.Transparent),
+    PINK("pink", R.style.Theme_AnkiHelperPink, R.style.TransparentPink),
+    EINK("eink", R.style.Theme_AnkiHelperEink, R.style.Transparent),
+    DARK("dark", R.style.Theme_AnkiHelperDark, R.style.TransparentDark);
     
     private final String key;
-    private final String displayName;
     private final int themeResId;
     private final int transparentThemeResId;
     
-    AppTheme(String key, String displayName, int themeResId, int transparentThemeResId) {
+    AppTheme(String key, int themeResId, int transparentThemeResId) {
         this.key = key;
-        this.displayName = displayName;
         this.themeResId = themeResId;
         this.transparentThemeResId = transparentThemeResId;
     }
     
     public String getKey() { return key; }
-    public String getDisplayName() { return displayName; }
     public int getThemeResId() { return themeResId; }
     public int getTransparentThemeResId() { return transparentThemeResId; }
+    
+    /**
+     * Get localized display name for this theme
+     * @param context Context for accessing string resources
+     * @return Localized theme name
+     */
+    public String getDisplayName(Context context) {
+        switch (this) {
+            case DEFAULT:
+                return context.getString(R.string.theme_default);
+            case PINK:
+                return context.getString(R.string.theme_pink);
+            case EINK:
+                return context.getString(R.string.theme_eink);
+            case DARK:
+                return context.getString(R.string.theme_dark);
+            default:
+                return name();
+        }
+    }
     
     /**
      * Find theme by key, returns DEFAULT if not found
