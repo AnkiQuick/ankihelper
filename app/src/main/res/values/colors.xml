@@ -61,17 +61,138 @@
     <color name="md_theme_dark_outline">#8A938B</color>
     <color name="md_theme_dark_outlineVariant">#404943</color>
 
-    <!-- Text colors -->
+    <!-- Standardized Material Design 3 Colors -->
+    <color name="color_primary">#006D42</color>
+    <color name="color_on_primary">#FFFFFF</color>
+    <color name="color_primary_container">#92F7BD</color>
+    <color name="color_on_primary_container">#002111</color>
+    <color name="color_secondary">#4E6357</color>
+    <color name="color_on_secondary">#FFFFFF</color>
+    <color name="color_secondary_container">#D0E8D8</color>
+    <color name="color_on_secondary_container">#0B1F15</color>
+    <color name="color_tertiary">#3B6470</color>
+    <color name="color_on_tertiary">#FFFFFF</color>
+    <color name="color_tertiary_container">#BFE9F9</color>
+    <color name="color_on_tertiary_container">#001F27</color>
+    <color name="color_background">#FCFDF7</color>
+    <color name="color_on_background">#191C1A</color>
+    <color name="color_surface">#FCFDF7</color>
+    <color name="color_on_surface">#191C1A</color>
+    <color name="color_surface_variant">#DCE5DC</color>
+    <color name="color_on_surface_variant">#404943</color>
+    <color name="color_outline">#707973</color>
+    <color name="color_outline_variant">#BFC9C0</color>
+    <color name="color_error">#BA1A1A</color>
+    <color name="color_on_error">#FFFFFF</color>
+    <color name="color_error_container">#FFDAD6</color>
+    <color name="color_on_error_container">#410002</color>
+
+    <!-- Pink Theme Colors -->
+    <color name="color_pink_primary">#E91E63</color>
+    <color name="color_pink_on_primary">#FFFFFF</color>
+    <color name="color_pink_primary_container">#FFD9E2</color>
+    <color name="color_pink_on_primary_container">#3E001E</color>
+    <color name="color_pink_secondary">#76565A</color>
+    <color name="color_pink_on_secondary">#FFFFFF</color>
+    <color name="color_pink_secondary_container">#FFD9E2</color>
+    <color name="color_pink_on_secondary_container">#2C1518</color>
+    <color name="color_pink_tertiary">#765473</color>
+    <color name="color_pink_on_tertiary">#FFFFFF</color>
+    <color name="color_pink_tertiary_container">#FFD8F2</color>
+    <color name="color_pink_on_tertiary_container">#2E122C</color>
+    <color name="color_pink_background">#FFFBFF</color>
+    <color name="color_pink_on_background">#1F1A1C</color>
+    <color name="color_pink_surface">#FFFBFF</color>
+    <color name="color_pink_on_surface">#1F1A1C</color>
+    <color name="color_pink_surface_variant">#F2DDE1</color>
+    <color name="color_pink_on_surface_variant">#514345</color>
+    <color name="color_pink_outline">#837376</color>
+    <color name="color_pink_outline_variant">#D5C2C6</color>
+
+    <!-- E-ink Theme Colors -->
+    <color name="color_eink_primary">#000000</color>
+    <color name="color_eink_on_primary">#FFFFFF</color>
+    <color name="color_eink_primary_container">#E0E0E0</color>
+    <color name="color_eink_on_primary_container">#000000</color>
+    <color name="color_eink_secondary">#666666</color>
+    <color name="color_eink_on_secondary">#FFFFFF</color>
+    <color name="color_eink_secondary_container">#E0E0E0</color>
+    <color name="color_eink_on_secondary_container">#000000</color>
+    <color name="color_eink_tertiary">#333333</color>
+    <color name="color_eink_on_tertiary">#FFFFFF</color>
+    <color name="color_eink_tertiary_container">#E0E0E0</color>
+    <color name="color_eink_on_tertiary_container">#000000</color>
+    <color name="color_eink_background">#FFFFFF</color>
+    <color name="color_eink_on_background">#000000</color>
+    <color name="color_eink_surface">#FFFFFF</color>
+    <color name="color_eink_on_surface">#000000</color>
+    <color name="color_eink_surface_variant">#E0E0E0</color>
+    <color name="color_eink_on_surface_variant">#000000</color>
+    <color name="color_eink_outline">#000000</color>
+    <color name="color_eink_outline_variant">#E0E0E0</color>
+    <color name="color_eink_error">#FF0000</color>
+    <color name="color_eink_on_error">#FFFFFF</color>
+    <color name="color_eink_error_container">#FFD9D9</color>
+    <color name="color_eink_on_error_container">#000000</color>
+
+    <!-- Button Colors -->
+    <color name="button_background_primary">#006D42</color>
+    <color name="button_background_primary_pink">#E91E63</color>
+    <color name="button_background_primary_eink">#000000</color>
+    <color name="button_text_primary">#FFFFFF</color>
+    <color name="button_background_secondary">#4E6357</color>
+    <color name="button_background_secondary_pink">#76565A</color>
+    <color name="button_background_secondary_eink">#666666</color>
+    <color name="button_text_secondary">#FFFFFF</color>
+    <color name="button_stroke_secondary">#4E6357</color>
+    <color name="button_stroke_secondary_pink">#76565A</color>
+    <color name="button_stroke_secondary_eink">#666666</color>
+
+    <!-- Text Colors -->
     <color name="primary_text">#212121</color>
     <color name="secondary_text">#727272</color>
+    <color name="text_primary_light">#191C1A</color>
+    <color name="text_secondary_light">#404943</color>
+    <color name="text_primary_dark">#E1E3DE</color>
+    <color name="text_secondary_dark">#BFC9C0</color>
+    <color name="text_primary_pink">#1F1A1C</color>
+    <color name="text_secondary_pink">#514345</color>
+    <color name="text_primary_eink">#000000</color>
+    <color name="text_secondary_eink">#666666</color>
 
-    <!-- Status colors -->
+    <!-- Status Colors -->
     <color name="popup_background">#E0E0E0</color>
     <color name="popup_background_pink">#f4e7e7</color>
-    <color name="divider">#cee9e9e9</color>
-    <color name="footer_background">#e0e0e0</color>
+    <color name="popup_background_eink">#F0F0F0</color>
+    <color name="divider">#BFC9C0</color>
+    <color name="divider_pink">#F2DDE1</color>
+    <color name="divider_eink">#E0E0E0</color>
+    <color name="footer_background">#E0E0E0</color>
     <color name="footer_background_pink">#e1bcbc</color>
+    <color name="footer_background_eink">#F0F0F0</color>
     <color name="footer_pressed">#4f8069</color>
     <color name="footer_pressed_pink">#c5a4a4</color>
+    <color name="footer_pressed_eink">#CCCCCC</color>
     <color name="bottom_panel_icon">#808080</color>
+    <color name="bottom_panel_icon_eink">#666666</color>
+
+    <!-- State Colors -->
+    <color name="ripple_color_light">#40FFFFFF</color>
+    <color name="ripple_color_dark">#40FFFFFF</color>
+    <color name="ripple_color_pink">#40FFFFFF</color>
+    <color name="ripple_color_eink">#40000000</color>
+    <color name="selection_color">#40006D42</color>
+    <color name="selection_color_pink">#40E91E63</color>
+    <color name="selection_color_eink">#40000000</color>
+    <color name="disabled_color">#B0B0B0</color>
+    <color name="disabled_color_eink">#CCCCCC</color>
+
+    <!-- Semantic Colors -->
+    <color name="success_color">#00C853</color>
+    <color name="success_color_eink">#00AA00</color>
+    <color name="warning_color">#FF8800</color>
+    <color name="warning_color_eink">#CC6600</color>
+    <color name="info_color">#2196F3</color>
+    <color name="info_color_eink">#0066CC</color>
+    <color name="shimmer_color">#E0E0E0</color>
 </resources>

@@ -152,7 +152,7 @@
 
                 </LinearLayout>
 
-                <!-- Pink Theme Toggle -->
+                <!-- Theme Selection Dropdown -->
                 <LinearLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
@@ -163,14 +163,17 @@
                         android:layout_width="0dp"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
-                        android:text="@string/str_pink_theme_q"
+                        android:text="@string/str_theme_label"
                         android:textColor="?attr/colorPrimary"
                         android:textAppearance="?attr/textAppearanceLabelLarge" />
 
-                    <com.google.android.material.materialswitch.MaterialSwitch
-                        android:id="@+id/pink_theme_switch"
+                    <Spinner
+                        android:id="@+id/theme_spinner"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="16dp"
+                        android:minWidth="120dp"
+                        android:background="@drawable/spinner_background_selector" />
 
                 </LinearLayout>
             </LinearLayout>

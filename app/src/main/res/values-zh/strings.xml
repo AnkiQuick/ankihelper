@@ -114,4 +114,29 @@
     <string name="settings_pink_theme_summary">使用粉色主题代替绿色</string>
     <string name="settings_pronounce_language">发音语言</string>
     <string name="settings_pronounce_language_summary">选择文本发音语言</string>
+    
+    <!-- Theme Management -->
+    <string name="str_theme_label">主题</string>
+    <string name="theme_change_title">更改主题</string>
+    <string name="theme_change_message">应用 %s 主题？应用将重新启动以应用新主题。</string>
+    <string name="apply">应用</string>
+    <string name="provider">提供商</string>
+    <string name="provider_custom">自定义</string>
+    <string name="provider_deepseek">DeepSeek</string>
+    <string name="provider_openai">OpenAI</string>
+    <string name="provider_aliyun">阿里云</string>
+    
+    <!-- Dialog Strings -->
+    <string name="loading">加载中...</string>
+    <string name="unsaved_changes">未保存的更改</string>
+    <string name="unsaved_changes_message">您有未保存的更改。是否要保存它们？</string>
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
+    <string name="ok">确定</string>
+    <string name="delete">删除</string>
+    <string name="delete_confirm_message">您确定要删除"%s"吗？</string>
+    
+    <!-- Shortcuts -->
+    <string name="shortcut_add_to_anki_short">添加到 Anki</string>
+    <string name="shortcut_add_to_anki_long">将选中文本添加到 Anki</string>
 </resources>

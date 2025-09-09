@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.content.pm.PackageManager;
 import androidx.annotation.NonNull;
 import androidx.core.app.NavUtils;
-import androidx.appcompat.app.AppCompatActivity;
 import android.os.Bundle;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -32,6 +31,7 @@ import com.mmjang.ankihelper.data.dict.AIDictionary; // Add this import
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.util.Utils;
+import com.mmjang.ankihelper.ui.base.BaseEditorActivity;
 
 import org.litepal.crud.LitePalSupport;
 
@@ -41,7 +41,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PlanEditorActivity extends AppCompatActivity {
+public class PlanEditorActivity extends BaseEditorActivity {
 
     private String planNameToEdit;
     private AnkiDroidHelper mAnkiDroid;
@@ -62,13 +62,7 @@ public class PlanEditorActivity extends AppCompatActivity {
     private RecyclerView fieldsSpinnersContainer;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        if(Settings.getInstance(this).getPinkThemeQ()){
-            setTheme(R.style.AppThemePink);
-        }
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_plan_editor);
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+    protected void initializeViews() {
         try {
             initAnkiApi();
             setViewMember();
@@ -76,31 +70,101 @@ public class PlanEditorActivity extends AppCompatActivity {
             loadDecksAndModels();
             populateDictionary();
             populateDecksAndModels();
-        }catch (Exception e){
+        } catch (Exception e) {
             Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_save, menu);
+    protected void setupListeners() {
+        // Listeners are set in populate methods
+    }
+
+    @Override
+    protected int getLayoutResId() {
+        return R.layout.activity_plan_editor;
+    }
+
+    @Override
+    protected boolean validateInput() {
+        String planName = planNameEditText.getText().toString().trim();
+        if (planName.isEmpty()) {
+            Toast.makeText(this, R.string.str_plan_name_should_not_be_blank, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
+        // Check if all fields are empty
+        boolean allFieldsAreEmpty = true;
+        for (FieldsMapItem item : fieldsMapItemList) {
+            String v = item.getExportedElementNames()[item.getSelectedFieldPos()];
+            if (!v.equals(Constant.getSharedExportElements()[0])) {
+                allFieldsAreEmpty = false;
+                break;
+            }
+        }
+        if (allFieldsAreEmpty) {
+            Toast.makeText(this, R.string.save_plan_error_all_blank, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        
         return true;
     }
 
     @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        int itemId = item.getItemId();
-        if (itemId == android.R.id.home) {
-            NavUtils.navigateUpFromSameTask(this);
-            return true;
-        } else if (itemId == R.id.action_save) {
-            if (savePlan()) {
-                finish();
+    protected boolean saveData() {
+        return savePlan();
+    }
+
+    private boolean savePlan() {
+        String planName = planNameEditText.getText().toString().trim();
+        //DataSupport.findAll()
+        OutputPlanPOJO plan;
+        if (planForEdit != null) {
+            //if when edit an exiting plan, and the user chang the plan name to another existing plan name
+            if (!planName.equals(planNameToEdit)) {
+                //if name conflicts, toast.
+                OutputPlanPOJO rel = DatabaseManager.getInstance().getPlanByName(planName);
+                if (rel != null) {
+                    Toast.makeText(this, R.string.plan_already_exists, Toast.LENGTH_SHORT).show();
+                    return false;
+                }
             }
-            return true;
+            plan = planForEdit;
         } else {
-            return super.onOptionsItemSelected(item);
+            //if name conflicts, toast.
+            OutputPlanPOJO rel = DatabaseManager.getInstance().getPlanByName(planName);
+            if (rel != null) {
+                Toast.makeText(this, R.string.plan_already_exists, Toast.LENGTH_SHORT).show();
+                return false;
+            }
+            plan = new OutputPlanPOJO();
         }
+        //new OutputPlan();
+        plan.setPlanName(planName);
+        // Set dictionary key - handle AI dictionaries differently
+        String dictionaryKey;
+        if (currentDictionary instanceof AIDictionary) {
+            dictionaryKey = ((AIDictionary) currentDictionary).getDictionaryKey();
+        } else {
+            dictionaryKey = currentDictionary.getDictionaryName();
+        }
+        plan.setDictionaryKey(dictionaryKey);
+        plan.setOutputDeckId(currentDeckId);
+        plan.setOutputModelId(currentModelId);
+
+        LinkedHashMap<String, String> map = new LinkedHashMap<>();
+        for (FieldsMapItem item : fieldsMapItemList) {
+            String k = item.getField();
+            String v = item.getExportedElementNames()[item.getSelectedFieldPos()];
+            map.put(k, v);
+        }
+        plan.setFieldsMap(map);
+        if(planNameToEdit != null){
+            DatabaseManager.getInstance().updatePlan(plan, planNameToEdit);
+        }else{
+            DatabaseManager.getInstance().insertPlan(plan);
+        }
+        return true;
     }
 
     private void setViewMember() {
@@ -320,70 +384,6 @@ public class PlanEditorActivity extends AppCompatActivity {
         } else {
             Toast.makeText(this, R.string.permission_denied, Toast.LENGTH_LONG).show();
         }
-    }
-
-    private boolean savePlan() {
-        String planName = planNameEditText.getText().toString().trim();
-        if (planName.isEmpty()) {
-            Toast.makeText(this, R.string.str_plan_name_should_not_be_blank, Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        //DataSupport.findAll()
-        OutputPlanPOJO plan;
-        if (planForEdit != null) {
-            //if when edit an exiting plan, and the user chang the plan name to another existing plan name
-            if (!planName.equals(planNameToEdit)) {
-                //if name conflicts, toast.
-                OutputPlanPOJO rel = DatabaseManager.getInstance().getPlanByName(planName);
-                if (rel != null) {
-                    Toast.makeText(this, R.string.plan_already_exists, Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-            }
-            plan = planForEdit;
-        } else {
-            //if name conflicts, toast.
-            OutputPlanPOJO rel = DatabaseManager.getInstance().getPlanByName(planName);
-            if (rel != null) {
-                Toast.makeText(this, R.string.plan_already_exists, Toast.LENGTH_SHORT).show();
-                return false;
-            }
-            plan = new OutputPlanPOJO();
-        }
-        //new OutputPlan();
-        plan.setPlanName(planName);
-        // Set dictionary key - handle AI dictionaries differently
-        String dictionaryKey;
-        if (currentDictionary instanceof AIDictionary) {
-            dictionaryKey = ((AIDictionary) currentDictionary).getDictionaryKey();
-        } else {
-            dictionaryKey = currentDictionary.getDictionaryName();
-        }
-        plan.setDictionaryKey(dictionaryKey);
-        plan.setOutputDeckId(currentDeckId);
-        plan.setOutputModelId(currentModelId);
-
-        LinkedHashMap<String, String> map = new LinkedHashMap<>();
-        boolean allFieldsAreEmpty = true;
-        for (FieldsMapItem item : fieldsMapItemList) {
-            String k = item.getField();
-            String v = item.getExportedElementNames()[item.getSelectedFieldPos()];
-            if (!v.equals(Constant.getSharedExportElements()[0])) {
-                allFieldsAreEmpty = false;
-            }
-            map.put(k, v);
-        }
-        if (allFieldsAreEmpty) {
-            Toast.makeText(this, R.string.save_plan_error_all_blank, Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        plan.setFieldsMap(map);
-        if(planNameToEdit != null){
-            DatabaseManager.getInstance().updatePlan(plan, planNameToEdit);
-        }else{
-            DatabaseManager.getInstance().insertPlan(plan);
-        }
-        return true;
     }
 
 }
