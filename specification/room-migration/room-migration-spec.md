@@ -14,10 +14,20 @@ The application already has a complete Room implementation for dictionary data i
 This provides a proven pattern to follow for migrating the remaining data models.
 
 ### LitePal Models (Target for Migration)
-The application currently uses LitePal for three main models:
+The application currently uses LitePal for multiple models that need migration:
+
+**Core Application Models:**
 1. `OutputPlan` - Configuration for dictionary output plans (`data/plan/OutputPlan.java`)
 2. `History` - Record of user lookups and translations (`data/history/History.java`)
 3. `UserTag` - User-defined tags for organizing content (`data/model/UserTag.java`)
+
+**AI-Related Models:**
+4. `AIDictionaryConfig` - AI dictionary configuration (`data/ai/AIDictionaryConfig.java`)
+5. `AITranslatorConfig` - AI translator configuration (`data/ai/AITranslatorConfig.java`)
+6. `LLMConfig` - Large Language Model configuration (`data/ai/LLMConfig.java`)
+7. `TTSConfig` - Text-to-Speech configuration (`data/ai/TTSConfig.java`)
+8. `AIDictionaryCache` - AI dictionary cache (`data/ai/cache/AIDictionaryCache.java`)
+9. `AITranslatorCache` - AI translator cache (`data/ai/cache/AITranslatorCache.java`)
 
 ### Direct SQLite Usage (Target for Migration)
 The application also uses direct SQLite operations managed by `DatabaseManager.java` for:
@@ -54,6 +64,17 @@ implementation 'org.litepal.guolindev:core:3.2.3'
 6. **Consistency**: Unifies data persistence approach across the application
 7. **Better Threading**: Built-in background thread support
 
+## ⚠️ Critical Performance Issue in Current Room Implementation
+
+**URGENT**: The existing Room implementation in `data/dict/Oalde10Database.java` contains a critical performance anti-pattern:
+
+```java
+// NEVER use this in production - causes ANR issues
+.allowMainThreadQueries() // For demonstration, don't use this in production
+```
+
+This **MUST** be fixed during migration as it violates Room best practices and can cause Application Not Responding (ANR) errors. All database operations should be performed on background threads using coroutines or RxJava.
+
 ## Room Implementation Structure
 
 Based on the existing Room implementations in the codebase for dictionary data, we will follow the same patterns:
@@ -79,12 +100,94 @@ dependencies {
     implementation "androidx.room:room-ktx:2.6.1"
     kapt "androidx.room:room-compiler:2.6.1"
     
-    // For TypeConverter support with Maps
+    // Testing Room
+    testImplementation "androidx.room:room-testing:2.6.1"
+    androidTestImplementation "androidx.room:room-testing:2.6.1"
+    
+    // Coroutines support for Room
+    implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
+    
+    // Type converters
     implementation 'com.google.code.gson:gson:2.10.1'
+    
+    // Migration utilities
+    implementation "androidx.room:room-migration:2.6.1"
 }
 ```
 
-### 2. Create Room Entities
+### 2. Create Complete Type Converters
+
+Before creating entities, we need comprehensive type converters for complex data types used in the models:
+
+File: `app/src/main/java/com/mmjang/ankihelper/data/database/Converters.java`
+
+```java
+package com.mmjang.ankihelper.data.database;
+
+import androidx.room.TypeConverter;
+import com.google.gson.Gson;
+import com.google.gson.reflect.TypeToken;
+import java.lang.reflect.Type;
+import java.util.Date;
+import java.util.Map;
+import java.util.Set;
+
+public class Converters {
+    private static final Gson gson = new Gson();
+    
+    // Map<String, String> converters (for OutputPlan.fieldsMap)
+    @TypeConverter
+    public static String fromStringMap(Map<String, String> value) {
+        if (value == null) return null;
+        return gson.toJson(value);
+    }
+    
+    @TypeConverter
+    public static Map<String, String> fromStringMapJson(String value) {
+        if (value == null) return null;
+        Type mapType = new TypeToken<Map<String, String>>(){}.getType();
+        return gson.fromJson(value, mapType);
+    }
+    
+    // Set<String> converters (for UserTag collections)
+    @TypeConverter
+    public static String fromStringSet(Set<String> value) {
+        if (value == null) return null;
+        return gson.toJson(value);
+    }
+    
+    @TypeConverter
+    public static Set<String> fromStringSetJson(String value) {
+        if (value == null) return null;
+        Type setType = new TypeToken<Set<String>>(){}.getType();
+        return gson.fromJson(value, setType);
+    }
+    
+    // Date/Timestamp converters (for History.timeStamp)
+    @TypeConverter
+    public static Date fromTimestamp(Long value) {
+        return value == null ? null : new Date(value);
+    }
+    
+    @TypeConverter
+    public static Long dateToTimestamp(Date date) {
+        return date == null ? null : date.getTime();
+    }
+    
+    // Long timestamp converters (for direct long timestamps)
+    @TypeConverter
+    public static Long fromLongTimestamp(Long value) {
+        return value;
+    }
+    
+    @TypeConverter
+    public static Long toLongTimestamp(Long value) {
+        return value;
+    }
+}
+```
+
+### 3. Create Room Entities
 
 #### OutputPlan Entity
 File: `app/src/main/java/com/mmjang/ankihelper/data/plan/OutputPlanEntity.java`
@@ -349,17 +452,41 @@ import com.mmjang.ankihelper.data.model.UserTagEntity;
 import com.mmjang.ankihelper.data.plan.OutputPlanDao;
 import com.mmjang.ankihelper.data.history.HistoryDao;
 import com.mmjang.ankihelper.data.model.UserTagDao;
+import androidx.annotation.NonNull;
+import androidx.sqlite.db.SupportSQLiteDatabase;
 
 @Database(
-    entities = {OutputPlanEntity.class, HistoryEntity.class, UserTagEntity.class},
+    entities = {
+        // Core entities
+        OutputPlanEntity.class, 
+        HistoryEntity.class, 
+        UserTagEntity.class,
+        
+        // AI entities (to be created)
+        AIDictionaryConfigEntity.class,
+        AITranslatorConfigEntity.class,
+        LLMConfigEntity.class,
+        TTSConfigEntity.class,
+        AIDictionaryCacheEntity.class,
+        AITranslatorCacheEntity.class
+    },
     version = 1,
-    exportSchema = false
+    exportSchema = true // Enable schema export for migration tracking
 )
 @TypeConverters({Converters.class})
 public abstract class AppDatabase extends RoomDatabase {
+    // Core DAOs
     public abstract OutputPlanDao outputPlanDao();
     public abstract HistoryDao historyDao();
     public abstract UserTagDao userTagDao();
+    
+    // AI DAOs (to be created)
+    public abstract AIDictionaryConfigDao aiDictionaryConfigDao();
+    public abstract AITranslatorConfigDao aiTranslatorConfigDao();
+    public abstract LLMConfigDao llmConfigDao();
+    public abstract TTSConfigDao ttsConfigDao();
+    public abstract AIDictionaryCacheDao aiDictionaryCacheDao();
+    public abstract AITranslatorCacheDao aiTranslatorCacheDao();
 
     private static volatile AppDatabase INSTANCE;
 
@@ -370,8 +497,18 @@ public abstract class AppDatabase extends RoomDatabase {
                     INSTANCE = Room.databaseBuilder(
                         context.getApplicationContext(),
                         AppDatabase.class,
-                        "ankihelper.db"
-                    ).build();
+                        "ankihelper_room.db" // New database name to avoid conflicts
+                    )
+                    // CRITICAL: DO NOT use allowMainThreadQueries() in production
+                    // All database operations should be on background threads
+                    .addCallback(new RoomDatabase.Callback() {
+                        @Override
+                        public void onCreate(@NonNull SupportSQLiteDatabase db) {
+                            super.onCreate(db);
+                            // Initialize default data if needed
+                        }
+                    })
+                    .build();
                 }
             }
         }
@@ -621,6 +758,49 @@ implementation 'org.litepal.guolindev:core:3.2.3'
 2. Test all functionality that depends on data persistence
 3. Verify no crashes or data loss
 
+## Critical: Fix Existing Room Performance Issues
+
+**BEFORE** starting the migration, the existing Room implementation must be fixed to remove performance anti-patterns:
+
+### Fix Dictionary Database Performance Issues
+
+Update `app/src/main/java/com/mmjang/ankihelper/data/dict/Oalde10Database.java`:
+
+```java
+// REMOVE this line - it causes ANR issues:
+.allowMainThreadQueries() // For demonstration, don't use this in production
+
+// REPLACE with proper background thread handling:
+public static synchronized Oalde10Database getInstance(Context context) {
+    if (instance == null) {
+        instance = Room.databaseBuilder(context.getApplicationContext(),
+                Oalde10Database.class, "oaldpe10.db")
+                // Remove .allowMainThreadQueries()
+                .build();
+    }
+    return instance;
+}
+```
+
+### Update All Dictionary DAO Usage
+
+All dictionary operations must be moved to background threads:
+
+```java
+// WRONG - Main thread database access
+Cursor cursor = dao.queryDefinition(word);
+
+// CORRECT - Background thread with callback
+ExecutorService executor = Executors.newSingleThreadExecutor();
+executor.execute(() -> {
+    Cursor cursor = dao.queryDefinition(word);
+    // Process results on main thread
+    new Handler(Looper.getMainLooper()).post(() -> {
+        // Update UI with results
+    });
+});
+```
+
 ## Data Migration Strategy
 
 1. Check if existing LitePal data exists
@@ -691,4 +871,27 @@ Estimated migration time: 5 weeks
 
 ## Conclusion
 
-Migrating from LitePal and direct SQLite to Room will modernize the application's data persistence layer, improve performance, and align with current Android development best practices. The existing use of Room for dictionary data provides a proven pattern to follow for this migration. This will also unify the data persistence approach across the entire application.
+This comprehensive Room migration specification addresses all critical aspects of migrating from LitePal and direct SQLite to Room:
+
+### Key Improvements Delivered:
+1. **Complete Scope**: Covers all 9 LitePal models including AI-related entities
+2. **Performance Fixes**: Addresses critical ANR issues in existing Room code
+3. **Unified Architecture**: Single database approach instead of fragmented implementations
+4. **Production Ready**: Proper background threading and error handling
+5. **Comprehensive Testing**: Unit, integration, and UI testing strategies
+6. **Data Integrity**: Transaction-based migration with validation
+
+### Benefits:
+- **Performance**: Eliminates main thread database operations and ANR risks
+- **Maintainability**: Unified database architecture with consistent patterns
+- **Reliability**: Compile-time SQL validation and comprehensive error handling
+- **Scalability**: Modern architecture ready for future enhancements
+- **Compliance**: Follows Android best practices and Google recommendations
+
+### Migration Priority:
+1. **CRITICAL**: Fix existing Room performance issues immediately
+2. **HIGH**: Migrate core models (OutputPlan, History, UserTag)
+3. **MEDIUM**: Migrate AI models and cache entities
+4. **LOW**: Optimize and clean up legacy code
+
+The migration will modernize the application's data persistence layer, improve performance significantly, and align with current Android development best practices. The existing Room implementations provide proven patterns, but must be fixed for performance before proceeding with the migration.

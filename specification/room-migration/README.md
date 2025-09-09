@@ -6,6 +6,7 @@ This project aims to migrate the AnkiHelper application from LitePal to Room for
 
 1. [Room Migration Specification](room-migration-spec.md) - Complete specification including overview, implementation plan, and step-by-step guide
 2. [Migration Checklist](migration-checklist.md) - Detailed checklist to ensure all steps are completed
+3. [Critical Improvements](room-migration-improvements.md) - Analysis of gaps and comprehensive improvement plan
 
 ## Current State Analysis
 
