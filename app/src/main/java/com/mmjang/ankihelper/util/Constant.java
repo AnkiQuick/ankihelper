@@ -50,11 +50,13 @@ public class Constant {
     public static final String IMAGE_SUB_DIRECTORY = "ankihelper_image";
     public static final String AUDIO_SUB_DIRECTORY = "ankihelper_audio";
 
-    public static final String IMAGE_MEDIA_DIRECTORY = Environment.getDataDirectory()
-            + "/AnkiDroid/collection.media/ankihelper_image/";
+    // Note: These paths are now managed by StorageManager to always use external storage
+    // Legacy paths maintained for compatibility, but StorageManager.getExternalStorageDir() should be used
+    public static final String IMAGE_MEDIA_DIRECTORY = Environment.getExternalStorageDirectory()
+            + "/Android/data/com.mmjang.ankihelper/files/media/ankihelper_image/";
 
-    public static final String AUDIO_MEDIA_DIRECTORY = Environment.getDataDirectory()
-            + "/AnkiDroid/collection.media/ankihelper_audio/";
+    public static final String AUDIO_MEDIA_DIRECTORY = Environment.getExternalStorageDirectory()
+            + "/Android/data/com.mmjang.ankihelper/files/media/ankihelper_audio/";
 
     public static final String USE_CLIPBOARD_CONTENT_FLAG = "use_clipboard_content_flag";
 }

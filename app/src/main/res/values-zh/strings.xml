@@ -88,7 +88,7 @@
     <string name="api_token">API 令牌</string>
 
     <string name="acknowledge_text">Copyright: 2024-2025 Jennings Liu\nCopyright: 2017-2021 mmjang</string>
-    
+
     <string name="history_management">历史记录管理</string>
     <!-- Clean AI History -->
     <string name="title_clean_ai_history">清理 AI 历史记录</string>
@@ -114,7 +114,7 @@
     <string name="settings_pink_theme_summary">使用粉色主题代替绿色</string>
     <string name="settings_pronounce_language">发音语言</string>
     <string name="settings_pronounce_language_summary">选择文本发音语言</string>
-    
+
     <!-- Theme Display Names -->
     <string name="str_theme_label">主题</string>
     <string name="theme_change_title">更改主题</string>
@@ -123,4 +123,44 @@
     <string name="theme_name_pink">粉色</string>
     <string name="theme_name_eink">电子墨水</string>
     <string name="apply">应用</string>
+    <string name="provider">提供商</string>
+    <string name="provider_custom">自定义</string>
+    <string name="provider_deepseek">DeepSeek</string>
+    <string name="provider_openai">OpenAI</string>
+    <string name="provider_aliyun">阿里云</string>
+
+    <!-- Dialog Strings -->
+    <string name="loading">加载中...</string>
+    <string name="unsaved_changes">未保存的更改</string>
+    <string name="unsaved_changes_message">您有未保存的更改。是否要保存它们？</string>
+    <string name="confirm">确认</string>
+    <string name="cancel">取消</string>
+    <string name="ok">确定</string>
+    <string name="delete">删除</string>
+    <string name="delete_confirm_message">您确定要删除"%s"吗？</string>
+
+    <!-- No Plans Guidance -->
+    <string name="no_plans_found_title">没有可用方案</string>
+    <string name="no_plans_found_message">您还没有任何划词方案。请前往方案管理器创建您的第一个方案。</string>
+    <string name="go_to_plan_manager">前往方案管理器</string>
+
+    <!-- Storage Migration -->
+    <string name="title_storage_migration">存储迁移</string>
+    <string name="storage_migration_title">迁移到外部存储</string>
+    <string name="storage_migration_description">这将把所有应用数据移动到外部存储。这是应用正常运行所必需的。</string>
+    <string name="storage_info_format" formatted="false">内部数据: %s | 可用空间: %s</string>
+    <string name="storage_permission_required">需要存储权限来迁移数据。</string>
+    <string name="storage_migration_ready">准备迁移到外部存储。</string>
+    <string name="storage_migration_in_progress">迁移进行中...</string>
+    <string name="storage_migration_completed">迁移成功完成！</string>
+    <string name="storage_migration_failed">迁移失败: %s</string>
+    <string name="storage_migration_success">数据已成功迁移到外部存储。</string>
+    <string name="storage_migration_error_unknown">迁移过程中发生未知错误。</string>
+    <string name="storage_migrate_button">开始迁移</string>
+    <string name="storage_request_permission_button">请求权限</string>
+    <string name="storage_permission_denied">存储权限被拒绝。请授予权限以继续。</string>
+
+    <!-- Shortcuts -->
+    <string name="shortcut_add_to_anki_short">添加到 Anki</string>
+    <string name="shortcut_add_to_anki_long">将选中文本添加到 Anki</string>
 </resources>

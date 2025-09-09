@@ -37,10 +37,11 @@ import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.AppTheme;
 import com.mmjang.ankihelper.data.ThemeManager;
-
+import com.mmjang.ankihelper.util.StorageManager;
 
 import com.mmjang.ankihelper.ui.plan.PlansManagerActivity;
 import com.mmjang.ankihelper.ui.stat.StatActivity;
+import com.mmjang.ankihelper.ui.storage.StorageMigrationActivity;
 
 
 import java.util.List;
@@ -72,6 +73,9 @@ public class LauncherActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher); // Set the layout first
         setVersion();
+
+        // Check for storage migration requirement
+        checkStorageMigration();
 
         // Initialize AnkiDroidHelper in onCreate
         mAnkiDroid = MyApplication.getAnkiDroid(this);
@@ -141,7 +145,7 @@ public class LauncherActivity extends AppCompatActivity {
                 }
         );
 
-        
+
         textViewOpenPlanManager.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -197,7 +201,7 @@ public class LauncherActivity extends AppCompatActivity {
                     }
                 }
         );
-        
+
         textViewOpenStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -205,36 +209,36 @@ public class LauncherActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-        //debug new feature
-//        Thread thread = new Thread(new Runnable() {
-//            @Override
-//            public void run() {
-//                try {
-//                    YoudaoOnline.getDefinition("dedicate");
-//                }
-//                catch (IOException e){
-//
-//                }
-//            }
-//        });
-//        thread.start();
+      }
+
+    private void checkStorageMigration() {
+        StorageManager storageManager = new StorageManager(this, getSharedPreferences("ankihelper_prefs", MODE_PRIVATE));
+
+        // Check if migration is needed
+        if (!storageManager.isMigrationCompleted()) {
+            Intent intent = new Intent(this, StorageMigrationActivity.class);
+            startActivity(intent);
+            finish(); // Close launcher activity
+            return;
+        }
     }
+
     private void checkAndRequestPermissions() {
       if (mAnkiDroid == null) {
           mAnkiDroid = new AnkiDroidHelper(this);
       }
-      
+
       // Check if AnkiDroid is available before requesting permissions
       if (!mAnkiDroid.isAnkiDroidRunning() && !AnkiDroidHelper.isApiAvailable(MyApplication.getContext())) {
           // Try to start AnkiDroid
           mAnkiDroid.startAnkiDroid();
           return;
       }
-      
+
       if (mAnkiDroid.shouldRequestPermission()) {
           mAnkiDroid.requestPermission(this, REQUEST_CODE_ANKI);
       }
-      
+
       // Only check notification permission (for internal storage)
       if (Build.VERSION.SDK_INT >= 33 &&  // Android 13 (Tiramisu) and above
           ContextCompat.checkSelfPermission(this, android.Manifest.permission.POST_NOTIFICATIONS) != PackageManager.PERMISSION_GRANTED) {
@@ -391,7 +395,7 @@ public class LauncherActivity extends AppCompatActivity {
 
                 if (selectedTheme != currentTheme) {
                     settings.setSelectedTheme(selectedTheme);
-                    
+
                     // Apply theme change immediately without confirmation
                     applyThemeChange(selectedTheme);
                 }
@@ -411,9 +415,9 @@ public class LauncherActivity extends AppCompatActivity {
         // Apply theme dynamically using modern Android approach
         ThemeManager.applyThemeDynamically(this);
     }
-    
-        
-    
+
+
+
     public void setVersion() {
         try {
             String versionName = getPackageManager().getPackageInfo(getPackageName(), 0).versionName;

@@ -39,8 +39,12 @@ public class DatabaseManager {
     private static DatabaseManager instance;
     private DatabaseManager(Context context){
         mContext = context;
+        android.util.Log.d("DatabaseManager", "Creating DatabaseHelper instance");
         DatabaseHelper dbHelper = new DatabaseHelper(mContext);
+        android.util.Log.d("DatabaseManager", "Getting writable database");
         mDatabase = dbHelper.getWritableDatabase();
+        android.util.Log.d("DatabaseManager", "Database path: " + mDatabase.getPath());
+        android.util.Log.d("DatabaseManager", "Database initialized successfully");
     }
 
     public static DatabaseManager getInstance() {
@@ -61,9 +65,11 @@ public class DatabaseManager {
 
     public boolean checkDictTableExists() {
         try {
+            android.util.Log.d("DatabaseManager", "Checking if dict table exists");
             Cursor cursor = mDatabase.rawQuery(SQL_CHECK_DICT_TABLE, null);
             boolean exists = cursor.getCount() > 0;
             cursor.close();
+            android.util.Log.d("DatabaseManager", "Dict table exists check result: " + exists);
             return exists;
         } catch (Exception e) {
             android.util.Log.e("DatabaseManager", "Error checking dict table: " + e.getMessage());
@@ -73,9 +79,11 @@ public class DatabaseManager {
 
     public boolean checkEntryTableExists() {
         try {
+            android.util.Log.d("DatabaseManager", "Checking if entry table exists");
             Cursor cursor = mDatabase.rawQuery(SQL_CHECK_ENTRY_TABLE, null);
             boolean exists = cursor.getCount() > 0;
             cursor.close();
+            android.util.Log.d("DatabaseManager", "Entry table exists check result: " + exists);
             return exists;
         } catch (Exception e) {
             android.util.Log.e("DatabaseManager", "Error checking entry table: " + e.getMessage());
@@ -84,7 +92,11 @@ public class DatabaseManager {
     }
 
     public void initializeDictTable() {
-        if (!checkDictTableExists()) {
+        android.util.Log.d("DatabaseManager", "Initializing dict table");
+        boolean exists = checkDictTableExists();
+        android.util.Log.d("DatabaseManager", "Dict table exists: " + exists);
+        if (!exists) {
+            android.util.Log.d("DatabaseManager", "Creating dict table");
             mDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TB_DICT +
                     "(id integer, name text, lang text, elements text, description text, tmpl text)");
             mDatabase.execSQL("CREATE INDEX IF NOT EXISTS headword_index ON entry (headword)");
@@ -92,7 +104,11 @@ public class DatabaseManager {
     }
 
     public void initializeEntryTable() {
-        if (!checkEntryTableExists()) {
+        android.util.Log.d("DatabaseManager", "Initializing entry table");
+        boolean exists = checkEntryTableExists();
+        android.util.Log.d("DatabaseManager", "Entry table exists: " + exists);
+        if (!exists) {
+            android.util.Log.d("DatabaseManager", "Creating entry table");
             mDatabase.execSQL("CREATE TABLE IF NOT EXISTS " + TB_ENTRY +
                     "(dict_id integer, headword text, entry_texts text)");
             mDatabase.execSQL("CREATE INDEX IF NOT EXISTS headword_index ON entry (headword)");

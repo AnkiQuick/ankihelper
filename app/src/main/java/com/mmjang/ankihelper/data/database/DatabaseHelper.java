@@ -55,6 +55,7 @@ public class DatabaseHelper extends SQLiteOpenHelper {
     public DatabaseHelper(Context context) {
         super(new DatabaseContext(context), DB_NAME, null, VERSION);
         mContext = context;
+        android.util.Log.d("DatabaseHelper", "Initializing database with name: " + DB_NAME);
     }
 
     @Override
