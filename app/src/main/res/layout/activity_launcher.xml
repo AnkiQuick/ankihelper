@@ -52,18 +52,7 @@
                     app:iconGravity="end"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
 
-                <!-- Add Default Plan Button -->
-                <com.google.android.material.button.MaterialButton
-                    android:id="@+id/btn_add_default_plan"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    app:strokeWidth="0dp"
-                    android:text="@string/btn_add_default_plan_str"
-                    android:gravity="start|center_vertical"
-                    app:icon="@drawable/ic_add"
-                    app:iconGravity="end"
-                    style="@style/Widget.Material3.Button.OutlinedButton" />
-            </LinearLayout>
+              </LinearLayout>
         </com.google.android.material.card.MaterialCardView>
 
         <!-- Settings Switches Card -->

@@ -25,11 +25,6 @@
     <string name="confirm_deletion">Delete?</string>
     <string name="save_plan_error_all_blank">Failed to save. All fields are empty!</string>
     <string name="plan_anki_not_started">please start ankidroid first!</string>
-    <string name="confirm_add_default_plan">No plans found, add default plan (Oxford Dictionary)?</string>
-    <string name="default_plan_added">Default plan added, check out at plans manager</string>
-    <string name="confirm_add_default_plan_when_exists_already">Add default plan (Oxford Dictionary)?</string>
-    <string name="btn_add_default_plan_str">add default plan</string>
-    <string name="duplicate_plan_name_complain">Default plan already exists, delete it in plans manager first.</string>
     <string name="left_hand_mode">Left Hand Mode</string>
     <string name="str_clipboard_service_running">Clipboard Monitor is Running</string>
     <string name="str_field_map">Fields Mapping:</string>
@@ -125,4 +120,9 @@
     <string name="language_system">System</string>
     <string name="language_english">English</string>
     <string name="language_chinese">中文</string>
+    
+    <!-- No Plans Guidance -->
+    <string name="no_plans_found_title">No Plans Available</string>
+    <string name="no_plans_found_message">You don\'t have any plans yet. Go to Plan Manager to create your first plan.</string>
+    <string name="go_to_plan_manager">Go to Plan Manager</string>
 </resources>

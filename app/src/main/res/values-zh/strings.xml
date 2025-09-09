@@ -27,11 +27,6 @@
     <string name="save_plan_error_all_blank">保存失败，输出字段不能全部为空！</string>
     <!--Plan-->
     <string name="plan_anki_not_started">修改配置需要先打开AnkiDroid，点击确定将为你自动打开!</string>
-    <string name="confirm_add_default_plan">您还没有任何划词方案，是否写入默认方案(牛津词典)？</string>
-    <string name="default_plan_added">默认方案已添加，可在方案管理器中查看</string>
-    <string name="confirm_add_default_plan_when_exists_already">已存在划词方案，确认添加默认方案（牛津词典）？</string>
-    <string name="btn_add_default_plan_str">添加默认方案</string>
-    <string name="duplicate_plan_name_complain">已存在默认方案，不得重复添加。可在方案管理器中删除后再添加。</string>
     <string name="toast_no_available_plan">没有任何可用划词方案，无法正常使用，请前往Anki划词助手主界面设置</string>
     <string name="left_hand_mode">左手模式</string>
     <string name="str_clipboard_service_running">剪切板服务正在运行</string>
@@ -143,6 +138,11 @@
     <string name="language_system">系统默认</string>
     <string name="language_english">English</string>
     <string name="language_chinese">中文</string>
+    
+    <!-- No Plans Guidance -->
+    <string name="no_plans_found_title">没有可用方案</string>
+    <string name="no_plans_found_message">您还没有任何划词方案。请前往方案管理器创建您的第一个方案。</string>
+    <string name="go_to_plan_manager">前往方案管理器</string>
     
     <!-- Shortcuts -->
     <string name="shortcut_add_to_anki_short">添加到 Anki</string>

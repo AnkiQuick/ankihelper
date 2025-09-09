@@ -28,7 +28,6 @@ import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 import com.mmjang.ankihelper.data.database.DatabaseManager;
 import com.mmjang.ankihelper.data.database.MigrationUtil;
-import com.mmjang.ankihelper.data.plan.DefaultPlan;
 import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import com.mmjang.ankihelper.domain.CBWatcherService;
 import com.mmjang.ankihelper.MyApplication;
@@ -60,7 +59,6 @@ public class LauncherActivity extends AppCompatActivity {
     Spinner languageSpinner;
     TextView textViewOpenPlanManager;
     TextView textViewOpenAIConfig;
-    TextView textViewAddDefaultPlan;
     TextView textViewAcknowledge;
     TextView textViewOpenStatistics;
 
@@ -93,7 +91,6 @@ public class LauncherActivity extends AppCompatActivity {
         languageSpinner = findViewById(R.id.language_spinner);
         textViewOpenPlanManager = (TextView) findViewById(R.id.btn_open_plan_manager);
         textViewOpenAIConfig = (TextView) findViewById(R.id.btn_open_ai_config);
-        textViewAddDefaultPlan = (TextView) findViewById(R.id.btn_add_default_plan);
         textViewAcknowledge = (TextView) findViewById(R.id.textview_acknowledge);
         textViewOpenStatistics = (TextView) findViewById(R.id.btn_open_statistics);
 
@@ -174,25 +171,6 @@ public class LauncherActivity extends AppCompatActivity {
             }
         });
 
-        textViewAddDefaultPlan.setOnClickListener(
-                new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        if (!AnkiDroidHelper.isApiAvailable(MyApplication.getContext())) {
-                            Toast.makeText(LauncherActivity.this, R.string.api_not_available_message, Toast.LENGTH_LONG).show();
-                            return;
-                        }
-
-                        if (mAnkiDroid.shouldRequestPermission()) {
-                            mAnkiDroid.requestPermission(LauncherActivity.this, 0);
-                            return;
-                        } else {
-
-                        }
-                        askIfAddDefaultPlan();
-                    }
-                }
-        );
         
         textViewOpenStatistics.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -292,52 +270,16 @@ public class LauncherActivity extends AppCompatActivity {
         stopService(intent);
     }
 
-    void askIfAddDefaultPlan() {
-        List<OutputPlanPOJO> plans;
-        plans = databaseManager.getAllPlan(); // Access internal database by default
-
-        for (OutputPlanPOJO plan : plans) {
-            if (plan.getPlanName().equals(DefaultPlan.DEFAULT_PLAN_NAME)) {
-                new AlertDialog.Builder(LauncherActivity.this)
-                        .setMessage(R.string.duplicate_plan_name_complain)
-                        .setIcon(android.R.drawable.ic_dialog_alert)
-                        .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                            public void onClick(DialogInterface dialog, int whichButton) {
-                                return;
-                            }
-                        }).show();
-                return;
-            }
-        }
-        if (plans.size() == 0) {
-            new AlertDialog.Builder(LauncherActivity.this)
-                    .setTitle(R.string.confirm_add_default_plan)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            DefaultPlan plan = new DefaultPlan(LauncherActivity.this);
-                            plan.addDefaultPlan();
-                            Toast.makeText(LauncherActivity.this, R.string.default_plan_added, Toast.LENGTH_SHORT).show();
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, null).show();
-        } else {
-            new AlertDialog.Builder(LauncherActivity.this)
-                    .setMessage(R.string.confirm_add_default_plan_when_exists_already)
-                    .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int whichButton) {
-                            try {
-                                DefaultPlan plan = new DefaultPlan(LauncherActivity.this);
-                                plan.addDefaultPlan();
-                                Toast.makeText(LauncherActivity.this, R.string.default_plan_added, Toast.LENGTH_SHORT).show();
-                            }catch (Exception e){
-                                Toast.makeText(LauncherActivity.this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
-                            }
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, null).show();
-        }
+    private void showNoPlansGuidance() {
+        new AlertDialog.Builder(this)
+                .setTitle(R.string.no_plans_found_title)
+                .setMessage(R.string.no_plans_found_message)
+                .setPositiveButton(R.string.go_to_plan_manager, (dialog, which) -> {
+                    Intent intent = new Intent(this, PlansManagerActivity.class);
+                    startActivity(intent);
+                })
+                .setNegativeButton(R.string.cancel, null)
+                .show();
     }
 
     @Override

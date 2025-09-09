@@ -26,7 +26,6 @@ public class Settings {
     private final static String FIELDS_MAP = "fields_map";   //字段映射
     private final static String MONITE_CLIPBOARD_Q = "show_clipboard_notification_q";   //是否监听剪切板
     private final static String AUTO_CANCEL_POPUP_Q = "auto_cancel_popup";              //点加号后是否退出
-    private final static String DEFAULT_PLAN = "default_plan";
     private final static String LAST_SELECTED_PLAN = "last_selected_plan";
     private final static String DEFAULT_TAG = "default_tag";
     private final static String SET_AS_DEFAULT_TAG = "set_as_default_tag";
@@ -132,17 +131,6 @@ public class Settings {
         editor.commit();
     }
 
-    /**************/
-    public String getDefaultPlan() {
-        return sp.getString(DEFAULT_PLAN, "");
-    }
-
-    public void setDefaultPlan(String defaultPlan) {
-        editor.putString(DEFAULT_PLAN, defaultPlan);
-        editor.commit();
-    }
-
-    /******************/
 
     public String getLastSelectedPlan() {
         return sp.getString(LAST_SELECTED_PLAN, "");
