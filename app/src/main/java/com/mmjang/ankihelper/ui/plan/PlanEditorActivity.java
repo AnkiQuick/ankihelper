@@ -83,22 +83,24 @@ public class PlanEditorActivity extends AppCompatActivity {
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.activity_plan_editor_menu_entry, menu);
+        getMenuInflater().inflate(R.menu.menu_save, menu);
         return true;
     }
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.menu_item_save_plan_edit) {
+        int itemId = item.getItemId();
+        if (itemId == android.R.id.home) {
+            NavUtils.navigateUpFromSameTask(this);
+            return true;
+        } else if (itemId == R.id.action_save) {
             if (savePlan()) {
                 finish();
             }
-
-        }else if (item.getItemId() ==android.R.id.home){
-            NavUtils.navigateUpFromSameTask(this);
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
-        return true;
     }
 
     private void setViewMember() {
