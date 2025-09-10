@@ -891,24 +891,52 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
             if (!Settings.getInstance(MyApplication.getContext()).getMoniteClipboardQ()) {
                 return;
             }
-            ClipboardManager cb = this.getSystemService(ClipboardManager.class);
-            if (cb.hasPrimaryClip()) {
-                ClipData clipData = cb.getPrimaryClip();
-                if (clipData != null && clipData.getItemCount() > 0) {
-                    String text = clipData.getItemAt(0).getText().toString();
-                    mTextToProcess = text;
-                }
-            }
-            populateWordSelectBox();
-            bigBangLayout.post( new Runnable() {
-                @Override
-                public void run() {
-                    setTargetWord();
-                    if(Utils.containsTranslationField(currentOutputPlan)){
-                        asyncTranslate(mTextToProcess);
+            
+            // Only access clipboard when we have focus (Android 10+ requirement)
+            if (hasFocus) {
+                try {
+                    ClipboardManager cb = this.getSystemService(ClipboardManager.class);
+                    if (cb != null && cb.hasPrimaryClip()) {
+                        ClipData clipData = cb.getPrimaryClip();
+                        if (clipData != null && clipData.getItemCount() > 0) {
+                            CharSequence text = clipData.getItemAt(0).getText();
+                            if (text != null) {
+                                mTextToProcess = text.toString();
+                                Log.d("PopupActivity", "Clipboard text retrieved, length: " + mTextToProcess.length());
+                                
+                                // Reprocess the text now that we have clipboard content
+                                populateWordSelectBox();
+                                bigBangLayout.post( new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        setTargetWord();
+                                        if(Utils.containsTranslationField(currentOutputPlan)){
+                                            asyncTranslate(mTextToProcess);
+                                        }
+                                    }
+                                });
+                            } else {
+                                Log.w("PopupActivity", "Clipboard text is null");
+                                Toast.makeText(this, "Clipboard is empty", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    } else {
+                        Log.w("PopupActivity", "No clipboard content available");
+                        Toast.makeText(this, "No clipboard content available", Toast.LENGTH_SHORT).show();
                     }
+                } catch (SecurityException e) {
+                    Log.e("PopupActivity", "Security exception accessing clipboard", e);
+                    Toast.makeText(this, "Cannot access clipboard due to security restrictions", Toast.LENGTH_LONG).show();
+                } catch (Exception e) {
+                    Log.e("PopupActivity", "Error accessing clipboard", e);
+                    Toast.makeText(this, "Error accessing clipboard", Toast.LENGTH_SHORT).show();
                 }
-            });
+                
+                // Reset the flag to prevent repeated attempts
+                isFromAndroidQClipboard = false;
+            } else {
+                Log.d("PopupActivity", "No focus, deferring clipboard access");
+            }
         }
     }
 
@@ -927,26 +955,55 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
     private void handleIntent() {
         Intent intent = getIntent();
         if (intent == null) {
+            Log.d("PopupActivity", "Intent is null");
             return;
         }
         String action = intent.getAction();
         String type = intent.getType();
+        Log.d("PopupActivity", "Handle intent, action: " + action + ", type: " + type);
+        
         if (action == null || type == null) {
+            Log.d("PopupActivity", "Action or type is null");
             return;
         }
         //getStringExtra() may return null
         if (Intent.ACTION_SEND.equals(action) && type.equals("text/plain")) {
+            Log.d("PopupActivity", "Handling ACTION_SEND");
             String base64 = intent.getStringExtra(Constant.INTENT_ANKIHELPER_BASE64);
             mTextToProcess = intent.getStringExtra(Intent.EXTRA_TEXT);
+            Log.d("PopupActivity", "ACTION_SEND text length: " + (mTextToProcess != null ? mTextToProcess.length() : 0));
+            
+            // Debug: log the actual text content (first 200 chars) to help with debugging
+            if (mTextToProcess != null && mTextToProcess.length() > 0) {
+                String preview = mTextToProcess.length() > 200 ? mTextToProcess.substring(0, 200) + "..." : mTextToProcess;
+                Log.d("PopupActivity", "ACTION_SEND text preview: " + preview.replace("\n", "\\n"));
+            }
+            
+            // IMPORTANT: Only use clipboard fallback if explicitly requested and we're on Android 10+
+            // Avoid automatic clipboard access to prevent permission issues
             if(mTextToProcess != null && mTextToProcess.equals(Constant.USE_CLIPBOARD_CONTENT_FLAG)){
-                mTextToProcess = "";
-                isFromAndroidQClipboard = true;
+                // Only attempt clipboard access if we have focus and proper permissions
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+                    // For Android 10+, check if we have focus before accessing clipboard
+                    if (hasWindowFocus()) {
+                        Log.d("PopupActivity", "Attempting clipboard access with focus");
+                        isFromAndroidQClipboard = true;
+                    } else {
+                        Log.w("PopupActivity", "Cannot access clipboard - no focus, skipping clipboard fallback");
+                        mTextToProcess = "";
+                        Toast.makeText(this, "Cannot access clipboard. Please select text directly instead.", Toast.LENGTH_LONG).show();
+                    }
+                } else {
+                    // For older Android versions, proceed with clipboard access
+                    isFromAndroidQClipboard = true;
+                }
             }
             if(base64 != null && !base64.equals("0") && mTextToProcess != null){
                 try {
                     mTextToProcess = new String(Base64.decode(mTextToProcess, Base64.DEFAULT));
                 } catch (IllegalArgumentException e) {
                     // Handle base64 decode error
+                    Log.e("PopupActivity", "Base64 decode error", e);
                 }
             }
             mTargetWord = intent.getStringExtra(Constant.INTENT_ANKIHELPER_TARGET_WORD);
@@ -994,11 +1051,61 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
             }
         }
         if (Intent.ACTION_PROCESS_TEXT.equals(action) && type.equals("text/plain")) {
+            Log.d("PopupActivity", "Handling ACTION_PROCESS_TEXT");
+            
+            // Android 10+ PROCESS_TEXT handling - try multiple methods to extract text
             mTextToProcess = intent.getStringExtra(Intent.EXTRA_PROCESS_TEXT);
+            
+            // Fallback: try alternative extra keys that some apps might use
+            if (mTextToProcess == null || mTextToProcess.isEmpty()) {
+                mTextToProcess = intent.getCharSequenceExtra(Intent.EXTRA_PROCESS_TEXT).toString();
+            }
+            
+            // Additional fallback for apps that might use different extra keys
+            if (mTextToProcess == null || mTextToProcess.isEmpty()) {
+                mTextToProcess = intent.getStringExtra("android.intent.extra.PROCESS_TEXT");
+            }
+            
+            Log.d("PopupActivity", "ACTION_PROCESS_TEXT text length: " + (mTextToProcess != null ? mTextToProcess.length() : 0));
+            
+            // Debug: log the actual text content (first 200 chars) to help with debugging
+            if (mTextToProcess != null && mTextToProcess.length() > 0) {
+                String preview = mTextToProcess.length() > 200 ? mTextToProcess.substring(0, 200) + "..." : mTextToProcess;
+                Log.d("PopupActivity", "ACTION_PROCESS_TEXT text preview: " + preview.replace("\n", "\\n"));
+            } else {
+                Log.w("PopupActivity", "ACTION_PROCESS_TEXT received but no text content found in extras");
+                // Check what extras are available for debugging
+                Bundle extras = intent.getExtras();
+                if (extras != null) {
+                    Log.d("PopupActivity", "Available extras: " + extras.keySet());
+                    for (String key : extras.keySet()) {
+                        Object value = extras.get(key);
+                        Log.d("PopupActivity", "Extra " + key + " = " + (value != null ? value.toString() : "null"));
+                    }
+                }
+            }
         }
         if (mTextToProcess == null) {
             mTextToProcess = "";
         }
+        
+        // Trim leading/trailing whitespace and check if text is effectively empty
+        mTextToProcess = mTextToProcess.trim();
+        if (mTextToProcess.isEmpty()) {
+            Log.w("PopupActivity", "Text to process is empty after trimming");
+            
+            // Provide specific guidance based on the intent action
+            if (Intent.ACTION_PROCESS_TEXT.equals(action)) {
+                Toast.makeText(this, "No text was received. Try selecting text again or use the Share option instead.", Toast.LENGTH_LONG).show();
+            } else if (Intent.ACTION_SEND.equals(action)) {
+                Toast.makeText(this, "No text content received from app", Toast.LENGTH_SHORT).show();
+            }
+        } else {
+            // Log successful text reception
+            Log.i("PopupActivity", "Successfully received text from intent action: " + action + ", length: " + mTextToProcess.length());
+        }
+        
+        Log.d("PopupActivity", "Final text to process length: " + mTextToProcess.length());
 
         // Enhanced clipboard permission check for Android 10+
         checkClipboardPermissions();
@@ -1026,13 +1133,25 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
         // Show loading indicator
         progressBar.setVisibility(View.VISIBLE);
         
+        // Validate input text
+        if (textToProcess == null || textToProcess.trim().isEmpty()) {
+            Log.w("PopupActivity", "populateWordSelectBoxAsync called with empty text");
+            progressBar.setVisibility(View.GONE);
+            Toast.makeText(this, "No text content to process", Toast.LENGTH_SHORT).show();
+            return;
+        }
+        
         // Process text segmentation in background thread
         Thread textProcessingThread = new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
+                    Log.d("PopupActivity", "Starting text processing, text length: " + textToProcess.length());
+                    
                     // Heavy text processing in background
                     final List<String> localSegments = TextSplitter.getLocalSegments(textToProcess);
+                    
+                    Log.d("PopupActivity", "Text processing complete, segments count: " + localSegments.size());
                     
                     // Update UI on main thread
                     runOnUiThread(new Runnable() {
@@ -1042,12 +1161,14 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                         }
                     });
                 } catch (Exception e) {
+                    Log.e("PopupActivity", "Error processing text", e);
+                    final String errorMsg = e.getMessage() != null ? e.getMessage() : "Unknown error";
                     // Handle errors on main thread
                     runOnUiThread(new Runnable() {
                         @Override
                         public void run() {
                             progressBar.setVisibility(View.GONE);
-                            Toast.makeText(PopupActivity.this, "Error processing text: " + e.getMessage(), Toast.LENGTH_SHORT).show();
+                            Toast.makeText(PopupActivity.this, "Error processing text: " + errorMsg, Toast.LENGTH_LONG).show();
                         }
                     });
                 }
@@ -1057,26 +1178,45 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
     }
 
     private void updateBigBangLayoutWithSegments(List<String> localSegments) {
+        Log.d("PopupActivity", "Updating BigBangLayout with segments, count: " + localSegments.size());
+        
         // Hide loading indicator
         progressBar.setVisibility(View.GONE);
         
         // Update UI with processed segments
         bigBangLayout.removeAllViews();
-        for (String localSegment : localSegments) {
-            bigBangLayout.addTextItem(localSegment);
+        
+        // Handle empty segments case
+        if (localSegments.isEmpty()) {
+            Log.w("PopupActivity", "No segments to display");
+            Toast.makeText(this, "No text content to display", Toast.LENGTH_SHORT).show();
+            return;
         }
         
-        bigBangLayout.post(new Runnable() {
-            @Override
-            public void run() {
-                String currentWord = FieldUtil.getSelectedText(bigBangLayout.getLines());
-                if (!currentWord.equals("") && !currentWord.equals(act.getText().toString())) {
-                    mCurrentKeyWord = currentWord;
-                    act.setText(currentWord);
-                    asyncSearch(currentWord);
-                }
+        // Limit the number of segments to prevent performance issues, but increase the limit
+        int maxSegments = 500; // Increased from 300 for better multi-line text support
+        int segmentCount = 0;
+        boolean wasTruncated = false;
+        
+        for (String localSegment : localSegments) {
+            // Stop adding segments if we've reached the limit
+            if (segmentCount >= maxSegments) {
+                wasTruncated = true;
+                // Add a visual indicator that text was truncated
+                bigBangLayout.addTextItem("...");
+                break;
             }
-        });
+            bigBangLayout.addTextItem(localSegment);
+            segmentCount++;
+        }
+        
+        // Show user feedback if text was truncated
+        if (wasTruncated) {
+            Toast.makeText(this, "Text was truncated for performance (showing first " + maxSegments + " segments)", Toast.LENGTH_LONG).show();
+        }
+        
+        // Log final state for debugging
+        Log.d("PopupActivity", "Displayed " + segmentCount + " segments in BigBangLayout");
     }
 
 
