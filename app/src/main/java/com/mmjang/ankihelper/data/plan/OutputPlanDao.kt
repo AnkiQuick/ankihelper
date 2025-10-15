@@ -101,4 +101,15 @@ interface OutputPlanDao {
         deletePlanByName(planName)
         insertPlan(newPlan)
     }
+
+    /**
+     * Refresh all plans with a new list (transaction-based replacement)
+     * This method deletes all existing plans and inserts the new list atomically
+     * Useful for reordering plans or bulk updates
+     */
+    @Transaction
+    suspend fun refreshAllPlansWithTransaction(newPlans: List<OutputPlanEntity>) {
+        deleteAllPlans()
+        insertPlans(newPlans)
+    }
 }

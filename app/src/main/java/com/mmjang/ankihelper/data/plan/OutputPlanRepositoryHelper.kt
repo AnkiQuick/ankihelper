@@ -122,4 +122,47 @@ class OutputPlanRepositoryHelper(
             }
         }
     }
+
+    /**
+     * Refresh all plans with a new list (atomic replace all)
+     * Useful for reordering plans after drag-and-drop
+     */
+    fun refreshAllPlans(newPlans: List<OutputPlanEntity>, callback: OperationCallback) {
+        lifecycleOwner.lifecycleScope.launch {
+            try {
+                repository.refreshAllPlans(newPlans)
+                callback.onSuccess()
+            } catch (e: Exception) {
+                callback.onError(e)
+            }
+        }
+    }
+
+    /**
+     * Delete a plan by name (fire-and-forget)
+     * No callback, errors are logged but not propagated
+     */
+    fun deletePlanFireAndForget(planName: String) {
+        lifecycleOwner.lifecycleScope.launch {
+            try {
+                repository.deletePlan(planName)
+            } catch (e: Exception) {
+                android.util.Log.e("OutputPlanRepoHelper", "Error deleting plan", e)
+            }
+        }
+    }
+
+    /**
+     * Refresh all plans (fire-and-forget)
+     * No callback, errors are logged but not propagated
+     */
+    fun refreshAllPlansFireAndForget(newPlans: List<OutputPlanEntity>) {
+        lifecycleOwner.lifecycleScope.launch {
+            try {
+                repository.refreshAllPlans(newPlans)
+            } catch (e: Exception) {
+                android.util.Log.e("OutputPlanRepoHelper", "Error refreshing plans", e)
+            }
+        }
+    }
 }

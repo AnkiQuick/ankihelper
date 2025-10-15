@@ -56,7 +56,7 @@ public class StatActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stat);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        mHistoryStat = new HistoryStat(mLastDays);
+        mHistoryStat = new HistoryStat(this, mLastDays);
         mHourChart = findViewById(R.id.hourt_chart);
         mLastDaysChart = findViewById(R.id.last_days_chart);
         mChipGroup = findViewById(R.id.last_days_stat_chipgroup);
@@ -68,7 +68,7 @@ public class StatActivity extends AppCompatActivity {
                     @Override
                     public void onItemSelected(AdapterView<?> adapterView, View view, int i, long l) {
                         mLastDays = dayMap[i];
-                        mHistoryStat = new HistoryStat(mLastDays);
+                        mHistoryStat = new HistoryStat(StatActivity.this, mLastDays);
                         mLastDaysChart.clear();
                         mHourChart.clear();
                         plotData();
@@ -94,7 +94,7 @@ public class StatActivity extends AppCompatActivity {
                         }else if (i == R.id.chip_365){
                             mLastDays = dayMap[3];
                         }
-                        mHistoryStat = new HistoryStat(mLastDays);
+                        mHistoryStat = new HistoryStat(StatActivity.this, mLastDays);
                         mLastDaysChart.clear();
                         mHourChart.clear();
                         plotData();

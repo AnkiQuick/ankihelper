@@ -15,16 +15,21 @@ import android.widget.TextView;
 
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
-import com.mmjang.ankihelper.data.database.DatabaseManager;
+import com.mmjang.ankihelper.data.database.AppDatabase;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
+import com.mmjang.ankihelper.data.plan.OutputPlanEntity;
 import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
+import com.mmjang.ankihelper.data.plan.OutputPlanRepository;
+import com.mmjang.ankihelper.data.plan.OutputPlanRepositoryHelper;
 import com.mmjang.ankihelper.ui.plan.helper.ItemTouchHelperAdapter;
 import com.mmjang.ankihelper.ui.plan.helper.ItemTouchHelperViewHolder;
 import com.mmjang.ankihelper.util.DialogUtil;
 import com.mmjang.ankihelper.util.Utils;
 
+import androidx.lifecycle.LifecycleOwner;
 import org.litepal.crud.LitePalSupport;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -35,6 +40,7 @@ import java.util.List;
 public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> implements ItemTouchHelperAdapter{
     private List<OutputPlanPOJO> mPlansList;
     private Activity mActivity;
+    private OutputPlanRepositoryHelper repositoryHelper;
 
     static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
         RelativeLayout countainer;
@@ -68,6 +74,11 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
             List<OutputPlanPOJO> planList) {
         mPlansList = planList;
         mActivity = activity;
+
+        // Initialize repository helper
+        AppDatabase database = AppDatabase.Companion.getInstance(activity.getApplicationContext());
+        OutputPlanRepository repository = new OutputPlanRepository(database.outputPlanDao());
+        repositoryHelper = new OutputPlanRepositoryHelper(repository, (LifecycleOwner) activity);
     }
 
     @Override
@@ -95,8 +106,11 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
                                 .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
                                     public void onClick(DialogInterface dialog, int whichButton) {
                                         int pos = holder.getAdapterPosition();
-                                        //mPlansList.get(pos).delete();
-                                        DatabaseManager.getInstance().deletePlanByName(mPlansList.get(pos).getPlanName());
+                                        String planName = mPlansList.get(pos).getPlanName();
+
+                                        // Delete plan using repository (fire-and-forget)
+                                        repositoryHelper.deletePlanFireAndForget(planName);
+
                                         mPlansList.remove(pos);
                                         notifyItemRemoved(pos);
                                     }
@@ -137,22 +151,20 @@ public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> 
 
     @Override
     public void onMoveFinished() {
-        DatabaseManager.getInstance().refreshPlanWith(mPlansList);
-//        List<OutputPlan> plansInDatabase = DataSupport.findAll(OutputPlan.class);
-//        for(int i = 0; i < plansInDatabase.size(); i ++){
-//            OutputPlan oldPlan = plansInDatabase.get(i);
-//            OutputPlan newPlan = mPlansList.get(i);
-//            if(oldPlan.getPlanName() == newPlan.getPlanName()){
-//                continue;
-//            }else{
-//                oldPlan.setPlanName(newPlan.getPlanName());
-//                oldPlan.setDictionaryKey(newPlan.getDictionaryKey());
-//                oldPlan.setOutputDeckId(newPlan.getOutputDeckId());
-//                oldPlan.setOutputModelId(newPlan.getOutputModelId());
-//                oldPlan.setFieldsMap(newPlan.getFieldsMap());
-//                oldPlan.save();
-//            }
-//        }
+        // Convert POJOs to Entities
+        List<OutputPlanEntity> entities = new ArrayList<>();
+        for (OutputPlanPOJO pojo : mPlansList) {
+            OutputPlanEntity entity = new OutputPlanEntity();
+            entity.setPlanName(pojo.getPlanName());
+            entity.setDictionaryKey(pojo.getDictionaryKey());
+            entity.setOutputDeckId(pojo.getOutputDeckId());
+            entity.setOutputModelId(pojo.getOutputModelId());
+            entity.setFieldsMap(pojo.getFieldsMapString());
+            entities.add(entity);
+        }
+
+        // Refresh all plans using repository (fire-and-forget)
+        repositoryHelper.refreshAllPlansFireAndForget(entities);
     }
 
     @Override

@@ -99,4 +99,14 @@ class OutputPlanRepository(private val outputPlanDao: OutputPlanDao) {
     suspend fun getAllPlanNames(): List<String> = withContext(Dispatchers.IO) {
         outputPlanDao.getAllPlanNames()
     }
+
+    /**
+     * Refresh all plans with a new list in a transaction
+     * Deletes all existing plans and inserts the new list atomically
+     * Useful for reordering plans after drag-and-drop operations
+     * @param newPlans The complete new list of plans
+     */
+    suspend fun refreshAllPlans(newPlans: List<OutputPlanEntity>) = withContext(Dispatchers.IO) {
+        outputPlanDao.refreshAllPlansWithTransaction(newPlans)
+    }
 }
