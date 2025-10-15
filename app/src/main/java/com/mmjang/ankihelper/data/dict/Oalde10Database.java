@@ -21,6 +21,7 @@ public abstract class Oalde10Database extends RoomDatabase {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     Oalde10Database.class, "oaldpe10.db")
+                    .createFromAsset("databases/oaldpe10.db")
                     // Removed .allowMainThreadQueries() - use coroutines for async operations
                     .build();
         }

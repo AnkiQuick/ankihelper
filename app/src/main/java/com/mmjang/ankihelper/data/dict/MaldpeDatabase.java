@@ -23,6 +23,7 @@ public abstract class MaldpeDatabase extends RoomDatabase {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     MaldpeDatabase.class, "maldpe.db")
+                    .createFromAsset("databases/maldpe.db")
                     // Removed .allowMainThreadQueries() - use coroutines for async operations
                     .build();
         }

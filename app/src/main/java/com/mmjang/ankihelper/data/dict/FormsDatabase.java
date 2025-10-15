@@ -17,6 +17,7 @@
              if (instance == null) {
                  instance = Room.databaseBuilder(context.getApplicationContext(),
                          FormsDatabase.class, "forms.db")
+                         .createFromAsset("databases/forms.db")
                          // Removed .allowMainThreadQueries() - use coroutines for async operations
                          .build();
              }

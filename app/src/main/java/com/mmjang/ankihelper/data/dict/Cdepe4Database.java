@@ -23,6 +23,7 @@ public abstract class Cdepe4Database extends RoomDatabase {
         if (instance == null) {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     Cdepe4Database.class, "cdepe4.db")
+                    .createFromAsset("databases/cdepe4.db")
                     // Removed .allowMainThreadQueries() - use coroutines for async operations
                     .build();
         }
