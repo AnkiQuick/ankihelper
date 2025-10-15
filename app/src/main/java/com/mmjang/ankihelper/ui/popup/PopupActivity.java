@@ -118,7 +118,6 @@ import com.tonyodev.fetch2core.Func;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
-import org.litepal.crud.LitePalSupport;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -134,7 +133,6 @@ import java.util.Map;
 import java.util.Set;
 import java.util.concurrent.CountDownLatch;
 import java.util.concurrent.atomic.AtomicReference;
-import org.litepal.LitePal;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import static com.mmjang.ankihelper.util.FieldUtil.getBlankSentence;
 import static com.mmjang.ankihelper.util.FieldUtil.getBoldSentence;

@@ -2,7 +2,6 @@ package com.mmjang.ankihelper.data.plan;
 
 import com.mmjang.ankihelper.util.Utils;
 
-import org.litepal.crud.LitePalSupport;
 
 import java.util.Map;
 

@@ -1,8 +1,12 @@
 package com.mmjang.ankihelper.data.ai;
 
-import org.litepal.crud.LitePalSupport;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class LLMConfig extends LitePalSupport {
+@Entity(tableName = "llmconfig")
+public class LLMConfig {
+    @PrimaryKey(autoGenerate = true)
     private long id;
     private String name;
     private String baseUrl;

@@ -1,14 +1,39 @@
 package com.mmjang.ankihelper.data.ai;
 
-import org.litepal.crud.LitePalSupport;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
 
-public class AITranslatorConfig extends LitePalSupport {
+@Entity(
+    tableName = "aitranslatorconfig",
+    foreignKeys = @ForeignKey(
+        entity = LLMConfig.class,
+        parentColumns = "id",
+        childColumns = "llmId",
+        onDelete = ForeignKey.CASCADE
+    ),
+    indices = @Index("llmId")
+)
+public class AITranslatorConfig {
+    @PrimaryKey(autoGenerate = true)
     private long id;
+    @ColumnInfo(name = "translatorName")
     private String translatorName;
+
+    @ColumnInfo(name = "llmId")
     private long llmId; // Foreign key to LLMConfig
+
     private String prompt;
+
+    @ColumnInfo(name = "isDefault")
     private boolean isDefault;
+
+    @ColumnInfo(name = "sourceLanguage")
     private String sourceLanguage;
+
+    @ColumnInfo(name = "targetLanguage")
     private String targetLanguage;
     
     // Getters and setters

@@ -36,7 +36,6 @@ import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.util.Utils;
 import com.mmjang.ankihelper.ui.base.BaseEditorActivity;
 
-import org.litepal.crud.LitePalSupport;
 
 import java.util.ArrayList;
 import java.util.Arrays;

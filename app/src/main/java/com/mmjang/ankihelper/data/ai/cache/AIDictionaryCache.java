@@ -1,17 +1,44 @@
 package com.mmjang.ankihelper.data.ai.cache;
 
-import org.litepal.crud.LitePalSupport;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+import com.mmjang.ankihelper.data.ai.LLMConfig;
 
-public class AIDictionaryCache extends LitePalSupport {
+@Entity(
+    tableName = "aidictionarycache",
+    foreignKeys = @ForeignKey(
+        entity = LLMConfig.class,
+        parentColumns = "id",
+        childColumns = "llmConfigId",
+        onDelete = ForeignKey.CASCADE
+    ),
+    indices = {@Index("llmConfigId"), @Index("hwd")}
+)
+public class AIDictionaryCache {
+    @PrimaryKey(autoGenerate = true)
     private long id;
     private String hwd; // Headword (the word being defined)
+
     private String phrase; // Fixed phrase with special meaning or usage (empty for single words)
+
     private String sense; // Part of speech (verb, noun, adjective, adverb, etc.) - empty for phrases
+
     private String phonetics; // British and American English phonetics (e.g., "UK: /ɡʊd/ US: /ɡʊd/")
+
+    @ColumnInfo(name = "defEn")
     private String defEn; // English definition
+
+    @ColumnInfo(name = "defCn")
     private String defCn; // Chinese definition
+
     private String example; // Example sentence
+
+    @ColumnInfo(name = "llmConfigId")
     private long llmConfigId; // Foreign key to LLMConfig
+
     private long timestamp; // For expiration
     
     // Getters and setters

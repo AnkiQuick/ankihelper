@@ -19,8 +19,6 @@ import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.ai.AIConfigRepository;
 import com.mmjang.ankihelper.data.ai.cache.AICacheRepository;
 
-import org.litepal.LitePal;
-
 public class CleanAIHistoryActivity extends AppCompatActivity {
 
     private EditText mEditTextAIDictRecords;
@@ -63,11 +61,11 @@ public class CleanAIHistoryActivity extends AppCompatActivity {
 
     private void updateTotalRecords() {
         // Update AI Dictionary total records
-        int aiDictCount = LitePal.count("aidictionarycache");
+        int aiDictCount = AICacheRepository.getDictionaryCacheCount();
         mTextViewAIDictTotalRecords.setText(String.valueOf(aiDictCount));
-        
+
         // Update AI Translator total records
-        int aiTransCount = LitePal.count("aitranslatorcache");
+        int aiTransCount = AICacheRepository.getTranslatorCacheCount();
         mTextViewAITransTotalRecords.setText(String.valueOf(aiTransCount));
     }
 

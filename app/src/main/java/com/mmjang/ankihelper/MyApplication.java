@@ -7,12 +7,8 @@ import androidx.multidex.MultiDexApplication;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 //import com.tencent.bugly.crashreport.CrashReport;
 
-import org.litepal.LitePalApplication;
-import org.litepal.LitePal;
-import org.litepal.LitePalDB;
 import okhttp3.OkHttpClient;
 import androidx.work.WorkManager;
-import org.litepal.LitePal; // Import for LitePal initialization
 import com.mmjang.ankihelper.data.history.HistoryUtil;
 
 /**
@@ -32,7 +28,6 @@ public class MyApplication extends MultiDexApplication {
         // Assign the application context here
         context = getApplicationContext();
         application = this;
-        LitePal.initialize(this);
 
         // Initialize HistoryUtil for Room database in background to avoid blocking main thread
         new Thread(new Runnable() {

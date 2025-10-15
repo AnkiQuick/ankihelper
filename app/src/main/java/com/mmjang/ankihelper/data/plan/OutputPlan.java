@@ -2,8 +2,6 @@ package com.mmjang.ankihelper.data.plan;
 
 import com.mmjang.ankihelper.util.Utils;
 
-import org.litepal.crud.LitePalSupport;
-import org.litepal.LitePal;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -11,7 +9,7 @@ import java.util.Map;
  * Created by liao on 2017/4/20.
  */
 
-public class OutputPlan extends LitePalSupport{
+public class OutputPlan {
 //    private int order;
     private String planName;
     private String dictionaryKey;

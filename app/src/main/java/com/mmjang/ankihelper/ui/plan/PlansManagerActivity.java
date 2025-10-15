@@ -32,7 +32,6 @@ import com.mmjang.ankihelper.util.DialogUtil;
 import com.mmjang.ankihelper.util.Utils;
 
 import org.jetbrains.annotations.NotNull;
-import org.litepal.crud.LitePalSupport;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,11 +1,6 @@
 package com.mmjang.ankihelper.data.history;
 
-import org.litepal.annotation.Column;
-import org.litepal.crud.LitePalSupport;
-import org.litepal.LitePal;
-
-public class History extends LitePalSupport {
-    @Column(unique = true)
+public class History {
     private long timeStamp;
     private int type;
     private String word;

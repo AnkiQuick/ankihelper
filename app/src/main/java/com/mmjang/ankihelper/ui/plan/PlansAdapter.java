@@ -27,7 +27,6 @@ import com.mmjang.ankihelper.util.DialogUtil;
 import com.mmjang.ankihelper.util.Utils;
 
 import androidx.lifecycle.LifecycleOwner;
-import org.litepal.crud.LitePalSupport;
 
 import java.util.ArrayList;
 import java.util.List;

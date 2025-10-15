@@ -1,8 +1,11 @@
 package com.mmjang.ankihelper.data.ai;
 
-import org.litepal.crud.LitePalSupport;
+import androidx.room.Entity;
+import androidx.room.PrimaryKey;
 
-public class TTSConfig extends LitePalSupport {
+@Entity(tableName = "ttsconfig")
+public class TTSConfig {
+    @PrimaryKey(autoGenerate = true)
     private long id;
     private String name;
     private String baseUrl;

@@ -1,14 +1,40 @@
 package com.mmjang.ankihelper.data.ai.cache;
 
-import org.litepal.crud.LitePalSupport;
+import androidx.room.ColumnInfo;
+import androidx.room.Entity;
+import androidx.room.ForeignKey;
+import androidx.room.Index;
+import androidx.room.PrimaryKey;
+import com.mmjang.ankihelper.data.ai.LLMConfig;
 
-public class AITranslatorCache extends LitePalSupport {
+@Entity(
+    tableName = "aitranslatorcache",
+    foreignKeys = @ForeignKey(
+        entity = LLMConfig.class,
+        parentColumns = "id",
+        childColumns = "llmConfigId",
+        onDelete = ForeignKey.CASCADE
+    ),
+    indices = {@Index("llmConfigId"), @Index("sourceText")}
+)
+public class AITranslatorCache {
+    @PrimaryKey(autoGenerate = true)
     private long id;
+    @ColumnInfo(name = "sourceText")
     private String sourceText; // The text to be translated
+
+    @ColumnInfo(name = "sourceLanguage")
     private String sourceLanguage;
+
+    @ColumnInfo(name = "targetLanguage")
     private String targetLanguage;
+
+    @ColumnInfo(name = "translatedText")
     private String translatedText; // The translated result
+
+    @ColumnInfo(name = "llmConfigId")
     private long llmConfigId; // Foreign key to LLMConfig
+
     private long timestamp; // For expiration
     
     // Getters and setters

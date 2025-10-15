@@ -6,6 +6,18 @@ import androidx.room.Room
 import androidx.room.RoomDatabase
 import androidx.room.migration.Migration
 import androidx.sqlite.db.SupportSQLiteDatabase
+import com.mmjang.ankihelper.data.ai.AIDictionaryConfig
+import com.mmjang.ankihelper.data.ai.AIDictionaryConfigDao
+import com.mmjang.ankihelper.data.ai.AITranslatorConfig
+import com.mmjang.ankihelper.data.ai.AITranslatorConfigDao
+import com.mmjang.ankihelper.data.ai.LLMConfig
+import com.mmjang.ankihelper.data.ai.LLMConfigDao
+import com.mmjang.ankihelper.data.ai.TTSConfig
+import com.mmjang.ankihelper.data.ai.TTSConfigDao
+import com.mmjang.ankihelper.data.ai.cache.AIDictionaryCache
+import com.mmjang.ankihelper.data.ai.cache.AIDictionaryCacheDao
+import com.mmjang.ankihelper.data.ai.cache.AITranslatorCache
+import com.mmjang.ankihelper.data.ai.cache.AITranslatorCacheDao
 import com.mmjang.ankihelper.data.book.BookDao
 import com.mmjang.ankihelper.data.book.BookEntity
 import com.mmjang.ankihelper.data.history.HistoryDao
@@ -18,12 +30,13 @@ import com.mmjang.ankihelper.data.plan.OutputPlanEntity
 /**
  * Main Room database for the application
  *
- * Manages the ankihelper.db database shared with LitePal:
- * - Room entities: Plan, History, Book, UserTag (managed by Room)
- * - LitePal entities: LLMConfig, TTSConfig, AIDictionaryConfig, AITranslatorConfig,
- *   AIDictionaryCache, AITranslatorCache (managed by LitePal, tables created by Room migration)
+ * Manages the ankihelper.db database:
+ * - All entities now managed by Room (LitePal has been fully removed)
+ * - Core entities: Plan, History, Book, UserTag
+ * - AI entities: LLMConfig, TTSConfig, AIDictionaryConfig, AITranslatorConfig,
+ *   AIDictionaryCache, AITranslatorCache
  *
- * Version: 6 (added LitePal AI tables to migration)
+ * Version: 7 (migrated all AI entities from LitePal to Room)
  * Database name: ankihelper.db
  */
 @Database(
@@ -31,9 +44,15 @@ import com.mmjang.ankihelper.data.plan.OutputPlanEntity
         OutputPlanEntity::class,
         HistoryEntity::class,
         BookEntity::class,
-        UserTagEntity::class
+        UserTagEntity::class,
+        LLMConfig::class,
+        TTSConfig::class,
+        AIDictionaryConfig::class,
+        AITranslatorConfig::class,
+        AIDictionaryCache::class,
+        AITranslatorCache::class
     ],
-    version = 6,
+    version = 7,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -43,6 +62,12 @@ abstract class AppDatabase : RoomDatabase() {
     abstract fun historyDao(): HistoryDao
     abstract fun bookDao(): BookDao
     abstract fun userTagDao(): UserTagDao
+    abstract fun llmConfigDao(): LLMConfigDao
+    abstract fun ttsConfigDao(): TTSConfigDao
+    abstract fun aiDictionaryConfigDao(): AIDictionaryConfigDao
+    abstract fun aiTranslatorConfigDao(): AITranslatorConfigDao
+    abstract fun aiDictionaryCacheDao(): AIDictionaryCacheDao
+    abstract fun aiTranslatorCacheDao(): AITranslatorCacheDao
 
     companion object {
         private const val DATABASE_NAME = "ankihelper.db"
@@ -66,7 +91,7 @@ abstract class AppDatabase : RoomDatabase() {
                 AppDatabase::class.java,
                 DATABASE_NAME
             )
-                .addMigrations(MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
+                .addMigrations(MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6, MIGRATION_6_7)
                 .setJournalMode(RoomDatabase.JournalMode.TRUNCATE) // Avoid WAL mode issues
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
@@ -407,6 +432,24 @@ abstract class AppDatabase : RoomDatabase() {
                     android.util.Log.e("AppDatabase", "Migration 5→6 failed", e)
                     throw e
                 }
+            }
+        }
+
+        /**
+         * Migration from version 6 to 7
+         *
+         * Migrates AI entities from LitePal management to Room management.
+         * This is a no-op migration because the tables already exist from MIGRATION_5_6.
+         * We're only changing which ORM manages them (from LitePal to Room).
+         */
+        val MIGRATION_6_7 = object : Migration(6, 7) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                android.util.Log.d("AppDatabase", "Starting migration 6→7")
+
+                // No schema changes needed - tables already exist from MIGRATION_5_6
+                // This migration simply transitions AI entity management from LitePal to Room
+
+                android.util.Log.d("AppDatabase", "Migration 6→7 completed: AI entities now managed by Room")
             }
         }
 

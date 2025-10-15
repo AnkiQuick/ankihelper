@@ -4,7 +4,6 @@ import android.content.Context;
 
 import com.mmjang.ankihelper.data.database.AppDatabase;
 
-import org.litepal.crud.LitePalSupport;
 
 import java.time.Instant;
 import java.time.LocalDate;
