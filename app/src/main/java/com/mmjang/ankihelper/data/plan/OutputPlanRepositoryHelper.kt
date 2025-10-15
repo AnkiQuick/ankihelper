@@ -2,6 +2,7 @@ package com.mmjang.ankihelper.data.plan
 
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.lifecycleScope
+import com.mmjang.ankihelper.data.dict.CoroutineHelper
 import kotlinx.coroutines.launch
 
 /**
@@ -162,6 +163,24 @@ class OutputPlanRepositoryHelper(
                 repository.refreshAllPlans(newPlans)
             } catch (e: Exception) {
                 android.util.Log.e("OutputPlanRepoHelper", "Error refreshing plans", e)
+            }
+        }
+    }
+
+    companion object {
+        /**
+         * Get all plans synchronously (blocking)
+         *
+         * WARNING: This method blocks the calling thread and should only be used when
+         * necessary (e.g., from onCreate where async loading is not feasible).
+         * The blocking is done on the IO dispatcher to prevent ANR.
+         *
+         * @return List of all output plans
+         */
+        @JvmStatic
+        fun getAllPlansBlocking(repository: OutputPlanRepository): List<OutputPlanEntity> {
+            return CoroutineHelper.executeBlocking {
+                repository.getAllPlans()
             }
         }
     }

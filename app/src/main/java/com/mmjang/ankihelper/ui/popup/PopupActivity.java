@@ -399,33 +399,14 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
     private void loadData() {
         dictionaryList = DictionaryRegister.getDictionaryObjectList();
 
-        // Load output plans using repository with blocking pattern
-        AppDatabase database = AppDatabase.Companion.getInstance(getApplicationContext());
-        OutputPlanRepository repository = new OutputPlanRepository(database.outputPlanDao());
-        OutputPlanRepositoryHelper planRepositoryHelper = new OutputPlanRepositoryHelper(repository, this);
-
-        final CountDownLatch latch = new CountDownLatch(1);
-        final AtomicReference<List<OutputPlanEntity>> plansRef = new AtomicReference<>();
-
-        planRepositoryHelper.getAllPlans(new OutputPlanRepositoryHelper.PlansCallback() {
-            @Override
-            public void onSuccess(List<OutputPlanEntity> entities) {
-                plansRef.set(entities);
-                latch.countDown();
-            }
-
-            @Override
-            public void onError(Throwable error) {
-                plansRef.set(new ArrayList<OutputPlanEntity>());
-                latch.countDown();
-            }
-        });
-
+        // Load output plans using blocking method (runs on IO dispatcher, not main thread)
         try {
-            latch.await();
-            // Convert entities to POJOs
-            outputPlanList = convertEntitiesToPOJOs(plansRef.get());
-        } catch (InterruptedException e) {
+            AppDatabase database = AppDatabase.Companion.getInstance(getApplicationContext());
+            OutputPlanRepository repository = new OutputPlanRepository(database.outputPlanDao());
+            List<OutputPlanEntity> plans = OutputPlanRepositoryHelper.getAllPlansBlocking(repository);
+            outputPlanList = convertEntitiesToPOJOs(plans);
+        } catch (Exception e) {
+            android.util.Log.e("PopupActivity", "Error loading plans", e);
             outputPlanList = new ArrayList<>();
         }
 
