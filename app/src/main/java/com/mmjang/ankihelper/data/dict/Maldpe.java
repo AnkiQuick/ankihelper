@@ -72,7 +72,7 @@ public class Maldpe implements IDictionary {
    * Get export elements list with localized field names
    * @return Array of localized field names
    */
-  private String[] getExportElementsList() {
+  public String[] getExportElementsList() {
     Context context = mContext != null ? mContext : MyApplication.getContext();
     String[] fields = new String[DICT_FIELD_RES_IDS.length];
     for (int i = 0; i < DICT_FIELD_RES_IDS.length; i++) {
