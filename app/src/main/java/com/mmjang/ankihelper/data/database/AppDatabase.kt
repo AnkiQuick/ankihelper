@@ -439,21 +439,33 @@ abstract class AppDatabase : RoomDatabase() {
          * Migration from version 6 to 7
          *
          * Migrates AI entities from LitePal management to Room management.
-         * Creates AI tables if they don't exist (they might have been managed by LitePal).
+         * Drops and recreates AI tables to ensure they match Room's expected schema exactly.
+         * This is safe because AI config data is user-entered and can be re-created if needed.
          */
         val MIGRATION_6_7 = object : Migration(6, 7) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 android.util.Log.d("AppDatabase", "Starting migration 6→7")
 
                 try {
-                    // Create AI tables if they don't exist
-                    // These might have been created by LitePal, but we ensure they exist with proper schema
+                    // Temporarily disable foreign keys to allow dropping tables
+                    database.execSQL("PRAGMA foreign_keys=OFF")
+
+                    // Drop existing AI tables to ensure clean migration from LitePal to Room
+                    // This ensures the schema matches Room's expectations exactly
+                    database.execSQL("DROP TABLE IF EXISTS llmconfig")
+                    database.execSQL("DROP TABLE IF EXISTS ttsconfig")
+                    database.execSQL("DROP TABLE IF EXISTS aidictionaryconfig")
+                    database.execSQL("DROP TABLE IF EXISTS aitranslatorconfig")
+                    database.execSQL("DROP TABLE IF EXISTS aidictionarycache")
+                    database.execSQL("DROP TABLE IF EXISTS aitranslatorcache")
+
+                    // Recreate all AI tables with exact Room schema
 
                     // LLMConfig table
                     database.execSQL(
                         """
-                        CREATE TABLE IF NOT EXISTS llmconfig (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        CREATE TABLE llmconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                             name TEXT,
                             baseUrl TEXT,
                             apiToken TEXT,
@@ -466,8 +478,8 @@ abstract class AppDatabase : RoomDatabase() {
                     // TTSConfig table
                     database.execSQL(
                         """
-                        CREATE TABLE IF NOT EXISTS ttsconfig (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        CREATE TABLE ttsconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                             name TEXT,
                             baseUrl TEXT,
                             apiToken TEXT,
@@ -479,37 +491,41 @@ abstract class AppDatabase : RoomDatabase() {
                     // AIDictionaryConfig table
                     database.execSQL(
                         """
-                        CREATE TABLE IF NOT EXISTS aidictionaryconfig (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        CREATE TABLE aidictionaryconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                             dictionaryName TEXT,
-                            llmId INTEGER,
+                            llmId INTEGER NOT NULL,
                             prompt TEXT,
                             sourceLanguage TEXT,
-                            targetLanguage TEXT
+                            targetLanguage TEXT,
+                            FOREIGN KEY(llmId) REFERENCES llmconfig(id) ON DELETE CASCADE
                         )
                         """.trimIndent()
                     )
+                    database.execSQL("CREATE INDEX IF NOT EXISTS index_aidictionaryconfig_llmId ON aidictionaryconfig(llmId)")
 
                     // AITranslatorConfig table
                     database.execSQL(
                         """
-                        CREATE TABLE IF NOT EXISTS aitranslatorconfig (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        CREATE TABLE aitranslatorconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                             translatorName TEXT,
-                            llmId INTEGER,
+                            llmId INTEGER NOT NULL,
                             prompt TEXT,
-                            isDefault INTEGER,
+                            isDefault INTEGER NOT NULL,
                             sourceLanguage TEXT,
-                            targetLanguage TEXT
+                            targetLanguage TEXT,
+                            FOREIGN KEY(llmId) REFERENCES llmconfig(id) ON DELETE CASCADE
                         )
                         """.trimIndent()
                     )
+                    database.execSQL("CREATE INDEX IF NOT EXISTS index_aitranslatorconfig_llmId ON aitranslatorconfig(llmId)")
 
                     // AIDictionaryCache table
                     database.execSQL(
                         """
-                        CREATE TABLE IF NOT EXISTS aidictionarycache (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        CREATE TABLE aidictionarycache (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                             hwd TEXT,
                             phrase TEXT,
                             sense TEXT,
@@ -517,26 +533,35 @@ abstract class AppDatabase : RoomDatabase() {
                             defEn TEXT,
                             defCn TEXT,
                             example TEXT,
-                            llmConfigId INTEGER,
-                            timestamp INTEGER
+                            llmConfigId INTEGER NOT NULL,
+                            timestamp INTEGER NOT NULL,
+                            FOREIGN KEY(llmConfigId) REFERENCES llmconfig(id) ON DELETE CASCADE
                         )
                         """.trimIndent()
                     )
+                    database.execSQL("CREATE INDEX IF NOT EXISTS index_aidictionarycache_llmConfigId ON aidictionarycache(llmConfigId)")
+                    database.execSQL("CREATE INDEX IF NOT EXISTS index_aidictionarycache_hwd ON aidictionarycache(hwd)")
 
                     // AITranslatorCache table
                     database.execSQL(
                         """
-                        CREATE TABLE IF NOT EXISTS aitranslatorcache (
-                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                        CREATE TABLE aitranslatorcache (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL,
                             sourceText TEXT,
                             sourceLanguage TEXT,
                             targetLanguage TEXT,
                             translatedText TEXT,
-                            llmConfigId INTEGER,
-                            timestamp INTEGER
+                            llmConfigId INTEGER NOT NULL,
+                            timestamp INTEGER NOT NULL,
+                            FOREIGN KEY(llmConfigId) REFERENCES llmconfig(id) ON DELETE CASCADE
                         )
                         """.trimIndent()
                     )
+                    database.execSQL("CREATE INDEX IF NOT EXISTS index_aitranslatorcache_llmConfigId ON aitranslatorcache(llmConfigId)")
+                    database.execSQL("CREATE INDEX IF NOT EXISTS index_aitranslatorcache_sourceText ON aitranslatorcache(sourceText)")
+
+                    // Re-enable foreign keys
+                    database.execSQL("PRAGMA foreign_keys=ON")
 
                     android.util.Log.d("AppDatabase", "Migration 6→7 completed: AI entities now managed by Room")
                 } catch (e: Exception) {
