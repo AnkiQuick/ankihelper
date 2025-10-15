@@ -43,9 +43,6 @@ import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.concurrent.CountDownLatch;
-import java.util.concurrent.atomic.AtomicBoolean;
-import java.util.concurrent.atomic.AtomicReference;
 
 public class PlanEditorActivity extends BaseEditorActivity {
 
@@ -160,76 +157,75 @@ public class PlanEditorActivity extends BaseEditorActivity {
             return false;
         }
 
-        String planName = planNameEditText.getText().toString().trim();
-        final CountDownLatch latch = new CountDownLatch(1);
-        final AtomicBoolean success = new AtomicBoolean(false);
+        // Start async save operation - no blocking!
+        savePlanAsync();
+        // Return false to prevent immediate finish() - we'll finish after save completes
+        return false;
+    }
 
-        //DataSupport.findAll()
+    private void savePlanAsync() {
+        final String planName = planNameEditText.getText().toString().trim();
+
+        // Show progress on UI thread
+        runOnUiThread(() -> {
+            // Disable UI to prevent multiple saves
+            planNameEditText.setEnabled(false);
+            dictionarySpinner.setEnabled(false);
+            deckSpinner.setEnabled(false);
+            modelSpinner.setEnabled(false);
+        });
+
+        // Step 1: Check for name conflicts (async, non-blocking)
+        planRepositoryHelper.getPlanByName(planName, new OutputPlanRepositoryHelper.PlanCallback() {
+            @Override
+            public void onSuccess(OutputPlanEntity existingPlan) {
+                // Check if there's a conflict
+                boolean isConflict = false;
+                if (planForEdit != null) {
+                    // Editing: conflict only if name changed and new name exists
+                    if (!planName.equals(planNameToEdit) && existingPlan != null) {
+                        isConflict = true;
+                    }
+                } else {
+                    // Creating: conflict if name already exists
+                    if (existingPlan != null) {
+                        isConflict = true;
+                    }
+                }
+
+                if (isConflict) {
+                    runOnUiThread(() -> {
+                        Toast.makeText(PlanEditorActivity.this, R.string.plan_already_exists, Toast.LENGTH_SHORT).show();
+                        // Re-enable UI
+                        planNameEditText.setEnabled(true);
+                        dictionarySpinner.setEnabled(true);
+                        deckSpinner.setEnabled(true);
+                        modelSpinner.setEnabled(true);
+                    });
+                } else {
+                    // No conflict - proceed with save
+                    performSave(planName);
+                }
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                // Error checking for conflicts - proceed with save anyway
+                performSave(planName);
+            }
+        });
+    }
+
+    private void performSave(final String planName) {
+        // Prepare plan data
         OutputPlanPOJO plan;
         if (planForEdit != null) {
-            //if when edit an exiting plan, and the user change the plan name to another existing plan name
-            if (!planName.equals(planNameToEdit)) {
-                //if name conflicts, check async
-                final AtomicReference<OutputPlanEntity> conflictCheck = new AtomicReference<>();
-                final CountDownLatch checkLatch = new CountDownLatch(1);
-
-                planRepositoryHelper.getPlanByName(planName, new OutputPlanRepositoryHelper.PlanCallback() {
-                    @Override
-                    public void onSuccess(OutputPlanEntity plan) {
-                        conflictCheck.set(plan);
-                        checkLatch.countDown();
-                    }
-
-                    @Override
-                    public void onError(Throwable error) {
-                        checkLatch.countDown();
-                    }
-                });
-
-                try {
-                    checkLatch.await();
-                    if (conflictCheck.get() != null) {
-                        Toast.makeText(this, R.string.plan_already_exists, Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
-                } catch (InterruptedException e) {
-                    return false;
-                }
-            }
             plan = planForEdit;
         } else {
-            //if name conflicts, check async
-            final AtomicReference<OutputPlanEntity> conflictCheck = new AtomicReference<>();
-            final CountDownLatch checkLatch = new CountDownLatch(1);
-
-            planRepositoryHelper.getPlanByName(planName, new OutputPlanRepositoryHelper.PlanCallback() {
-                @Override
-                public void onSuccess(OutputPlanEntity plan) {
-                    conflictCheck.set(plan);
-                    checkLatch.countDown();
-                }
-
-                @Override
-                public void onError(Throwable error) {
-                    checkLatch.countDown();
-                }
-            });
-
-            try {
-                checkLatch.await();
-                if (conflictCheck.get() != null) {
-                    Toast.makeText(this, R.string.plan_already_exists, Toast.LENGTH_SHORT).show();
-                    return false;
-                }
-            } catch (InterruptedException e) {
-                return false;
-            }
             plan = new OutputPlanPOJO();
         }
 
-        //new OutputPlan();
         plan.setPlanName(planName);
-        // Set dictionary key using stable identifier
         plan.setDictionaryKey(currentDictionary.getDictionaryKey());
         plan.setOutputDeckId(currentDeckId);
         plan.setOutputModelId(currentModelId);
@@ -250,49 +246,58 @@ public class PlanEditorActivity extends BaseEditorActivity {
         entity.setOutputModelId(plan.getOutputModelId());
         entity.setFieldsMap(plan.getFieldsMapString());
 
-        if(planNameToEdit != null){
+        // Perform save operation (async, non-blocking)
+        if (planNameToEdit != null) {
             // Update existing plan
             planRepositoryHelper.refreshPlan(planNameToEdit, entity, new OutputPlanRepositoryHelper.OperationCallback() {
                 @Override
                 public void onSuccess() {
-                    success.set(true);
-                    latch.countDown();
+                    runOnUiThread(() -> {
+                        Toast.makeText(PlanEditorActivity.this, "Plan saved successfully", Toast.LENGTH_SHORT).show();
+                        finish();
+                    });
                 }
 
                 @Override
                 public void onError(Throwable error) {
-                    runOnUiThread(() -> Toast.makeText(PlanEditorActivity.this,
-                            "Failed to update plan: " + error.getMessage(),
-                            Toast.LENGTH_SHORT).show());
-                    latch.countDown();
+                    runOnUiThread(() -> {
+                        Toast.makeText(PlanEditorActivity.this,
+                                "Failed to update plan: " + error.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                        // Re-enable UI on error
+                        planNameEditText.setEnabled(true);
+                        dictionarySpinner.setEnabled(true);
+                        deckSpinner.setEnabled(true);
+                        modelSpinner.setEnabled(true);
+                    });
                 }
             });
-        }else{
+        } else {
             // Insert new plan
             planRepositoryHelper.savePlan(entity, new OutputPlanRepositoryHelper.OperationCallback() {
                 @Override
                 public void onSuccess() {
-                    success.set(true);
-                    latch.countDown();
+                    runOnUiThread(() -> {
+                        Toast.makeText(PlanEditorActivity.this, "Plan saved successfully", Toast.LENGTH_SHORT).show();
+                        finish();
+                    });
                 }
 
                 @Override
                 public void onError(Throwable error) {
-                    runOnUiThread(() -> Toast.makeText(PlanEditorActivity.this,
-                            "Failed to save plan: " + error.getMessage(),
-                            Toast.LENGTH_SHORT).show());
-                    latch.countDown();
+                    runOnUiThread(() -> {
+                        Toast.makeText(PlanEditorActivity.this,
+                                "Failed to save plan: " + error.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                        // Re-enable UI on error
+                        planNameEditText.setEnabled(true);
+                        dictionarySpinner.setEnabled(true);
+                        deckSpinner.setEnabled(true);
+                        modelSpinner.setEnabled(true);
+                    });
                 }
             });
         }
-
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            return false;
-        }
-
-        return success.get();
     }
 
     private void setViewMember() {
