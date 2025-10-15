@@ -439,17 +439,110 @@ abstract class AppDatabase : RoomDatabase() {
          * Migration from version 6 to 7
          *
          * Migrates AI entities from LitePal management to Room management.
-         * This is a no-op migration because the tables already exist from MIGRATION_5_6.
-         * We're only changing which ORM manages them (from LitePal to Room).
+         * Creates AI tables if they don't exist (they might have been managed by LitePal).
          */
         val MIGRATION_6_7 = object : Migration(6, 7) {
             override fun migrate(database: SupportSQLiteDatabase) {
                 android.util.Log.d("AppDatabase", "Starting migration 6→7")
 
-                // No schema changes needed - tables already exist from MIGRATION_5_6
-                // This migration simply transitions AI entity management from LitePal to Room
+                try {
+                    // Create AI tables if they don't exist
+                    // These might have been created by LitePal, but we ensure they exist with proper schema
 
-                android.util.Log.d("AppDatabase", "Migration 6→7 completed: AI entities now managed by Room")
+                    // LLMConfig table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS llmconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            name TEXT,
+                            baseUrl TEXT,
+                            apiToken TEXT,
+                            modelName TEXT,
+                            endpointPath TEXT
+                        )
+                        """.trimIndent()
+                    )
+
+                    // TTSConfig table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS ttsconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            name TEXT,
+                            baseUrl TEXT,
+                            apiToken TEXT,
+                            modelName TEXT
+                        )
+                        """.trimIndent()
+                    )
+
+                    // AIDictionaryConfig table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS aidictionaryconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            dictionaryName TEXT,
+                            llmId INTEGER,
+                            prompt TEXT,
+                            sourceLanguage TEXT,
+                            targetLanguage TEXT
+                        )
+                        """.trimIndent()
+                    )
+
+                    // AITranslatorConfig table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS aitranslatorconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            translatorName TEXT,
+                            llmId INTEGER,
+                            prompt TEXT,
+                            isDefault INTEGER,
+                            sourceLanguage TEXT,
+                            targetLanguage TEXT
+                        )
+                        """.trimIndent()
+                    )
+
+                    // AIDictionaryCache table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS aidictionarycache (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            hwd TEXT,
+                            phrase TEXT,
+                            sense TEXT,
+                            phonetics TEXT,
+                            defEn TEXT,
+                            defCn TEXT,
+                            example TEXT,
+                            llmConfigId INTEGER,
+                            timestamp INTEGER
+                        )
+                        """.trimIndent()
+                    )
+
+                    // AITranslatorCache table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS aitranslatorcache (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            sourceText TEXT,
+                            sourceLanguage TEXT,
+                            targetLanguage TEXT,
+                            translatedText TEXT,
+                            llmConfigId INTEGER,
+                            timestamp INTEGER
+                        )
+                        """.trimIndent()
+                    )
+
+                    android.util.Log.d("AppDatabase", "Migration 6→7 completed: AI entities now managed by Room")
+                } catch (e: Exception) {
+                    android.util.Log.e("AppDatabase", "Migration 6→7 failed", e)
+                    throw e
+                }
             }
         }
 

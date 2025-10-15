@@ -3,7 +3,7 @@ package com.mmjang.ankihelper.data.ai
 import com.mmjang.ankihelper.MyApplication
 import com.mmjang.ankihelper.data.ai.cache.AICacheRepository
 import com.mmjang.ankihelper.data.database.AppDatabase
-import kotlinx.coroutines.runBlocking
+import com.mmjang.ankihelper.data.dict.CoroutineHelper
 
 object AIConfigRepository {
 
@@ -67,119 +67,153 @@ Please provide the translation of the text "{text}" from {sourceLanguage} to {ta
 
     // LLM Config methods
     @JvmStatic
-    fun getAllLLMConfigs(): List<LLMConfig> = runBlocking {
-        getDatabase().llmConfigDao().getAllLLMConfigs()
+    fun getAllLLMConfigs(): List<LLMConfig> {
+        return CoroutineHelper.executeBlocking {
+            getDatabase().llmConfigDao().getAllLLMConfigs()
+        }
     }
 
     @JvmStatic
-    fun getLLMConfigById(id: Long): LLMConfig? = runBlocking {
-        getDatabase().llmConfigDao().getLLMConfigById(id)
+    fun getLLMConfigById(id: Long): LLMConfig? {
+        return CoroutineHelper.executeBlocking {
+            getDatabase().llmConfigDao().getLLMConfigById(id)
+        }
     }
 
     @JvmStatic
-    fun saveLLMConfig(config: LLMConfig) = runBlocking {
+    fun saveLLMConfig(config: LLMConfig) {
         // Encrypt the API token before saving
         if (config.apiToken?.isNotEmpty() == true) {
             config.apiToken = EncryptionUtil.encrypt(config.apiToken)
         }
-        if (config.id > 0) {
-            getDatabase().llmConfigDao().updateLLMConfig(config)
-        } else {
-            getDatabase().llmConfigDao().insertLLMConfig(config)
+        CoroutineHelper.executeBlocking {
+            if (config.id > 0) {
+                getDatabase().llmConfigDao().updateLLMConfig(config)
+            } else {
+                getDatabase().llmConfigDao().insertLLMConfig(config)
+            }
         }
     }
 
     @JvmStatic
-    fun deleteLLMConfig(id: Long) = runBlocking {
-        getDatabase().llmConfigDao().deleteLLMConfigById(id)
+    fun deleteLLMConfig(id: Long) {
+        CoroutineHelper.executeBlocking {
+            getDatabase().llmConfigDao().deleteLLMConfigById(id)
+        }
     }
 
     // TTS Config methods
     @JvmStatic
-    fun getAllTTSConfigs(): List<TTSConfig> = runBlocking {
-        getDatabase().ttsConfigDao().getAllTTSConfigs()
+    fun getAllTTSConfigs(): List<TTSConfig> {
+        return CoroutineHelper.executeBlocking {
+            getDatabase().ttsConfigDao().getAllTTSConfigs()
+        }
     }
 
     @JvmStatic
-    fun getTTSConfigById(id: Long): TTSConfig? = runBlocking {
-        getDatabase().ttsConfigDao().getTTSConfigById(id)
+    fun getTTSConfigById(id: Long): TTSConfig? {
+        return CoroutineHelper.executeBlocking {
+            getDatabase().ttsConfigDao().getTTSConfigById(id)
+        }
     }
 
     @JvmStatic
-    fun saveTTSConfig(config: TTSConfig) = runBlocking {
+    fun saveTTSConfig(config: TTSConfig) {
         // Encrypt the API token before saving
         if (config.apiToken?.isNotEmpty() == true) {
             config.apiToken = EncryptionUtil.encrypt(config.apiToken)
         }
-        if (config.id > 0) {
-            getDatabase().ttsConfigDao().updateTTSConfig(config)
-        } else {
-            getDatabase().ttsConfigDao().insertTTSConfig(config)
+        CoroutineHelper.executeBlocking {
+            if (config.id > 0) {
+                getDatabase().ttsConfigDao().updateTTSConfig(config)
+            } else {
+                getDatabase().ttsConfigDao().insertTTSConfig(config)
+            }
         }
     }
 
     @JvmStatic
-    fun deleteTTSConfig(id: Long) = runBlocking {
-        getDatabase().ttsConfigDao().deleteTTSConfigById(id)
+    fun deleteTTSConfig(id: Long) {
+        CoroutineHelper.executeBlocking {
+            getDatabase().ttsConfigDao().deleteTTSConfigById(id)
+        }
     }
 
     // AI Dictionary Config methods
     @JvmStatic
-    fun getAllAIDictionaryConfigs(): List<AIDictionaryConfig> = runBlocking {
-        getDatabase().aiDictionaryConfigDao().getAllAIDictionaryConfigs()
-    }
-
-    @JvmStatic
-    fun getAIDictionaryConfigById(id: Long): AIDictionaryConfig? = runBlocking {
-        getDatabase().aiDictionaryConfigDao().getAIDictionaryConfigById(id)
-    }
-
-    @JvmStatic
-    fun saveAIDictionaryConfig(config: AIDictionaryConfig) = runBlocking {
-        if (config.id > 0) {
-            getDatabase().aiDictionaryConfigDao().updateAIDictionaryConfig(config)
-        } else {
-            getDatabase().aiDictionaryConfigDao().insertAIDictionaryConfig(config)
+    fun getAllAIDictionaryConfigs(): List<AIDictionaryConfig> {
+        return CoroutineHelper.executeBlocking {
+            getDatabase().aiDictionaryConfigDao().getAllAIDictionaryConfigs()
         }
     }
 
     @JvmStatic
-    fun deleteAIDictionaryConfig(id: Long) = runBlocking {
-        getDatabase().aiDictionaryConfigDao().deleteAIDictionaryConfigById(id)
+    fun getAIDictionaryConfigById(id: Long): AIDictionaryConfig? {
+        return CoroutineHelper.executeBlocking {
+            getDatabase().aiDictionaryConfigDao().getAIDictionaryConfigById(id)
+        }
+    }
+
+    @JvmStatic
+    fun saveAIDictionaryConfig(config: AIDictionaryConfig) {
+        CoroutineHelper.executeBlocking {
+            if (config.id > 0) {
+                getDatabase().aiDictionaryConfigDao().updateAIDictionaryConfig(config)
+            } else {
+                getDatabase().aiDictionaryConfigDao().insertAIDictionaryConfig(config)
+            }
+        }
+    }
+
+    @JvmStatic
+    fun deleteAIDictionaryConfig(id: Long) {
+        CoroutineHelper.executeBlocking {
+            getDatabase().aiDictionaryConfigDao().deleteAIDictionaryConfigById(id)
+        }
     }
 
     // AI Translator Config methods
     @JvmStatic
-    fun getAllAITranslatorConfigs(): List<AITranslatorConfig> = runBlocking {
-        getDatabase().aiTranslatorConfigDao().getAllAITranslatorConfigs()
-    }
-
-    @JvmStatic
-    fun getDefaultAITranslatorConfig(): AITranslatorConfig? = runBlocking {
-        getDatabase().aiTranslatorConfigDao().getDefaultAITranslatorConfig()
-    }
-
-    @JvmStatic
-    fun getAITranslatorConfigById(id: Long): AITranslatorConfig? = runBlocking {
-        getDatabase().aiTranslatorConfigDao().getAITranslatorConfigById(id)
-    }
-
-    @JvmStatic
-    fun saveAITranslatorConfig(config: AITranslatorConfig) = runBlocking {
-        // If this is set as default, unset any existing default
-        if (config.isDefault) {
-            getDatabase().aiTranslatorConfigDao().clearAllDefaults()
-        }
-        if (config.id > 0) {
-            getDatabase().aiTranslatorConfigDao().updateAITranslatorConfig(config)
-        } else {
-            getDatabase().aiTranslatorConfigDao().insertAITranslatorConfig(config)
+    fun getAllAITranslatorConfigs(): List<AITranslatorConfig> {
+        return CoroutineHelper.executeBlocking {
+            getDatabase().aiTranslatorConfigDao().getAllAITranslatorConfigs()
         }
     }
 
     @JvmStatic
-    fun deleteAITranslatorConfig(id: Long) = runBlocking {
-        getDatabase().aiTranslatorConfigDao().deleteAITranslatorConfigById(id)
+    fun getDefaultAITranslatorConfig(): AITranslatorConfig? {
+        return CoroutineHelper.executeBlocking {
+            getDatabase().aiTranslatorConfigDao().getDefaultAITranslatorConfig()
+        }
+    }
+
+    @JvmStatic
+    fun getAITranslatorConfigById(id: Long): AITranslatorConfig? {
+        return CoroutineHelper.executeBlocking {
+            getDatabase().aiTranslatorConfigDao().getAITranslatorConfigById(id)
+        }
+    }
+
+    @JvmStatic
+    fun saveAITranslatorConfig(config: AITranslatorConfig) {
+        CoroutineHelper.executeBlocking {
+            // If this is set as default, unset any existing default
+            if (config.isDefault) {
+                getDatabase().aiTranslatorConfigDao().clearAllDefaults()
+            }
+            if (config.id > 0) {
+                getDatabase().aiTranslatorConfigDao().updateAITranslatorConfig(config)
+            } else {
+                getDatabase().aiTranslatorConfigDao().insertAITranslatorConfig(config)
+            }
+        }
+    }
+
+    @JvmStatic
+    fun deleteAITranslatorConfig(id: Long) {
+        CoroutineHelper.executeBlocking {
+            getDatabase().aiTranslatorConfigDao().deleteAITranslatorConfigById(id)
+        }
     }
 
     // AI Dictionary Cache methods

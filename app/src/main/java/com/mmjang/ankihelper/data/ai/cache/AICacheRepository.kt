@@ -3,7 +3,7 @@ package com.mmjang.ankihelper.data.ai.cache
 import android.util.Log
 import com.mmjang.ankihelper.MyApplication
 import com.mmjang.ankihelper.data.database.AppDatabase
-import kotlinx.coroutines.runBlocking
+import com.mmjang.ankihelper.data.dict.CoroutineHelper
 
 object AICacheRepository {
 
@@ -17,7 +17,7 @@ object AICacheRepository {
     fun getDictionaryCache(word: String, llmConfigId: Long): List<AIDictionaryCache> {
         Log.d("AICacheRepository", "Querying cache for word: $word, llmConfigId: $llmConfigId")
         return try {
-            val results = runBlocking {
+            val results = CoroutineHelper.executeBlocking {
                 getDatabase().aiDictionaryCacheDao().getCacheByHeadwordAndLLM(word, llmConfigId)
             }
             Log.d("AICacheRepository", "Found ${results.size} cached results for word: $word")
@@ -33,7 +33,7 @@ object AICacheRepository {
     fun saveDictionaryCache(cache: AIDictionaryCache) {
         try {
             Log.d("AICacheRepository", "Saving cache entry for word: ${cache.hwd}")
-            runBlocking {
+            CoroutineHelper.executeBlocking {
                 getDatabase().aiDictionaryCacheDao().insertCache(cache)
             }
             Log.d("AICacheRepository", "Successfully saved cache entry for word: ${cache.hwd}")
@@ -43,26 +43,32 @@ object AICacheRepository {
     }
 
     @JvmStatic
-    fun clearExpiredDictionaryCache(expirationTime: Long) = runBlocking {
-        getDatabase().aiDictionaryCacheDao().deleteOldCache(expirationTime)
+    fun clearExpiredDictionaryCache(expirationTime: Long) {
+        CoroutineHelper.executeBlocking {
+            getDatabase().aiDictionaryCacheDao().deleteOldCache(expirationTime)
+        }
     }
 
     @JvmStatic
-    fun deleteOldestDictionaryCache(count: Int): Int = runBlocking {
-        getDatabase().aiDictionaryCacheDao().deleteOldestCache(count)
+    fun deleteOldestDictionaryCache(count: Int): Int {
+        return CoroutineHelper.executeBlocking {
+            getDatabase().aiDictionaryCacheDao().deleteOldestCache(count)
+        }
     }
 
     @JvmStatic
     fun deleteAllDictionaryCache(): Int {
-        runBlocking {
+        CoroutineHelper.executeBlocking {
             getDatabase().aiDictionaryCacheDao().deleteAllCache()
         }
         return 1 // Room's delete returns void, so we return success indicator
     }
 
     @JvmStatic
-    fun getDictionaryCacheCount(): Int = runBlocking {
-        getDatabase().aiDictionaryCacheDao().getCount()
+    fun getDictionaryCacheCount(): Int {
+        return CoroutineHelper.executeBlocking {
+            getDatabase().aiDictionaryCacheDao().getCount()
+        }
     }
 
     // AI Translator Cache methods
@@ -72,37 +78,47 @@ object AICacheRepository {
         sourceLanguage: String,
         targetLanguage: String,
         llmConfigId: Long
-    ): AITranslatorCache? = runBlocking {
-        getDatabase().aiTranslatorCacheDao().getCacheByTextAndLLM(
-            sourceText, sourceLanguage, targetLanguage, llmConfigId
-        )
+    ): AITranslatorCache? {
+        return CoroutineHelper.executeBlocking {
+            getDatabase().aiTranslatorCacheDao().getCacheByTextAndLLM(
+                sourceText, sourceLanguage, targetLanguage, llmConfigId
+            )
+        }
     }
 
     @JvmStatic
-    fun saveTranslatorCache(cache: AITranslatorCache) = runBlocking {
-        getDatabase().aiTranslatorCacheDao().insertCache(cache)
+    fun saveTranslatorCache(cache: AITranslatorCache) {
+        CoroutineHelper.executeBlocking {
+            getDatabase().aiTranslatorCacheDao().insertCache(cache)
+        }
     }
 
     @JvmStatic
-    fun clearExpiredTranslatorCache(expirationTime: Long) = runBlocking {
-        getDatabase().aiTranslatorCacheDao().deleteOldCache(expirationTime)
+    fun clearExpiredTranslatorCache(expirationTime: Long) {
+        CoroutineHelper.executeBlocking {
+            getDatabase().aiTranslatorCacheDao().deleteOldCache(expirationTime)
+        }
     }
 
     @JvmStatic
-    fun deleteOldestTranslatorCache(count: Int): Int = runBlocking {
-        getDatabase().aiTranslatorCacheDao().deleteOldestCache(count)
+    fun deleteOldestTranslatorCache(count: Int): Int {
+        return CoroutineHelper.executeBlocking {
+            getDatabase().aiTranslatorCacheDao().deleteOldestCache(count)
+        }
     }
 
     @JvmStatic
     fun deleteAllTranslatorCache(): Int {
-        runBlocking {
+        CoroutineHelper.executeBlocking {
             getDatabase().aiTranslatorCacheDao().deleteAllCache()
         }
         return 1 // Room's delete returns void, so we return success indicator
     }
 
     @JvmStatic
-    fun getTranslatorCacheCount(): Int = runBlocking {
-        getDatabase().aiTranslatorCacheDao().getCount()
+    fun getTranslatorCacheCount(): Int {
+        return CoroutineHelper.executeBlocking {
+            getDatabase().aiTranslatorCacheDao().getCount()
+        }
     }
 }
