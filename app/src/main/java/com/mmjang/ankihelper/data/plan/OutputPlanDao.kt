@@ -86,6 +86,13 @@ interface OutputPlanDao {
     suspend fun getPlanCount(): Int
 
     /**
+     * Get all plan names
+     * @return List of plan names
+     */
+    @Query("SELECT planname FROM plan")
+    suspend fun getAllPlanNames(): List<String>
+
+    /**
      * Refresh a plan with new data (transaction-based update)
      * This method combines delete and insert to ensure clean replacement
      */

@@ -34,12 +34,36 @@ interface HistoryDao {
     suspend fun getHistoryBefore(beforeTimestamp: Long, limit: Int): List<HistoryEntity>
 
     /**
-     * Get history entries by word
+     * Get history entries by word (exact match)
      * @param word The word to search for
      * @return List of history entries containing the word
      */
     @Query("SELECT * FROM history WHERE word = :word ORDER BY timestamp DESC")
-    suspend fun getHistoryByWord(word: String): List<HistoryEntity>
+    suspend fun searchByWord(word: String): List<HistoryEntity>
+
+    /**
+     * Search history entries by partial word match
+     * @param query The search query
+     * @return List of history entries with words containing the query
+     */
+    @Query("SELECT * FROM history WHERE word LIKE '%' || :query || '%' ORDER BY timestamp DESC")
+    suspend fun searchByWordPartial(query: String): List<HistoryEntity>
+
+    /**
+     * Get history entries from a specific dictionary
+     * @param dictionary The dictionary key
+     * @return List of history entries from the dictionary
+     */
+    @Query("SELECT * FROM history WHERE dictionary = :dictionary ORDER BY timestamp DESC")
+    suspend fun getHistoryByDictionary(dictionary: String): List<HistoryEntity>
+
+    /**
+     * Get history entries by tag
+     * @param tag The tag to filter by
+     * @return List of history entries with the specified tag
+     */
+    @Query("SELECT * FROM history WHERE tag = :tag ORDER BY timestamp DESC")
+    suspend fun getHistoryByTag(tag: String): List<HistoryEntity>
 
     /**
      * Get history entries by type
@@ -123,5 +147,5 @@ interface HistoryDao {
      * @return The most recent history entry or null if empty
      */
     @Query("SELECT * FROM history ORDER BY timestamp DESC LIMIT 1")
-    suspend fun getLatestHistory(): HistoryEntity?
+    suspend fun getMostRecentHistory(): HistoryEntity?
 }

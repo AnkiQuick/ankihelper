@@ -17,6 +17,13 @@ interface UserTagDao {
     suspend fun getAllTags(): List<UserTagEntity>
 
     /**
+     * Get all tag strings (just the tag values)
+     * @return List of tag strings
+     */
+    @Query("SELECT tag FROM usertag ORDER BY tag ASC")
+    suspend fun getAllTagStrings(): List<String>
+
+    /**
      * Get a tag by name
      * @param tag The tag name
      * @return The tag or null if not found
