@@ -14,13 +14,19 @@ public class PronounceManager {
     @Deprecated
     public static final String LANGUAGE_ENGLISH = "英语发音";
     @Deprecated
-    public static final String LANGUAGE_FRENCHE = "法语发音";
+    public static final String LANGUAGE_FRENCH = "法语发音";
     @Deprecated
     public static final String LANGUAGE_JAPANESE = "日语发音";
     @Deprecated
     public static final String LANGUAGE_KOREAN = "韩语发音";
     @Deprecated
-    public static final String LANGUAGE_GERMANY = "德语发音";
+    public static final String LANGUAGE_GERMAN = "德语发音";
+
+    // Deprecated aliases for backward compatibility (typo/naming fixes)
+    @Deprecated
+    public static final String LANGUAGE_FRENCHE = LANGUAGE_FRENCH;
+    @Deprecated
+    public static final String LANGUAGE_GERMANY = LANGUAGE_GERMAN;
 
     public static final int LANGUAGE_ENGLISH_INDEX = 0;
     public static final int LANGUAGE_FRENCH_INDEX = 1;
@@ -57,10 +63,10 @@ public class PronounceManager {
     public static String[] getAvailablePronounceLanguage() {
         String[] languages = new String[5];
         languages[LANGUAGE_ENGLISH_INDEX] = LANGUAGE_ENGLISH;
-        languages[LANGUAGE_FRENCH_INDEX] = LANGUAGE_FRENCHE;
+        languages[LANGUAGE_FRENCH_INDEX] = LANGUAGE_FRENCH;
         languages[LANGUAGE_JAPANESE_INDEX] = LANGUAGE_JAPANESE;
         languages[LANGUAGE_KOREAN_INDEX] = LANGUAGE_KOREAN;
-        languages[LANGUAGE_GERMANY_INDEX] = LANGUAGE_GERMANY;
+        languages[LANGUAGE_GERMANY_INDEX] = LANGUAGE_GERMAN;
         return languages;
     }
 
