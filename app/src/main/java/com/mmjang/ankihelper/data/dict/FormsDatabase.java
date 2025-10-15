@@ -6,7 +6,7 @@
      import androidx.room.Room;
      import androidx.room.RoomDatabase;
 
-     @Database(entities = {DummyEntity.class}, version = 1, exportSchema = false)
+     @Database(entities = {DummyEntity.class}, version = 2, exportSchema = false)
      public abstract class FormsDatabase extends RoomDatabase {
 
          public abstract FormsDao formsDao();
@@ -18,6 +18,7 @@
                  instance = Room.databaseBuilder(context.getApplicationContext(),
                          FormsDatabase.class, "forms.db")
                          .createFromAsset("databases/forms.db")
+                         .fallbackToDestructiveMigration()
                          // Removed .allowMainThreadQueries() - use coroutines for async operations
                          .build();
              }

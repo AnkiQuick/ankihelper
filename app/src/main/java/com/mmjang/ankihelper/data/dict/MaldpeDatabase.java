@@ -12,7 +12,7 @@ import androidx.room.RoomDatabase;
 
 import com.mmjang.ankihelper.data.dict.Form; // Import the Form class
 
-@Database(entities = {DummyEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {DummyEntity.class}, version = 2, exportSchema = false)
 public abstract class MaldpeDatabase extends RoomDatabase {
 
     public abstract MaldpeDao maldpeDao();
@@ -24,6 +24,7 @@ public abstract class MaldpeDatabase extends RoomDatabase {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     MaldpeDatabase.class, "maldpe.db")
                     .createFromAsset("databases/maldpe.db")
+                    .fallbackToDestructiveMigration()
                     // Removed .allowMainThreadQueries() - use coroutines for async operations
                     .build();
         }

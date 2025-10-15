@@ -10,7 +10,7 @@ import androidx.room.Query;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {DummyEntity.class}, version = 1, exportSchema = false)
+@Database(entities = {DummyEntity.class}, version = 2, exportSchema = false)
 public abstract class Oalde10Database extends RoomDatabase {
 
     public abstract Oalde10Dao oalde10Dao();
@@ -22,6 +22,7 @@ public abstract class Oalde10Database extends RoomDatabase {
             instance = Room.databaseBuilder(context.getApplicationContext(),
                     Oalde10Database.class, "oaldpe10.db")
                     .createFromAsset("databases/oaldpe10.db")
+                    .fallbackToDestructiveMigration()
                     // Removed .allowMainThreadQueries() - use coroutines for async operations
                     .build();
         }
