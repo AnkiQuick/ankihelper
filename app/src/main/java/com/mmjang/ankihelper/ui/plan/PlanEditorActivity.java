@@ -71,17 +71,43 @@ public class PlanEditorActivity extends BaseEditorActivity {
     @Override
     protected void initializeViews() {
         try {
-            // Initialize repository helper
-            AppDatabase database = AppDatabase.Companion.getInstance(getApplicationContext());
-            OutputPlanRepository repository = new OutputPlanRepository(database.outputPlanDao());
-            planRepositoryHelper = new OutputPlanRepositoryHelper(repository, this);
-
-            initAnkiApi();
             setViewMember();
-            handleIntent();
-            loadDecksAndModels();
-            populateDictionary();
-            populateDecksAndModels();
+            initAnkiApi();
+
+            // Initialize database and load data in background to avoid ANR
+            new Thread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        // Initialize repository helper off main thread
+                        AppDatabase database = AppDatabase.Companion.getInstance(getApplicationContext());
+                        OutputPlanRepository repository = new OutputPlanRepository(database.outputPlanDao());
+                        planRepositoryHelper = new OutputPlanRepositoryHelper(repository, PlanEditorActivity.this);
+
+                        // Load AnkiDroid data off main thread
+                        loadDecksAndModels();
+
+                        // Update UI on main thread
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                handleIntent();
+                                populateDictionary();
+                                populateDecksAndModels();
+                            }
+                        });
+                    } catch (Exception e) {
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+                                Toast.makeText(PlanEditorActivity.this,
+                                    "Failed to initialize: " + e.getMessage(),
+                                    Toast.LENGTH_SHORT).show();
+                            }
+                        });
+                    }
+                }
+            }).start();
         } catch (Exception e) {
             Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
         }
@@ -128,6 +154,12 @@ public class PlanEditorActivity extends BaseEditorActivity {
     }
 
     private boolean savePlan() {
+        // Check if repository is initialized
+        if (planRepositoryHelper == null) {
+            Toast.makeText(this, "Please wait, initializing...", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+
         String planName = planNameEditText.getText().toString().trim();
         final CountDownLatch latch = new CountDownLatch(1);
         final AtomicBoolean success = new AtomicBoolean(false);
