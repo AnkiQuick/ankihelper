@@ -84,79 +84,116 @@ abstract class AppDatabase : RoomDatabase() {
          * Migration from version 3 to 4
          *
          * This migration handles the transition from DatabaseHelper (SQLite) and LitePal
-         * to Room. The existing tables already exist in the database, so we just need
-         * to ensure the schema is compatible with Room's expectations.
+         * to Room. The existing tables were created without PRIMARY KEY constraints,
+         * so we need to recreate them with proper schema.
          *
-         * Existing tables:
-         * - plan (from DatabaseHelper)
-         * - history (from DatabaseHelper)
-         * - book (from DatabaseHelper)
-         * - usertag (from LitePal, table name needs verification)
+         * Strategy: Create new tables, copy data, drop old, rename new
          */
         val MIGRATION_3_4 = object : Migration(3, 4) {
             override fun migrate(database: SupportSQLiteDatabase) {
-                // The tables already exist from DatabaseHelper and LitePal
-                // We only need to create the usertag table if it doesn't exist
-                // (LitePal may use a different table name)
+                android.util.Log.d("AppDatabase", "Starting migration 3→4")
 
-                // Create usertag table if it doesn't exist
-                database.execSQL(
-                    """
-                    CREATE TABLE IF NOT EXISTS usertag (
-                        tag TEXT NOT NULL PRIMARY KEY
+                try {
+                    // 1. Migrate plan table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS plan_new (
+                            planname TEXT NOT NULL PRIMARY KEY,
+                            dictionarykey TEXT,
+                            outputdeckid INTEGER NOT NULL,
+                            outputmodelid INTEGER NOT NULL,
+                            fieldsmap TEXT
+                        )
+                        """.trimIndent()
                     )
-                    """.trimIndent()
-                )
+                    // Try to copy data if old table exists
+                    try {
+                        database.execSQL(
+                            """
+                            INSERT OR IGNORE INTO plan_new (planname, dictionarykey, outputdeckid, outputmodelid, fieldsmap)
+                            SELECT planname, dictionarykey, outputdeckid, outputmodelid, fieldsmap FROM plan
+                            """.trimIndent()
+                        )
+                        database.execSQL("DROP TABLE plan")
+                    } catch (e: Exception) {
+                        android.util.Log.d("AppDatabase", "Plan table doesn't exist or already migrated")
+                    }
+                    database.execSQL("ALTER TABLE plan_new RENAME TO plan")
 
-                // Verify other tables exist with correct schema
-                // If tables exist but have different schema, Room will handle validation
-                // If they don't exist, create them (shouldn't happen in normal migration)
-
-                database.execSQL(
-                    """
-                    CREATE TABLE IF NOT EXISTS plan (
-                        planname TEXT NOT NULL PRIMARY KEY,
-                        dictionarykey TEXT,
-                        outputdeckid INTEGER NOT NULL,
-                        outputmodelid INTEGER NOT NULL,
-                        fieldsmap TEXT
+                    // 2. Migrate history table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS history_new (
+                            timestamp INTEGER NOT NULL PRIMARY KEY,
+                            type INTEGER NOT NULL,
+                            word TEXT,
+                            sentence TEXT,
+                            dictionary TEXT,
+                            definition TEXT,
+                            translation TEXT,
+                            note TEXT,
+                            tag TEXT
+                        )
+                        """.trimIndent()
                     )
-                    """.trimIndent()
-                )
+                    try {
+                        database.execSQL(
+                            """
+                            INSERT OR IGNORE INTO history_new (timestamp, type, word, sentence, dictionary, definition, translation, note, tag)
+                            SELECT timestamp, type, word, sentence, dictionary, definition, translation, note, tag FROM history
+                            """.trimIndent()
+                        )
+                        database.execSQL("DROP TABLE history")
+                    } catch (e: Exception) {
+                        android.util.Log.d("AppDatabase", "History table doesn't exist or already migrated")
+                    }
+                    database.execSQL("ALTER TABLE history_new RENAME TO history")
 
-                database.execSQL(
-                    """
-                    CREATE TABLE IF NOT EXISTS history (
-                        timestamp INTEGER NOT NULL PRIMARY KEY,
-                        type INTEGER NOT NULL,
-                        word TEXT,
-                        sentence TEXT,
-                        dictionary TEXT,
-                        definition TEXT,
-                        translation TEXT,
-                        note TEXT,
-                        tag TEXT
+                    // 3. Migrate book table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS book_new (
+                            id INTEGER NOT NULL PRIMARY KEY,
+                            lastopentime INTEGER NOT NULL,
+                            bookname TEXT,
+                            author TEXT,
+                            bookpath TEXT,
+                            readposition TEXT
+                        )
+                        """.trimIndent()
                     )
-                    """.trimIndent()
-                )
+                    try {
+                        database.execSQL(
+                            """
+                            INSERT OR IGNORE INTO book_new (id, lastopentime, bookname, author, bookpath, readposition)
+                            SELECT id, lastopentime, bookname, author, bookpath, readposition FROM book
+                            """.trimIndent()
+                        )
+                        database.execSQL("DROP TABLE book")
+                    } catch (e: Exception) {
+                        android.util.Log.d("AppDatabase", "Book table doesn't exist or already migrated")
+                    }
+                    database.execSQL("ALTER TABLE book_new RENAME TO book")
 
-                database.execSQL(
-                    """
-                    CREATE TABLE IF NOT EXISTS book (
-                        id INTEGER NOT NULL PRIMARY KEY,
-                        lastopentime INTEGER NOT NULL,
-                        bookname TEXT,
-                        author TEXT,
-                        bookpath TEXT,
-                        readposition TEXT
+                    // 4. Create usertag table (from LitePal)
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS usertag (
+                            tag TEXT NOT NULL PRIMARY KEY
+                        )
+                        """.trimIndent()
                     )
-                    """.trimIndent()
-                )
 
-                // Add indices for frequently queried columns
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_history_timestamp ON history(timestamp)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_history_word ON history(word)")
-                database.execSQL("CREATE INDEX IF NOT EXISTS index_book_lastopentime ON book(lastopentime)")
+                    // 5. Add indices for performance
+                    database.execSQL("CREATE INDEX IF NOT EXISTS index_history_timestamp ON history(timestamp)")
+                    database.execSQL("CREATE INDEX IF NOT EXISTS index_history_word ON history(word)")
+                    database.execSQL("CREATE INDEX IF NOT EXISTS index_book_lastopentime ON book(lastopentime)")
+
+                    android.util.Log.d("AppDatabase", "Migration 3→4 completed successfully")
+                } catch (e: Exception) {
+                    android.util.Log.e("AppDatabase", "Migration 3→4 failed", e)
+                    throw e
+                }
             }
         }
 
