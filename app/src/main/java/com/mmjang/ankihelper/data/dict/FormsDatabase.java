@@ -17,7 +17,7 @@
              if (instance == null) {
                  instance = Room.databaseBuilder(context.getApplicationContext(),
                          FormsDatabase.class, "forms.db")
-                         .allowMainThreadQueries() // For demonstration, don't use this in production
+                         // Removed .allowMainThreadQueries() - use coroutines for async operations
                          .build();
              }
              return instance;
