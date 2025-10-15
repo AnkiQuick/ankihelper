@@ -893,15 +893,8 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
     private IDictionary getDictionaryFromOutputPlan(OutputPlanPOJO outputPlan) {
         String dictionaryKey = outputPlan.getDictionaryKey();
         for (IDictionary dict : dictionaryList) {
-            // Handle AI dictionaries differently
-            String dictKey;
-            if (dict instanceof AIDictionary) {
-                dictKey = ((AIDictionary) dict).getDictionaryKey();
-            } else {
-                dictKey = dict.getDictionaryName();
-            }
-            
-            if (dictKey.equals(dictionaryKey)) {
+            // Use stable dictionary key for matching (works for both AI and local dictionaries)
+            if (dict.getDictionaryKey().equals(dictionaryKey)) {
                 return dict;
             }
         }
