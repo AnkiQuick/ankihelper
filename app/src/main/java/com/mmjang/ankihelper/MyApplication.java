@@ -13,6 +13,7 @@ import org.litepal.LitePalDB;
 import okhttp3.OkHttpClient;
 import androidx.work.WorkManager;
 import org.litepal.LitePal; // Import for LitePal initialization
+import com.mmjang.ankihelper.data.history.HistoryUtil;
 
 /**
  * Created by liao on 2017/4/27.
@@ -32,6 +33,9 @@ public class MyApplication extends MultiDexApplication {
         context = getApplicationContext();
         application = this;
         LitePal.initialize(this);
+
+        // Initialize HistoryUtil for Room database
+        HistoryUtil.initialize(this);
 
         // Language is now handled automatically by AndroidX AppCompatDelegate
         // No need for custom attachBaseContext or onConfigurationChanged

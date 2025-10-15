@@ -76,8 +76,12 @@ import java.util.HashSet;
 import android.content.pm.PackageManager;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 import com.mmjang.ankihelper.data.Settings;
+import com.mmjang.ankihelper.data.database.AppDatabase;
 import com.mmjang.ankihelper.data.database.DatabaseManager;
 import com.mmjang.ankihelper.data.dict.Definition;
+import com.mmjang.ankihelper.data.plan.OutputPlanEntity;
+import com.mmjang.ankihelper.data.plan.OutputPlanRepository;
+import com.mmjang.ankihelper.data.plan.OutputPlanRepositoryHelper;
 import com.mmjang.ankihelper.data.dict.DictionaryRegister;
 import com.mmjang.ankihelper.data.dict.IDictionary;
 import com.mmjang.ankihelper.data.dict.AIDictionary;
@@ -121,10 +125,13 @@ import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.lang.ref.WeakReference;
 import java.net.URLDecoder;
+import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.CountDownLatch;
+import java.util.concurrent.atomic.AtomicReference;
 import org.litepal.LitePal;
 import me.everything.android.ui.overscroll.OverScrollDecoratorHelper;
 import static com.mmjang.ankihelper.util.FieldUtil.getBlankSentence;
@@ -391,7 +398,37 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
 
     private void loadData() {
         dictionaryList = DictionaryRegister.getDictionaryObjectList();
-        outputPlanList = DatabaseManager.getInstance().getAllPlan();
+
+        // Load output plans using repository with blocking pattern
+        AppDatabase database = AppDatabase.Companion.getInstance(getApplicationContext());
+        OutputPlanRepository repository = new OutputPlanRepository(database.outputPlanDao());
+        OutputPlanRepositoryHelper planRepositoryHelper = new OutputPlanRepositoryHelper(repository, this);
+
+        final CountDownLatch latch = new CountDownLatch(1);
+        final AtomicReference<List<OutputPlanEntity>> plansRef = new AtomicReference<>();
+
+        planRepositoryHelper.getAllPlans(new OutputPlanRepositoryHelper.PlansCallback() {
+            @Override
+            public void onSuccess(List<OutputPlanEntity> entities) {
+                plansRef.set(entities);
+                latch.countDown();
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                plansRef.set(new ArrayList<OutputPlanEntity>());
+                latch.countDown();
+            }
+        });
+
+        try {
+            latch.await();
+            // Convert entities to POJOs
+            outputPlanList = convertEntitiesToPOJOs(plansRef.get());
+        } catch (InterruptedException e) {
+            outputPlanList = new ArrayList<>();
+        }
+
         settings = Settings.getInstance(this);
         //load tag
         boolean loadQ = settings.getSetAsDefaultTag();
@@ -403,6 +440,20 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
             //Toast.makeText(this, , Toast.LENGTH_LONG).show();
             Utils.showMessage(this, getResources().getString(R.string.toast_no_available_plan));
         }
+    }
+
+    private List<OutputPlanPOJO> convertEntitiesToPOJOs(List<OutputPlanEntity> entities) {
+        List<OutputPlanPOJO> pojos = new ArrayList<>();
+        for (OutputPlanEntity entity : entities) {
+            OutputPlanPOJO pojo = new OutputPlanPOJO();
+            pojo.setPlanName(entity.getPlanName());
+            pojo.setDictionaryKey(entity.getDictionaryKey());
+            pojo.setOutputDeckId(entity.getOutputDeckId());
+            pojo.setOutputModelId(entity.getOutputModelId());
+            pojo.setFieldsMapString(entity.getFieldsMap());
+            pojos.add(pojo);
+        }
+        return pojos;
     }
 
     private void populatePlanSpinner() {
