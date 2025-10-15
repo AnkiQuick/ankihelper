@@ -22,13 +22,16 @@ import android.widget.Toast;
 import com.mmjang.ankihelper.MyApplication;
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.Settings;
-import com.mmjang.ankihelper.data.database.DatabaseManager;
-import com.mmjang.ankihelper.data.plan.OutputPlan;
+import com.mmjang.ankihelper.data.database.AppDatabase;
+import com.mmjang.ankihelper.data.plan.OutputPlanEntity;
 import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
+import com.mmjang.ankihelper.data.plan.OutputPlanRepository;
+import com.mmjang.ankihelper.data.plan.OutputPlanRepositoryHelper;
 import com.mmjang.ankihelper.ui.plan.helper.SimpleItemTouchHelperCallback;
 import com.mmjang.ankihelper.util.DialogUtil;
 import com.mmjang.ankihelper.util.Utils;
 
+import org.jetbrains.annotations.NotNull;
 import org.litepal.crud.LitePalSupport;
 
 import java.util.ArrayList;
@@ -41,6 +44,7 @@ public class PlansManagerActivity extends AppCompatActivity {
     PlansAdapter mPlansAdapter;
     private static final String PLAN_SEP = "|||";
     private static final int ERROR_FORMAT = 1;
+    private OutputPlanRepositoryHelper planRepositoryHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -50,7 +54,13 @@ public class PlansManagerActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_plans_manager);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-       // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
+        // Initialize repository helper
+        AppDatabase database = AppDatabase.Companion.getInstance(getApplicationContext());
+        OutputPlanRepository repository = new OutputPlanRepository(database.outputPlanDao());
+        planRepositoryHelper = new OutputPlanRepositoryHelper(repository, this);
+
+        // Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.add_plan);
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -81,10 +91,24 @@ public class PlansManagerActivity extends AppCompatActivity {
     @Override
     protected void onResume() {
         super.onResume();
-        List<OutputPlanPOJO> newList = DatabaseManager.getInstance().getAllPlan();
-        mPlanList.clear();
-        mPlanList.addAll(newList);
-        mPlansAdapter.notifyDataSetChanged();
+        // Load plans using repository helper
+        planRepositoryHelper.getAllPlans(new OutputPlanRepositoryHelper.PlansCallback() {
+            @Override
+            public void onSuccess(List<OutputPlanEntity> entities) {
+                // Convert entities to POJOs
+                List<OutputPlanPOJO> newList = convertEntitiesToPOJOs(entities);
+                mPlanList.clear();
+                mPlanList.addAll(newList);
+                mPlansAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onError(Throwable error) {
+                Toast.makeText(PlansManagerActivity.this,
+                        "Failed to load plans: " + error.getMessage(),
+                        Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 
     private void initPlanList() {
@@ -165,19 +189,56 @@ public class PlansManagerActivity extends AppCompatActivity {
                         break;
                     }
                 }
-                OutputPlanPOJO outputPlan = new OutputPlanPOJO();
-                outputPlan.setPlanName(planName);
-                outputPlan.setOutputDeckId(deckId);
-                outputPlan.setOutputModelId(modeld);
-                outputPlan.setDictionaryKey(dictKey);
-                outputPlan.setFieldsMap(Utils.fieldsStr2Map(fieldMapString));
-                DatabaseManager.getInstance().insertPlan(outputPlan);
+                OutputPlanEntity outputPlanEntity = new OutputPlanEntity();
+                outputPlanEntity.setPlanName(planName);
+                outputPlanEntity.setOutputDeckId(deckId);
+                outputPlanEntity.setOutputModelId(modeld);
+                outputPlanEntity.setDictionaryKey(dictKey);
+                outputPlanEntity.setFieldsMap(fieldMapString);
+
+                planRepositoryHelper.savePlan(outputPlanEntity, new OutputPlanRepositoryHelper.OperationCallback() {
+                    @Override
+                    public void onSuccess() {
+                        // Plan saved successfully
+                    }
+
+                    @Override
+                    public void onError(Throwable error) {
+                        Toast.makeText(PlansManagerActivity.this,
+                                "Failed to save plan: " + error.getMessage(),
+                                Toast.LENGTH_SHORT).show();
+                    }
+                });
             }
             catch (Exception e){
                 Toast.makeText(this, e.getLocalizedMessage(), Toast.LENGTH_SHORT).show();
             }
         }
         onResume();
+    }
+
+    private List<OutputPlanPOJO> convertEntitiesToPOJOs(List<OutputPlanEntity> entities) {
+        List<OutputPlanPOJO> pojos = new ArrayList<>();
+        for (OutputPlanEntity entity : entities) {
+            OutputPlanPOJO pojo = new OutputPlanPOJO();
+            pojo.setPlanName(entity.getPlanName());
+            pojo.setDictionaryKey(entity.getDictionaryKey());
+            pojo.setOutputDeckId(entity.getOutputDeckId());
+            pojo.setOutputModelId(entity.getOutputModelId());
+            pojo.setFieldsMapString(entity.getFieldsMap());
+            pojos.add(pojo);
+        }
+        return pojos;
+    }
+
+    private OutputPlanEntity convertPOJOToEntity(OutputPlanPOJO pojo) {
+        OutputPlanEntity entity = new OutputPlanEntity();
+        entity.setPlanName(pojo.getPlanName());
+        entity.setDictionaryKey(pojo.getDictionaryKey());
+        entity.setOutputDeckId(pojo.getOutputDeckId());
+        entity.setOutputModelId(pojo.getOutputModelId());
+        entity.setFieldsMap(pojo.getFieldsMapString());
+        return entity;
     }
 
     private void exportPlans() {
