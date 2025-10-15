@@ -83,9 +83,12 @@ public class PlayAudioManager {
         int lastPronounceLanguage = Settings.getInstance(context).getLastPronounceLanguage();
         String youdaoLanguageType = PronounceManager.getYoudaoTypeFromLanguageIndex(lastPronounceLanguage);
         try {
-            PlayAudioManager.playAudio(context, "http://dict.youdao.com/dictvoice?audio=" + word + "&le=" + youdaoLanguageType);
+            // URL encode the word to handle special characters and spaces
+            String encodedWord = android.net.Uri.encode(word);
+            PlayAudioManager.playAudio(context, "http://dict.youdao.com/dictvoice?audio=" + encodedWord + "&le=" + youdaoLanguageType);
         } catch (Exception e) {
             Toast.makeText(context, "获取发音失败,请检查网络设置或单词拼写。", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Failed to play pronunciation for word: " + word, e);
         }
     }
 
@@ -101,9 +104,12 @@ public class PlayAudioManager {
      */
     public static void playEngPronounceVoice(final Context context, final String word, final int voiceType) {
         try {
-            PlayAudioManager.playAudio(context, "http://dict.youdao.com/dictvoice?audio=" + word + "&type=" + voiceType);
+            // URL encode the word to handle special characters and spaces
+            String encodedWord = android.net.Uri.encode(word);
+            PlayAudioManager.playAudio(context, "http://dict.youdao.com/dictvoice?audio=" + encodedWord + "&type=" + voiceType);
         } catch (Exception e) {
             Toast.makeText(context, "获取发音失败,请检查网络设置或单词拼写。", Toast.LENGTH_SHORT).show();
+            Log.e(TAG, "Failed to play English pronunciation for word: " + word, e);
         }
     }
 
