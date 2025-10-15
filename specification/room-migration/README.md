@@ -7,6 +7,7 @@ This project aims to migrate the AnkiHelper application from LitePal to Room for
 1. [Room Migration Specification](room-migration-spec.md) - Complete specification including overview, implementation plan, and step-by-step guide
 2. [Migration Checklist](migration-checklist.md) - Detailed checklist to ensure all steps are completed
 3. [Critical Improvements](room-migration-improvements.md) - Analysis of gaps and comprehensive improvement plan
+4. **[Phase 1 Completion Summary](COMPLETION-SUMMARY.md)** - Comprehensive documentation of completed Phase 1 work (ANR fixes, dictionary database loading, AI repository updates)
 
 ## Current State Analysis
 
@@ -60,13 +61,23 @@ The Room migration focuses on replacing LitePal and direct SQLite usage with Roo
 
 ## Status
 
-- [ ] Phase 1: Add Room dependencies and create entities for LitePal models
-- [ ] Phase 2: Create DAOs and database class
-- [ ] Phase 3: Implement data migration from LitePal to Room
-- [ ] Phase 4: Update DatabaseManager to use Room instead of direct SQLite
-- [ ] Phase 5: Update application code to use Room instead of LitePal
-- [ ] Phase 6: Remove LitePal dependencies and test
-- [ ] Phase 7: Clean up incomplete Room implementations
+### Phase 1: Fix Critical Performance Issues ✅ COMPLETED (2025-10-15)
+
+**Completed Work:**
+- ✅ Fixed critical ANR issue in PopupActivity (removed CountDownLatch blocking)
+- ✅ Fixed dictionary database asset loading (all 4 databases now load from assets)
+- ✅ Removed `runBlocking` from AI repositories (AIConfigRepository, AICacheRepository)
+- ✅ Removed `.allowMainThreadQueries()` from all dictionary databases
+- ✅ Implemented proper async patterns using CoroutineHelper
+
+**See [Phase 1 Completion Summary](COMPLETION-SUMMARY.md) for full details.**
+
+### Remaining Phases
+
+- [ ] Phase 2: Migrate DatabaseManager (OutputPlan, History, Book, UserTag entities)
+- [ ] Phase 3: Complete LitePal removal from AI configs (data migration)
+- [ ] Phase 4: Remove LitePal dependencies entirely
+- [ ] Phase 5: Optimization and comprehensive testing
 
 ## Migration Approach
 
