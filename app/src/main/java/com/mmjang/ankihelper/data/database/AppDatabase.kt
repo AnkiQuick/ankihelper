@@ -22,7 +22,7 @@ import com.mmjang.ankihelper.data.plan.OutputPlanEntity
  * - DatabaseManager (direct SQLite for Plan, History, Book)
  * - LitePal (for UserTag)
  *
- * Version: 4 (higher than DatabaseHelper's version 3)
+ * Version: 5 (increased from 4 to handle existing upgraded databases)
  * Database name: ankihelper.db
  */
 @Database(
@@ -32,7 +32,7 @@ import com.mmjang.ankihelper.data.plan.OutputPlanEntity
         BookEntity::class,
         UserTagEntity::class
     ],
-    version = 4,
+    version = 5,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -65,7 +65,7 @@ abstract class AppDatabase : RoomDatabase() {
                 AppDatabase::class.java,
                 DATABASE_NAME
             )
-                .addMigrations(MIGRATION_3_4)
+                .addMigrations(MIGRATION_3_4, MIGRATION_4_5)
                 .setJournalMode(RoomDatabase.JournalMode.TRUNCATE) // Avoid WAL mode issues
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
@@ -157,6 +157,20 @@ abstract class AppDatabase : RoomDatabase() {
                 database.execSQL("CREATE INDEX IF NOT EXISTS index_history_timestamp ON history(timestamp)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS index_history_word ON history(word)")
                 database.execSQL("CREATE INDEX IF NOT EXISTS index_book_lastopentime ON book(lastopentime)")
+            }
+        }
+
+        /**
+         * Migration from version 4 to 5
+         *
+         * This is a no-op migration to handle databases that were already upgraded to version 5
+         * by a previous version of the app. The schema remains the same.
+         */
+        val MIGRATION_4_5 = object : Migration(4, 5) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                // No schema changes needed - this migration exists only to handle
+                // databases that were already at version 5
+                android.util.Log.d("AppDatabase", "Migration 4→5: No changes required")
             }
         }
 
