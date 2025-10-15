@@ -18,11 +18,12 @@ import com.mmjang.ankihelper.data.plan.OutputPlanEntity
 /**
  * Main Room database for the application
  *
- * Consolidates all database operations previously split between:
- * - DatabaseManager (direct SQLite for Plan, History, Book)
- * - LitePal (for UserTag)
+ * Manages the ankihelper.db database shared with LitePal:
+ * - Room entities: Plan, History, Book, UserTag (managed by Room)
+ * - LitePal entities: LLMConfig, TTSConfig, AIDictionaryConfig, AITranslatorConfig,
+ *   AIDictionaryCache, AITranslatorCache (managed by LitePal, tables created by Room migration)
  *
- * Version: 5 (increased from 4 to handle existing upgraded databases)
+ * Version: 6 (added LitePal AI tables to migration)
  * Database name: ankihelper.db
  */
 @Database(
@@ -32,7 +33,7 @@ import com.mmjang.ankihelper.data.plan.OutputPlanEntity
         BookEntity::class,
         UserTagEntity::class
     ],
-    version = 5,
+    version = 6,
     exportSchema = false
 )
 abstract class AppDatabase : RoomDatabase() {
@@ -65,7 +66,7 @@ abstract class AppDatabase : RoomDatabase() {
                 AppDatabase::class.java,
                 DATABASE_NAME
             )
-                .addMigrations(MIGRATION_3_4, MIGRATION_4_5)
+                .addMigrations(MIGRATION_3_4, MIGRATION_4_5, MIGRATION_5_6)
                 .setJournalMode(RoomDatabase.JournalMode.TRUNCATE) // Avoid WAL mode issues
                 .addCallback(object : RoomDatabase.Callback() {
                     override fun onCreate(db: SupportSQLiteDatabase) {
@@ -184,7 +185,97 @@ abstract class AppDatabase : RoomDatabase() {
                         """.trimIndent()
                     )
 
-                    // 5. Add indices for performance
+                    // 5. Create LitePal AI configuration tables (LitePal managed)
+                    // LLMConfig table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS llmconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            name TEXT,
+                            baseUrl TEXT,
+                            apiToken TEXT,
+                            modelName TEXT,
+                            endpointPath TEXT
+                        )
+                        """.trimIndent()
+                    )
+
+                    // TTSConfig table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS ttsconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            name TEXT,
+                            baseUrl TEXT,
+                            apiToken TEXT,
+                            modelName TEXT
+                        )
+                        """.trimIndent()
+                    )
+
+                    // AIDictionaryConfig table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS aidictionaryconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            dictionaryName TEXT,
+                            llmId INTEGER,
+                            prompt TEXT,
+                            sourceLanguage TEXT,
+                            targetLanguage TEXT
+                        )
+                        """.trimIndent()
+                    )
+
+                    // AITranslatorConfig table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS aitranslatorconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            translatorName TEXT,
+                            llmId INTEGER,
+                            prompt TEXT,
+                            isDefault INTEGER,
+                            sourceLanguage TEXT,
+                            targetLanguage TEXT
+                        )
+                        """.trimIndent()
+                    )
+
+                    // AIDictionaryCache table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS aidictionarycache (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            hwd TEXT,
+                            phrase TEXT,
+                            sense TEXT,
+                            phonetics TEXT,
+                            defEn TEXT,
+                            defCn TEXT,
+                            example TEXT,
+                            llmConfigId INTEGER,
+                            timestamp INTEGER
+                        )
+                        """.trimIndent()
+                    )
+
+                    // AITranslatorCache table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS aitranslatorcache (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            sourceText TEXT,
+                            sourceLanguage TEXT,
+                            targetLanguage TEXT,
+                            translatedText TEXT,
+                            llmConfigId INTEGER,
+                            timestamp INTEGER
+                        )
+                        """.trimIndent()
+                    )
+
+                    // 6. Add indices for performance
                     database.execSQL("CREATE INDEX IF NOT EXISTS index_history_timestamp ON history(timestamp)")
                     database.execSQL("CREATE INDEX IF NOT EXISTS index_history_word ON history(word)")
                     database.execSQL("CREATE INDEX IF NOT EXISTS index_book_lastopentime ON book(lastopentime)")
@@ -208,6 +299,114 @@ abstract class AppDatabase : RoomDatabase() {
                 // No schema changes needed - this migration exists only to handle
                 // databases that were already at version 5
                 android.util.Log.d("AppDatabase", "Migration 4→5: No changes required")
+            }
+        }
+
+        /**
+         * Migration from version 5 to 6
+         *
+         * Creates LitePal AI configuration tables. These tables were missing from earlier migrations
+         * and are needed for LitePal to manage AI dictionary/translator configurations and caches.
+         */
+        val MIGRATION_5_6 = object : Migration(5, 6) {
+            override fun migrate(database: SupportSQLiteDatabase) {
+                android.util.Log.d("AppDatabase", "Starting migration 5→6")
+
+                try {
+                    // LLMConfig table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS llmconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            name TEXT,
+                            baseUrl TEXT,
+                            apiToken TEXT,
+                            modelName TEXT,
+                            endpointPath TEXT
+                        )
+                        """.trimIndent()
+                    )
+
+                    // TTSConfig table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS ttsconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            name TEXT,
+                            baseUrl TEXT,
+                            apiToken TEXT,
+                            modelName TEXT
+                        )
+                        """.trimIndent()
+                    )
+
+                    // AIDictionaryConfig table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS aidictionaryconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            dictionaryName TEXT,
+                            llmId INTEGER,
+                            prompt TEXT,
+                            sourceLanguage TEXT,
+                            targetLanguage TEXT
+                        )
+                        """.trimIndent()
+                    )
+
+                    // AITranslatorConfig table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS aitranslatorconfig (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            translatorName TEXT,
+                            llmId INTEGER,
+                            prompt TEXT,
+                            isDefault INTEGER,
+                            sourceLanguage TEXT,
+                            targetLanguage TEXT
+                        )
+                        """.trimIndent()
+                    )
+
+                    // AIDictionaryCache table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS aidictionarycache (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            hwd TEXT,
+                            phrase TEXT,
+                            sense TEXT,
+                            phonetics TEXT,
+                            defEn TEXT,
+                            defCn TEXT,
+                            example TEXT,
+                            llmConfigId INTEGER,
+                            timestamp INTEGER
+                        )
+                        """.trimIndent()
+                    )
+
+                    // AITranslatorCache table
+                    database.execSQL(
+                        """
+                        CREATE TABLE IF NOT EXISTS aitranslatorcache (
+                            id INTEGER PRIMARY KEY AUTOINCREMENT,
+                            sourceText TEXT,
+                            sourceLanguage TEXT,
+                            targetLanguage TEXT,
+                            translatedText TEXT,
+                            llmConfigId INTEGER,
+                            timestamp INTEGER
+                        )
+                        """.trimIndent()
+                    )
+
+                    android.util.Log.d("AppDatabase", "Migration 5→6 completed successfully")
+                } catch (e: Exception) {
+                    android.util.Log.e("AppDatabase", "Migration 5→6 failed", e)
+                    throw e
+                }
             }
         }
 
