@@ -68,6 +68,11 @@ public class Maldpe implements IDictionary {
     db = dbHelper.getReadableDatabase();
   }
 
+  @Override
+  public String getDictionaryKey() {
+    return "maldpe";
+  }
+
   /**
    * Get export elements list with localized field names
    * @return Array of localized field names

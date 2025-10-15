@@ -74,6 +74,11 @@ public class Cdepe4 implements IDictionary {
     db = dbHelper.getReadableDatabase();
   }
 
+  @Override
+  public String getDictionaryKey() {
+    return "cdepe4";
+  }
+
   /**
    * Get export elements list with localized field names
    * @return Array of localized field names

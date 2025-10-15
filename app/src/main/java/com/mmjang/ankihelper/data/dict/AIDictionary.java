@@ -41,12 +41,13 @@ public class AIDictionary implements IDictionary {
     }
 
     @Override
-    public String getDictionaryName() {
-        return config.getDictionaryName();
-    }
-
     public String getDictionaryKey() {
         return "AI_" + config.getId();
+    }
+
+    @Override
+    public String getDictionaryName() {
+        return config.getDictionaryName();
     }
 
     @Override

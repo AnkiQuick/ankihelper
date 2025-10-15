@@ -141,14 +141,8 @@ public class PlanEditorActivity extends BaseEditorActivity {
         }
         //new OutputPlan();
         plan.setPlanName(planName);
-        // Set dictionary key - handle AI dictionaries differently
-        String dictionaryKey;
-        if (currentDictionary instanceof AIDictionary) {
-            dictionaryKey = ((AIDictionary) currentDictionary).getDictionaryKey();
-        } else {
-            dictionaryKey = currentDictionary.getDictionaryName();
-        }
-        plan.setDictionaryKey(dictionaryKey);
+        // Set dictionary key using stable identifier
+        plan.setDictionaryKey(currentDictionary.getDictionaryKey());
         plan.setOutputDeckId(currentDeckId);
         plan.setOutputModelId(currentModelId);
 
@@ -228,29 +222,23 @@ public class PlanEditorActivity extends BaseEditorActivity {
         dictionarySpinner.setAdapter(dictionarySpinnerAdapter);
 
         if (planForEdit != null) {
-            String key1 = planForEdit.getDictionaryKey();
-            boolean find = false;
+            String savedKey = planForEdit.getDictionaryKey();
+            boolean found = false;
             for (int i = 0; i < dictionaryList.size(); i++) {
                 IDictionary dict = dictionaryList.get(i);
-                String key2;
-                // Check if it's an AI dictionary
-                if (dict instanceof AIDictionary) {
-                    key2 = ((AIDictionary) dict).getDictionaryKey();
-                } else {
-                    key2 = dict.getDictionaryName();
-                }
-                Log.d("Editor", dict.getDictionaryName() + "haha");
-                if (key1.equals(key2)) {
+                // Use stable dictionary key for matching
+                if (savedKey.equals(dict.getDictionaryKey())) {
                     currentDictionary = dictionaryList.get(i);
                     dictionaryIntroductionTextView.setText(currentDictionary.getIntroduction());
                     dictionarySpinner.setSelection(i);
-                    find = true;
+                    found = true;
+                    Log.d("Editor", "Found dictionary: " + dict.getDictionaryName());
                     break;
                 }
             }
-            if(!find){
-            String message = String.format("词典\"%s\"不存在，请检查是否需要重新导入自定义词典", key1);
-            Utils.showMessage(PlanEditorActivity.this, message);
+            if (!found) {
+                String message = getString(R.string.error_dictionary_not_found, savedKey);
+                Utils.showMessage(PlanEditorActivity.this, message);
             }
         } else {
 

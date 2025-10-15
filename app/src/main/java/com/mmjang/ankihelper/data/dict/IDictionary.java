@@ -10,6 +10,17 @@ import java.util.List;
  */
 
 public interface IDictionary {
+    /**
+     * Get a stable, language-independent key for this dictionary
+     * This key is used to identify the dictionary in plans and should never change
+     * @return A unique, stable identifier for this dictionary
+     */
+    String getDictionaryKey();
+
+    /**
+     * Get the localized display name of this dictionary
+     * @return The dictionary name in the current app language
+     */
     String getDictionaryName();
 
     String getIntroduction();

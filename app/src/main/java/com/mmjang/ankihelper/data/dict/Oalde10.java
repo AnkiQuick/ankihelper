@@ -74,6 +74,11 @@ public class Oalde10 implements IDictionary {
     db = dbHelper.getReadableDatabase();
   }
 
+  @Override
+  public String getDictionaryKey() {
+    return "oaldpe10";
+  }
+
   /**
    * Get export elements list with localized field names
    * @return Array of localized field names

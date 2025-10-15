@@ -15,6 +15,7 @@
     <string name="str_failed_add">Failed! Please check plan settings.</string>
     <string name="str_plan_name_should_not_be_blank">Plan name can\'t be blank!</string>
     <string name="plan_already_exists">Plan name already exists!</string>
+    <string name="error_dictionary_not_found">Dictionary \"%s\" not found. Please check if you need to re-import the custom dictionary.</string>
     <string name="dialog_note">Note</string>
     <string name="dialog_ok">Ok</string>
     <string name="dialog_tag">Tag(seperated by\',\')</string>
