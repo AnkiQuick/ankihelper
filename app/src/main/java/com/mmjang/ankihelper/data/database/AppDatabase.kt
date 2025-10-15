@@ -66,6 +66,17 @@ abstract class AppDatabase : RoomDatabase() {
                 DATABASE_NAME
             )
                 .addMigrations(MIGRATION_3_4)
+                .setJournalMode(RoomDatabase.JournalMode.TRUNCATE) // Avoid WAL mode issues
+                .addCallback(object : RoomDatabase.Callback() {
+                    override fun onCreate(db: SupportSQLiteDatabase) {
+                        super.onCreate(db)
+                        android.util.Log.d("AppDatabase", "Database created")
+                    }
+                    override fun onOpen(db: SupportSQLiteDatabase) {
+                        super.onOpen(db)
+                        android.util.Log.d("AppDatabase", "Database opened, version: ${db.version}")
+                    }
+                })
                 .build()
         }
 

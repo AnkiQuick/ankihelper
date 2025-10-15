@@ -34,8 +34,13 @@ public class MyApplication extends MultiDexApplication {
         application = this;
         LitePal.initialize(this);
 
-        // Initialize HistoryUtil for Room database
-        HistoryUtil.initialize(this);
+        // Initialize HistoryUtil for Room database in background to avoid blocking main thread
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                HistoryUtil.initialize(getApplicationContext());
+            }
+        }).start();
 
         // Language is now handled automatically by AndroidX AppCompatDelegate
         // No need for custom attachBaseContext or onConfigurationChanged
