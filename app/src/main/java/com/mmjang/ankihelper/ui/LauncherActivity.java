@@ -26,8 +26,6 @@ import android.widget.Spinner;
 
 import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
-import com.mmjang.ankihelper.data.database.DatabaseManager;
-import com.mmjang.ankihelper.data.database.MigrationUtil;
 import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import com.mmjang.ankihelper.domain.CBWatcherService;
 import com.mmjang.ankihelper.MyApplication;
@@ -50,7 +48,6 @@ public class LauncherActivity extends AppCompatActivity {
 
     AnkiDroidHelper mAnkiDroid;
     Settings settings;
-    DatabaseManager databaseManager;
 
     //views
     MaterialSwitch switchMoniteClipboard;
@@ -84,11 +81,6 @@ public class LauncherActivity extends AppCompatActivity {
 
         // Call checkAndRequestPermissions after AnkiDroidHelper is initialized
         checkAndRequestPermissions();
-
-        // Calculate the database path
-
-        // Initialize DatabaseManager after setting the layout
-        databaseManager = databaseManager.getInstance();
 
         switchMoniteClipboard = findViewById(R.id.switch_monite_clipboard);
         switchCancelAfterAdd = findViewById(R.id.switch_cancel_after_add);

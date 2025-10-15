@@ -10,7 +10,6 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 
 import com.mmjang.ankihelper.data.database.DatabaseContext;
-import com.mmjang.ankihelper.data.database.DatabaseManager;
 import com.mmjang.ankihelper.util.StorageManager;
 
 import java.io.File;

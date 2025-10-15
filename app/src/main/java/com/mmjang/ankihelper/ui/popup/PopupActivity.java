@@ -77,7 +77,6 @@ import android.content.pm.PackageManager;
 import com.mmjang.ankihelper.anki.AnkiDroidHelper;
 import com.mmjang.ankihelper.data.Settings;
 import com.mmjang.ankihelper.data.database.AppDatabase;
-import com.mmjang.ankihelper.data.database.DatabaseManager;
 import com.mmjang.ankihelper.data.dict.Definition;
 import com.mmjang.ankihelper.data.plan.OutputPlanEntity;
 import com.mmjang.ankihelper.data.plan.OutputPlanRepository;
