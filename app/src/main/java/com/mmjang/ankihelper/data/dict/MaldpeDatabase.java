@@ -12,7 +12,7 @@ import androidx.room.RoomDatabase;
 
 import com.mmjang.ankihelper.data.dict.Form; // Import the Form class
 
-@Database(entities = {MaldpeEntry.class, Form.class}, version = 1)
+@Database(entities = {DummyEntity.class}, version = 1, exportSchema = false)
 public abstract class MaldpeDatabase extends RoomDatabase {
 
     public abstract MaldpeDao maldpeDao();

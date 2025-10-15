@@ -63,15 +63,16 @@ public class Cdepe4 implements IDictionary {
       R.string.dict_field_uk_pronunciation
   };
 
-  private SQLiteDatabase db;
+  private Cdepe4Database roomDb;
+  private Cdepe4Dao dao;
 
   private Context mContext;
 
   public Cdepe4(Context context) {
     mContext = context;
-    // Initialize the database helper
-    Cdepe4DatabaseHelper dbHelper = new Cdepe4DatabaseHelper(context);
-    db = dbHelper.getReadableDatabase();
+    // Initialize the Room database
+    roomDb = Cdepe4Database.getInstance(context);
+    dao = roomDb.cdepe4Dao();
   }
 
   @Override
@@ -171,18 +172,17 @@ public class Cdepe4 implements IDictionary {
    * @return a array of definitions, retrun ArrayList<>() if none was found
    */
   private ArrayList<Definition> queryDefinition(String q) {
-    // SQLiteDatabase db = getReadableDatabase();
     ArrayList<Definition> re = new ArrayList<>();
     if (q.isEmpty()) {
       return re;
     }
-    Cursor cursor = db.query(TABLE_DICT,
-        new String[] { FIELD_HWD, FIELD_PHRASE, FIELD_SENSE, FIELD_PHONETICS, FIELD_DEF_EN, FIELD_DEF_CN },
-        FIELD_HWD + "=? COLLATE NOCASE", new String[] { q }, null, null, null, null);
+    // Use Room DAO (blocking call)
+    Cursor cursor = dao.queryDefinition(q);
     while (cursor.moveToNext()) {
       Definition def = getDefFromCursor(cursor);
       re.add(def);
     }
+    cursor.close();
     return re;
   }
 
@@ -251,21 +251,20 @@ public class Cdepe4 implements IDictionary {
   }
 
   private String[] getForms(String q) {
-    // SQLiteDatabase db = getReadableDatabase();
-    Cursor cursor = db.query("forms", new String[] { "bases" }, "hwd=? ", new String[] { q.toLowerCase() }, null, null,
-        null);
+    // Use Room DAO (blocking call)
+    Cursor cursor = dao.getForms(q.toLowerCase());
     String bases = "";
     while (cursor.moveToNext()) {
       bases = cursor.getString(0);
     }
+    cursor.close();
     return bases.split("@@@");
   }
 
   private Cursor getFilterCursor(String q) {
     Log.d("databse", "getFilterCursor" + q);
-    Cursor cursor = db.query("hwds", new String[] { "rowid _id", "hwd" }, "hwd LIKE ?", new String[] { q + "%" }, null,
-        null, null);
-    return cursor;
+    // Use Room DAO (blocking call)
+    return dao.getFilterCursor(q + "%");
   }
 
   /**

@@ -63,15 +63,16 @@ public class Oalde10 implements IDictionary {
       R.string.dict_field_uk_pronunciation
   };
 
-  private SQLiteDatabase db;
+  private Oalde10Database roomDb;
+  private Oalde10Dao dao;
 
   private Context mContext;
 
   public Oalde10(Context context) {
     mContext = context;
-    // Initialize the database helper
-    Oalde10DatabaseHelper dbHelper = new Oalde10DatabaseHelper(context);
-    db = dbHelper.getReadableDatabase();
+    // Initialize the Room database
+    roomDb = Oalde10Database.getInstance(context);
+    dao = roomDb.oalde10Dao();
   }
 
   @Override
@@ -171,18 +172,17 @@ public class Oalde10 implements IDictionary {
    * @return a array of definitions, retrun ArrayList<>() if none was found
    */
   private ArrayList<Definition> queryDefinition(String q) {
-    // SQLiteDatabase db = getReadableDatabase();
     ArrayList<Definition> re = new ArrayList<>();
     if (q.isEmpty()) {
       return re;
     }
-    Cursor cursor = db.query(TABLE_DICT,
-        new String[] { FIELD_HWD, FIELD_PHRASE, FIELD_SENSE, FIELD_PHONETICS, FIELD_DEF_EN, FIELD_DEF_CN },
-        FIELD_HWD + "=? COLLATE NOCASE", new String[] { q }, null, null, null, null);
+    // Use Room DAO (blocking call)
+    Cursor cursor = dao.queryDefinition(q);
     while (cursor.moveToNext()) {
       Definition def = getDefFromCursor(cursor);
       re.add(def);
     }
+    cursor.close();
     return re;
   }
 
@@ -251,21 +251,20 @@ public class Oalde10 implements IDictionary {
   }
 
   private String[] getForms(String q) {
-    // SQLiteDatabase db = getReadableDatabase();
-    Cursor cursor = db.query("forms", new String[] { "bases" }, "hwd=? ", new String[] { q.toLowerCase() }, null, null,
-        null);
+    // Use Room DAO (blocking call)
+    Cursor cursor = dao.getForms(q.toLowerCase());
     String bases = "";
     while (cursor.moveToNext()) {
       bases = cursor.getString(0);
     }
+    cursor.close();
     return bases.split("@@@");
   }
 
   private Cursor getFilterCursor(String q) {
     Log.d("databse", "getFilterCursor" + q);
-    Cursor cursor = db.query("hwds", new String[] { "rowid _id", "hwd" }, "hwd LIKE ?", new String[] { q + "%" }, null,
-        null, null);
-    return cursor;
+    // Use Room DAO (blocking call)
+    return dao.getFilterCursor(q + "%");
   }
 
   /**

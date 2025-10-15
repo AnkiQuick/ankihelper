@@ -10,7 +10,7 @@ import androidx.room.Query;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
-@Database(entities = {Oalde10Entry.class, Form.class}, version = 1)
+@Database(entities = {DummyEntity.class}, version = 1, exportSchema = false)
 public abstract class Oalde10Database extends RoomDatabase {
 
     public abstract Oalde10Dao oalde10Dao();

@@ -6,7 +6,7 @@
      import androidx.room.Room;
      import androidx.room.RoomDatabase;
 
-     @Database(entities = {Form.class}, version = 1)
+     @Database(entities = {DummyEntity.class}, version = 1, exportSchema = false)
      public abstract class FormsDatabase extends RoomDatabase {
 
          public abstract FormsDao formsDao();
