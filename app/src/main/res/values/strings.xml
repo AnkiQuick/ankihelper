@@ -129,6 +129,13 @@
     <string name="language_english">English</string>
     <string name="language_chinese">Chinese</string>
 
+    <!-- Pronunciation Languages -->
+    <string name="pronounce_language_english">English Pronunciation</string>
+    <string name="pronounce_language_french">French Pronunciation</string>
+    <string name="pronounce_language_japanese">Japanese Pronunciation</string>
+    <string name="pronounce_language_korean">Korean Pronunciation</string>
+    <string name="pronounce_language_german">German Pronunciation</string>
+
     <!-- No Plans Guidance -->
     <string name="no_plans_found_title">No Plans Available</string>
     <string name="no_plans_found_message">You don\'t have any plans yet. Go to Plan Manager to create your first plan.</string>

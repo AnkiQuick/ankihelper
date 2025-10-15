@@ -536,7 +536,7 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
 
     private void populateLanguageSpinner() {
 
-        String[] languages = PronounceManager.getAvailablePronounceLanguage();
+        String[] languages = PronounceManager.getAvailablePronounceLanguage(this);
         ArrayAdapter<String> languagesSpinnerAdapter = new ArrayAdapter<>(
                 this, android.R.layout.simple_spinner_item, languages);
         languagesSpinnerAdapter.setDropDownViewResource(R.layout.centered_spinner_dropdown_item);

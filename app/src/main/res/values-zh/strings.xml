@@ -146,6 +146,13 @@
     <string name="language_english">英文</string>
     <string name="language_chinese">中文</string>
 
+    <!-- Pronunciation Languages -->
+    <string name="pronounce_language_english">英语发音</string>
+    <string name="pronounce_language_french">法语发音</string>
+    <string name="pronounce_language_japanese">日语发音</string>
+    <string name="pronounce_language_korean">韩语发音</string>
+    <string name="pronounce_language_german">德语发音</string>
+
     <!-- No Plans Guidance -->
     <string name="no_plans_found_title">没有可用方案</string>
     <string name="no_plans_found_message">您还没有任何划词方案。请前往方案管理器创建您的第一个方案。</string>

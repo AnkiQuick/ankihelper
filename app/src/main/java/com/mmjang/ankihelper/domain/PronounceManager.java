@@ -1,15 +1,25 @@
 package com.mmjang.ankihelper.domain;
 
+import android.content.Context;
+import com.mmjang.ankihelper.R;
+
 /**
  * Created by Gao on 2017/7/15.
  */
 
 public class PronounceManager {
 
+    // Deprecated: Kept for backward compatibility only
+    // Use getAvailablePronounceLanguage(Context) instead
+    @Deprecated
     public static final String LANGUAGE_ENGLISH = "英语发音";
+    @Deprecated
     public static final String LANGUAGE_FRENCHE = "法语发音";
+    @Deprecated
     public static final String LANGUAGE_JAPANESE = "日语发音";
+    @Deprecated
     public static final String LANGUAGE_KOREAN = "韩语发音";
+    @Deprecated
     public static final String LANGUAGE_GERMANY = "德语发音";
 
     public static final int LANGUAGE_ENGLISH_INDEX = 0;
@@ -25,6 +35,25 @@ public class PronounceManager {
     public static final String YOUDAO_PRONOUNCE_TYPE_KOREAN = "ko";
     public static final String YOUDAO_PRONOUNCE_TYPE_GERMANY = "ger";
 
+    /**
+     * Get available pronunciation languages with localized names
+     * @param context Context to load string resources
+     * @return Array of localized pronunciation language names
+     */
+    public static String[] getAvailablePronounceLanguage(Context context) {
+        String[] languages = new String[5];
+        languages[LANGUAGE_ENGLISH_INDEX] = context.getString(R.string.pronounce_language_english);
+        languages[LANGUAGE_FRENCH_INDEX] = context.getString(R.string.pronounce_language_french);
+        languages[LANGUAGE_JAPANESE_INDEX] = context.getString(R.string.pronounce_language_japanese);
+        languages[LANGUAGE_KOREAN_INDEX] = context.getString(R.string.pronounce_language_korean);
+        languages[LANGUAGE_GERMANY_INDEX] = context.getString(R.string.pronounce_language_german);
+        return languages;
+    }
+
+    /**
+     * @deprecated Use {@link #getAvailablePronounceLanguage(Context)} instead
+     */
+    @Deprecated
     public static String[] getAvailablePronounceLanguage() {
         String[] languages = new String[5];
         languages[LANGUAGE_ENGLISH_INDEX] = LANGUAGE_ENGLISH;
