@@ -1,4 +1,4 @@
-package com.mmjang.ankihelper;
+package com.lmyby.ankihelper;
 
 import org.junit.Test;
 

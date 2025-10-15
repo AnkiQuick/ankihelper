@@ -43,7 +43,7 @@
             android:parentActivityName=".ui.LauncherActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+                android:value="com.lmyby.ankihelper.ui.LauncherActivity" />
         </activity>
 
         <activity
@@ -73,7 +73,7 @@
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+                android:value="com.lmyby.ankihelper.ui.LauncherActivity" />
         </activity>
 
         <activity
@@ -82,7 +82,7 @@
             android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.plan.PlansManagerActivity" />
+                android:value="com.lmyby.ankihelper.ui.plan.PlansManagerActivity" />
         </activity>
 
         <service
@@ -110,7 +110,7 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+                android:value="com.lmyby.ankihelper.ui.LauncherActivity" />
         </activity>
 
         <activity android:name=".ui.ai.AIConfigActivity"
@@ -119,7 +119,7 @@
             android:parentActivityName=".ui.LauncherActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+                android:value="com.lmyby.ankihelper.ui.LauncherActivity" />
         </activity>
 
         <activity android:name=".ui.ai.LLMConfigListActivity"
@@ -128,7 +128,7 @@
             android:parentActivityName=".ui.ai.AIConfigActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.ai.AIConfigActivity" />
+                android:value="com.lmyby.ankihelper.ui.ai.AIConfigActivity" />
         </activity>
 
         <activity android:name=".ui.ai.LLMConfigEditorActivity"
@@ -137,7 +137,7 @@
             android:parentActivityName=".ui.ai.LLMConfigListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.ai.LLMConfigListActivity" />
+                android:value="com.lmyby.ankihelper.ui.ai.LLMConfigListActivity" />
         </activity>
 
         <activity android:name=".ui.ai.TTSConfigListActivity"
@@ -146,7 +146,7 @@
             android:parentActivityName=".ui.ai.AIConfigActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.ai.AIConfigActivity" />
+                android:value="com.lmyby.ankihelper.ui.ai.AIConfigActivity" />
         </activity>
 
         <activity android:name=".ui.ai.TTSConfigEditorActivity"
@@ -155,7 +155,7 @@
             android:parentActivityName=".ui.ai.TTSConfigListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.ai.TTSConfigListActivity" />
+                android:value="com.lmyby.ankihelper.ui.ai.TTSConfigListActivity" />
         </activity>
 
         <activity android:name=".ui.ai.AIDictionaryConfigListActivity"
@@ -164,7 +164,7 @@
             android:parentActivityName=".ui.ai.AIConfigActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.ai.AIConfigActivity" />
+                android:value="com.lmyby.ankihelper.ui.ai.AIConfigActivity" />
         </activity>
 
         <activity android:name=".ui.ai.AIDictionaryConfigEditorActivity"
@@ -173,7 +173,7 @@
             android:parentActivityName=".ui.ai.AIDictionaryConfigListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.ai.AIDictionaryConfigListActivity" />
+                android:value="com.lmyby.ankihelper.ui.ai.AIDictionaryConfigListActivity" />
         </activity>
 
         <activity android:name=".ui.ai.AITranslatorConfigListActivity"
@@ -182,7 +182,7 @@
             android:parentActivityName=".ui.ai.AIConfigActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.ai.AIConfigActivity" />
+                android:value="com.lmyby.ankihelper.ui.ai.AIConfigActivity" />
         </activity>
 
         <activity android:name=".ui.ai.AITranslatorConfigEditorActivity"
@@ -191,7 +191,7 @@
             android:parentActivityName=".ui.ai.AITranslatorConfigListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.ai.AITranslatorConfigListActivity" />
+                android:value="com.lmyby.ankihelper.ui.ai.AITranslatorConfigListActivity" />
         </activity>
 
         <activity android:name=".ui.ai.CleanAIHistoryActivity"
@@ -200,7 +200,7 @@
             android:parentActivityName=".ui.LauncherActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+                android:value="com.lmyby.ankihelper.ui.LauncherActivity" />
         </activity>
 
         <activity android:name=".ui.storage.StorageMigrationActivity"
@@ -209,7 +209,7 @@
             android:parentActivityName=".ui.LauncherActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.mmjang.ankihelper.ui.LauncherActivity" />
+                android:value="com.lmyby.ankihelper.ui.LauncherActivity" />
         </activity>
 
     </application>

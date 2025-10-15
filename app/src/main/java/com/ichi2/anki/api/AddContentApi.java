@@ -36,7 +36,7 @@ import com.ichi2.anki.FlashCardsContract.CardTemplate;
 import com.ichi2.anki.FlashCardsContract.Deck;
 import com.ichi2.anki.FlashCardsContract.Model;
 import com.ichi2.anki.FlashCardsContract.Note;
-import com.mmjang.ankihelper.R;
+import com.lmyby.ankihelper.R;
 
 import java.util.ArrayList;
 import java.util.Collections;
@@ -101,7 +101,7 @@ public final class AddContentApi {
         try {
             newNoteUri = mResolver.insert(Note.CONTENT_URI, values);
         } catch (Exception e) {
-            com.mmjang.ankihelper.util.Utils.showMessage(mContext,
+            com.lmyby.ankihelper.util.Utils.showMessage(mContext,
                     mContext.getString(R.string.str_check_ankidroid_permisson));
             return null;
         }

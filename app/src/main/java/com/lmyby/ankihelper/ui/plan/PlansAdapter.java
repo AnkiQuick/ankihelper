@@ -1,0 +1,173 @@
+package com.lmyby.ankihelper.ui.plan;
+
+import android.app.Activity;
+import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Color;
+import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.RecyclerView;
+import android.view.LayoutInflater;
+import android.view.View;
+import android.view.ViewGroup;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import com.lmyby.ankihelper.MyApplication;
+import com.lmyby.ankihelper.R;
+import com.lmyby.ankihelper.data.database.AppDatabase;
+import com.lmyby.ankihelper.data.plan.OutputPlan;
+import com.lmyby.ankihelper.data.plan.OutputPlanEntity;
+import com.lmyby.ankihelper.data.plan.OutputPlanPOJO;
+import com.lmyby.ankihelper.data.plan.OutputPlanRepository;
+import com.lmyby.ankihelper.data.plan.OutputPlanRepositoryHelper;
+import com.lmyby.ankihelper.ui.plan.helper.ItemTouchHelperAdapter;
+import com.lmyby.ankihelper.ui.plan.helper.ItemTouchHelperViewHolder;
+import com.lmyby.ankihelper.util.DialogUtil;
+import com.lmyby.ankihelper.util.Utils;
+
+import androidx.lifecycle.LifecycleOwner;
+
+import java.util.ArrayList;
+import java.util.List;
+
+
+/**
+ * Created by liao on 2017/4/27.
+ */
+
+public class PlansAdapter extends RecyclerView.Adapter<PlansAdapter.ViewHolder> implements ItemTouchHelperAdapter{
+    private List<OutputPlanPOJO> mPlansList;
+    private Activity mActivity;
+    private OutputPlanRepositoryHelper repositoryHelper;
+
+    static class ViewHolder extends RecyclerView.ViewHolder implements ItemTouchHelperViewHolder{
+        RelativeLayout countainer;
+        TextView planName;
+        TextView dictName;
+        LinearLayout layoutEdit;
+        LinearLayout layoutDelete;
+
+        public ViewHolder(View view) {
+            super(view);
+            countainer = view.findViewById(R.id.plan_item);
+            planName = (TextView) view.findViewById(R.id.plans_name);
+            dictName = (TextView) view.findViewById(R.id.plans_dictionary_name);
+            layoutEdit = (LinearLayout) view.findViewById(R.id.layout_edit);
+            layoutDelete = (LinearLayout) view.findViewById(R.id.layout_delete);
+        }
+
+        @Override
+        public void onItemSelected() {
+            countainer.setBackgroundColor(Color.LTGRAY);
+        }
+
+        @Override
+        public void onItemClear() {
+            countainer.setBackgroundColor(0);
+        }
+    }
+
+    public PlansAdapter(
+            Activity activity,
+            List<OutputPlanPOJO> planList) {
+        mPlansList = planList;
+        mActivity = activity;
+
+        // Initialize repository helper
+        AppDatabase database = AppDatabase.Companion.getInstance(activity.getApplicationContext());
+        OutputPlanRepository repository = new OutputPlanRepository(database.outputPlanDao());
+        repositoryHelper = new OutputPlanRepositoryHelper(repository, (LifecycleOwner) activity);
+    }
+
+    @Override
+    public ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        View view = LayoutInflater.from(parent.getContext())
+                .inflate(R.layout.item_plans, parent, false);
+        ViewHolder holder = new ViewHolder(view);
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(final ViewHolder holder, final int position) {
+        OutputPlanPOJO plan = mPlansList.get(position);
+        holder.planName.setText(plan.getPlanName());
+        holder.dictName.setText(plan.getDictionaryKey());
+        holder.layoutDelete.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+
+                        new AlertDialog.Builder(mActivity)
+                                .setTitle(R.string.confirm_deletion)
+                                //.setMessage("Do you really want to whatever?")
+                                .setIcon(android.R.drawable.ic_dialog_alert)
+                                .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog, int whichButton) {
+                                        int pos = holder.getAdapterPosition();
+                                        String planName = mPlansList.get(pos).getPlanName();
+
+                                        // Delete plan using repository (fire-and-forget)
+                                        repositoryHelper.deletePlanFireAndForget(planName);
+
+                                        mPlansList.remove(pos);
+                                        notifyItemRemoved(pos);
+                                    }
+                                })
+                                .setNegativeButton(android.R.string.no, null).show();
+                    }
+                }
+        );
+
+        holder.layoutEdit.setOnClickListener(
+                new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if (MyApplication.getAnkiDroid(MyApplication.getContext()).isAnkiDroidRunning()) {
+                            int pos = holder.getAdapterPosition();
+                            String planName = mPlansList.get(pos).getPlanName();
+                            Intent intent = new Intent(mActivity, PlanEditorActivity.class);
+                            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                            intent.setAction(Intent.ACTION_SEND);
+                            intent.putExtra(Intent.EXTRA_TEXT, planName);
+                            MyApplication.getContext().startActivity(intent);
+                        } else {
+                            DialogUtil.showStartAnkiDialog(mActivity);
+                        }
+                    }
+                }
+        );
+
+    }
+
+    @Override
+    public void onItemMove(int fromPosition, int toPosition) {
+        OutputPlanPOJO from = mPlansList.get(fromPosition);
+        mPlansList.remove(fromPosition);
+        mPlansList.add(toPosition, from);
+        notifyItemMoved(fromPosition, toPosition);
+    }
+
+    @Override
+    public void onMoveFinished() {
+        // Convert POJOs to Entities
+        List<OutputPlanEntity> entities = new ArrayList<>();
+        for (OutputPlanPOJO pojo : mPlansList) {
+            OutputPlanEntity entity = new OutputPlanEntity();
+            entity.setPlanName(pojo.getPlanName());
+            entity.setDictionaryKey(pojo.getDictionaryKey());
+            entity.setOutputDeckId(pojo.getOutputDeckId());
+            entity.setOutputModelId(pojo.getOutputModelId());
+            entity.setFieldsMap(pojo.getFieldsMapString());
+            entities.add(entity);
+        }
+
+        // Refresh all plans using repository (fire-and-forget)
+        repositoryHelper.refreshAllPlansFireAndForget(entities);
+    }
+
+    @Override
+    public int getItemCount() {
+        return mPlansList.size();
+    }
+}

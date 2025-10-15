@@ -1,0 +1,27 @@
+     package com.lmyby.ankihelper.data.dict;
+
+     import android.content.Context;
+
+     import androidx.room.Database;
+     import androidx.room.Room;
+     import androidx.room.RoomDatabase;
+
+     @Database(entities = {DummyEntity.class}, version = 2, exportSchema = false)
+     public abstract class FormsDatabase extends RoomDatabase {
+
+         public abstract FormsDao formsDao();
+
+         private static FormsDatabase instance;
+
+         public static synchronized FormsDatabase getInstance(Context context) {
+             if (instance == null) {
+                 instance = Room.databaseBuilder(context.getApplicationContext(),
+                         FormsDatabase.class, "forms.db")
+                         .createFromAsset("databases/forms.db")
+                         .fallbackToDestructiveMigration()
+                         // Removed .allowMainThreadQueries() - use coroutines for async operations
+                         .build();
+             }
+             return instance;
+         }
+     }
