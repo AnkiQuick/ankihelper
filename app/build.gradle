@@ -71,14 +71,14 @@ implementation 'androidx.preference:preference:1.2.1'
 implementation 'com.google.android.material:material:1.12.0'
 coreLibraryDesugaring 'com.android.tools:desugar_jdk_libs:2.0.4'
 
-// Room dependencies
-implementation "androidx.room:room-runtime:2.6.1"
-implementation "androidx.room:room-ktx:2.6.1"
-kapt "androidx.room:room-compiler:2.6.1"
+// Room dependencies (updated to latest stable version)
+implementation "androidx.room:room-runtime:2.8.2"
+implementation "androidx.room:room-ktx:2.8.2"
+kapt "androidx.room:room-compiler:2.8.2"
 
 // Kotlin Coroutines (for async database operations)
-implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.7.3'
-implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.7.3'
+implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.10.2'
+implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-core:1.10.2'
 
 // Lifecycle for viewModelScope and lifecycleScope
 implementation "androidx.lifecycle:lifecycle-runtime-ktx:2.6.2"
@@ -87,11 +87,11 @@ implementation "androidx.lifecycle:lifecycle-livedata-ktx:2.6.2"
 
 testImplementation 'junit:junit:4.13.2'
 // Room testing dependencies
-testImplementation "androidx.room:room-testing:2.6.1"
+testImplementation "androidx.room:room-testing:2.8.2"
 androidTestImplementation 'androidx.test.espresso:espresso-core:3.5.1'
 androidTestImplementation 'androidx.test:runner:1.5.2'
 androidTestImplementation 'androidx.test:rules:1.5.0'
-androidTestImplementation "androidx.room:room-testing:2.6.1"
+androidTestImplementation "androidx.room:room-testing:2.8.2"
 implementation 'androidx.appcompat:appcompat:1.6.1'
 implementation 'org.litepal.guolindev:core:3.2.3'
 implementation 'io.github.everythingme:overscroll-decor-android:1.1.1'
