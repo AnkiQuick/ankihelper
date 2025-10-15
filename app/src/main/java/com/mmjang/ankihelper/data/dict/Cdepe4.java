@@ -10,6 +10,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.ai.AIDictionaryConfig;
 import com.mmjang.ankihelper.data.ai.AIConfigRepository;
 import com.mmjang.ankihelper.data.dict.AIDictionary;
@@ -49,7 +50,18 @@ public class Cdepe4 implements IDictionary {
   private static final String FIELD_DEF_EN = "def_en";
   private static final String FIELD_DEF_CN = "def_cn";
 
-  private static final String DICT_NAME = "剑桥在线英汉双解词典完美版";
+  // Resource IDs for internationalization
+  private static final int DICT_NAME_RES_ID = R.string.dict_name_cambridge;
+  private static final int DICT_DESC_RES_ID = R.string.dict_desc_cambridge;
+  private static final int[] DICT_FIELD_RES_IDS = {
+      R.string.dict_field_word,
+      R.string.dict_field_pos,
+      R.string.dict_field_phonetic,
+      R.string.dict_field_en_definition,
+      R.string.dict_field_zh_definition,
+      R.string.dict_field_us_pronunciation,
+      R.string.dict_field_uk_pronunciation
+  };
 
   private SQLiteDatabase db;
 
@@ -62,26 +74,27 @@ public class Cdepe4 implements IDictionary {
     db = dbHelper.getReadableDatabase();
   }
 
-  private static final String[] EXP_ELE_LIST = new String[] {
-      "单词",
-      "词性",
-      "音标",
-      "英文释义",
-      "中文释义",
-      "有道美式发音",
-      "有道英式发音"
-  };
+  /**
+   * Get export elements list with localized field names
+   * @return Array of localized field names
+   */
+  private String[] getExportElementsList() {
+    Context context = mContext != null ? mContext : MyApplication.getContext();
+    String[] fields = new String[DICT_FIELD_RES_IDS.length];
+    for (int i = 0; i < DICT_FIELD_RES_IDS.length; i++) {
+      fields[i] = context.getString(DICT_FIELD_RES_IDS[i]);
+    }
+    return fields;
+  }
 
   public String getDictionaryName() {
-    return DICT_NAME;
+    Context context = mContext != null ? mContext : MyApplication.getContext();
+    return context.getString(DICT_NAME_RES_ID);
   }
 
   public String getIntroduction() {
-    return "剑桥在线英汉双解词典完美版,来自https://forum.freemdict.com/t/topic/25795";
-  }
-
-  public String[] getExportElementsList() {
-    return EXP_ELE_LIST;
+    Context context = mContext != null ? mContext : MyApplication.getContext();
+    return context.getString(DICT_DESC_RES_ID);
   }
 
   public List<Definition> wordLookup(String key) {
@@ -170,6 +183,8 @@ public class Cdepe4 implements IDictionary {
 
   private Definition getDefFromCursor(Cursor cursor) {
     HashMap<String, String> eleMap = new HashMap<>();
+    String[] fieldNames = getExportElementsList(); // Get localized field names
+
     String hwd = cursor.getString(0);
     // df.setDisplayedHeadWord(cursor.getString(1).trim());
     String phrase = cursor.getString(1).trim();
@@ -178,35 +193,35 @@ public class Cdepe4 implements IDictionary {
     String defEn = cursor.getString(4).trim();
     String defCn = cursor.getString(5).trim();
 
-    eleMap.put(EXP_ELE_LIST[0], hwd);
-    eleMap.put(EXP_ELE_LIST[1],
+    eleMap.put(fieldNames[0], hwd);
+    eleMap.put(fieldNames[1],
         "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
             + sense + "</span>");
-    eleMap.put(EXP_ELE_LIST[2], "<span >" + phonetics + "</span>");
+    eleMap.put(fieldNames[2], "<span >" + phonetics + "</span>");
     if (phrase.equals("")) {
-      eleMap.put(EXP_ELE_LIST[3],
+      eleMap.put(fieldNames[3],
           "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
               + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defEn + "</span>");
 
-      eleMap.put(EXP_ELE_LIST[4],
+      eleMap.put(fieldNames[4],
           "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
               + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defCn + "</span>");
     } else {
-      eleMap.put(EXP_ELE_LIST[3],
+      eleMap.put(fieldNames[3],
           "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
               + phrase
               + " </span> <span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
               + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defEn + "</span>");
 
-      eleMap.put(EXP_ELE_LIST[4],
+      eleMap.put(fieldNames[4],
           "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
               + phrase
               + " </span> <span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
               + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defCn + "</span>");
     }
 
-    eleMap.put(EXP_ELE_LIST[5], getYoudaoAudioTag(hwd, 2));
-    eleMap.put(EXP_ELE_LIST[6], getYoudaoAudioTag(hwd, 1));
+    eleMap.put(fieldNames[5], getYoudaoAudioTag(hwd, 2));
+    eleMap.put(fieldNames[6], getYoudaoAudioTag(hwd, 1));
     String displayHtml;
     StringBuilder sb = new StringBuilder();
 
@@ -259,12 +274,13 @@ public class Cdepe4 implements IDictionary {
   }
 
   private Definition toDefinition(String word, String phonetic, String definitionHtml) {
+    String[] fieldNames = getExportElementsList(); // Get localized field names
     Map<String, String> exp = new HashMap<>();
-    exp.put(EXP_ELE_LIST[0], word);
-    exp.put(EXP_ELE_LIST[1], phonetic);
-    exp.put(EXP_ELE_LIST[2], definitionHtml);
-    exp.put(EXP_ELE_LIST[3], getYoudaoAudioTag(word, 2));
-    exp.put(EXP_ELE_LIST[4], getYoudaoAudioTag(word, 1));
+    exp.put(fieldNames[0], word);
+    exp.put(fieldNames[1], phonetic);
+    exp.put(fieldNames[2], definitionHtml);
+    exp.put(fieldNames[3], getYoudaoAudioTag(word, 2));
+    exp.put(fieldNames[4], getYoudaoAudioTag(word, 1));
     return new Definition(exp, definitionHtml);
   }
 

@@ -148,4 +148,32 @@
     <string name="storage_migrate_button">Start Migration</string>
     <string name="storage_request_permission_button">Request Permission</string>
     <string name="storage_permission_denied">Storage permission denied. Please grant permission to continue.</string>
+
+    <!-- Dictionary Names -->
+    <string name="dict_name_merriam_webster">Merriam-Webster Advanced Learner\'s Dictionary 2019</string>
+    <string name="dict_name_oxford">Oxford Advanced Learner\'s Dictionary 10th Edition</string>
+    <string name="dict_name_cambridge">Cambridge English-Chinese Dictionary</string>
+    <string name="dict_name_ai">AI Dictionary</string>
+
+    <!-- Dictionary Field Names -->
+    <string name="dict_field_word">Word</string>
+    <string name="dict_field_pos">Part of Speech</string>
+    <string name="dict_field_phonetic">Phonetic</string>
+    <string name="dict_field_en_definition">English Definition</string>
+    <string name="dict_field_zh_definition">Chinese Definition</string>
+    <string name="dict_field_us_pronunciation">US Pronunciation (Youdao)</string>
+    <string name="dict_field_uk_pronunciation">UK Pronunciation (Youdao)</string>
+
+    <!-- Vocabulary Card Field Names -->
+    <string name="vocab_field_word">Word</string>
+    <string name="vocab_field_phonetic">Phonetic</string>
+    <string name="vocab_field_definition">Definition</string>
+    <string name="vocab_field_notes">Notes</string>
+    <string name="vocab_field_example">Example Sentence</string>
+    <string name="vocab_field_pronunciation">Pronunciation</string>
+
+    <!-- Dictionary Descriptions -->
+    <string name="dict_desc_merriam_webster">Merriam-Webster Advanced Learner\'s Dictionary 2019, from https://forum.freemdict.com/t/topic/25795</string>
+    <string name="dict_desc_oxford">Oxford Advanced Learner\'s Dictionary 10th Edition, from https://forum.freemdict.com/t/topic/25795</string>
+    <string name="dict_desc_cambridge">Cambridge English-Chinese Dictionary, from https://forum.freemdict.com/t/topic/25795</string>
 </resources>

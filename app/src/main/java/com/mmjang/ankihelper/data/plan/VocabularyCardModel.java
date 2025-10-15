@@ -2,6 +2,9 @@ package com.mmjang.ankihelper.data.plan;
 
 import android.content.Context;
 
+import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.R;
+
 import java.io.IOException;
 import java.io.InputStream;
 
@@ -23,6 +26,40 @@ public class VocabularyCardModel {
     String[] AFMT = new String[2];
     String[] Cards = {"recite", "type"};
     String CSS;
+
+    // Resource IDs for internationalization
+    private static final int[] FIELD_RES_IDS = {
+            R.string.vocab_field_word,
+            R.string.vocab_field_phonetic,
+            R.string.vocab_field_definition,
+            R.string.vocab_field_notes,
+            R.string.vocab_field_example,
+            0,  // "url" - no translation needed
+            R.string.vocab_field_pronunciation
+    };
+
+    /**
+     * Get localized vocabulary card field names
+     * @return Array of localized field names
+     */
+    public static String[] getFields() {
+        Context context = MyApplication.getContext();
+        String[] fields = new String[FIELD_RES_IDS.length];
+        for (int i = 0; i < FIELD_RES_IDS.length; i++) {
+            if (FIELD_RES_IDS[i] == 0) {
+                // Handle special case for "url" which doesn't need translation
+                fields[i] = "url";
+            } else {
+                fields[i] = context.getString(FIELD_RES_IDS[i]);
+            }
+        }
+        return fields;
+    }
+
+    /**
+     * @deprecated Use {@link #getFields()} instead for localized field names
+     */
+    @Deprecated
     public static final String [] FILEDS = {
             "单词",
             "音标",

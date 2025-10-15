@@ -5,6 +5,8 @@ import android.util.Log;
 import android.widget.ListAdapter;
 import android.widget.ArrayAdapter;
 
+import com.mmjang.ankihelper.MyApplication;
+import com.mmjang.ankihelper.R;
 import com.mmjang.ankihelper.data.ai.AIDictionaryConfig;
 import com.mmjang.ankihelper.data.ai.LLMConfig;
 import com.mmjang.ankihelper.data.ai.AIConfigRepository;
@@ -22,14 +24,15 @@ public class AIDictionary implements IDictionary {
     private AIDictionaryConfig config;
     private AIDictionaryService service;
 
-    private static final String[] EXP_ELE_LIST = new String[]{
-            "单词",
-            "词性",
-            "音标",
-            "英文释义",
-            "中文释义",
-            "有道美式发音",
-            "有道英式发音"
+    // Resource IDs for internationalization
+    private static final int[] DICT_FIELD_RES_IDS = {
+            R.string.dict_field_word,
+            R.string.dict_field_pos,
+            R.string.dict_field_phonetic,
+            R.string.dict_field_en_definition,
+            R.string.dict_field_zh_definition,
+            R.string.dict_field_us_pronunciation,
+            R.string.dict_field_uk_pronunciation
     };
 
     public AIDictionary(AIDictionaryConfig config) {
@@ -55,9 +58,18 @@ public class AIDictionary implements IDictionary {
         return "AI Dictionary";
     }
 
+    /**
+     * Get export elements list with localized field names
+     * @return Array of localized field names
+     */
     @Override
     public String[] getExportElementsList() {
-        return EXP_ELE_LIST;
+        Context context = MyApplication.getContext();
+        String[] fields = new String[DICT_FIELD_RES_IDS.length];
+        for (int i = 0; i < DICT_FIELD_RES_IDS.length; i++) {
+            fields[i] = context.getString(DICT_FIELD_RES_IDS[i]);
+        }
+        return fields;
     }
 
     @Override
@@ -81,6 +93,9 @@ public class AIDictionary implements IDictionary {
 
             Log.d("AIDictionary", "Received " + cacheResults.size() + " cache results");
 
+            // Get localized field names
+            String[] fieldNames = getExportElementsList();
+
             // Convert AIDictionaryCache results to Definition objects
             for (AIDictionaryCache cache : cacheResults) {
                 // Create export elements map
@@ -92,32 +107,32 @@ public class AIDictionary implements IDictionary {
                 String defEn = cache.getDefEn() != null ? cache.getDefEn() : "";
                 String defCn = cache.getDefCn() != null ? cache.getDefCn() : "";
 
-                exportElements.put(EXP_ELE_LIST[0], determinedWord);
-                exportElements.put(EXP_ELE_LIST[1], "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>" + sense + "</span>");
-                exportElements.put(EXP_ELE_LIST[2], "<span >"+phonetics + "</span>");
+                exportElements.put(fieldNames[0], determinedWord);
+                exportElements.put(fieldNames[1], "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>" + sense + "</span>");
+                exportElements.put(fieldNames[2], "<span >"+phonetics + "</span>");
                 if (phrase.equals("")) {
-                  exportElements.put(EXP_ELE_LIST[3],
+                  exportElements.put(fieldNames[3],
                       "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defEn + "</span>");
 
-                  exportElements.put(EXP_ELE_LIST[4],
+                  exportElements.put(fieldNames[4],
                       "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defCn + "</span>");
                 } else {
-                  exportElements.put(EXP_ELE_LIST[3],
+                  exportElements.put(fieldNames[3],
                       "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + phrase
                           + " </span> <span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defEn + "</span>");
 
-                  exportElements.put(EXP_ELE_LIST[4],
+                  exportElements.put(fieldNames[4],
                       "<span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + phrase
                           + " </span> <span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'>"
                           + sense + "</span>  <span style=margin-right:3px; padding:0;margin:0; padding:0;>" + defCn + "</span>");
                 }
-                exportElements.put(EXP_ELE_LIST[5], getYoudaoAudioTag(determinedWord, 2));
-                exportElements.put(EXP_ELE_LIST[6], getYoudaoAudioTag(determinedWord, 1));
+                exportElements.put(fieldNames[5], getYoudaoAudioTag(determinedWord, 2));
+                exportElements.put(fieldNames[6], getYoudaoAudioTag(determinedWord, 1));
 
                 // Create display HTML
                 StringBuilder displayHtml = new StringBuilder();

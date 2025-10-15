@@ -169,4 +169,32 @@
     <!-- Shortcuts -->
     <string name="shortcut_add_to_anki_short">添加到 Anki</string>
     <string name="shortcut_add_to_anki_long">将选中文本添加到 Anki</string>
+
+    <!-- Dictionary Names -->
+    <string name="dict_name_merriam_webster">韦氏高阶英汉双解词典2019完美版</string>
+    <string name="dict_name_oxford">牛津高阶英汉双解词典第10版完美版</string>
+    <string name="dict_name_cambridge">剑桥在线英汉双解词典完美版</string>
+    <string name="dict_name_ai">AI 词典</string>
+
+    <!-- Dictionary Field Names -->
+    <string name="dict_field_word">单词</string>
+    <string name="dict_field_pos">词性</string>
+    <string name="dict_field_phonetic">音标</string>
+    <string name="dict_field_en_definition">英文释义</string>
+    <string name="dict_field_zh_definition">中文释义</string>
+    <string name="dict_field_us_pronunciation">有道美式发音</string>
+    <string name="dict_field_uk_pronunciation">有道英式发音</string>
+
+    <!-- Vocabulary Card Field Names -->
+    <string name="vocab_field_word">单词</string>
+    <string name="vocab_field_phonetic">音标</string>
+    <string name="vocab_field_definition">释义</string>
+    <string name="vocab_field_notes">笔记</string>
+    <string name="vocab_field_example">例句</string>
+    <string name="vocab_field_pronunciation">发音</string>
+
+    <!-- Dictionary Descriptions -->
+    <string name="dict_desc_merriam_webster">韦氏高阶英汉双解词典2019完美版,来自https://forum.freemdict.com/t/topic/25795</string>
+    <string name="dict_desc_oxford">牛津高阶英汉双解词典第10版完美版,来自https://forum.freemdict.com/t/topic/25795</string>
+    <string name="dict_desc_cambridge">剑桥在线英汉双解词典完美版,来自https://forum.freemdict.com/t/topic/25795</string>
 </resources>
