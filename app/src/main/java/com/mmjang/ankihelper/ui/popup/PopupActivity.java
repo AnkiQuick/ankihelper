@@ -88,6 +88,9 @@ import com.mmjang.ankihelper.data.dict.AIDictionary;
 import com.mmjang.ankihelper.data.dict.UrbanAutoCompleteAdapter;
 import com.mmjang.ankihelper.data.history.HistoryUtil;
 import com.mmjang.ankihelper.data.model.UserTag;
+import com.mmjang.ankihelper.data.model.UserTagEntity;
+import com.mmjang.ankihelper.data.model.UserTagRepository;
+import com.mmjang.ankihelper.data.model.UserTagRepositoryHelper;
 import com.mmjang.ankihelper.data.plan.OutputPlan;
 import com.mmjang.ankihelper.data.plan.OutputPlanPOJO;
 import com.mmjang.ankihelper.domain.CBWatcherService;
@@ -1859,10 +1862,24 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
             editTag.setSelection(text.length());
         }
         tagChipGroup.setSingleSelection(false);
-        final List<UserTag> userTags = LitePal.findAll(UserTag.class);
-        for(UserTag userTag : userTags){
+
+        // Load tags using UserTagRepository
+        AppDatabase database = AppDatabase.Companion.getInstance(getApplicationContext());
+        UserTagRepository userTagRepository = new UserTagRepository(database.userTagDao());
+        UserTagRepositoryHelper tagHelper = new UserTagRepositoryHelper(userTagRepository);
+
+        final List<String> userTagStrings;
+        try {
+            userTagStrings = tagHelper.getAllTagStringsBlocking();
+        } catch (Exception e) {
+            android.util.Log.e("PopupActivity", "Error loading tags", e);
+            Toast.makeText(this, "Error loading tags", Toast.LENGTH_SHORT).show();
+            return;
+        }
+
+        for(String tagString : userTagStrings){
             final Chip chip = (Chip) inflater.inflate(R.layout.tag_chip_item, null);
-            chip.setText(userTag.getTag());
+            chip.setText(tagString);
             chip.setOnCheckedChangeListener(
                     new CompoundButton.OnCheckedChangeListener() {
                         @Override
@@ -1920,10 +1937,15 @@ public class PopupActivity extends AppCompatActivity implements BigBangLayoutWra
                     mTagEditedByUser = Utils.fromStringToTagSet(editTag.getText().toString());
                     settings.setSetAsDefaultTag(checkBoxSetAsDefaultTag.isChecked());
                     settings.setDefaultTag(editTag.getText().toString());
+
+                    // Save new tags using UserTagRepository
+                    AppDatabase database = AppDatabase.Companion.getInstance(getApplicationContext());
+                    UserTagRepository userTagRepository = new UserTagRepository(database.userTagDao());
+                    UserTagRepositoryHelper tagHelper = new UserTagRepositoryHelper(userTagRepository);
+
                     for(String t : mTagEditedByUser){
-                        if(!userTags.contains(t)){ //add new tag
-                            UserTag userTag = new UserTag(t);
-                            userTag.save();
+                        if(!userTagStrings.contains(t)){ //add new tag
+                            tagHelper.insertTagString(t);
                         }
                     }
                 }
