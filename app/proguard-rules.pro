@@ -23,3 +23,16 @@
 # If you keep the line number information, uncomment this to
 # hide the original source file name.
 #-renamesourcefileattribute SourceFile
+
+# Suppress warnings and info messages for desugaring library rules that don't match anything
+# These are auto-generated rules from coreLibraryDesugaring that may not apply to this project
+-dontwarn j$.util.concurrent.ConcurrentHashMap$TreeBin
+-dontwarn j$.util.concurrent.ConcurrentHashMap
+-dontwarn j$.util.concurrent.ConcurrentHashMap$CounterCell
+-dontwarn j$.util.IntSummaryStatistics
+-dontwarn j$.util.LongSummaryStatistics
+-dontwarn j$.util.DoubleSummaryStatistics
+
+# Note: R8 info messages about "configuration rule does not match anything" cannot be
+# suppressed via ProGuard rules. These are informational only and don't affect the build.
+# To hide them completely, you would need to filter gradle output or modify build verbosity.
