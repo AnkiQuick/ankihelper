@@ -69,7 +69,9 @@ public class LauncherActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         settings = Settings.getInstance(LauncherActivity.this);
         ThemeManager.applyTheme(this);
-        LanguageManager.applyLanguage(this);
+        // Language is now handled automatically by AndroidX AppCompatDelegate
+        // Sync Settings with the current app language on startup
+        LanguageManager.syncWithSettings(this);
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_launcher); // Set the layout first
         setVersion();
@@ -392,15 +394,19 @@ public class LauncherActivity extends AppCompatActivity {
 
     
     /**
-     * Apply language changes without requiring app restart
-     * Uses modern Android practices for dynamic language switching
+     * Apply language changes using modern AndroidX API
+     * The API will automatically recreate all activities with the new language
      */
     private void applyLanguageWithoutRestart() {
-        // Apply language configuration immediately
-        LanguageManager.applyLanguage(this);
-        
-        // Recreate the activity to apply the new language
-        recreate();
+        AppLanguage selectedLanguage = settings.getSelectedLanguage();
+
+        // Use modern AndroidX API - this will:
+        // 1. Persist the language preference automatically
+        // 2. Recreate all activities with the new language
+        // 3. Update the app name and all system UI
+        LanguageManager.setAppLanguage(selectedLanguage);
+
+        // No need to manually recreate - AppCompatDelegate handles it
     }
 
     public void setVersion() {

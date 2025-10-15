@@ -32,9 +32,10 @@ public class MyApplication extends MultiDexApplication {
         context = getApplicationContext();
         application = this;
         LitePal.initialize(this);
-        
-        
-        
+
+        // Language is now handled automatically by AndroidX AppCompatDelegate
+        // No need for custom attachBaseContext or onConfigurationChanged
+
 //        CrashReport.initCrashReport(getApplicationContext(), "398dc6145b", false);
 
     }
