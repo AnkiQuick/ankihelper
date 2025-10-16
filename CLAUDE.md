@@ -1,9 +1,13 @@
 # Claude Code Global Rules
 
-## PRIORITY 1: Resource Management
+---
+## ⚠️ ABSOLUTE FIRST PRIORITY - MUST FOLLOW BEFORE ALL OTHER RULES ⚠️
 
-### Parallel Tool Execution Limit
-**CRITICAL RULE**: Execute a maximum of 2 tools in parallel at any time to prevent resource consumption.
+### 🚨 PARALLEL TOOL EXECUTION LIMIT 🚨
+
+**MANDATORY RULE**: Execute a **MAXIMUM OF 2 TOOLS IN PARALLEL** at any time.
+
+**This rule MUST be followed as the FIRST PRIORITY** to prevent resource consumption.
 
 - ✅ **ALLOWED**: Running 2 independent tools in a single message (e.g., `git status` and `git diff`)
 - ❌ **NOT ALLOWED**: Running 3 or more tools in parallel
