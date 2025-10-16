@@ -1,7 +1,7 @@
 // Top-level build file where you can add configuration options common to all sub-projects/modules.
 
 buildscript {
-    ext.KOTLIN_VERSION='1.9.25'
+    ext.KOTLIN_VERSION='2.0.21'
 
     repositories {
         google()
@@ -14,6 +14,8 @@ buildscript {
         // in the individual module build.gradle files
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
         classpath "com.android.tools:desugar_jdk_libs:2.0.4"
+        // Code quality tools
+        classpath "io.gitlab.arturbosch.detekt:detekt-gradle-plugin:1.23.6"
     }
 }
 
