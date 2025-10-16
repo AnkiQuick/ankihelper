@@ -25,7 +25,7 @@ object HttpGet {
     private const val GET = "GET"
 
     @JvmStatic
-    fun get(host: String, params: Map<String, String>): String {
+    fun get(host: String, params: Map<String, String>?): String {
         return try {
             // 设置SSLContext
             val sslcontext = SSLContext.getInstance("TLS")

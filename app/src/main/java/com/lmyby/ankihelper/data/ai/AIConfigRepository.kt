@@ -83,8 +83,10 @@ Please provide the translation of the text "{text}" from {sourceLanguage} to {ta
     @JvmStatic
     fun saveLLMConfig(config: LLMConfig) {
         // Encrypt the API token before saving
-        if (config.apiToken?.isNotEmpty() == true) {
-            config.apiToken = EncryptionUtil.encrypt(config.apiToken)
+        config.apiToken?.let { token ->
+            if (token.isNotEmpty()) {
+                config.apiToken = EncryptionUtil.encrypt(token)
+            }
         }
         CoroutineHelper.executeBlocking {
             if (config.id > 0) {
@@ -120,8 +122,10 @@ Please provide the translation of the text "{text}" from {sourceLanguage} to {ta
     @JvmStatic
     fun saveTTSConfig(config: TTSConfig) {
         // Encrypt the API token before saving
-        if (config.apiToken?.isNotEmpty() == true) {
-            config.apiToken = EncryptionUtil.encrypt(config.apiToken)
+        config.apiToken?.let { token ->
+            if (token.isNotEmpty()) {
+                config.apiToken = EncryptionUtil.encrypt(token)
+            }
         }
         CoroutineHelper.executeBlocking {
             if (config.id > 0) {
