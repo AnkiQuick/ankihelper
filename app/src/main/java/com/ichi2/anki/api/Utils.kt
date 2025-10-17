@@ -40,7 +40,8 @@ internal object Utils {
     }
 
     fun splitFields(fields: String?): Array<String>? {
-        return fields?.split("\\x1f".toRegex(), -1)?.toTypedArray()
+        // Kotlin Regex.split() requires non-negative limit, use 0 for "no limit" (same as Java -1)
+        return fields?.split("\\x1f".toRegex(), 0)?.toTypedArray()
     }
 
     fun joinTags(tags: Set<String>?): String {
