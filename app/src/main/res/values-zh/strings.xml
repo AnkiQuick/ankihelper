@@ -172,6 +172,7 @@
     <string name="storage_migration_error_unknown">迁移过程中发生未知错误。</string>
     <string name="storage_migrate_button">开始迁移</string>
     <string name="storage_request_permission_button">请求权限</string>
+    <string name="storage_continue_button">进入应用</string>
     <string name="storage_permission_denied">存储权限被拒绝。请授予权限以继续。</string>
 
     <!-- Shortcuts -->

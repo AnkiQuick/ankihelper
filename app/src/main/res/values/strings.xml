@@ -155,6 +155,7 @@
     <string name="storage_migration_error_unknown">Unknown error occurred during migration.</string>
     <string name="storage_migrate_button">Start Migration</string>
     <string name="storage_request_permission_button">Request Permission</string>
+    <string name="storage_continue_button">Continue to App</string>
     <string name="storage_permission_denied">Storage permission denied. Please grant permission to continue.</string>
 
     <!-- Dictionary Names -->

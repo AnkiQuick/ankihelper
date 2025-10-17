@@ -43,6 +43,7 @@ class StorageMigrationActivity : AppCompatActivity() {
     private lateinit var sizeText: TextView
     private lateinit var migrateButton: Button
     private lateinit var requestPermissionButton: Button
+    private lateinit var continueButton: Button
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,9 +60,11 @@ class StorageMigrationActivity : AppCompatActivity() {
         sizeText = findViewById(R.id.size_text)
         migrateButton = findViewById(R.id.migrate_button)
         requestPermissionButton = findViewById(R.id.request_permission_button)
+        continueButton = findViewById(R.id.continue_button)
 
         migrateButton.setOnClickListener { startMigration() }
         requestPermissionButton.setOnClickListener { requestStoragePermissions() }
+        continueButton.setOnClickListener { continueToApp() }
     }
 
     private fun initializeComponents() {
@@ -179,6 +182,7 @@ class StorageMigrationActivity : AppCompatActivity() {
         migrateButton.visibility = View.GONE
         requestPermissionButton.visibility = View.GONE
         progressBar.visibility = View.GONE
+        continueButton.visibility = View.VISIBLE
     }
 
     private fun showMigrationFailed(error: String?) {
@@ -392,6 +396,11 @@ class StorageMigrationActivity : AppCompatActivity() {
         val unitValue = size / 1024.0.pow(unitIndex)
 
         return String.format("%.2f %s", unitValue, units[unitIndex])
+    }
+
+    private fun continueToApp() {
+        // Simply finish this activity to return to the launcher or main activity
+        finish()
     }
 
     override fun onDestroy() {
