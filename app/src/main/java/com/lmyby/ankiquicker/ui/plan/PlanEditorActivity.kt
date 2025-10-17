@@ -343,21 +343,31 @@ class PlanEditorActivity : BaseEditorActivity() {
     private fun loadDecksAndModels() {
         Log.e("PlanEditor", "========== loadDecksAndModels: Starting ==========")
 
-        val rawDeckList = mAnkiDroid.api.getDeckList()
-        Log.e("PlanEditor", "rawDeckList = $rawDeckList")
-        Log.e("PlanEditor", "rawDeckList size = ${rawDeckList?.size ?: -1}")
+        try {
+            val rawDeckList = mAnkiDroid.api.getDeckList()
+            Log.e("PlanEditor", "rawDeckList = $rawDeckList")
+            Log.e("PlanEditor", "rawDeckList size = ${rawDeckList?.size ?: -1}")
 
-        deckList = Utils.hashMap2LinkedHashMap(rawDeckList ?: emptyMap())
-        Log.e("PlanEditor", "deckList = $deckList")
-        Log.e("PlanEditor", "deckList size = ${deckList?.size ?: -1}")
+            deckList = Utils.hashMap2LinkedHashMap(rawDeckList ?: emptyMap())
+            Log.e("PlanEditor", "deckList = $deckList")
+            Log.e("PlanEditor", "deckList size = ${deckList?.size ?: -1}")
+        } catch (e: Exception) {
+            Log.e("PlanEditor", "EXCEPTION in getDeckList", e)
+            deckList = linkedMapOf()
+        }
 
-        val rawModelList = mAnkiDroid.api.getModelList()
-        Log.e("PlanEditor", "rawModelList = $rawModelList")
-        Log.e("PlanEditor", "rawModelList size = ${rawModelList?.size ?: -1}")
+        try {
+            val rawModelList = mAnkiDroid.api.getModelList()
+            Log.e("PlanEditor", "rawModelList = $rawModelList")
+            Log.e("PlanEditor", "rawModelList size = ${rawModelList?.size ?: -1}")
 
-        modelList = Utils.hashMap2LinkedHashMap(rawModelList ?: emptyMap())
-        Log.e("PlanEditor", "modelList = $modelList")
-        Log.e("PlanEditor", "modelList size = ${modelList?.size ?: -1}")
+            modelList = Utils.hashMap2LinkedHashMap(rawModelList ?: emptyMap())
+            Log.e("PlanEditor", "modelList = $modelList")
+            Log.e("PlanEditor", "modelList size = ${modelList?.size ?: -1}")
+        } catch (e: Exception) {
+            Log.e("PlanEditor", "EXCEPTION in getModelList", e)
+            modelList = linkedMapOf()
+        }
 
         Log.e("PlanEditor", "========== loadDecksAndModels: Completed ==========")
     }
