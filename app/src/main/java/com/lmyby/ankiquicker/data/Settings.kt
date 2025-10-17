@@ -237,7 +237,7 @@ object Settings {
     @JvmStatic
     fun getEffectiveLocale(): Locale {
         val language = getSelectedLanguage()
-        if (language == AppLanguage.SYSTEM) {
+        if (language == AppLanguage.SYSTEM || language.locale == null) {
             return Locale.getDefault()
         }
         return language.locale

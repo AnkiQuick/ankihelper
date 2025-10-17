@@ -57,8 +57,9 @@ object LanguageManager {
             val languageCode = currentLocale.language
 
             // Match to our supported languages
+            // Skip SYSTEM as it doesn't have a fixed language code
             for (language in AppLanguage.values()) {
-                if (language.locale.language == languageCode) {
+                if (language != AppLanguage.SYSTEM && language.locale?.language == languageCode) {
                     return language
                 }
             }

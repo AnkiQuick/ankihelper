@@ -13,9 +13,9 @@ import java.util.Locale
 enum class AppLanguage(
     val key: String,
     val languageTag: String, // IETF BCP 47 language tag for AndroidX
-    val locale: Locale
+    val locale: Locale?
 ) {
-    SYSTEM("system", "", Locale.getDefault()),
+    SYSTEM("system", "", null), // No cached locale - always queries system default dynamically
     ENGLISH("en", "en", Locale.ENGLISH),
     CHINESE("zh", "zh", Locale.SIMPLIFIED_CHINESE);
 
@@ -46,7 +46,7 @@ enum class AppLanguage(
      * @return The locale to use
      */
     fun getEffectiveLocale(context: Context): Locale {
-        return if (this == SYSTEM) {
+        return if (this == SYSTEM || locale == null) {
             Locale.getDefault()
         } else {
             locale
