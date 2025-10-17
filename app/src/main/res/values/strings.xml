@@ -184,4 +184,15 @@
     <string name="dict_desc_merriam_webster">Merriam-Webster Advanced Learner\'s Dictionary 2019, from https://forum.freemdict.com/t/topic/25795</string>
     <string name="dict_desc_oxford">Oxford Advanced Learner\'s Dictionary 10th Edition, from https://forum.freemdict.com/t/topic/25795</string>
     <string name="dict_desc_cambridge">Cambridge English-Chinese Dictionary, from https://forum.freemdict.com/t/topic/25795</string>
+
+    <!-- Field Export Elements - For field mapping in plan editor -->
+    <string name="field_element_empty">Empty</string>
+    <string name="field_element_example">Example Sentence</string>
+    <string name="field_element_bold_example">Bold Example</string>
+    <string name="field_element_cloze_example">Cloze Example</string>
+    <string name="field_element_cloze_c1">Cloze Example (Full C1)</string>
+    <string name="field_element_notes">Notes</string>
+    <string name="field_element_url">URL</string>
+    <string name="field_element_all_definitions">All Definitions</string>
+    <string name="field_element_sentence_translation">Sentence Translation</string>
 </resources>

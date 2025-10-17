@@ -1,6 +1,8 @@
 package com.lmyby.ankiquicker.util
 
+import android.content.Context
 import android.os.Environment
+import com.lmyby.ankiquicker.data.plan.FieldElement
 
 /**
  * Created by liao on 2017/4/27.
@@ -20,8 +22,35 @@ object Constant {
         //"FBReader跳转链接"
     )
 
+    /**
+     * Get shared export elements in legacy Chinese format
+     * @deprecated Use getSharedExportElementsLocalized() for internationalization support
+     */
     @JvmStatic
     fun getSharedExportElements(): Array<String> = SHARED_EXPORT_ELEMENTS
+
+    /**
+     * Get shared export elements localized to current language
+     * Uses FieldElement enum with string resources for proper internationalization
+     *
+     * @param context Android context for accessing string resources
+     * @return Array of localized field element names
+     */
+    @JvmStatic
+    fun getSharedExportElementsLocalized(context: Context): Array<String> {
+        return FieldElement.getAllDisplayNames(context)
+    }
+
+    /**
+     * Get shared export elements as language-neutral IDs
+     * Used for database storage
+     *
+     * @return Array of language-neutral field element IDs
+     */
+    @JvmStatic
+    fun getSharedExportElementIds(): Array<String> {
+        return FieldElement.getAllIds()
+    }
 
     const val INTENT_ANKIHELPER_TARGET_WORD = "com.lmyby.ankiquicker.target_word"
     const val INTENT_ANKIHELPER_TARGET_URL = "com.lmyby.ankiquicker.url"

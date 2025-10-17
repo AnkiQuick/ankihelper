@@ -205,4 +205,15 @@
     <string name="dict_desc_merriam_webster">韦氏高阶英汉双解词典2019完美版,来自https://forum.freemdict.com/t/topic/25795</string>
     <string name="dict_desc_oxford">牛津高阶英汉双解词典第10版完美版,来自https://forum.freemdict.com/t/topic/25795</string>
     <string name="dict_desc_cambridge">剑桥在线英汉双解词典完美版,来自https://forum.freemdict.com/t/topic/25795</string>
+
+    <!-- Field Export Elements - For field mapping in plan editor -->
+    <string name="field_element_empty">空</string>
+    <string name="field_element_example">例句</string>
+    <string name="field_element_bold_example">加粗的例句</string>
+    <string name="field_element_cloze_example">挖空的例句</string>
+    <string name="field_element_cloze_c1">挖空的例句（全c1模式）</string>
+    <string name="field_element_notes">笔记</string>
+    <string name="field_element_url">URL</string>
+    <string name="field_element_all_definitions">全部释义</string>
+    <string name="field_element_sentence_translation">句子翻译</string>
 </resources>
