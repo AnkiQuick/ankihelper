@@ -224,12 +224,16 @@ class PlanEditorActivity : BaseEditorActivity() {
         plan.outputModelId = currentModelId
 
         val map = LinkedHashMap<String, String>()
+        Log.e("PlanEditor", "========== Saving Field Mappings ==========")
         for (item in fieldsMapItemList) {
             val k = item.field
             val v = item.exportedElementNames[item.selectedFieldPos]
+            Log.e("PlanEditor", "Saving: Field '$k' -> Mapping '$v' (pos ${item.selectedFieldPos})")
             map[k] = v
         }
         plan.fieldsMap = map
+        Log.e("PlanEditor", "Field map as string: '${plan.getFieldsMapString()}'")
+        Log.e("PlanEditor", "========== Saving Field Mappings End ==========")
 
         // Convert POJO to Entity
         val entity = OutputPlanEntity(
@@ -529,24 +533,39 @@ class PlanEditorActivity : BaseEditorActivity() {
 
         val dictionaryElements = currentDictionary?.getExportElementsList() ?: emptyArray()
         val sharedElements = Constant.getSharedExportElements()
+
+        // Debug: Log Chinese elements
+        Log.e("PlanEditor", "========== Field Mapping Debug ==========")
+        Log.e("PlanEditor", "Shared elements count: ${sharedElements.size}")
+        for (i in sharedElements.indices) {
+            Log.e("PlanEditor", "sharedElements[$i] = '${sharedElements[i]}'")
+        }
+
         val allElements = Utils.concatenate(sharedElements, dictionaryElements)
+        Log.e("PlanEditor", "Total elements count: ${allElements.size}")
 
         fieldsMapItemList = mutableListOf()
 
         // If edit, then set spinner initial position
         if (planForEdit != null && currentModelId == planForEdit!!.outputModelId) {
+            Log.e("PlanEditor", "EDIT MODE: Loading existing field mappings")
             for (fld in fields) {
                 val fldMap = planForEdit!!.fieldsMap
                 if (fldMap.containsKey(fld)) {
                     val savedEle = fldMap[fld]
+                    Log.e("PlanEditor", "Field '$fld' -> Saved mapping: '$savedEle'")
                     var pos = allElements.toList().indexOf(savedEle)
                     if (pos == -1) {
+                        Log.w("PlanEditor", "Mapping '$savedEle' not found in allElements, using pos=0")
                         pos = 0
+                    } else {
+                        Log.e("PlanEditor", "Found mapping at position $pos")
                     }
                     fieldsMapItemList.add(FieldsMapItem(fld, allElements, pos))
                 }
             }
         } else {
+            Log.e("PlanEditor", "NEW MODE: Creating default field mappings")
             for (fld in fields) {
                 fieldsMapItemList.add(FieldsMapItem(fld, allElements))
             }
@@ -554,6 +573,7 @@ class PlanEditorActivity : BaseEditorActivity() {
 
         fieldsSpinnersContainer.layoutManager = LinearLayoutManager(this)
         fieldsSpinnersContainer.adapter = FieldMapSpinnerListAdapter(this, fieldsMapItemList)
+        Log.e("PlanEditor", "========== Field Mapping Debug End ==========")
     }
 
     override fun onRequestPermissionsResult(
