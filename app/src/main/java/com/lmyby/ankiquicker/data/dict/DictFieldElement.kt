@@ -115,20 +115,12 @@ enum class DictFieldElement(
          */
         @JvmStatic
         fun displayNameToId(displayName: String, context: Context): String {
-            android.util.Log.e("DictFieldElement", "displayNameToId: input=$displayName")
-
             // First check if it's already an ID
-            fromId(displayName)?.let {
-                android.util.Log.e("DictFieldElement", "displayNameToId: already an ID, returning=$displayName")
-                return displayName
-            }
+            fromId(displayName)?.let { return displayName }
 
             // Try to find matching field element by checking ALL supported languages
             // This allows saving in one language and loading in another
-            val found = findElementByDisplayName(displayName, context)
-            val result = found?.id ?: displayName
-            android.util.Log.e("DictFieldElement", "displayNameToId: found=$found, result=$result")
-            return result
+            return findElementByDisplayName(displayName, context)?.id ?: displayName
         }
 
         /**
@@ -190,11 +182,7 @@ enum class DictFieldElement(
          */
         @JvmStatic
         fun idToDisplayName(id: String, context: Context): String {
-            android.util.Log.e("DictFieldElement", "idToDisplayName: input=$id")
-            val found = fromId(id)
-            val result = found?.getDisplayName(context) ?: id
-            android.util.Log.e("DictFieldElement", "idToDisplayName: found=$found, result=$result")
-            return result
+            return fromId(id)?.getDisplayName(context) ?: id
         }
     }
 }

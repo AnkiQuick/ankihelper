@@ -235,11 +235,9 @@ class PlanEditorActivity : BaseEditorActivity() {
                 // Not a shared field element, try dictionary field element
                 id = DictFieldElement.displayNameToId(displayName, this@PlanEditorActivity)
             }
-            Log.e("PlanEditor", "SAVE: field=$k, displayName=$displayName, id=$id")
             map[k] = id
         }
         plan.fieldsMap = map
-        Log.e("PlanEditor", "SAVE: Final fieldsMap=$map")
 
         // Convert POJO to Entity
         val entity = OutputPlanEntity(
@@ -574,8 +572,6 @@ class PlanEditorActivity : BaseEditorActivity() {
 
         // If edit, then set spinner initial position
         if (planForEdit != null && currentModelId == planForEdit!!.outputModelId) {
-            Log.e("PlanEditor", "LOAD: Loading field mappings from saved plan")
-            Log.e("PlanEditor", "LOAD: allElements=${allElements.joinToString()}")
             for (fld in fields) {
                 val fldMap = planForEdit!!.fieldsMap
                 if (fldMap.containsKey(fld)) {
@@ -587,21 +583,15 @@ class PlanEditorActivity : BaseEditorActivity() {
                         // Not a shared field element, try dictionary field element
                         displayName = DictFieldElement.idToDisplayName(savedId, this@PlanEditorActivity)
                     }
-                    Log.e("PlanEditor", "LOAD: field=$fld, savedId=$savedId, displayName=$displayName")
                     var pos = allElements.toList().indexOf(displayName)
-                    Log.e("PlanEditor", "LOAD: field=$fld, indexOf(displayName)=$pos")
                     if (pos == -1) {
                         // If display name not found, try to find by ID (fallback for legacy data)
                         pos = allElements.toList().indexOf(savedId)
-                        Log.e("PlanEditor", "LOAD: field=$fld, indexOf(savedId)=$pos (fallback)")
                         if (pos == -1) {
-                            Log.e("PlanEditor", "LOAD: field=$fld, FALLBACK TO 0 - not found!")
                             pos = 0
                         }
                     }
                     fieldsMapItemList.add(FieldsMapItem(fld, allElements, pos))
-                } else {
-                    Log.e("PlanEditor", "LOAD: field=$fld NOT in saved fieldsMap")
                 }
             }
         } else {
