@@ -97,7 +97,7 @@
     <string name="provider_openai">OpenAI</string>
     <string name="provider_aliyun">Aliyun</string>
 
-    <string name="history_management">History Management</string>
+    <string name="history_manager">History Manager</string>
     <!-- Clean AI History -->
     <string name="title_clean_ai_history">Clean AI History</string>
     <string name="ai_dictionary">AI Dictionary</string>

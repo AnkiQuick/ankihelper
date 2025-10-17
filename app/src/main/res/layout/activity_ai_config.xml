@@ -72,9 +72,9 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     app:strokeWidth="0dp"
-                    android:text="@string/history_management"
+                    android:text="@string/history_manager"
                     android:gravity="start|center_vertical"
-                    app:icon="@android:drawable/ic_menu_delete"
+                    app:icon="@drawable/ic_settings_outline"
                     app:iconGravity="end"
                     style="@style/Widget.Material3.Button.OutlinedButton" />
             </LinearLayout>
