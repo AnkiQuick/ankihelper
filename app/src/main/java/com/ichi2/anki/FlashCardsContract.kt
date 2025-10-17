@@ -2,8 +2,9 @@
  * Copying and distribution of this file, with or without modification, are permitted in any
  * medium without royalty. This file is offered as-is, without any warranty.
  */
-package com.ichi2.anki;
-import android.net.Uri;
+package com.ichi2.anki
+
+import android.net.Uri
 
 /**
  * <p>
@@ -32,9 +33,9 @@ import android.net.Uri;
  * <p></p>
  * <ul>
  * <li>
- * Each row from the {@link Note} provider represents a note that is stored in the AnkiDroid database.
+ * Each row from the [Note] provider represents a note that is stored in the AnkiDroid database.
  * This provider must be used in order to find flashcards. The notes
- * can be accessed by the {@link Note#CONTENT_URI}, like this to search for note:
+ * can be accessed by the [Note.CONTENT_URI], like this to search for note:
  * <pre>
  *     <code>
  *         // Query all available notes
@@ -51,12 +52,12 @@ import android.net.Uri;
  * </pre>
  * </li>
  * <li>
- * A row from the {@link Card} sub-provider gives access to notes cards. The
- * cards are accessed as described in the {@link Card} description.
+ * A row from the [Card] sub-provider gives access to notes cards. The
+ * cards are accessed as described in the [Card] description.
  * </li>
  * <li>
  * The format of notes and cards is described in models. The models are accessed as described
- * in the {@link Model} description.
+ * in the [Model] description.
  * </li>
  * </ul>
  * <p></p>
@@ -71,64 +72,61 @@ import android.net.Uri;
  * <tr class="altColor">
  * <td class="colFirst"><code>notes</code></td>
  * <td class="colLast">Note with id <code>note_id</code> as raw data
- * <div class="block">Supports insert(mid), query(). For code examples see class description of {@link Note}.</div>
+ * <div class="block">Supports insert(mid), query(). For code examples see class description of [Note].</div>
  * </td>
  * </tr>
  * <tr class="rowColor">
  * <td class="colFirst"><code>notes/&lt;note_id&gt;</code></td>
  * <td class="colLast">Note with id <code>note_id</code> as raw data
- * <div class="block">Supports query(). For code examples see class description of {@link Note}.</div>
+ * <div class="block">Supports query(). For code examples see class description of [Note].</div>
  * </td>
  * </tr>
  * <tr class="rowColor">
  * <td class="colFirst"><code>notes/&lt;note_id&gt;/cards</code></td>
  * <td class="colLast">All cards belonging to note <code>note_id</code> as high level data (Deck name, question, answer).
- * <div class="block">Supports query(). For code examples see class description of {@link Card}.</div>
+ * <div class="block">Supports query(). For code examples see class description of [Card].</div>
  * </td>
  * </tr>
  * <tr class="altColor">
  * <td class="colFirst"><code>notes/&lt;note_id&gt;/cards/&lt;ord&gt;</code></td>
  * <td class="colLast">NoteCard <code>ord</code> (with ord = 0... num_cards-1) belonging to note <code>note_id</code> as high level data (Deck name, question, answer).
- * <div class="block">Supports update(), query(). For code examples see class description of {@link Card}.</div>
+ * <div class="block">Supports update(), query(). For code examples see class description of [Card].</div>
  * </td>
  * </tr>
  * <tr class="rowColor">
  * <td class="colFirst"><code>models</code></td>
  * <td class="colLast">All models as JSONObjects.
- * <div class="block">Supports query(). For code examples see class description of {@link Model}.</div>
+ * <div class="block">Supports query(). For code examples see class description of [Model].</div>
  * </td>
  * </tr>
  * <tr class="altColor">
  * <td class="colFirst"><code>model/&lt;model_id&gt;</code></td>
  * <td class="colLast">Direct access to model <code>model_id</code> as JSONObject.
- * <div class="block">Supports query(). For code examples see class description of {@link Model}.</div>
+ * <div class="block">Supports query(). For code examples see class description of [Model].</div>
  * </td>
  * </tr>
  * </table>
+ *
+ * Converted to Kotlin as part of complete Java-to-Kotlin migration
  */
-public class FlashCardsContract {
-    public static final String AUTHORITY = "com.ichi2.anki.flashcards";
-    public static final String READ_WRITE_PERMISSION = "com.ichi2.anki.permission.READ_WRITE_DATABASE";
+object FlashCardsContract {
+    const val AUTHORITY = "com.ichi2.anki.flashcards"
+    const val READ_WRITE_PERMISSION = "com.ichi2.anki.permission.READ_WRITE_DATABASE"
 
     /**
      * A content:// style uri to the authority for the flash card provider
      */
-    public static final Uri AUTHORITY_URI = Uri.parse("content://" + AUTHORITY);
-
-    /* Don't create instances of this class. */
-    private FlashCardsContract() {
-    }
-
+    val AUTHORITY_URI: Uri = Uri.parse("content://$AUTHORITY")
 
     /**
      * The Notes can be accessed by
-     * the {@link #CONTENT_URI}. If the {@link #CONTENT_URI} is appended by the note's ID, this
+     * the [CONTENT_URI]. If the [CONTENT_URI] is appended by the note's ID, this
      * note can be directly accessed. If no ID is appended the content provides functions return
-     * all the notes that match the query as defined in {@code selection} argument in the
-     * {@code query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)} call.
-     * For queries, the {@code selectionArgs} parameter can contain an optional selection statement for the notes table
+     * all the notes that match the query as defined in `selection` argument in the
+     * `query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder)` call.
+     * For queries, the `selectionArgs` parameter can contain an optional selection statement for the notes table
      * in the sql database. E.g. "mid = 12345678" could be used to limit to a particular model ID.
-     * The {@code selection} parameter is an optional search string for the Anki browser. The syntax is described
+     * The `selection` parameter is an optional search string for the Anki browser. The syntax is described
      * <a href="http://ankisrs.net/docs/manual.html#searching">in the search section of the Anki manual</a>.
      * <p>
      * <p>
@@ -158,7 +156,7 @@ public class FlashCardsContract {
      * </pre>
      * <p>
      * In order to insert a new note (the cards for this note will be added to the default deck)
-     * the {@link #CONTENT_URI} must be used together with a model (see {@link Model})
+     * the [CONTENT_URI] must be used together with a model (see [Model])
      * ID, e.g.
      * <pre>
      *     <code>
@@ -173,10 +171,10 @@ public class FlashCardsContract {
      * Updating tags for a note can be done this way:
      * <pre>
      *     <code>
-     Uri updateNoteUri = Uri.withAppendedPath(FlashCardsContract.Note.CONTENT_URI, Long.toString(noteId));
-     ContentValues values = new ContentValues();
-     values.put(FlashCardsContract.Note.TAGS, tag1 + " " + tag2);
-     int updateCount = cr.update(updateNoteUri, values, null, null);
+     * Uri updateNoteUri = Uri.withAppendedPath(FlashCardsContract.Note.CONTENT_URI, Long.toString(noteId));
+     * ContentValues values = new ContentValues();
+     * values.put(FlashCardsContract.Note.TAGS, tag1 + " " + tag2);
+     * int updateCount = cr.update(updateNoteUri, values, null, null);
      *     </code>
      * </pre>
      *
@@ -189,7 +187,7 @@ public class FlashCardsContract {
      * </tr>
      * <tr>
      * <td>long</td>
-     * <td>{@link #_ID}</td>
+     * <td>[_ID]</td>
      * <td>read-only</td>
      * <td>Row ID. This is the ID of the note. It is the same as the note ID in Anki. This
      * ID can be used for accessing the data of a note using the URI
@@ -197,13 +195,13 @@ public class FlashCardsContract {
      * </tr>
      * <tr>
      * <td>long</td>
-     * <td>{@link #GUID}</td>
+     * <td>[GUID]</td>
      * <td>read-only</td>
      * <td>see <a href="https://github.com/ankidroid/Anki-Android/wiki/Database-Structure">main documentation</a></td>
      * </tr>
      * <tr>
      * <td>long</td>
-     * <td>{@link #MID}</td>
+     * <td>[MID]</td>
      * <td>read-only</td>
      * <td>This is the ID of the model that is used for rendering the cards. This ID can be used for
      * accessing the data of the model using the URI
@@ -211,55 +209,55 @@ public class FlashCardsContract {
      * </tr>
      * <tr>
      * <td>long</td>
-     * <td>{@link #MOD}</td>
+     * <td>[MOD]</td>
      * <td>read-only</td>
      * <td>see <a href="https://github.com/ankidroid/Anki-Android/wiki/Database-Structure">main documentation</a></td>
      * </tr>
      * <tr>
      * <td>long</td>
-     * <td>{@link #USN}</td>
+     * <td>[USN]</td>
      * <td>read-only</td>
      * <td>see <a href="https://github.com/ankidroid/Anki-Android/wiki/Database-Structure">main documentation</a></td>
      * </tr>
      * <tr>
      * <td>long</td>
-     * <td>{@link #TAGS}</td>
+     * <td>[TAGS]</td>
      * <td>read-write</td>
      * <td>NoteTag of this note. NoteTag are separated  by spaces.</td>
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #FLDS}</td>
+     * <td>[FLDS]</td>
      * <td>read-write</td>
-     * <td>Fields of this note. Fields are separated by "\\x1f"</td>
+     * <td>Fields of this note. Fields are separated by "\x1f"</td>
      * </tr>
      * <tr>
      * <td>long</td>
-     * <td>{@link #SFLD}</td>
+     * <td>[SFLD]</td>
      * <td>read-only</td>
      * <td>see <a href="https://github.com/ankidroid/Anki-Android/wiki/Database-Structure">main documentation</a></td>
      * </tr>
      * <tr>
      * <td>long</td>
-     * <td>{@link #CSUM}</td>
+     * <td>[CSUM]</td>
      * <td>read-only</td>
      * <td>see <a href="https://github.com/ankidroid/Anki-Android/wiki/Database-Structure">main documentation</a></td>
      * </tr>
      * <tr>
      * <td>long</td>
-     * <td>{@link #FLAGS}</td>
+     * <td>[FLAGS]</td>
      * <td>read-only</td>
      * <td>see <a href="https://github.com/ankidroid/Anki-Android/wiki/Database-Structure">main documentation</a></td>
      * </tr>
      * <tr>
      * <td>long</td>
-     * <td>{@link #DATA}</td>
+     * <td>[DATA]</td>
      * <td>read-only</td>
      * <td>see <a href="https://github.com/ankidroid/Anki-Android/wiki/Database-Structure">main documentation</a></td>
      * </tr>
      * </table>
      */
-    public static class Note {
+    object Note {
         /**
          * The content:// style URI for notes. If the it is appended by the note's ID, this
          * note can be directly accessed, e.g.
@@ -282,61 +280,60 @@ public class FlashCardsContract {
          *
          * For examples on how to use the URI for queries see class description.
          */
-        public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, "notes");
+        val CONTENT_URI: Uri = Uri.withAppendedPath(AUTHORITY_URI, "notes")
 
         /**
          * The content:// style URI for notes, but with a direct SQL query to the notes table instead of accepting
-         * a query in the libanki browser search syntax like the main URI #CONTENT_URI does.
+         * a query in the libanki browser search syntax like the main URI CONTENT_URI does.
          */
-        public static final Uri CONTENT_URI_V2 = Uri.withAppendedPath(AUTHORITY_URI, "notes_v2");
+        val CONTENT_URI_V2: Uri = Uri.withAppendedPath(AUTHORITY_URI, "notes_v2")
 
         /**
          * This is the ID of the note. It is the same as the note ID in Anki. This ID can be
          * used for accessing the data of a note using the URI
          * "content://com.ichi2.anki.flashcards/notes/&lt;ID&gt;/data
          */
-        public static final String _ID = "_id";
-        public static final String GUID = "guid";
-        public static final String MID = "mid";
-        public static final String MOD = "mod";
-        public static final String USN = "usn";
-        public static final String TAGS = "tags";
-        public static final String FLDS = "flds";
-        public static final String SFLD = "sfld";
-        public static final String CSUM = "csum";
-        public static final String FLAGS = "flags";
-        public static final String DATA = "data";
+        const val _ID = "_id"
+        const val GUID = "guid"
+        const val MID = "mid"
+        const val MOD = "mod"
+        const val USN = "usn"
+        const val TAGS = "tags"
+        const val FLDS = "flds"
+        const val SFLD = "sfld"
+        const val CSUM = "csum"
+        const val FLAGS = "flags"
+        const val DATA = "data"
 
-        public static final String[] DEFAULT_PROJECTION = {
-                Note._ID,
-                Note.GUID,
-                Note.MID,
-                Note.MOD,
-                Note.USN,
-                Note.TAGS,
-                Note.FLDS,
-                Note.SFLD,
-                Note.CSUM,
-                Note.FLAGS,
-                Note.DATA};
+        val DEFAULT_PROJECTION = arrayOf(
+            _ID,
+            GUID,
+            MID,
+            MOD,
+            USN,
+            TAGS,
+            FLDS,
+            SFLD,
+            CSUM,
+            FLAGS,
+            DATA
+        )
 
         /**
          * MIME type used for a note.
          */
-        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.com.ichi2.anki.note";
+        const val CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.com.ichi2.anki.note"
 
         /**
          * MIME type used for notes.
          */
-        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.com.ichi2.anki.note";
+        const val CONTENT_TYPE = "vnd.android.cursor.dir/vnd.com.ichi2.anki.note"
 
         /**
          * Used only by bulkInsert() to specify which deck the notes should be placed in
          */
-        public static final String DECK_ID_QUERY_PARAM = "deckId";
+        const val DECK_ID_QUERY_PARAM = "deckId"
     }
-
-
 
     /**
      * A model describes what cards look like.
@@ -346,61 +343,61 @@ public class FlashCardsContract {
      * </tr>
      * <tr>
      * <td>long</td>
-     * <td>{@link #_ID}</td>
+     * <td>[_ID]</td>
      * <td>read-only</td>
      * <td>Model ID.</td>
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #NAME}</td>
+     * <td>[NAME]</td>
      * <td>Name of the model.
      * </td>
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #CSS}</td>
+     * <td>[CSS]</td>
      * <td>CSS styling code which is shared across all the templates</td>
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #FIELD_NAMES}</td>
+     * <td>[FIELD_NAMES]</td>
      * <td>read-only</td>
      * <td>Names of all the fields, separate by the 0x1f character</td>
      * </tr>
      * <tr>
      * <td>Integer</td>
-     * <td>{@link #NUM_CARDS}</td>
+     * <td>[NUM_CARDS]</td>
      * <td>read-only</td>
      * <td>Number of card templates, which corresponds to the number of rows in the templates table
      * </td>
      * </tr>
      * <tr>
      * <td>Long</td>
-     * <td>{@link #DECK_ID}</td>
+     * <td>[DECK_ID]</td>
      * <td>read-only</td>
      * <td>The default deck that cards should be added to</td>
      * </tr>
      * <tr>
      * <td>Integer</td>
-     * <td>{@link #SORT_FIELD_INDEX}</td>
+     * <td>[SORT_FIELD_INDEX]</td>
      * <td>read-only</td>
      * <td>Which field is used as the main sort field</td>
      * </tr>
      * <tr>
      * <td>Integer</td>
-     * <td>{@link #TYPE}</td>
+     * <td>[TYPE]</td>
      * <td>read-only</td>
      * <td>0 for normal model, 1 for cloze model</td>
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #LATEX_POST}</td>
+     * <td>[LATEX_POST]</td>
      * <td>read-only</td>
      * <td>Code to go at the end of LaTeX renderings in Anki Desktop</td>
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #LATEX_PRE}</td>
+     * <td>[LATEX_PRE]</td>
      * <td>read-only</td>
      * <td>Code to go at the front of LaTeX renderings in Anki Desktop</td>
      * </tr>
@@ -446,75 +443,74 @@ public class FlashCardsContract {
      * </pre>
      * <p>
      */
-    public static class Model {
+    object Model {
         /**
          * The content:// style URI for model. If the it is appended by the model's ID, this
          * note can be directly accessed. See class description above for further details.
          */
-        public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, "models");
-        public static final String CURRENT_MODEL_ID = "current";
+        val CONTENT_URI: Uri = Uri.withAppendedPath(AUTHORITY_URI, "models")
+        const val CURRENT_MODEL_ID = "current"
 
         /**
          * This is the ID of the model. It is the same as the note ID in Anki. This ID can be
          * used for accessing the data of the model using the URI
          * "content://com.ichi2.anki.flashcards/models/&lt;ID&gt;
          */
-        public static final String _ID = "_id";
-        public static final String NAME = "name";
-        public static final String FIELD_NAME = "field_name";
-        public static final String FIELD_NAMES = "field_names";
-        public static final String NUM_CARDS = "num_cards";
-        public static final String CSS = "css";
-        public static final String SORT_FIELD_INDEX = "sort_field_index";
-        public static final String TYPE = "type";
-        public static final String LATEX_POST = "latex_post";
-        public static final String LATEX_PRE = "latex_pre";
-        public static final String NOTE_COUNT = "note_count";
+        const val _ID = "_id"
+        const val NAME = "name"
+        const val FIELD_NAME = "field_name"
+        const val FIELD_NAMES = "field_names"
+        const val NUM_CARDS = "num_cards"
+        const val CSS = "css"
+        const val SORT_FIELD_INDEX = "sort_field_index"
+        const val TYPE = "type"
+        const val LATEX_POST = "latex_post"
+        const val LATEX_PRE = "latex_pre"
+        const val NOTE_COUNT = "note_count"
 
         /**
          * The deck ID that is selected by default when adding new notes with this model.
          * This is only used when the "Deck for new cards" preference is set to "Decide by note type"
          */
-        public static final String DECK_ID = "deck_id";
+        const val DECK_ID = "deck_id"
 
-        public static final String[] DEFAULT_PROJECTION = {
-                _ID,
-                NAME,
-                FIELD_NAMES,
-                NUM_CARDS,
-                CSS,
-                DECK_ID,
-                SORT_FIELD_INDEX,
-                TYPE,
-                LATEX_POST,
-                LATEX_PRE};
+        val DEFAULT_PROJECTION = arrayOf(
+            _ID,
+            NAME,
+            FIELD_NAMES,
+            NUM_CARDS,
+            CSS,
+            DECK_ID,
+            SORT_FIELD_INDEX,
+            TYPE,
+            LATEX_POST,
+            LATEX_PRE
+        )
 
         /**
          * MIME type used for a model.
          */
-        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.com.ichi2.anki.model";
+        const val CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.com.ichi2.anki.model"
 
         /**
          * MIME type used for model.
          */
-        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.com.ichi2.anki.model";
+        const val CONTENT_TYPE = "vnd.android.cursor.dir/vnd.com.ichi2.anki.model"
     }
-
 
     /**
      * Card template for a model. A template defines how to render the fields of a note into the actual HTML that
      * makes up a flashcard. A model can define multiple card templates, for example a Forward and Reverse Card could
-     * be defined with the forward card allowing to review a word from Japanese-&gt;English (e.g. 犬 -&gt; dog), and the
-     * reverse card allowing review in the "reverse" direction (e.g dog -&gt; 犬). When a Note is inserted, a Card will
+     * be defined with the forward card allowing to review a word from Japanese->English (e.g. 犬 -> dog), and the
+     * reverse card allowing review in the "reverse" direction (e.g dog -> 犬). When a Note is inserted, a Card will
      * be generated for each active CardTemplate which is defined.
      */
-    public static class CardTemplate {
-
+    object CardTemplate {
         /**
          * MIME type used for data.
          */
-        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.com.ichi2.anki.model.template";
-        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.com.ichi2.anki.model.template";
+        const val CONTENT_TYPE = "vnd.android.cursor.dir/vnd.com.ichi2.anki.model.template"
+        const val CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.com.ichi2.anki.model.template"
 
         /**
          * Row ID. This is a virtual ID which actually does not exist in AnkiDroid's data base.
@@ -523,62 +519,56 @@ public class FlashCardsContract {
          * reliably over subsequent queries. Especially if the number of cards or fields changes,
          * the _ID will change too.
          */
-        public static final String _ID = "_id";
+        const val _ID = "_id"
 
         /**
-         * This is the ID of the model that this row belongs to (i.e. {@link Model#_ID}).
+         * This is the ID of the model that this row belongs to (i.e. [Model._ID]).
          */
-        public static final String MODEL_ID = "model_id";
-
+        const val MODEL_ID = "model_id"
 
         /**
          * This is the ordinal / index of the card template (from 0 to number of cards - 1).
          */
-        public static final String ORD = "ord";
-
+        const val ORD = "ord"
 
         /**
          * The template name e.g. "Card 1".
          */
-        public static final String NAME = "card_template_name";
-
+        const val NAME = "card_template_name"
 
         /**
          * The definition of the template for the question
          */
-        public static final String QUESTION_FORMAT = "question_format";
-
+        const val QUESTION_FORMAT = "question_format"
 
         /**
          * The definition of the template for the answer
          */
-        public static final String ANSWER_FORMAT = "answer_format";
-
+        const val ANSWER_FORMAT = "answer_format"
 
         /**
          * Optional alternative definition of the template for the question when rendered with the browser
          */
-        public static final String BROWSER_QUESTION_FORMAT = "browser_question_format";
-
+        const val BROWSER_QUESTION_FORMAT = "browser_question_format"
 
         /**
          * Optional alternative definition of the template for the answer when rendered with the browser
          */
-        public static final String BROWSER_ANSWER_FORMAT = "browser_answer_format";
+        const val BROWSER_ANSWER_FORMAT = "browser_answer_format"
 
-        public static final String CARD_COUNT = "card_count";
-
+        const val CARD_COUNT = "card_count"
 
         /**
          * Default columns that are returned when querying the ...models/#/templates URI.
          */
-        public static final String[] DEFAULT_PROJECTION = {
-                _ID,
-                MODEL_ID,
-                ORD,
-                NAME,
-                QUESTION_FORMAT,
-                ANSWER_FORMAT};
+        val DEFAULT_PROJECTION = arrayOf(
+            _ID,
+            MODEL_ID,
+            ORD,
+            NAME,
+            QUESTION_FORMAT,
+            ANSWER_FORMAT
+        )
     }
 
     /**
@@ -600,7 +590,7 @@ public class FlashCardsContract {
      *     </code>
      *     </pre>
      * <p>
-     * If it is furthermore appended by the cards ordinal (see {@link #CARD_ORD}) it's possible to
+     * If it is furthermore appended by the cards ordinal (see [CARD_ORD]) it's possible to
      * directly access a specific card.
      * <p>
      *     <pre>
@@ -625,73 +615,73 @@ public class FlashCardsContract {
      * </tr>
      * <tr>
      * <td>long</td>
-     * <td>{@link #NOTE_ID}</td>
+     * <td>[NOTE_ID]</td>
      * <td>read-only</td>
-     * <td>This is the ID of the note that this row belongs to (i.e. {@link Note#_ID}).
+     * <td>This is the ID of the note that this row belongs to (i.e. [Note._ID]).
      * </td>
      * </tr>
      * <tr>
      * <td>int</td>
-     * <td>{@link #CARD_ORD}</td>
+     * <td>[CARD_ORD]</td>
      * <td>read-only</td>
      * <td>This is the ordinal of the card. A note has 1..n cards. The ordinal can also be used
      * to directly access a card as describe in the class description.
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #CARD_NAME}</td>
+     * <td>[CARD_NAME]</td>
      * <td>read-only</td>
      * <td>The card's name.
      * </td>
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #DECK_ID}</td>
+     * <td>[DECK_ID]</td>
      * <td>read-write</td>
      * <td>The id of the deck that this card is part of.
      * </td>
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #QUESTION}</td>
+     * <td>[QUESTION]</td>
      * <td>read-only</td>
      * <td>The question for this card.
      * </td>
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #ANSWER}</td>
+     * <td>[ANSWER]</td>
      * <td>read-only</td>
      * <td>The answer for this card.
      * </td>
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #QUESTION_SIMPLE}</td>
+     * <td>[QUESTION_SIMPLE]</td>
      * <td>read-only</td>
      * <td>The question for this card in the simplified form, without card styling information (CSS).
      * </td>
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #ANSWER_SIMPLE}</td>
+     * <td>[ANSWER_SIMPLE]</td>
      * <td>read-only</td>
      * <td>The answer for this card in the simplified form, without card styling information (CSS).
      * </td>
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #ANSWER_PURE}</td>
+     * <td>[ANSWER_PURE]</td>
      * <td>read-only</td>
      * <td>
-     * Purified version of the answer. In case the {@link #ANSWER} contains any additional elements
-     * (like a duplicate of the question) this is removed for {@link #ANSWER_PURE}.
-     * Like {@link #ANSWER_SIMPLE} it does not contain styling information (CSS).
+     * Purified version of the answer. In case the [ANSWER] contains any additional elements
+     * (like a duplicate of the question) this is removed for [ANSWER_PURE].
+     * Like [ANSWER_SIMPLE] it does not contain styling information (CSS).
      * </td>
      * </tr>
      * </table>
      *
-     * The only writable column is the {@link #DECK_ID}. Moving a card to another deck, can be
+     * The only writable column is the [DECK_ID]. Moving a card to another deck, can be
      * done as shown in this example
      * <pre>
      *     <code>
@@ -716,78 +706,78 @@ public class FlashCardsContract {
      *     </code>
      * </pre>
      */
-    public static class Card {
+    object Card {
         /**
-         * This is the ID of the note that this card belongs to (i.e. {@link Note#_ID}).
+         * This is the ID of the note that this card belongs to (i.e. [Note._ID]).
          */
-        public static final String NOTE_ID = "note_id";
+        const val NOTE_ID = "note_id"
 
         /**
          * This is the ordinal of the card. A note has 1..n cards. The ordinal can also be used
          * to directly access a card as describe in the class description.
          */
-        public static final String CARD_ORD = "ord";
+        const val CARD_ORD = "ord"
 
         /**
          * The card's name.
          */
-        public static final String CARD_NAME = "card_name";
+        const val CARD_NAME = "card_name"
 
         /**
          * The name of the deck that this card is part of.
          */
-        public static final String DECK_ID = "deck_id";
+        const val DECK_ID = "deck_id"
 
         /**
          * The question for this card.
          */
-        public static final String QUESTION = "question";
+        const val QUESTION = "question"
 
         /**
          * The answer for this card.
          */
-        public static final String ANSWER = "answer";
+        const val ANSWER = "answer"
 
         /**
          * Simplified version of the question, without card styling (CSS).
          */
-        public static final String QUESTION_SIMPLE = "question_simple";
+        const val QUESTION_SIMPLE = "question_simple"
 
         /**
          * Simplified version of the answer, without card styling (CSS).
          */
-        public static final String ANSWER_SIMPLE = "answer_simple";
+        const val ANSWER_SIMPLE = "answer_simple"
 
         /**
          * Purified version of the answer. In case the ANSWER contains any additional elements
          * (like a duplicate of the question) this is removed for ANSWER_PURE
          */
-        public static final String ANSWER_PURE = "answer_pure";
+        const val ANSWER_PURE = "answer_pure"
 
-        public static final String[] DEFAULT_PROJECTION = {
-                NOTE_ID,
-                CARD_ORD,
-                CARD_NAME,
-                DECK_ID,
-                QUESTION,
-                ANSWER};
+        val DEFAULT_PROJECTION = arrayOf(
+            NOTE_ID,
+            CARD_ORD,
+            CARD_NAME,
+            DECK_ID,
+            QUESTION,
+            ANSWER
+        )
 
         /**
          * MIME type used for a card.
          */
-        public static final String CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.com.ichi2.anki.card";
+        const val CONTENT_ITEM_TYPE = "vnd.android.cursor.item/vnd.com.ichi2.anki.card"
 
         /**
          * MIME type used for cards.
          */
-        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.com.ichi2.anki.card";
+        const val CONTENT_TYPE = "vnd.android.cursor.dir/vnd.com.ichi2.anki.card"
     }
-
 
     /**
      * A ReviewInfo contains information about a card that is scheduled for review.
      * <p></p>
-     * To access the next scheduled card(s), a simple query with the {@link #CONTENT_URI} can be used.<br>
+     * To access the next scheduled card(s), a simple query with the [CONTENT_URI] can be used.<br>
      * Arguments:
      * <table class="jd-sumtable"><caption>ReviewInfo information table</caption>
      * <tr>
@@ -834,43 +824,43 @@ public class FlashCardsContract {
      * </tr>
      * <tr>
      * <td>long</td>
-     * <td>{@link #NOTE_ID}</td>
+     * <td>[NOTE_ID]</td>
      * <td>read-only</td>
-     * <td>This is the ID of the note that this row belongs to (i.e. {@link Note#_ID}).
+     * <td>This is the ID of the note that this row belongs to (i.e. [Note._ID]).
      * </td>
      * </tr>
      * <tr>
      * <td>int</td>
-     * <td>{@link #CARD_ORD}</td>
+     * <td>[CARD_ORD]</td>
      * <td>read-only</td>
      * <td>This is the ordinal of the card. A note has 1..n cards. The ordinal can also be used
      * to directly access a card as describe in the class description.
      * </tr>
      * <tr>
      * <td>int</td>
-     * <td>{@link #BUTTON_COUNT}</td>
+     * <td>[BUTTON_COUNT]</td>
      * <td>read-only</td>
      * <td>The number of buttons/ease identifiers that can be used to answer the card.
      * </td>
      * </tr>
      * <tr>
      * <td>JSONArray</td>
-     * <td>{@link #NEXT_REVIEW_TIMES}</td>
+     * <td>[NEXT_REVIEW_TIMES]</td>
      * <td>read-only</td>
      * <td>A JSONArray containing when the card will be scheduled for review for all ease identifiers available.<br>
-     * The number of entries in this array must equal the number of buttons in {@link #BUTTON_COUNT}.
+     * The number of entries in this array must equal the number of buttons in [BUTTON_COUNT].
      * </td>
      * </tr>
      * <tr>
      * <td>JSONArray</td>
-     * <td>{@link #MEDIA_FILES}</td>
+     * <td>[MEDIA_FILES]</td>
      * <td>read-only</td>
      * <td>The media files, like images and sound files, contained in the cards.
      * </td>
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #EASE}</td>
+     * <td>[EASE]</td>
      * <td>write-only</td>
      * <td>The ease of the card. Used when answering the card. One of: <br>
      *          com.ichi2.anki.AbstractFlashcardViewer.EASE_1<br>
@@ -881,21 +871,21 @@ public class FlashCardsContract {
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #TIME_TAKEN}</td>
+     * <td>[TIME_TAKEN]</td>
      * <td>write-only</td>
      * <td>The it took to answer the card (in milliseconds). Used when answering the card.
      * </td>
      * </tr>
      * <tr>
      * <td>int</td>
-     * <td>{@link #BURY}</td>
+     * <td>[BURY]</td>
      * <td>write-only</td>
      * <td>Set to 1 to bury the card. Mutually exclusive with setting EASE/TIME_TAKEN/SUSPEND
      * </td>
      * </tr>
      * <tr>
      * <td>int</td>
-     * <td>{@link #SUSPEND}</td>
+     * <td>[SUSPEND]</td>
      * <td>write-only</td>
      * <td>Set to 1 to suspend the card. Mutually exclusive with setting EASE/TIME_TAKEN/BURY
      * </td>
@@ -946,83 +936,75 @@ public class FlashCardsContract {
      * </pre>
      * </p>
      */
-    public static class ReviewInfo {
-
-        public static final Uri CONTENT_URI = Uri.withAppendedPath(AUTHORITY_URI, "schedule");
+    object ReviewInfo {
+        val CONTENT_URI: Uri = Uri.withAppendedPath(AUTHORITY_URI, "schedule")
 
         /**
-         * This is the ID of the note that this card belongs to (i.e. {@link Note#_ID}).
+         * This is the ID of the note that this card belongs to (i.e. [Note._ID]).
          */
-        public static final String NOTE_ID = "note_id";
+        const val NOTE_ID = "note_id"
 
         /**
          * This is the ordinal of the card. A note has 1..n cards. The ordinal can also be used
          * to directly access a card as describe in the class description.
          */
-        public static final String CARD_ORD = "ord";
-
+        const val CARD_ORD = "ord"
 
         /**
          * This is the number of ease modes. It can take a value between 2 and 4.
          */
-        public static final String BUTTON_COUNT = "button_count";
-
+        const val BUTTON_COUNT = "button_count"
 
         /**
          * This is a JSONArray containing the next review times for all buttons.
          */
-        public static final String NEXT_REVIEW_TIMES = "next_review_times";
-
+        const val NEXT_REVIEW_TIMES = "next_review_times"
 
         /**
          * The names of the media files in the question and answer
          */
-        public static final String MEDIA_FILES = "media_files";
+        const val MEDIA_FILES = "media_files"
 
         /*
          * Ease of an answer. Is not set when requesting the scheduled cards.
          * Can take values of AbstractFlashcardViewer e.g. EASE_1
          */
-
-        public static final String EASE = "answer_ease";
+        const val EASE = "answer_ease"
 
         /*
          * Time it took to answer the card (in ms)
          */
-
-        public static final String TIME_TAKEN = "time_taken";
+        const val TIME_TAKEN = "time_taken"
 
         /**
          * Write-only field, allows burying of a card when set to 1
          */
-        public static final String BURY = "buried";
+        const val BURY = "buried"
 
         /**
          * Write-only field, allows suspending of a card when set to 1
          */
-        public static final String SUSPEND = "suspended";
+        const val SUSPEND = "suspended"
 
-        public static final String[] DEFAULT_PROJECTION = {
-                NOTE_ID,
-                CARD_ORD,
-                BUTTON_COUNT,
-                NEXT_REVIEW_TIMES,
-                MEDIA_FILES
-        };
-
+        val DEFAULT_PROJECTION = arrayOf(
+            NOTE_ID,
+            CARD_ORD,
+            BUTTON_COUNT,
+            NEXT_REVIEW_TIMES,
+            MEDIA_FILES
+        )
 
         /**
          * MIME type used for ReviewInfo.
          */
-        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.com.ichi2.anki.review_info";
-
+        const val CONTENT_TYPE = "vnd.android.cursor.dir/vnd.com.ichi2.anki.review_info"
     }
 
     /**
      * A Deck contains information about a deck contained in the users deck list.
      * <p></p>
-     * To request a list of all decks the URI {@link #CONTENT_ALL_URI} can be used.
-     * To request the currently selected deck the URI {@link #CONTENT_SELECTED_URI} can be used.<br>
+     * To request a list of all decks the URI [CONTENT_ALL_URI] can be used.
+     * To request the currently selected deck the URI [CONTENT_SELECTED_URI] can be used.<br>
      *
      * A Deck consists of the following columns:
      * <table class="jd-sumtable"><caption>Columns available in a Deck</caption>
@@ -1031,36 +1013,36 @@ public class FlashCardsContract {
      * </tr>
      * <tr>
      * <td>long</td>
-     * <td>{@link #DECK_ID}</td>
+     * <td>[DECK_ID]</td>
      * <td>read-only</td>
      * <td>This is the unique ID of the Deck.
      * </td>
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #DECK_NAME}</td>
+     * <td>[DECK_NAME]</td>
      * <td>This is the name of the Deck as the user usually sees it.
      * </tr>
      * <tr>
      * <td>String</td>
-     * <td>{@link #DECK_DESC}</td>
+     * <td>[DECK_DESC]</td>
      * <td>The deck description shown on the overview page</td>
      * </tr>
      * <tr>
      * <td>JSONArray</td>
-     * <td>{@link #DECK_COUNTS}</td>
+     * <td>[DECK_COUNTS]</td>
      * <td>read-only</td>
      * <td>These are the deck counts of the Deck. [learn, review, new]
      * </tr>
      * <tr>
      * <td>JSONObject</td>
-     * <td>{@link #OPTIONS}</td>
+     * <td>[OPTIONS]</td>
      * <td>read-only</td>
      * <td>These are the options of the deck.
      * </tr>
      * <tr>
      * <td>Boolean</td>
-     * <td>{@link #DECK_DYN}</td>
+     * <td>[DECK_DYN]</td>
      * <td>read-only</td>
      * <td>Whether or not the deck is a filtered deck</td>
      * </tr>
@@ -1132,57 +1114,53 @@ public class FlashCardsContract {
      *       cr.update(selectDeckUri, values, null, null);
      *     </code>
      * </pre>
-     *
      */
+    object Deck {
+        val CONTENT_ALL_URI: Uri = Uri.withAppendedPath(AUTHORITY_URI, "decks")
+        val CONTENT_SELECTED_URI: Uri = Uri.withAppendedPath(AUTHORITY_URI, "selected_deck")
 
-    public static class Deck {
-
-        public static final Uri CONTENT_ALL_URI = Uri.withAppendedPath(AUTHORITY_URI, "decks");
-        public static final Uri CONTENT_SELECTED_URI = Uri.withAppendedPath(AUTHORITY_URI, "selected_deck");
         /**
          * The name of the Deck
          */
-        public static final String DECK_NAME = "deck_name";
+        const val DECK_NAME = "deck_name"
 
         /**
          * The unique identifier of the Deck
          */
-        public static final String DECK_ID = "deck_id";
+        const val DECK_ID = "deck_id"
 
         /**
          * The number of cards in the Deck
          */
-        public static final String DECK_COUNTS = "deck_count";
+        const val DECK_COUNTS = "deck_count"
 
         /**
          * The options of the Deck
          */
-        public static final String OPTIONS = "options";
+        const val OPTIONS = "options"
 
         /**
          * 1 if dynamic (AKA filtered) deck
          */
-        public static final String DECK_DYN = "deck_dyn";
+        const val DECK_DYN = "deck_dyn"
 
         /**
          * Deck description
          */
-        public static final String DECK_DESC = "deck_desc";
+        const val DECK_DESC = "deck_desc"
 
-        public static final String[] DEFAULT_PROJECTION = {
-                DECK_NAME,
-                DECK_ID,
-                DECK_COUNTS,
-                OPTIONS,
-                DECK_DYN,
-                DECK_DESC
-        };
-
+        val DEFAULT_PROJECTION = arrayOf(
+            DECK_NAME,
+            DECK_ID,
+            DECK_COUNTS,
+            OPTIONS,
+            DECK_DYN,
+            DECK_DESC
+        )
 
         /**
          * MIME type used for Deck.
          */
-        public static final String CONTENT_TYPE = "vnd.android.cursor.dir/vnd.com.ichi2.anki.deck";
-
+        const val CONTENT_TYPE = "vnd.android.cursor.dir/vnd.com.ichi2.anki.deck"
     }
 }

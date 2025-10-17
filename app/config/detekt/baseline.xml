@@ -257,6 +257,8 @@
     <ID>MagicNumber:StorageMigrationActivity.kt$StorageMigrationActivity$8192</ID>
     <ID>MagicNumber:TextSplitter.kt$TextSplitter$0.9</ID>
     <ID>MagicNumber:Utils.kt$Utils$16</ID>
+    <ID>MagicNumber:Utils.kt$Utils$40</ID>
+    <ID>MagicNumber:Utils.kt$Utils$8</ID>
     <ID>MagicNumber:ViewUtil.kt$ViewUtil$0x00FFFFFF</ID>
     <ID>MagicNumber:VocabularyCardModel.kt$VocabularyCardModel$3</ID>
     <ID>MagicNumber:VocabularyCardModel.kt$VocabularyCardModel$4</ID>
@@ -301,6 +303,9 @@
     <ID>MaxLineLength:DatabaseHelper.kt$DatabaseHelper.Companion$"create table if not exists %s (%s integer primary key, %s integer, %s text, %s text, %s text, %s text, %s text, %s text, %s text)"</ID>
     <ID>MaxLineLength:DatabaseManager.kt$DatabaseManager$fun</ID>
     <ID>MaxLineLength:FieldUtil.kt$FieldUtil$if</ID>
+    <ID>MaxLineLength:FlashCardsContract.kt$FlashCardsContract$*</ID>
+    <ID>MaxLineLength:FlashCardsContract.kt$FlashCardsContract.Card$*</ID>
+    <ID>MaxLineLength:FlashCardsContract.kt$FlashCardsContract.Deck$*</ID>
     <ID>MaxLineLength:HistoryRepository.kt$HistoryRepository$suspend</ID>
     <ID>MaxLineLength:Maldpe.kt$Maldpe$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;"</ID>
     <ID>MaxLineLength:Maldpe.kt$Maldpe$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt;"</ID>
@@ -409,6 +414,9 @@
     <ID>NoWildcardImports:StatActivity.kt$import com.github.mikephil.charting.data.*</ID>
     <ID>NoWildcardImports:TTSConfigDao.kt$import androidx.room.*</ID>
     <ID>NoWildcardImports:UserTagDao.kt$import androidx.room.*</ID>
+    <ID>ObjectPropertyNaming:FlashCardsContract.kt$FlashCardsContract.CardTemplate$/** * Row ID. This is a virtual ID which actually does not exist in AnkiDroid's data base. * This column only exists so that this interface can be used with existing CursorAdapters * that require the existence of a "_id" column. This means, that it CAN NOT be used * reliably over subsequent queries. Especially if the number of cards or fields changes, * the _ID will change too. */ const val _ID = "_id"</ID>
+    <ID>ObjectPropertyNaming:FlashCardsContract.kt$FlashCardsContract.Model$/** * This is the ID of the model. It is the same as the note ID in Anki. This ID can be * used for accessing the data of the model using the URI * "content://com.ichi2.anki.flashcards/models/&amp;lt;ID&amp;gt; */ const val _ID = "_id"</ID>
+    <ID>ObjectPropertyNaming:FlashCardsContract.kt$FlashCardsContract.Note$/** * This is the ID of the note. It is the same as the note ID in Anki. This ID can be * used for accessing the data of a note using the URI * "content://com.ichi2.anki.flashcards/notes/&amp;lt;ID&amp;gt;/data */ const val _ID = "_id"</ID>
     <ID>ParameterListWrapping:AIDictionaryService.kt$AIDictionaryService$(content: String, results: MutableList&lt;AIDictionaryCache&gt;, word: String, llmConfigId: Long)</ID>
     <ID>ParameterListWrapping:AITranslatorCacheDao.kt$AITranslatorCacheDao$(sourceText: String, sourceLang: String, targetLang: String, llmConfigId: Long)</ID>
     <ID>ParameterListWrapping:DatabaseManager.kt$DatabaseManager$(id: Int, name: String, lang: String, elements: Array&lt;String&gt;, description: String, tmpl: String)</ID>
@@ -460,6 +468,10 @@
     <ID>SpacingBetweenDeclarationsWithAnnotations:PronounceManager.kt$PronounceManager$@Deprecated("Use getAvailablePronounceLanguage(Context) instead") const val LANGUAGE_GERMAN = "德语发音"</ID>
     <ID>SpacingBetweenDeclarationsWithAnnotations:PronounceManager.kt$PronounceManager$@Deprecated("Use getAvailablePronounceLanguage(Context) instead") const val LANGUAGE_JAPANESE = "日语发音"</ID>
     <ID>SpacingBetweenDeclarationsWithAnnotations:PronounceManager.kt$PronounceManager$@Deprecated("Use getAvailablePronounceLanguage(Context) instead") const val LANGUAGE_KOREAN = "韩语发音"</ID>
+    <ID>SpacingBetweenDeclarationsWithComments:Basic2Model.kt$Basic2Model$// List of card names that will be used in AnkiDroid (one for each direction of learning)</ID>
+    <ID>SpacingBetweenDeclarationsWithComments:Basic2Model.kt$Basic2Model$// Template for the question of each card</ID>
+    <ID>SpacingBetweenDeclarationsWithComments:BasicModel.kt$BasicModel$// List of card names that will be used in AnkiDroid (one for each direction of learning)</ID>
+    <ID>SpacingBetweenDeclarationsWithComments:BasicModel.kt$BasicModel$// Template for the question of each card</ID>
     <ID>SwallowedException:AIDictionaryService.kt$AIDictionaryService$e: IllegalArgumentException</ID>
     <ID>SwallowedException:AIException.kt$AIException$e: Exception</ID>
     <ID>SwallowedException:AITranslatorService.kt$AITranslatorService$e: IllegalArgumentException</ID>
@@ -473,6 +485,7 @@
     <ID>SwallowedException:DictionaryRegister.kt$DictionaryRegister$ite: java.lang.reflect.InvocationTargetException</ID>
     <ID>SwallowedException:DictionaryRegister.kt$DictionaryRegister$nsme: NoSuchMethodException</ID>
     <ID>SwallowedException:Maldpe.kt$Maldpe$e: Exception</ID>
+    <ID>SwallowedException:NoteInfo.kt$NoteInfo.Companion$e: Exception</ID>
     <ID>SwallowedException:Oalde10.kt$Oalde10$e: Exception</ID>
     <ID>SwallowedException:PlansManagerActivity.kt$PlansManagerActivity$e: Exception</ID>
     <ID>SwallowedException:PopupActivity.kt$PopupActivity$e: Exception</ID>
@@ -507,6 +520,7 @@
     <ID>TooGenericExceptionCaught:HistoryRepositoryHelper.kt$HistoryRepositoryHelper$e: Exception</ID>
     <ID>TooGenericExceptionCaught:HistoryStat.kt$HistoryStat$e: Exception</ID>
     <ID>TooGenericExceptionCaught:Maldpe.kt$Maldpe$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:NoteInfo.kt$NoteInfo.Companion$e: Exception</ID>
     <ID>TooGenericExceptionCaught:Oalde10.kt$Oalde10$e: Exception</ID>
     <ID>TooGenericExceptionCaught:OutputPlanRepositoryHelper.kt$OutputPlanRepositoryHelper$e: Exception</ID>
     <ID>TooGenericExceptionCaught:PlanEditorActivity.kt$PlanEditorActivity$e: Exception</ID>
@@ -519,6 +533,7 @@
     <ID>TooGenericExceptionCaught:PopupTranslationManager.kt$PopupTranslationManager$e: Exception</ID>
     <ID>TooGenericExceptionCaught:StorageMigrationActivity.kt$StorageMigrationActivity$e: Exception</ID>
     <ID>TooGenericExceptionCaught:UserTagRepositoryHelper.kt$UserTagRepositoryHelper$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:Utils.kt$Utils$e: Exception</ID>
     <ID>TooManyFunctions:AICacheRepository.kt$AICacheRepository</ID>
     <ID>TooManyFunctions:AIConfigRepository.kt$AIConfigRepository</ID>
     <ID>TooManyFunctions:AddContentApi.kt$AddContentApi</ID>

@@ -413,7 +413,7 @@ class AddContentApi(context: Context) {
                     val modelId = cursor.getLong(modelIdIndex)
                     val name = cursor.getString(nameIndex)
                     val flds = cursor.getString(fieldNamesIndex)
-                    val numFlds = Utils.splitFields(flds).size
+                    val numFlds = Utils.splitFields(flds)?.size ?: 0
 
                     if (numFlds >= minNumFields) {
                         models[modelId] = name
@@ -601,7 +601,8 @@ class AddContentApi(context: Context) {
 
                 cursor.use {
                     while (it.moveToNext()) {
-                        addNoteToDuplicatesArray(NoteInfo.buildFromCursor(it), duplicates, outputPos)
+                        val note = NoteInfo.buildFromCursor(it) ?: continue
+                        addNoteToDuplicatesArray(note, duplicates, outputPos)
                     }
                 }
             }
