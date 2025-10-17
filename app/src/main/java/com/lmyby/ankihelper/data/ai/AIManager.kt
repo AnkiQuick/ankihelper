@@ -44,8 +44,8 @@ class AIManager private constructor() {
 
         return translatorService.translateText(
             text,
-            translatorConfig.sourceLanguage,
-            translatorConfig.targetLanguage,
+            translatorConfig.sourceLanguage ?: "auto",
+            translatorConfig.targetLanguage ?: "en",
             translatorConfig,
             llmConfig
         )
@@ -66,8 +66,8 @@ class AIManager private constructor() {
 
         return translatorService.translateText(
             text,
-            translatorConfig.sourceLanguage,
-            translatorConfig.targetLanguage,
+            translatorConfig.sourceLanguage ?: "auto",
+            translatorConfig.targetLanguage ?: "en",
             translatorConfig,
             llmConfig
         )

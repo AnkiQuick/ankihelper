@@ -13,9 +13,9 @@ object FieldUtil {
         val sb = StringBuilder()
         val selectedItems = getSelectedItems(lines)
         for (item in selectedItems) {
-            if (item.isSelected) {
-                sb.append(item.text)
-                if (RegexUtil.isEnglish(item.text.toString()) || RegexUtil.isSpecialWord(item.text.toString())) {
+            if (item.isSelected()) {
+                sb.append(item.getText())
+                if (RegexUtil.isEnglish(item.getText().toString()) || RegexUtil.isSpecialWord(item.getText().toString())) {
                     sb.append(" ")
                 }
             }
@@ -26,8 +26,8 @@ object FieldUtil {
     private fun getSelectedItems(lines: List<BigBangLayout.Line>): List<BigBangLayout.Item> {
         val selectedItems = mutableListOf<BigBangLayout.Item>()
         for (line in lines) {
-            for (item in line.items) {
-                if (item.isSelected) {
+            line.getItems()?.forEach { item ->
+                if (item.isSelected()) {
                     selectedItems.add(item)
                 }
             }
@@ -39,16 +39,16 @@ object FieldUtil {
     fun getNormalSentence(lines: List<BigBangLayout.Line>): String {
         val sb = StringBuilder()
         for (line in lines) {
-            for (item in line.items) {
-                if (item.text == "\n") {
+            line.getItems()?.forEach { item ->
+                if (item.getText() == "\n") {
                     sb.append("<br/>")
                 }
-                if (item.isSelected) {
+                if (item.isSelected()) {
                     // sb.append("<b>")
-                    sb.append(item.text)
+                    sb.append(item.getText())
                     // sb.append("</b>")
                 } else {
-                    sb.append(item.text)
+                    sb.append(item.getText())
                 }
             }
         }
@@ -59,16 +59,16 @@ object FieldUtil {
     fun getBoldSentence(lines: List<BigBangLayout.Line>): String {
         val sb = StringBuilder()
         for (line in lines) {
-            for (item in line.items) {
-                if (item.text == "\n") {
+            line.getItems()?.forEach { item ->
+                if (item.getText() == "\n") {
                     sb.append("<br/>")
                 }
-                if (item.isSelected) {
+                if (item.isSelected()) {
                     sb.append("<b>")
-                    sb.append(item.text)
+                    sb.append(item.getText())
                     sb.append("</b>")
                 } else {
-                    sb.append(item.text)
+                    sb.append(item.getText())
                 }
             }
         }
@@ -79,14 +79,14 @@ object FieldUtil {
     fun getBlankSentence(lines: List<BigBangLayout.Line>, multiCardMode: Boolean): String {
         val sb = StringBuilder()
         for (line in lines) {
-            for (item in line.items) {
-                if (item.text == "\n") {
+            line.getItems()?.forEach { item ->
+                if (item.getText() == "\n") {
                     sb.append("<br/>")
                 }
-                if (item.isSelected) {
-                    sb.append("{{c1::${item.text}}}")
+                if (item.isSelected()) {
+                    sb.append("{{c1::${item.getText()}}}")
                 } else {
-                    sb.append(item.text)
+                    sb.append(item.getText())
                 }
             }
         }

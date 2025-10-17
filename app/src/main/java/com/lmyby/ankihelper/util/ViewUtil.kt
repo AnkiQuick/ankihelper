@@ -22,6 +22,7 @@ import java.util.concurrent.atomic.AtomicInteger
 
 /**
  * Converted to Kotlin as part of Phase 1 utility migration
+ * Modernized Display APIs in Phase 14.10
  */
 object ViewUtil {
 
@@ -119,11 +120,21 @@ object ViewUtil {
 
     @JvmStatic
     fun isNavigationBarShow(activity: Activity): Boolean {
-        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Modern API (Android 11+)
+            val windowMetrics = activity.windowManager.currentWindowMetrics
+            val insets = windowMetrics.windowInsets.getInsetsIgnoringVisibility(
+                android.view.WindowInsets.Type.navigationBars()
+            )
+            insets.bottom > 0 || insets.left > 0 || insets.right > 0
+        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.JELLY_BEAN_MR1) {
+            @Suppress("DEPRECATION")
             val display = activity.windowManager.defaultDisplay
             val size = Point()
             val realSize = Point()
+            @Suppress("DEPRECATION")
             display.getSize(size)
+            @Suppress("DEPRECATION")
             display.getRealSize(realSize)
             realSize.y != size.y
         } else {
@@ -146,11 +157,19 @@ object ViewUtil {
 
     @JvmStatic
     fun getScreenWidth(activity: Activity): Int {
-        val localDisplayMetrics = DisplayMetrics()
-        (activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getMetrics(
-            localDisplayMetrics
-        )
-        return localDisplayMetrics.widthPixels
+        return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.R) {
+            // Modern API (Android 11+)
+            val windowMetrics = activity.windowManager.currentWindowMetrics
+            windowMetrics.bounds.width()
+        } else {
+            @Suppress("DEPRECATION")
+            val localDisplayMetrics = DisplayMetrics()
+            @Suppress("DEPRECATION")
+            (activity.getSystemService(Context.WINDOW_SERVICE) as WindowManager).defaultDisplay.getMetrics(
+                localDisplayMetrics
+            )
+            localDisplayMetrics.widthPixels
+        }
     }
 
     @JvmStatic
