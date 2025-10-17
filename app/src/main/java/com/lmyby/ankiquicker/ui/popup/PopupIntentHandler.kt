@@ -177,6 +177,7 @@ class PopupIntentHandler(private val activity: Activity) {
             if (extras != null) {
                 Log.d(TAG, "Available extras: ${extras.keySet()}")
                 for (key in extras.keySet()) {
+                    @Suppress("DEPRECATION")
                     val value = extras.get(key)
                     Log.d(TAG, "Extra $key = ${value?.toString() ?: "null"}")
                 }

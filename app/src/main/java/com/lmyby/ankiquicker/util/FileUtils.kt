@@ -406,6 +406,7 @@ object FileUtils {
 
                     bm = when {
                         mimeType.contains("video") -> {
+                            @Suppress("DEPRECATION")
                             MediaStore.Video.Thumbnails.getThumbnail(
                                 resolver,
                                 id.toLong(),
@@ -414,6 +415,7 @@ object FileUtils {
                             )
                         }
                         mimeType.contains(MIME_TYPE_IMAGE) -> {
+                            @Suppress("DEPRECATION")
                             MediaStore.Images.Thumbnails.getThumbnail(
                                 resolver,
                                 id.toLong(),
