@@ -86,14 +86,20 @@ class PlanEditorActivity : BaseEditorActivity() {
                         handleIntent()
                         populateDictionary()
                         // Only populate if we have data
-                        if (deckList != null && modelList != null && deckList!!.isNotEmpty() && modelList!!.isNotEmpty()) {
+                        val hasDecks = deckList != null && deckList!!.isNotEmpty()
+                        val hasModels = modelList != null && modelList!!.isNotEmpty()
+
+                        if (hasDecks && hasModels) {
                             Log.e("PlanEditor", "UI thread: Calling populateDecksAndModels")
                             populateDecksAndModels()
                         } else {
-                            Log.e("PlanEditor", "UI thread: NO DATA - deckList=${deckList?.size}, modelList=${modelList?.size}")
+                            val deckSize = deckList?.size
+                            val modelSize = modelList?.size
+                            Log.e("PlanEditor", "UI thread: NO DATA - deckList=$deckSize, modelList=$modelSize")
                             Toast.makeText(
                                 this@PlanEditorActivity,
-                                "Failed to load decks or models from AnkiDroid. Please ensure AnkiDroid is running.",
+                                "Failed to load decks or models from AnkiDroid. " +
+                                    "Please ensure AnkiDroid is running.",
                                 Toast.LENGTH_LONG
                             ).show()
                         }
@@ -405,6 +411,7 @@ class PlanEditorActivity : BaseEditorActivity() {
         }
     }
 
+    @Suppress("LongMethod", "ReturnCount")
     private fun populateDecksAndModels() {
         // Safety checks
         if (deckList == null || deckList!!.isEmpty()) {

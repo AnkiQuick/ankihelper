@@ -423,7 +423,10 @@ class AddContentApi(context: Context) {
                     val flds = cursor.getString(fieldNamesIndex)
                     val numFlds = Utils.splitFields(flds)?.size ?: 0
 
-                    android.util.Log.e("AddContentApi", "getModelList: Found model: id=$modelId, name=$name, numFields=$numFlds")
+                    android.util.Log.e(
+                        "AddContentApi",
+                        "getModelList: Found model: id=$modelId, name=$name, numFields=$numFlds"
+                    )
 
                     if (numFlds >= minNumFields) {
                         models[modelId] = name
