@@ -1,7 +1,9 @@
 package com.lmyby.ankiquicker.data.plan
 
 import android.content.Context
+import android.content.res.Configuration
 import com.lmyby.ankiquicker.R
+import java.util.Locale
 
 /**
  * Enum representing field export element types with internationalization support
@@ -114,24 +116,70 @@ enum class FieldElement(
 
         /**
          * Convert display name to language-neutral ID
-         * Supports current language display names
+         * Supports display names from ANY language (Chinese, English, etc.)
          *
-         * @param displayName The localized display name (e.g., "Empty", "空")
+         * @param displayName The localized display name (e.g., "Empty", "空", "Example Sentence", "例句")
          * @param context Android context for accessing string resources
          * @return Language-neutral ID, or original string if not found
          */
         @JvmStatic
         fun displayNameToId(displayName: String, context: Context): String {
             // First check if it's already an ID
-            if (fromId(displayName) != null) {
-                return displayName
+            fromId(displayName)?.let { return displayName }
+
+            // Try to find matching field element by checking ALL supported languages
+            // This allows saving in one language and loading in another
+            return findElementByDisplayName(displayName, context)?.id ?: displayName
+        }
+
+        /**
+         * Find field element by display name in any supported language
+         */
+        private fun findElementByDisplayName(displayName: String, context: Context): FieldElement? {
+            val supportedLocales = listOf(
+                Locale.ENGLISH,
+                Locale.CHINESE,
+                Locale.SIMPLIFIED_CHINESE,
+                Locale.TRADITIONAL_CHINESE
+            )
+
+            for (locale in supportedLocales) {
+                val matchedElement = checkDisplayNameInLocale(displayName, context, locale)
+                if (matchedElement != null) {
+                    return matchedElement
+                }
             }
 
-            // Try to find matching field element by display name
-            val element = values().firstOrNull {
-                it.getDisplayName(context) == displayName
+            return null
+        }
+
+        /**
+         * Check if display name matches any field element in given locale
+         */
+        private fun checkDisplayNameInLocale(
+            displayName: String,
+            context: Context,
+            locale: Locale
+        ): FieldElement? {
+            val config = Configuration(context.resources.configuration)
+            config.setLocale(locale)
+            val localizedContext = context.createConfigurationContext(config)
+
+            return values().firstOrNull { fieldElement ->
+                getStringOrNull(localizedContext, fieldElement.displayNameResId) == displayName
             }
-            return element?.id ?: displayName
+        }
+
+        /**
+         * Safely get string from resources, return null if error
+         */
+        private fun getStringOrNull(context: Context, resId: Int): String? {
+            return try {
+                context.getString(resId)
+            } catch (e: android.content.res.Resources.NotFoundException) {
+                android.util.Log.w("FieldElement", "Resource not found: $resId", e)
+                null
+            }
         }
 
         /**
