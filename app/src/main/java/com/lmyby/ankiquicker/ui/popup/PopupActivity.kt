@@ -202,11 +202,11 @@ class PopupActivity : AppCompatActivity(), BigBangLayoutWrapper.ActionListener {
         OverScrollDecoratorHelper.setUpOverScroll(scrollView)
 
         assignViews()
+        loadData() // Must be called before managers that depend on 'settings'
         initSearchManager()
         initTranslationManager()
         initDialogManager()
         initBigBangLayout()
-        loadData()
         populatePlanSpinner()
         populateLanguageSpinner()
         setEventListener()
@@ -969,7 +969,7 @@ class PopupActivity : AppCompatActivity(), BigBangLayoutWrapper.ActionListener {
                             if (!root.exists()) {
                                 root.mkdirs()
                             }
-                            val sdImageMainDirectory = File(root, def.imageName)
+                            val sdImageMainDirectory = File(root, def.imageName ?: "image.png")
                             val fOut = FileOutputStream(sdImageMainDirectory)
                             bm.compress(Bitmap.CompressFormat.PNG, 100, fOut)
                             fOut.flush()
@@ -1143,7 +1143,7 @@ class PopupActivity : AppCompatActivity(), BigBangLayoutWrapper.ActionListener {
                     val original = note.fields
                     val tags = note.tags.toMutableSet()
 
-                    if (original == null || original.size != exportFields.size) {
+                    if (original.size != exportFields.size) {
                         Toast.makeText(this, R.string.str_error_notetype_noncompatible, Toast.LENGTH_SHORT)
                             .show()
                         return@setOnClickListener

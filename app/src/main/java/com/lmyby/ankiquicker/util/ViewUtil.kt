@@ -94,7 +94,9 @@ object ViewUtil {
 
     @JvmStatic
     fun px2sp(px: Float): Float {
-        return px / MyApplication.getContext().resources.displayMetrics.scaledDensity
+        val displayMetrics = MyApplication.getContext().resources.displayMetrics
+        @Suppress("DEPRECATION")
+        return px / displayMetrics.scaledDensity
     }
 
     @JvmStatic

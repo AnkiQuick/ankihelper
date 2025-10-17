@@ -22,8 +22,7 @@ class DatabaseContext(base: Context) : ContextWrapper(base) {
 
     override fun getDatabasePath(name: String): File? {
         // Always use external storage - no fallback to internal storage
-        val databaseDir = storageManager.getDatabaseDir()
-        if (databaseDir == null) {
+        val databaseDir = storageManager.getDatabaseDir() ?: run {
             Log.e(DEBUG_CONTEXT, "Database directory is null!")
             return null
         }

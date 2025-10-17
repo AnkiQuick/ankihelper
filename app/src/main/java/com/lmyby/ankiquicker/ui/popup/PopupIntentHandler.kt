@@ -213,7 +213,7 @@ class PopupIntentHandler(private val activity: Activity) {
                 .api.getNote(data.updateNoteId)
             if (note != null) {
                 val tagsSet = note.tags
-                data.tagEditedByUser = if (tagsSet != null && tagsSet.isNotEmpty()) {
+                data.tagEditedByUser = if (tagsSet.isNotEmpty()) {
                     HashSet(tagsSet)
                 } else {
                     HashSet()
