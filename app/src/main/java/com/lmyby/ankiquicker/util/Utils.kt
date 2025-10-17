@@ -184,7 +184,7 @@ object Utils {
         AlertDialog.Builder(context)
             .setMessage(message)
             .setIcon(android.R.drawable.ic_dialog_alert)
-            .setPositiveButton(android.R.string.yes) { _, _ -> }
+            .setPositiveButton(android.R.string.ok) { _, _ -> }
             .show()
     }
 

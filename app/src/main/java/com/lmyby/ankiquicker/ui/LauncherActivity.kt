@@ -197,7 +197,7 @@ class LauncherActivity : AppCompatActivity() {
                 AlertDialog.Builder(this@LauncherActivity)
                     .setMessage(R.string.permission_denied)
                     .setIcon(android.R.drawable.ic_dialog_alert)
-                    .setPositiveButton(android.R.string.yes) { _: DialogInterface, _: Int ->
+                    .setPositiveButton(android.R.string.ok) { _: DialogInterface, _: Int ->
                         openSettingsPage()
                     }
                     .show()

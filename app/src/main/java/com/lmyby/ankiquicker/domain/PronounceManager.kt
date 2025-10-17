@@ -39,21 +39,6 @@ object PronounceManager {
         )
     }
 
-    /**
-     * @deprecated Use {@link #getAvailablePronounceLanguage(Context)} instead
-     */
-    @Deprecated("Use getAvailablePronounceLanguage(Context) instead")
-    @JvmStatic
-    fun getAvailablePronounceLanguage(): Array<String> {
-        return arrayOf(
-            LANGUAGE_ENGLISH,
-            LANGUAGE_FRENCH,
-            LANGUAGE_JAPANESE,
-            LANGUAGE_KOREAN,
-            LANGUAGE_GERMAN
-        )
-    }
-
     @JvmStatic
     fun getYoudaoTypeFromLanguageIndex(index: Int): String {
         return when (index) {

@@ -72,7 +72,7 @@ class PlansAdapter(
             AlertDialog.Builder(mActivity)
                 .setTitle(R.string.confirm_deletion)
                 .setIcon(android.R.drawable.ic_dialog_alert)
-                .setPositiveButton(android.R.string.yes) { _, _ ->
+                .setPositiveButton(android.R.string.ok) { _, _ ->
                     val pos = holder.bindingAdapterPosition
                     val planName = mPlansList[pos].planName
 
@@ -82,7 +82,7 @@ class PlansAdapter(
                     mPlansList.removeAt(pos)
                     notifyItemRemoved(pos)
                 }
-                .setNegativeButton(android.R.string.no, null)
+                .setNegativeButton(android.R.string.cancel, null)
                 .show()
         }
 

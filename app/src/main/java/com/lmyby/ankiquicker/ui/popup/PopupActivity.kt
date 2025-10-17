@@ -190,7 +190,13 @@ class PopupActivity : AppCompatActivity(), BigBangLayoutWrapper.ActionListener {
         super.onCreate(savedInstanceState)
         setStatusBarColor()
         setContentView(R.layout.activity_popup)
-        overridePendingTransition(R.anim.slide_in, R.anim.slide_out)
+        // Use modern transition API for API 34+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.UPSIDE_DOWN_CAKE) {
+            overrideActivityTransition(OVERRIDE_TRANSITION_OPEN, R.anim.slide_in, R.anim.slide_out)
+        } else {
+            @Suppress("DEPRECATION")
+            overridePendingTransition(R.anim.slide_in, R.anim.slide_out)
+        }
 
         scrollView = findViewById(R.id.scrollView)
         OverScrollDecoratorHelper.setUpOverScroll(scrollView)
@@ -1296,7 +1302,12 @@ class PopupActivity : AppCompatActivity(), BigBangLayoutWrapper.ActionListener {
     }
 
     private fun vibarate(ms: Int) {
-        val vibrator = getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        val vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            getSystemService(Vibrator::class.java)
+        } else {
+            @Suppress("DEPRECATION")
+            getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+        }
         if (vibrator.hasVibrator()) {
             // Use modern VibrationEffect API (API 26+)
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

@@ -120,7 +120,7 @@ class PlansManagerActivity : AppCompatActivity() {
     private fun importPlans() {
         val clipboard = getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
         if (clipboard.hasPrimaryClip()) {
-            clipboard.text?.let { text ->
+            clipboard.primaryClip?.getItemAt(0)?.text?.let { text ->
                 val plansString = text.toString()
                 processPlanString(plansString)
             }
