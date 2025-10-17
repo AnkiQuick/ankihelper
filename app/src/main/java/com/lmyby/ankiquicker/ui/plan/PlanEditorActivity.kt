@@ -312,8 +312,8 @@ class PlanEditorActivity : BaseEditorActivity() {
     }
 
     private fun loadDecksAndModels() {
-        deckList = Utils.hashMap2LinkedHashMap(mAnkiDroid.api.deckList)
-        modelList = Utils.hashMap2LinkedHashMap(mAnkiDroid.api.modelList)
+        deckList = Utils.hashMap2LinkedHashMap(mAnkiDroid.api.getDeckList() ?: emptyMap())
+        modelList = Utils.hashMap2LinkedHashMap(mAnkiDroid.api.getModelList() ?: emptyMap())
     }
 
     private fun populateDictionary() {
@@ -426,7 +426,7 @@ class PlanEditorActivity : BaseEditorActivity() {
     }
 
     private fun refreshFieldSpinners() {
-        val fields = mAnkiDroid.api.getFieldList(currentModelId)
+        val fields = mAnkiDroid.api.getFieldList(currentModelId) ?: emptyArray()
         val dictionaryElements = currentDictionary?.getExportElementsList() ?: emptyArray()
         val sharedElements = Constant.getSharedExportElements()
         val allElements = Utils.concatenate(sharedElements, dictionaryElements)

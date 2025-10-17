@@ -10,7 +10,6 @@ import android.util.SparseArray
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import com.ichi2.anki.api.AddContentApi
-import com.ichi2.anki.api.AddContentApi.READ_WRITE_PERMISSION
 import com.ichi2.anki.api.NoteInfo
 import com.lmyby.ankiquicker.util.Constant
 import java.util.LinkedList
@@ -29,7 +28,7 @@ class AnkiDroidHelper(context: Context) {
      * Check if AnkiDroid is running by testing API access
      */
     val isAnkiDroidRunning: Boolean
-        get() = api.deckList != null
+        get() = api.getDeckList() != null
 
     /**
      * Start AnkiDroid app
@@ -52,7 +51,7 @@ class AnkiDroidHelper(context: Context) {
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.M) {
             return false
         }
-        return ContextCompat.checkSelfPermission(mContext, READ_WRITE_PERMISSION) != PackageManager.PERMISSION_GRANTED
+        return ContextCompat.checkSelfPermission(mContext, AddContentApi.READ_WRITE_PERMISSION) != PackageManager.PERMISSION_GRANTED
     }
 
     /**
@@ -62,7 +61,7 @@ class AnkiDroidHelper(context: Context) {
      * @param callbackCode     The callback code to be used in onRequestPermissionsResult()
      */
     fun requestPermission(callbackActivity: Activity, callbackCode: Int) {
-        ActivityCompat.requestPermissions(callbackActivity, arrayOf(READ_WRITE_PERMISSION), callbackCode)
+        ActivityCompat.requestPermissions(callbackActivity, arrayOf(AddContentApi.READ_WRITE_PERMISSION), callbackCode)
     }
 
     /**
@@ -142,12 +141,12 @@ class AnkiDroidHelper(context: Context) {
 
         // if we have a reference saved to modelName and it exists and has at least numFields then return it
         if (prefsModelId != -1L && api.getModelName(prefsModelId) != null
-            && api.getFieldList(prefsModelId).size >= numFields
+            && api.getFieldList(prefsModelId)?.size ?: 0 >= numFields
         ) { // could potentially have been renamed
             return prefsModelId
         }
 
-        val modelList = api.getModelList(numFields)
+        val modelList = api.getModelList(numFields) ?: return null
         for ((key, value) in modelList) {
             if (value == modelName) {
                 return key // first model wins
@@ -195,7 +194,7 @@ class AnkiDroidHelper(context: Context) {
      * @return the ID of the deck that has given name, or null if no deck was found
      */
     fun getDeckId(deckName: String): Long? {
-        val deckList = api.deckList
+        val deckList = api.getDeckList() ?: return null
         for ((key, value) in deckList) {
             if (value == deckName) {
                 return key

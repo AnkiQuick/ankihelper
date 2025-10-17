@@ -97,19 +97,22 @@
     <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$private fun _romajiToHiragana(roma: String): String</ID>
     <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$private fun _romajiToKana(roma: String, ignoreCase: Boolean?): String</ID>
     <ID>ImplicitDefaultLocale:AIDictionary.kt$AIDictionary$String.format("[sound:https://dict.youdao.com/dictvoice?audio=%s&amp;type=%d]", word, type)</ID>
+    <ID>ImplicitDefaultLocale:AddContentApi.kt$AddContentApi.CompatV1$String.format("%s:\"%%s\" note:\"%s\"", modelFieldList[0], modelName)</ID>
+    <ID>ImplicitDefaultLocale:AddContentApi.kt$AddContentApi.CompatV1$String.format("note:\"%s\"", modelName)</ID>
     <ID>ImplicitDefaultLocale:DatabaseHelper.kt$DatabaseHelper.Companion$String.format( "create table if not exists %s (%s integer primary key, %s integer, %s text, %s text, %s text, %s text, %s text, %s text, %s text)", DBContract.History.TABLE_NAME, DBContract.History.COLUMN_TIME_STAMP, DBContract.History.COLUMN_TYPE, DBContract.History.COLUMN_WORD, DBContract.History.COLUMN_SENTENCE, DBContract.History.COLUMN_DICTIONARY, DBContract.History.COLUMN_DEFINITION, DBContract.History.COLUMN_TRANSLATION, DBContract.History.COLUMN_NOTE, DBContract.History.COLUMN_TAG )</ID>
     <ID>ImplicitDefaultLocale:DatabaseHelper.kt$DatabaseHelper.Companion$String.format( "create table if not exists %s (%s integer, %s integer, %s text, %s text, %s text, %s text)", DBContract.Book.TABLE_NAME, DBContract.Book.COLUMN_ID, DBContract.Book.COLUMN_LAST_OPEN_TIME, DBContract.Book.COLUMN_BOOK_NAME, DBContract.Book.COLUMN_AUTHOR, DBContract.Book.COLUMN_BOOK_PATH, DBContract.Book.COLUMN_READ_POSITION )</ID>
     <ID>ImplicitDefaultLocale:DatabaseHelper.kt$DatabaseHelper.Companion$String.format( "create table if not exists %s (%s text, %s text, %s integer, %s integer, %s text)", DBContract.Plan.TABLE_NAME, DBContract.Plan.COLUMN_PLAN_NAME, DBContract.Plan.COLUMN_DICTIONARY_KEY, DBContract.Plan.COLUMN_OUTPUT_DECK_ID, DBContract.Plan.COLUMN_OUTPUT_MODEL_ID, DBContract.Plan.COLUMN_FIELDS_MAP )</ID>
     <ID>ImplicitDefaultLocale:PopupActivity.kt$PopupActivity$String.format( "方案\"%s\"所选词典\"%s\"不存在，请检查是否需要重新导入自定义词典", currentOutputPlan!!.planName, currentOutputPlan!!.dictionaryKey )</ID>
     <ID>ImplicitDefaultLocale:StorageMigrationActivity.kt$StorageMigrationActivity$String.format("%.2f %s", unitValue, units[unitIndex])</ID>
-    <ID>ImportOrdering:AIDictionary.kt$import android.content.Context import android.util.Log import android.widget.ArrayAdapter import android.widget.ListAdapter import com.lmyby.ankihelper.MyApplication import com.lmyby.ankihelper.R import com.lmyby.ankihelper.data.ai.AIDictionaryConfig import com.lmyby.ankihelper.data.ai.AIConfigRepository import com.lmyby.ankihelper.data.ai.AIException import com.lmyby.ankihelper.data.ai.service.AIDictionaryService</ID>
+    <ID>ImportOrdering:AIDictionary.kt$import android.content.Context import android.util.Log import android.widget.ArrayAdapter import android.widget.ListAdapter import com.lmyby.ankiquicker.MyApplication import com.lmyby.ankiquicker.R import com.lmyby.ankiquicker.data.ai.AIDictionaryConfig import com.lmyby.ankiquicker.data.ai.AIConfigRepository import com.lmyby.ankiquicker.data.ai.AIException import com.lmyby.ankiquicker.data.ai.service.AIDictionaryService</ID>
     <ID>ImportOrdering:Cdepe4Dao.kt$import androidx.room.Dao import androidx.room.Query import androidx.room.SkipQueryVerification import android.database.Cursor</ID>
     <ID>ImportOrdering:Oalde10Dao.kt$import androidx.room.Dao import androidx.room.Query import androidx.room.SkipQueryVerification import android.database.Cursor</ID>
-    <ID>ImportOrdering:PopupActivity.kt$import android.annotation.SuppressLint import android.app.AlertDialog import android.content.ClipData import android.content.ClipboardManager import android.content.Context import android.content.Intent import android.graphics.Bitmap import android.graphics.drawable.BitmapDrawable import android.media.AudioAttributes import android.media.AudioManager import android.media.MediaPlayer import android.net.Uri import android.os.Build import android.os.Bundle import android.os.Handler import android.os.Looper import android.os.Message import android.os.VibrationEffect import android.os.Vibrator import android.text.Editable import android.text.TextWatcher import android.util.Log import android.view.ActionMode import android.view.KeyEvent import android.view.LayoutInflater import android.view.Menu import android.view.MenuItem import android.view.MotionEvent import android.view.View import android.view.ViewGroup import android.view.inputmethod.EditorInfo import android.view.inputmethod.InputMethodManager import android.widget.* import androidx.appcompat.app.AppCompatActivity import androidx.cardview.widget.CardView import androidx.core.content.ContextCompat import androidx.core.text.HtmlCompat import com.bumptech.glide.Glide import com.ichi2.anki.api.NoteInfo import com.lmyby.ankihelper.MyApplication import com.lmyby.ankihelper.R import com.lmyby.ankihelper.anki.AnkiDroidHelper import com.lmyby.ankihelper.data.Settings import com.lmyby.ankihelper.data.ai.AIManager import com.lmyby.ankihelper.data.database.AppDatabase import com.lmyby.ankihelper.data.dict.Definition import com.lmyby.ankihelper.data.dict.DictionaryRegister import com.lmyby.ankihelper.data.dict.IDictionary import com.lmyby.ankihelper.data.dict.UrbanAutoCompleteAdapter import com.lmyby.ankihelper.data.history.HistoryUtil import com.lmyby.ankihelper.data.plan.OutputPlanEntity import com.lmyby.ankihelper.data.plan.OutputPlanPOJO import com.lmyby.ankihelper.data.plan.OutputPlanRepository import com.lmyby.ankihelper.data.plan.OutputPlanRepositoryHelper import com.lmyby.ankihelper.domain.CBWatcherService import com.lmyby.ankihelper.domain.PlayAudioManager import com.lmyby.ankihelper.domain.PronounceManager import com.lmyby.ankihelper.ui.widget.BigBangLayout import com.lmyby.ankihelper.ui.widget.BigBangLayoutWrapper import com.lmyby.ankihelper.util.* import com.tonyodev.fetch2.* import com.tonyodev.fetch2.Error import com.tonyodev.fetch2core.DownloadBlock import com.tonyodev.fetch2core.Func import me.everything.android.ui.overscroll.OverScrollDecoratorHelper import java.io.File import java.io.FileOutputStream import java.io.IOException import java.lang.ref.WeakReference import android.widget.SimpleCursorAdapter</ID>
-    <ID>ImportOrdering:StatActivity.kt$import android.graphics.Color import android.os.Bundle import android.view.MenuItem import android.view.View import android.widget.AdapterView import android.widget.Spinner import androidx.appcompat.app.AppCompatActivity import androidx.core.app.NavUtils import androidx.lifecycle.lifecycleScope import kotlinx.coroutines.Dispatchers import kotlinx.coroutines.launch import kotlinx.coroutines.withContext import com.github.mikephil.charting.charts.BarChart import com.github.mikephil.charting.charts.LineChart import com.github.mikephil.charting.components.Legend import com.github.mikephil.charting.components.XAxis import com.github.mikephil.charting.data.* import com.github.mikephil.charting.formatter.ValueFormatter import com.github.mikephil.charting.interfaces.datasets.ILineDataSet import com.google.android.material.chip.ChipGroup import com.lmyby.ankihelper.R import com.lmyby.ankihelper.data.Settings import com.lmyby.ankihelper.data.history.HistoryStat</ID>
+    <ID>ImportOrdering:PopupActivity.kt$import android.annotation.SuppressLint import android.app.AlertDialog import android.content.ClipData import android.content.ClipboardManager import android.content.Context import android.content.Intent import android.graphics.Bitmap import android.graphics.drawable.BitmapDrawable import android.media.AudioAttributes import android.media.AudioManager import android.media.MediaPlayer import android.net.Uri import android.os.Build import android.os.Bundle import android.os.Handler import android.os.Looper import android.os.Message import android.os.VibrationEffect import android.os.Vibrator import android.text.Editable import android.text.TextWatcher import android.util.Log import android.view.ActionMode import android.view.KeyEvent import android.view.LayoutInflater import android.view.Menu import android.view.MenuItem import android.view.MotionEvent import android.view.View import android.view.ViewGroup import android.view.inputmethod.EditorInfo import android.view.inputmethod.InputMethodManager import android.widget.* import androidx.appcompat.app.AppCompatActivity import androidx.cardview.widget.CardView import androidx.core.content.ContextCompat import androidx.core.text.HtmlCompat import com.bumptech.glide.Glide import com.ichi2.anki.api.NoteInfo import com.lmyby.ankiquicker.MyApplication import com.lmyby.ankiquicker.R import com.lmyby.ankiquicker.anki.AnkiDroidHelper import com.lmyby.ankiquicker.data.Settings import com.lmyby.ankiquicker.data.ai.AIManager import com.lmyby.ankiquicker.data.database.AppDatabase import com.lmyby.ankiquicker.data.dict.Definition import com.lmyby.ankiquicker.data.dict.DictionaryRegister import com.lmyby.ankiquicker.data.dict.IDictionary import com.lmyby.ankiquicker.data.dict.UrbanAutoCompleteAdapter import com.lmyby.ankiquicker.data.history.HistoryUtil import com.lmyby.ankiquicker.data.plan.OutputPlanEntity import com.lmyby.ankiquicker.data.plan.OutputPlanPOJO import com.lmyby.ankiquicker.data.plan.OutputPlanRepository import com.lmyby.ankiquicker.data.plan.OutputPlanRepositoryHelper import com.lmyby.ankiquicker.domain.CBWatcherService import com.lmyby.ankiquicker.domain.PlayAudioManager import com.lmyby.ankiquicker.domain.PronounceManager import com.lmyby.ankiquicker.ui.widget.BigBangLayout import com.lmyby.ankiquicker.ui.widget.BigBangLayoutWrapper import com.lmyby.ankiquicker.util.* import com.tonyodev.fetch2.* import com.tonyodev.fetch2.Error import com.tonyodev.fetch2core.DownloadBlock import com.tonyodev.fetch2core.Func import me.everything.android.ui.overscroll.OverScrollDecoratorHelper import java.io.File import java.io.FileOutputStream import java.io.IOException import java.lang.ref.WeakReference import android.widget.SimpleCursorAdapter</ID>
+    <ID>ImportOrdering:StatActivity.kt$import android.graphics.Color import android.os.Bundle import android.view.MenuItem import android.view.View import android.widget.AdapterView import android.widget.Spinner import androidx.appcompat.app.AppCompatActivity import androidx.core.app.NavUtils import androidx.lifecycle.lifecycleScope import kotlinx.coroutines.Dispatchers import kotlinx.coroutines.launch import kotlinx.coroutines.withContext import com.github.mikephil.charting.charts.BarChart import com.github.mikephil.charting.charts.LineChart import com.github.mikephil.charting.components.Legend import com.github.mikephil.charting.components.XAxis import com.github.mikephil.charting.data.* import com.github.mikephil.charting.formatter.ValueFormatter import com.github.mikephil.charting.interfaces.datasets.ILineDataSet import com.google.android.material.chip.ChipGroup import com.lmyby.ankiquicker.R import com.lmyby.ankiquicker.data.Settings import com.lmyby.ankiquicker.data.history.HistoryStat</ID>
     <ID>Indentation:AIDictionaryService.kt$AIDictionaryService$ </ID>
     <ID>Indentation:AIService.kt$AIService$ </ID>
     <ID>Indentation:AITranslatorService.kt$AITranslatorService$ </ID>
+    <ID>Indentation:AddContentApi.kt$AddContentApi$ </ID>
     <ID>Indentation:AppTheme.kt$AppTheme.Companion$ </ID>
     <ID>Indentation:BigBangLayout.kt$BigBangLayout$ </ID>
     <ID>Indentation:BigBangLayout.kt$BigBangLayout.Item$ </ID>
@@ -147,8 +150,10 @@
     <ID>LongMethod:WanaKanaJava.kt$WanaKanaJava$private fun _romajiToKana(roma: String, ignoreCase: Boolean?): String</ID>
     <ID>LongMethod:WanaKanaJava.kt$WanaKanaJava$private fun prepareJtoR()</ID>
     <ID>LongMethod:WanaKanaJava.kt$WanaKanaJava$private fun prepareRtoJ()</ID>
+    <ID>LongParameterList:AddContentApi.kt$AddContentApi$( name: String, fields: Array&lt;String&gt;, cards: Array&lt;String&gt;, qfmt: Array&lt;String&gt;, afmt: Array&lt;String&gt;, css: String?, did: Long?, sortf: Int? )</ID>
     <ID>LongParameterList:DatabaseManager.kt$DatabaseManager$(id: Int, name: String, lang: String, elements: Array&lt;String&gt;, description: String, tmpl: String)</ID>
     <ID>LongParameterList:HistoryUtil.kt$HistoryUtil$( sentence: String, word: String, dictionary: String, definition: String, translation: String, note: String, tag: String )</ID>
+    <ID>LoopWithTooManyJumpStatements:AddContentApi.kt$AddContentApi.CompatV2$while</ID>
     <ID>LoopWithTooManyJumpStatements:BigBangLayout.kt$BigBangLayout$for</ID>
     <ID>LoopWithTooManyJumpStatements:PlansManagerActivity.kt$PlansManagerActivity$for</ID>
     <ID>LoopWithTooManyJumpStatements:TextSplitter.kt$TextSplitter$for</ID>
@@ -278,6 +283,7 @@
     <ID>MaxLineLength:AITranslatorCacheDao.kt$AITranslatorCacheDao$suspend</ID>
     <ID>MaxLineLength:AITranslatorService.kt$AITranslatorService$val userMessage = "Please provide the translation of the text \"$text\" from $sourceLanguage to $targetLanguage."</ID>
     <ID>MaxLineLength:AnkiDroidHelper.kt$AnkiDroidHelper$*</ID>
+    <ID>MaxLineLength:AnkiDroidHelper.kt$AnkiDroidHelper$return ContextCompat.checkSelfPermission(mContext, AddContentApi.READ_WRITE_PERMISSION) != PackageManager.PERMISSION_GRANTED</ID>
     <ID>MaxLineLength:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$database.execSQL("CREATE INDEX IF NOT EXISTS index_aidictionarycache_llmConfigId ON aidictionarycache(llmConfigId)")</ID>
     <ID>MaxLineLength:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$database.execSQL("CREATE INDEX IF NOT EXISTS index_aidictionaryconfig_llmId ON aidictionaryconfig(llmId)")</ID>
     <ID>MaxLineLength:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$database.execSQL("CREATE INDEX IF NOT EXISTS index_aitranslatorcache_llmConfigId ON aitranslatorcache(llmConfigId)")</ID>
@@ -320,6 +326,7 @@
     <ID>MaximumLineLength:AIDictionaryService.kt$AIDictionaryService$ </ID>
     <ID>MaximumLineLength:AITranslatorCacheDao.kt$AITranslatorCacheDao$ </ID>
     <ID>MaximumLineLength:AITranslatorService.kt$AITranslatorService$ </ID>
+    <ID>MaximumLineLength:AnkiDroidHelper.kt$AnkiDroidHelper$ </ID>
     <ID>MaximumLineLength:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$ </ID>
     <ID>MaximumLineLength:BaseDatabaseHelper.kt$BaseDatabaseHelper$ </ID>
     <ID>MaximumLineLength:Cdepe4.kt$Cdepe4$ </ID>
@@ -353,6 +360,9 @@
     <ID>NestedBlockDepth:AIService.kt$AIService$@Throws(IOException::class, AIException::class) fun callLLMWithRetry( config: LLMConfig, systemMessage: String, userMessage: String, maxRetries: Int ): String</ID>
     <ID>NestedBlockDepth:AITranslatorConfigEditorActivity.kt$AITranslatorConfigEditorActivity$private fun populateFields()</ID>
     <ID>NestedBlockDepth:AITranslatorService.kt$AITranslatorService$@Throws(IOException::class, AIException::class) private fun parseTranslationResponse(response: String): JSONObject</ID>
+    <ID>NestedBlockDepth:AddContentApi.kt$AddContentApi$fun getModelList(minNumFields: Int): Map&lt;Long, String&gt;?</ID>
+    <ID>NestedBlockDepth:AddContentApi.kt$AddContentApi$private fun addNoteForContentValues(deckId: Long, values: ContentValues): Uri?</ID>
+    <ID>NestedBlockDepth:AddContentApi.kt$AddContentApi.CompatV2$override fun findDuplicateNotes(modelId: Long, keys: List&lt;String&gt;): SparseArray&lt;List&lt;NoteInfo&gt;&gt;</ID>
     <ID>NestedBlockDepth:BaseDatabaseHelper.kt$BaseDatabaseHelper$private fun copyDatabaseFromAssets(context: Context)</ID>
     <ID>NestedBlockDepth:BigBangLayout.kt$BigBangLayout$override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int)</ID>
     <ID>NestedBlockDepth:BigBangLayout.kt$BigBangLayout$override fun onTouchEvent(event: MotionEvent): Boolean</ID>
@@ -369,21 +379,21 @@
     <ID>NestedBlockDepth:WanaKanaJava.kt$WanaKanaJava$private fun _romajiToKana(roma: String, ignoreCase: Boolean?): String</ID>
     <ID>NoMultipleSpaces:DatabaseManager.kt$DatabaseManager$ </ID>
     <ID>NoMultipleSpaces:Settings.kt$Settings$ </ID>
-    <ID>NoUnusedImports:BaseActivity.kt$com.lmyby.ankihelper.ui.base.BaseActivity.kt</ID>
-    <ID>NoUnusedImports:BigBangBottom.kt$com.lmyby.ankihelper.ui.widget.BigBangBottom.kt</ID>
-    <ID>NoUnusedImports:CBWatcherService.kt$com.lmyby.ankihelper.domain.CBWatcherService.kt</ID>
-    <ID>NoUnusedImports:FileUtils.kt$com.lmyby.ankihelper.util.FileUtils.kt</ID>
-    <ID>NoUnusedImports:MyApplication.kt$com.lmyby.ankihelper.MyApplication.kt</ID>
-    <ID>NoUnusedImports:PlanEditorActivity.kt$com.lmyby.ankihelper.ui.plan.PlanEditorActivity.kt</ID>
-    <ID>NoUnusedImports:PopupActivity.kt$com.lmyby.ankihelper.ui.popup.PopupActivity.kt</ID>
-    <ID>NoUnusedImports:PopupDialogManager.kt$com.lmyby.ankihelper.ui.popup.PopupDialogManager.kt</ID>
-    <ID>NoUnusedImports:PopupIntentHandler.kt$com.lmyby.ankihelper.ui.popup.PopupIntentHandler.kt</ID>
-    <ID>NoUnusedImports:PopupSearchManager.kt$com.lmyby.ankihelper.ui.popup.PopupSearchManager.kt</ID>
-    <ID>NoUnusedImports:PopupTranslationManager.kt$com.lmyby.ankihelper.ui.popup.PopupTranslationManager.kt</ID>
-    <ID>NoUnusedImports:ScrollAwareFABBehaviour.kt$com.lmyby.ankihelper.ui.behaviour.ScrollAwareFABBehaviour.kt</ID>
-    <ID>NoUnusedImports:StorageMigrationActivity.kt$com.lmyby.ankihelper.ui.storage.StorageMigrationActivity.kt</ID>
-    <ID>NoUnusedImports:Utils.kt$com.lmyby.ankihelper.util.Utils.kt</ID>
-    <ID>NoUnusedImports:ViewUtil.kt$com.lmyby.ankihelper.util.ViewUtil.kt</ID>
+    <ID>NoUnusedImports:BaseActivity.kt$com.lmyby.ankiquicker.ui.base.BaseActivity.kt</ID>
+    <ID>NoUnusedImports:BigBangBottom.kt$com.lmyby.ankiquicker.ui.widget.BigBangBottom.kt</ID>
+    <ID>NoUnusedImports:CBWatcherService.kt$com.lmyby.ankiquicker.domain.CBWatcherService.kt</ID>
+    <ID>NoUnusedImports:FileUtils.kt$com.lmyby.ankiquicker.util.FileUtils.kt</ID>
+    <ID>NoUnusedImports:MyApplication.kt$com.lmyby.ankiquicker.MyApplication.kt</ID>
+    <ID>NoUnusedImports:PlanEditorActivity.kt$com.lmyby.ankiquicker.ui.plan.PlanEditorActivity.kt</ID>
+    <ID>NoUnusedImports:PopupActivity.kt$com.lmyby.ankiquicker.ui.popup.PopupActivity.kt</ID>
+    <ID>NoUnusedImports:PopupDialogManager.kt$com.lmyby.ankiquicker.ui.popup.PopupDialogManager.kt</ID>
+    <ID>NoUnusedImports:PopupIntentHandler.kt$com.lmyby.ankiquicker.ui.popup.PopupIntentHandler.kt</ID>
+    <ID>NoUnusedImports:PopupSearchManager.kt$com.lmyby.ankiquicker.ui.popup.PopupSearchManager.kt</ID>
+    <ID>NoUnusedImports:PopupTranslationManager.kt$com.lmyby.ankiquicker.ui.popup.PopupTranslationManager.kt</ID>
+    <ID>NoUnusedImports:ScrollAwareFABBehaviour.kt$com.lmyby.ankiquicker.ui.behaviour.ScrollAwareFABBehaviour.kt</ID>
+    <ID>NoUnusedImports:StorageMigrationActivity.kt$com.lmyby.ankiquicker.ui.storage.StorageMigrationActivity.kt</ID>
+    <ID>NoUnusedImports:Utils.kt$com.lmyby.ankiquicker.util.Utils.kt</ID>
+    <ID>NoUnusedImports:ViewUtil.kt$com.lmyby.ankiquicker.util.ViewUtil.kt</ID>
     <ID>NoWildcardImports:AIDictionaryCacheDao.kt$import androidx.room.*</ID>
     <ID>NoWildcardImports:AIDictionaryConfigDao.kt$import androidx.room.*</ID>
     <ID>NoWildcardImports:AITranslatorCacheDao.kt$import androidx.room.*</ID>
@@ -393,7 +403,7 @@
     <ID>NoWildcardImports:LLMConfigDao.kt$import androidx.room.*</ID>
     <ID>NoWildcardImports:OutputPlanDao.kt$import androidx.room.*</ID>
     <ID>NoWildcardImports:PopupActivity.kt$import android.widget.*</ID>
-    <ID>NoWildcardImports:PopupActivity.kt$import com.lmyby.ankihelper.util.*</ID>
+    <ID>NoWildcardImports:PopupActivity.kt$import com.lmyby.ankiquicker.util.*</ID>
     <ID>NoWildcardImports:PopupActivity.kt$import com.tonyodev.fetch2.*</ID>
     <ID>NoWildcardImports:SettingsFragment.kt$import androidx.preference.*</ID>
     <ID>NoWildcardImports:StatActivity.kt$import com.github.mikephil.charting.data.*</ID>
@@ -411,8 +421,13 @@
     <ID>PrintStackTrace:Maldpe.kt$Maldpe$e</ID>
     <ID>PrintStackTrace:Oalde10.kt$Oalde10$e</ID>
     <ID>PrintStackTrace:VocabularyCardModel.kt$VocabularyCardModel$e</ID>
+    <ID>ReturnCount:AddContentApi.kt$AddContentApi$fun getDeckName(did: Long?): String?</ID>
+    <ID>ReturnCount:AddContentApi.kt$AddContentApi$fun getModelName(mid: Long?): String?</ID>
+    <ID>ReturnCount:AddContentApi.kt$AddContentApi$fun previewNewNote(mid: Long, flds: Array&lt;String&gt;): Map&lt;String, Map&lt;String, String&gt;&gt;?</ID>
+    <ID>ReturnCount:AddContentApi.kt$AddContentApi$private fun addNoteForContentValues(deckId: Long, values: ContentValues): Uri?</ID>
     <ID>ReturnCount:AnkiDroidHelper.kt$AnkiDroidHelper$fun findDeckIdByName(deckName: String): Long?</ID>
     <ID>ReturnCount:AnkiDroidHelper.kt$AnkiDroidHelper$fun findModelIdByName(modelName: String, numFields: Int): Long?</ID>
+    <ID>ReturnCount:AnkiDroidHelper.kt$AnkiDroidHelper$fun getDeckId(deckName: String): Long?</ID>
     <ID>ReturnCount:BigBangLayout.kt$BigBangLayout$private fun findItemIndexByPoint(x: Int, y: Int): Item?</ID>
     <ID>ReturnCount:CBWatcherService.kt$CBWatcherService$private fun hasClipboardPermission(): Boolean</ID>
     <ID>ReturnCount:CBWatcherService.kt$CBWatcherService.Companion$@JvmStatic fun isEnglish(content: String): Boolean</ID>
@@ -448,6 +463,7 @@
     <ID>SwallowedException:AIDictionaryService.kt$AIDictionaryService$e: IllegalArgumentException</ID>
     <ID>SwallowedException:AIException.kt$AIException$e: Exception</ID>
     <ID>SwallowedException:AITranslatorService.kt$AITranslatorService$e: IllegalArgumentException</ID>
+    <ID>SwallowedException:AddContentApi.kt$AddContentApi$e: Exception</ID>
     <ID>SwallowedException:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$e: Exception</ID>
     <ID>SwallowedException:BigBangLayout.kt$BigBangLayout$e: Throwable</ID>
     <ID>SwallowedException:Cdepe4.kt$Cdepe4$e: Exception</ID>
@@ -476,6 +492,7 @@
     <ID>TooGenericExceptionCaught:AIDictionaryService.kt$AIDictionaryService$fallbackE: Exception</ID>
     <ID>TooGenericExceptionCaught:AIException.kt$AIException$e: Exception</ID>
     <ID>TooGenericExceptionCaught:AITranslatorService.kt$AITranslatorService$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:AddContentApi.kt$AddContentApi$e: Exception</ID>
     <ID>TooGenericExceptionCaught:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$e: Exception</ID>
     <ID>TooGenericExceptionCaught:BigBangLayout.kt$BigBangLayout$e: Throwable</ID>
     <ID>TooGenericExceptionCaught:Cdepe4.kt$Cdepe4$e: Exception</ID>
@@ -504,6 +521,7 @@
     <ID>TooGenericExceptionCaught:UserTagRepositoryHelper.kt$UserTagRepositoryHelper$e: Exception</ID>
     <ID>TooManyFunctions:AICacheRepository.kt$AICacheRepository</ID>
     <ID>TooManyFunctions:AIConfigRepository.kt$AIConfigRepository</ID>
+    <ID>TooManyFunctions:AddContentApi.kt$AddContentApi</ID>
     <ID>TooManyFunctions:BaseActivity.kt$BaseActivity : AppCompatActivity</ID>
     <ID>TooManyFunctions:BaseEditorActivity.kt$BaseEditorActivity : BaseActivity</ID>
     <ID>TooManyFunctions:BigBangBottom.kt$BigBangBottom : ViewGroupOnClickListener</ID>
@@ -603,6 +621,8 @@
     <ID>UseCheckOrError:AnkiDroidHelper.kt$AnkiDroidHelper$throw IllegalStateException("The array of duplicates goes outside the bounds of the original lists")</ID>
     <ID>UseCheckOrError:MyApplication.kt$MyApplication.Companion$throw IllegalStateException("Application context is not initialized")</ID>
     <ID>UseCheckOrError:MyApplication.kt$MyApplication.Companion$throw IllegalStateException("Application is not initialized")</ID>
+    <ID>UseRequire:AddContentApi.kt$AddContentApi$throw IllegalArgumentException("cards, qfmt, and afmt arrays must all be same length")</ID>
+    <ID>UseRequire:AddContentApi.kt$AddContentApi$throw IllegalArgumentException("fieldsList and tagsList different length")</ID>
     <ID>VariableNaming:VocabularyCardModel.kt$VocabularyCardModel$private val CODING = "UTF-8"</ID>
     <ID>VariableNaming:VocabularyCardModel.kt$VocabularyCardModel$private val MODEL_FILE = "vocabulary_card_model.html"</ID>
     <ID>VariableNaming:VocabularyCardModel.kt$VocabularyCardModel$private val MODEL_SPLITTER = "@@@"</ID>
@@ -620,7 +640,7 @@
     <ID>WildcardImport:LLMConfigDao.kt$import androidx.room.*</ID>
     <ID>WildcardImport:OutputPlanDao.kt$import androidx.room.*</ID>
     <ID>WildcardImport:PopupActivity.kt$import android.widget.*</ID>
-    <ID>WildcardImport:PopupActivity.kt$import com.lmyby.ankihelper.util.*</ID>
+    <ID>WildcardImport:PopupActivity.kt$import com.lmyby.ankiquicker.util.*</ID>
     <ID>WildcardImport:PopupActivity.kt$import com.tonyodev.fetch2.*</ID>
     <ID>WildcardImport:SettingsFragment.kt$import androidx.preference.*</ID>
     <ID>WildcardImport:StatActivity.kt$import com.github.mikephil.charting.data.*</ID>

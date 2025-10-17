@@ -60,7 +60,7 @@ class PlansManagerActivity : AppCompatActivity() {
 
         Thread {
             try {
-                MyApplication.getAnkiDroid(applicationContext).api.deckList
+                MyApplication.getAnkiDroid(applicationContext).api.getDeckList()
             } catch (e: Exception) {
                 // Silently fail
             }

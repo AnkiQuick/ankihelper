@@ -217,7 +217,7 @@ class PopupActivity : AppCompatActivity(), BigBangLayoutWrapper.ActionListener {
     private fun asyncInvokeDroid() {
         Thread {
             try {
-                MyApplication.getAnkiDroid(MyApplication.getContext()).api.deckList
+                MyApplication.getAnkiDroid(MyApplication.getContext()).api.getDeckList()
             } catch (e: Exception) {
                 // Silently fail
             }
@@ -1130,6 +1130,10 @@ class PopupActivity : AppCompatActivity(), BigBangLayoutWrapper.ActionListener {
                     }
                 } else {
                     val note = mAnkiDroid.api.getNote(mUpdateNoteId)
+                    if (note == null) {
+                        Toast.makeText(this, R.string.str_error_notetype_noncompatible, Toast.LENGTH_SHORT).show()
+                        return@setOnClickListener
+                    }
                     val original = note.fields
                     val tags = note.tags.toMutableSet()
 

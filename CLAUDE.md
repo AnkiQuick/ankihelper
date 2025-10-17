@@ -5,12 +5,12 @@
 
 ### 🚨 PARALLEL TOOL EXECUTION LIMIT 🚨
 
-**MANDATORY RULE**: Execute a **MAXIMUM OF 2 TOOLS IN PARALLEL** at any time.
+**MANDATORY RULE**: Execute a **MAXIMUM OF 3 TOOLS IN PARALLEL** at any time.
 
 **This rule MUST be followed as the FIRST PRIORITY** to prevent resource consumption.
 
-- ✅ **ALLOWED**: Running 2 independent tools in a single message (e.g., `git status` and `git diff`)
-- ❌ **NOT ALLOWED**: Running 3 or more tools in parallel
+- ✅ **ALLOWED**: Running 3 independent tools in a single message (e.g., `git status` and `git diff`)
+- ❌ **NOT ALLOWED**: Running 4 or more tools in parallel
 - ❌ **NOT ALLOWED**: Running multiple heavy operations simultaneously (builds, large file searches, etc.)
 
 **Rationale**:
