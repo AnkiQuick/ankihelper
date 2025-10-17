@@ -19,6 +19,7 @@ import com.lmyby.ankiquicker.anki.AnkiDroidHelper
 import com.lmyby.ankiquicker.data.database.AppDatabase
 import com.lmyby.ankiquicker.data.dict.DictionaryRegister
 import com.lmyby.ankiquicker.data.dict.IDictionary
+import com.lmyby.ankiquicker.data.plan.FieldElement
 import com.lmyby.ankiquicker.data.plan.OutputPlanEntity
 import com.lmyby.ankiquicker.data.plan.OutputPlanPOJO
 import com.lmyby.ankiquicker.data.plan.OutputPlanRepository
@@ -135,7 +136,7 @@ class PlanEditorActivity : BaseEditorActivity() {
         // Check if all fields are empty
         val allFieldsAreEmpty = fieldsMapItemList.all { item ->
             val v = item.exportedElementNames[item.selectedFieldPos]
-            v == Constant.getSharedExportElements()[0]
+            v == Constant.getSharedExportElements(this)[0]
         }
 
         if (allFieldsAreEmpty) {
@@ -225,8 +226,10 @@ class PlanEditorActivity : BaseEditorActivity() {
         val map = LinkedHashMap<String, String>()
         for (item in fieldsMapItemList) {
             val k = item.field
-            val v = item.exportedElementNames[item.selectedFieldPos]
-            map[k] = v
+            val displayName = item.exportedElementNames[item.selectedFieldPos]
+            // Convert display name to language-neutral ID before saving
+            val id = FieldElement.displayNameToId(displayName, this@PlanEditorActivity)
+            map[k] = id
         }
         plan.fieldsMap = map
 
@@ -556,7 +559,7 @@ class PlanEditorActivity : BaseEditorActivity() {
         }
 
         val dictionaryElements = currentDictionary?.getExportElementsList() ?: emptyArray()
-        val sharedElements = Constant.getSharedExportElements()
+        val sharedElements = Constant.getSharedExportElements(this)
         val allElements = Utils.concatenate(sharedElements, dictionaryElements)
 
         fieldsMapItemList = mutableListOf()
@@ -566,10 +569,16 @@ class PlanEditorActivity : BaseEditorActivity() {
             for (fld in fields) {
                 val fldMap = planForEdit!!.fieldsMap
                 if (fldMap.containsKey(fld)) {
-                    val savedEle = fldMap[fld]
-                    var pos = allElements.toList().indexOf(savedEle)
+                    val savedId = fldMap[fld]!!
+                    // Convert ID to display name for UI display
+                    val displayName = FieldElement.idToDisplayName(savedId, this@PlanEditorActivity)
+                    var pos = allElements.toList().indexOf(displayName)
                     if (pos == -1) {
-                        pos = 0
+                        // If display name not found, try to find by ID (fallback for legacy data)
+                        pos = allElements.toList().indexOf(savedId)
+                        if (pos == -1) {
+                            pos = 0
+                        }
                     }
                     fieldsMapItemList.add(FieldsMapItem(fld, allElements, pos))
                 }

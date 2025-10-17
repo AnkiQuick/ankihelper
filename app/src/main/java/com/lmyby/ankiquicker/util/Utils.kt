@@ -10,6 +10,7 @@ import android.view.inputmethod.InputMethodManager
 import androidx.appcompat.app.AlertDialog
 import com.ichi2.anki.FlashCardsContract
 import com.lmyby.ankiquicker.data.dict.Definition
+import com.lmyby.ankiquicker.data.plan.FieldElement
 import com.lmyby.ankiquicker.data.plan.OutputPlanPOJO
 import kotlin.random.Random
 
@@ -140,7 +141,8 @@ object Utils {
         }
         val map = outputPlan.fieldsMap
         for (key in map.keys) {
-            if (map[key] == "句子翻译") {
+            // Use language-neutral ID for comparison instead of hardcoded Chinese string
+            if (map[key] == FieldElement.SENTENCE_TRANSLATION.id) {
                 return true
             }
         }

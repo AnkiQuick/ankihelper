@@ -982,7 +982,7 @@ class PopupActivity : AppCompatActivity(), BigBangLayoutWrapper.ActionListener {
                 }
 
                 val mAnkiDroid = MyApplication.getAnkiDroid(MyApplication.getContext())
-                val sharedExportElements = Constant.getSharedExportElements()
+                val sharedExportElements = Constant.getSharedExportElements(this@PopupActivity)
                 val exportFields = Array(currentOutputPlan!!.fieldsMap.size) { "" }
                 var i = 0
                 val map = currentOutputPlan!!.fieldsMap

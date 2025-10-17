@@ -9,41 +9,21 @@ import com.lmyby.ankiquicker.data.plan.FieldElement
  * Converted to Kotlin as part of Phase 1 utility migration
  */
 object Constant {
-    private val SHARED_EXPORT_ELEMENTS = arrayOf(
-        "空",
-        "例句",
-        "加粗的例句",
-        "挖空的例句",
-        "挖空的例句（全c1模式）",
-        "笔记",
-        "URL",
-        "全部释义",
-        "句子翻译"
-        //"FBReader跳转链接"
-    )
-
-    /**
-     * Get shared export elements in legacy Chinese format
-     * @deprecated Use getSharedExportElementsLocalized() for internationalization support
-     */
-    @JvmStatic
-    fun getSharedExportElements(): Array<String> = SHARED_EXPORT_ELEMENTS
-
     /**
      * Get shared export elements localized to current language
-     * Uses FieldElement enum with string resources for proper internationalization
+     * Returns display names from string resources (values/strings.xml or values-zh/strings.xml)
      *
      * @param context Android context for accessing string resources
-     * @return Array of localized field element names
+     * @return Array of localized field element names for UI display
      */
     @JvmStatic
-    fun getSharedExportElementsLocalized(context: Context): Array<String> {
+    fun getSharedExportElements(context: Context): Array<String> {
         return FieldElement.getAllDisplayNames(context)
     }
 
     /**
      * Get shared export elements as language-neutral IDs
-     * Used for database storage
+     * Returns stable IDs for database storage (e.g., "field_empty", "field_sentence_translation")
      *
      * @return Array of language-neutral field element IDs
      */
