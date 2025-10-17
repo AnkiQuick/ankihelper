@@ -208,7 +208,7 @@ class BigBangLayout @JvmOverloads constructor(
         mSectionIndex = ArrayList()
         mDragSelectRect = Rect()
         mDragSelectPaint = Paint().apply {
-            color = resources.getColor(R.color.colorPrimary)
+            color = ContextCompat.getColor(context, R.color.colorPrimary)
             style = Paint.Style.STROKE
             strokeWidth = ViewUtil.dp2px(2f).toFloat()
             pathEffect = DashPathEffect(floatArrayOf(5f, 5f, 5f, 5f), 1f)
@@ -663,7 +663,13 @@ class BigBangLayout @JvmOverloads constructor(
                         dragItem = Item(item)
                         val clipData = ClipData.newPlainText(item.getText(), item.getText())
                         val myShadow = DragShadowBuilder(dragItem?.view)
-                        dragItem?.view?.startDrag(clipData, myShadow, null, 0)
+                        // Use startDragAndDrop for API 24+
+                        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.N) {
+                            dragItem?.view?.startDragAndDrop(clipData, myShadow, null, 0)
+                        } else {
+                            @Suppress("DEPRECATION")
+                            dragItem?.view?.startDrag(clipData, myShadow, null, 0)
+                        }
                         mNeedReDetectInMeasure = true
                         dragItem?.view?.let { removeView(it) }
                     } else {
