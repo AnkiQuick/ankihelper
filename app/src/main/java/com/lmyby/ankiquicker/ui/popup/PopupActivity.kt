@@ -211,12 +211,13 @@ class PopupActivity : AppCompatActivity(), BigBangLayoutWrapper.ActionListener {
         populateLanguageSpinner()
         setEventListener()
 
+        handleIntent() // Must be called before clipboard checks (initializes intentHandler)
+
         if (settings.getMoniteClipboardQ()) {
             checkAndRequestClipboardPermissions()
             startCBService()
         }
 
-        handleIntent()
         asyncInvokeDroid()
     }
 
