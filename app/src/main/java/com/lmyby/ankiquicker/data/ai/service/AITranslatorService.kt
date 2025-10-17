@@ -38,17 +38,20 @@ class AITranslatorService {
         Log.d(TAG, "Translating from $sourceLanguageName ($sourceLanguage) to $targetLanguageName ($targetLanguage)")
 
         // Prepare the system and user messages with full language names
-        val systemMessage = "You are an experienced translator. Your task is to translate text from $sourceLanguageName " +
-                "to $targetLanguageName accurately and fluently. You should be able to handle complex sentences " +
-                "and idioms. Your responses should be clear, concise, and easy to understand. " +
+        val systemMessage = "You are an experienced translator. " +
+                "Your task is to translate text from $sourceLanguageName to $targetLanguageName " +
+                "accurately and fluently. You should be able to handle complex sentences and idioms. " +
+                "Your responses should be clear, concise, and easy to understand. " +
                 "Key Points: Accuracy is Paramount; Fluent and Natural Writing; Standardized Terminology. " +
-                "IMPORTANT: You MUST respond with valid JSON format. Your response should be a JSON object " +
-                "with a 'translation' map containing a translation object, which contains: " +
+                "IMPORTANT: You MUST respond with valid JSON format. " +
+                "Your response should be a JSON object with a 'translation' map containing " +
+                "a translation object, which contains: " +
                 "translatedText (the translated text in $targetLanguageName), " +
                 "sourceLanguage (language code: $sourceLanguage), " +
                 "targetLanguage (language code: $targetLanguage)."
 
-        val userMessage = "Please provide the translation of the following text from $sourceLanguageName to $targetLanguageName: \"$text\""
+        val userMessage = "Please provide the translation of the following text " +
+                "from $sourceLanguageName to $targetLanguageName: \"$text\""
 
         // Call the LLM with system and user messages
         val response = aiService.callLLM(llmConfig, systemMessage, userMessage)
@@ -192,24 +195,25 @@ class AITranslatorService {
             return "auto-detect"
         }
 
-        return when (languageCode.lowercase()) {
-            "en" -> "English"
-            "zh" -> "Chinese"
-            "ja" -> "Japanese"
-            "ko" -> "Korean"
-            "fr" -> "French"
-            "de" -> "German"
-            "es" -> "Spanish"
-            "it" -> "Italian"
-            "pt" -> "Portuguese"
-            "ru" -> "Russian"
-            "ar" -> "Arabic"
-            "hi" -> "Hindi"
-            else -> languageCode.uppercase() // Fallback to uppercase code
-        }
+        return LANGUAGE_NAMES[languageCode.lowercase()] ?: languageCode.uppercase()
     }
 
     companion object {
         private const val TAG = "AITranslatorService"
+
+        private val LANGUAGE_NAMES = mapOf(
+            "en" to "English",
+            "zh" to "Chinese",
+            "ja" to "Japanese",
+            "ko" to "Korean",
+            "fr" to "French",
+            "de" to "German",
+            "es" to "Spanish",
+            "it" to "Italian",
+            "pt" to "Portuguese",
+            "ru" to "Russian",
+            "ar" to "Arabic",
+            "hi" to "Hindi"
+        )
     }
 }
