@@ -9,24 +9,7 @@ import com.lmyby.ankiquicker.R
  */
 object PronounceManager {
 
-    // Deprecated: Kept for backward compatibility only
-    // Use getAvailablePronounceLanguage(Context) instead
-    @Deprecated("Use getAvailablePronounceLanguage(Context) instead")
-    const val LANGUAGE_ENGLISH = "英语发音"
-    @Deprecated("Use getAvailablePronounceLanguage(Context) instead")
-    const val LANGUAGE_FRENCH = "法语发音"
-    @Deprecated("Use getAvailablePronounceLanguage(Context) instead")
-    const val LANGUAGE_JAPANESE = "日语发音"
-    @Deprecated("Use getAvailablePronounceLanguage(Context) instead")
-    const val LANGUAGE_KOREAN = "韩语发音"
-    @Deprecated("Use getAvailablePronounceLanguage(Context) instead")
-    const val LANGUAGE_GERMAN = "德语发音"
-
-    // Deprecated aliases for backward compatibility (typo/naming fixes)
-    @Deprecated("Use LANGUAGE_FRENCH instead")
-    const val LANGUAGE_FRENCHE = LANGUAGE_FRENCH
-    @Deprecated("Use LANGUAGE_GERMAN instead")
-    const val LANGUAGE_GERMANY = LANGUAGE_GERMAN
+    // Removed deprecated constants - use getAvailablePronounceLanguage(Context) instead
 
     const val LANGUAGE_ENGLISH_INDEX = 0
     const val LANGUAGE_FRENCH_INDEX = 1
