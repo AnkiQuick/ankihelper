@@ -83,15 +83,14 @@ class PlanEditorActivity : BaseEditorActivity() {
                     // Update UI on main thread - ONLY after data is loaded
                     runOnUiThread {
                         Log.e("PlanEditor", "UI thread: Starting UI population...")
-                        handleIntent()
-                        populateDictionary()
+
                         // Only populate if we have data
                         val hasDecks = deckList != null && deckList!!.isNotEmpty()
                         val hasModels = modelList != null && modelList!!.isNotEmpty()
 
                         if (hasDecks && hasModels) {
-                            Log.e("PlanEditor", "UI thread: Calling populateDecksAndModels")
-                            populateDecksAndModels()
+                            // Load plan first, then populate UI in callback
+                            handleIntentAndPopulateUI()
                         } else {
                             val deckSize = deckList?.size
                             val modelSize = modelList?.size
@@ -300,18 +299,25 @@ class PlanEditorActivity : BaseEditorActivity() {
         }
     }
 
-    private fun handleIntent() {
+    /**
+     * Load plan from intent and populate UI after plan is loaded
+     */
+    private fun handleIntentAndPopulateUI() {
         intent?.let {
             if (it.action == Intent.ACTION_SEND) {
                 val text = it.getStringExtra(Intent.EXTRA_TEXT)
                 if (!text.isNullOrEmpty()) {
                     planNameToEdit = text
-                    // Load plan asynchronously
+                    Log.e("PlanEditor", "Loading plan for edit: $planNameToEdit")
+                    // Load plan asynchronously, then populate UI
                     planRepositoryHelper?.getPlanByName(
                         planNameToEdit!!,
                         object : OutputPlanRepositoryHelper.PlanCallback {
                             override fun onSuccess(entity: OutputPlanEntity?) {
                                 entity?.let { plan ->
+                                    Log.e("PlanEditor", "Plan loaded successfully:")
+                                    Log.e("PlanEditor", "  deckId=${plan.outputDeckId}")
+                                    Log.e("PlanEditor", "  modelId=${plan.outputModelId}")
                                     // Convert Entity to POJO
                                     planForEdit = OutputPlanPOJO().apply {
                                         planName = plan.planName
@@ -320,24 +326,46 @@ class PlanEditorActivity : BaseEditorActivity() {
                                         outputModelId = plan.outputModelId
                                         setFieldsMapString(plan.fieldsMap ?: "")
                                     }
-                                    // Set plan name unable to edit
+                                    // Set plan name
                                     planNameEditText.setText(planNameToEdit)
                                     // planNameEditText.isEnabled = false
+
+                                    // NOW populate UI with the loaded plan data
+                                    populateUIAfterPlanLoad()
+                                } ?: run {
+                                    Log.w("PlanEditor", "Plan not found, populating with defaults")
+                                    // Plan not found, populate with defaults
+                                    populateUIAfterPlanLoad()
                                 }
                             }
 
                             override fun onError(error: Throwable) {
+                                Log.e("PlanEditor", "Failed to load plan", error)
                                 Toast.makeText(
                                     this@PlanEditorActivity,
                                     "Failed to load plan: ${error.message}",
                                     Toast.LENGTH_SHORT
                                 ).show()
+                                // Still populate UI with defaults
+                                populateUIAfterPlanLoad()
                             }
                         }
                     )
+                    return // Wait for callback before populating UI
                 }
             }
         }
+        // No intent to handle or not ACTION_SEND, populate UI immediately
+        populateUIAfterPlanLoad()
+    }
+
+    /**
+     * Populate UI after plan data is loaded (or confirmed not loading)
+     */
+    private fun populateUIAfterPlanLoad() {
+        Log.e("PlanEditor", "Populating UI, planForEdit=${planForEdit?.planName}")
+        populateDictionary()
+        populateDecksAndModels()
     }
 
     private fun loadDecksAndModels() {
