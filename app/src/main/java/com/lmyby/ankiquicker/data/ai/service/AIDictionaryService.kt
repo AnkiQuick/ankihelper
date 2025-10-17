@@ -35,21 +35,35 @@ class AIDictionaryService {
 
         Log.d(TAG, "No cached results found for word: $word, calling LLM")
 
-        // Prepare the system and user messages
-        val systemMessage = "You are an experienced dictionary assistant. Your task is to provide accurate and " +
-                "comprehensive definitions for words and phrases. You should be able to handle complex " +
-                "queries and provide detailed explanations. Your responses should be clear, concise, " +
-                "and easy to understand. IMPORTANT: You MUST respond with valid JSON format. " +
-                "Your response should be a JSON object with a 'definitions' array containing definition objects. " +
-                "Each definition object should have: 'hwd', 'phrase', 'sense', 'phonetics', 'def_en', 'def_cn', and 'example' fields." +
-                "hwd: the key word to look up. " +
-                "phrase: the phase that the word belong to. if not empty, the definition_cn and definition_en wiil be definition of the phase. " +
-                "sense: is the Part of Speech, which refers to the grammatical category a word belongs to based on its function within a sentence, Common POS categories in English include nouns, verbs, adjectives, adverbs, pronouns, prepositions, conjunctions, and interjections" +
-                "phonetics: contains both English and American English phonetics in a string, not map, like 'UK/kaɪnd/ US/kaɪnd/',"
+        // Get language names from codes
+        val sourceLanguage = config.sourceLanguage ?: "en"
+        val targetLanguage = config.targetLanguage ?: "zh"
+        val sourceLanguageName = getLanguageName(sourceLanguage)
+        val targetLanguageName = getLanguageName(targetLanguage)
 
-        val userMessage = "Please provide the definitions of the word or phrase \"$word\" in JSON format " +
-                "with a 'definitions' array containing definition objects. Each definition should have: " +
-                "'headword', 'phrase', 'sense', 'phonetics', 'def_en', 'def_cn', and 'example' fields."
+        Log.d(TAG, "Using languages: source=$sourceLanguageName ($sourceLanguage), target=$targetLanguageName ($targetLanguage)")
+
+        // Prepare the system and user messages with configurable languages
+        val systemMessage = "You are an experienced dictionary assistant. Your task is to provide accurate and " +
+                "comprehensive definitions for words and phrases in $sourceLanguageName. " +
+                "You should provide translations and explanations in $targetLanguageName. " +
+                "You should be able to handle complex queries and provide detailed explanations. " +
+                "Your responses should be clear, concise, and easy to understand. " +
+                "IMPORTANT: You MUST respond with valid JSON format. " +
+                "Your response should be a JSON object with a 'definitions' array containing definition objects. " +
+                "Each definition object should have: 'headword', 'phrase', 'sense', 'phonetics', 'def_en', 'def_cn', and 'example' fields. " +
+                "headword: the key word to look up in $sourceLanguageName. " +
+                "phrase: the phrase that the word belongs to. If not empty, the definitions will be for the entire phrase. " +
+                "sense: the Part of Speech (grammatical category), such as nouns, verbs, adjectives, adverbs, pronouns, prepositions, conjunctions, and interjections. " +
+                "phonetics: contains phonetic transcription (e.g., 'UK/kaɪnd/ US/kaɪnd/' for English words). " +
+                "def_en: definition in $sourceLanguageName. " +
+                "def_cn: definition/translation in $targetLanguageName. " +
+                "example: example sentence in $sourceLanguageName."
+
+        val userMessage = "Please provide the definitions of the word or phrase \"$word\" (in $sourceLanguageName) " +
+                "in JSON format with a 'definitions' array containing definition objects. " +
+                "Each definition should have: 'headword', 'phrase', 'sense', 'phonetics', 'def_en' ($sourceLanguageName definition), " +
+                "'def_cn' ($targetLanguageName translation), and 'example' fields."
 
         Log.d(TAG, "Calling LLM with system message: $systemMessage")
         Log.d(TAG, "Calling LLM with user message: $userMessage")
@@ -304,6 +318,27 @@ class AIDictionaryService {
         }
 
         throw AIException(type, errorMessage)
+    }
+
+    /**
+     * Convert language code to full language name
+     */
+    private fun getLanguageName(languageCode: String): String {
+        return when (languageCode.lowercase()) {
+            "en" -> "English"
+            "zh" -> "Chinese"
+            "ja" -> "Japanese"
+            "ko" -> "Korean"
+            "fr" -> "French"
+            "de" -> "German"
+            "es" -> "Spanish"
+            "it" -> "Italian"
+            "pt" -> "Portuguese"
+            "ru" -> "Russian"
+            "ar" -> "Arabic"
+            "hi" -> "Hindi"
+            else -> languageCode.uppercase() // Fallback to uppercase code
+        }
     }
 
     companion object {
