@@ -399,7 +399,10 @@ class StorageMigrationActivity : AppCompatActivity() {
     }
 
     private fun continueToApp() {
-        // Simply finish this activity to return to the launcher or main activity
+        // Launch the main launcher activity
+        val intent = Intent(this, com.lmyby.ankiquicker.ui.LauncherActivity::class.java)
+        intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+        startActivity(intent)
         finish()
     }
 
