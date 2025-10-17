@@ -57,40 +57,63 @@ class PlanEditorActivity : BaseEditorActivity() {
     override fun getLayoutResId(): Int = R.layout.activity_plan_editor
 
     override fun initializeViews() {
+        Log.e("PlanEditor", "########## initializeViews: STARTING ##########")
         try {
             setViewMember()
+            Log.e("PlanEditor", "initializeViews: setViewMember complete")
+
             initAnkiApi()
+            Log.e("PlanEditor", "initializeViews: initAnkiApi complete")
 
             // Initialize database and load data in background to avoid ANR
             Thread {
                 try {
+                    Log.e("PlanEditor", "Background thread: Starting...")
+
                     // Initialize repository helper off main thread
                     val database = AppDatabase.getInstance(applicationContext)
                     val repository = OutputPlanRepository(database.outputPlanDao())
                     planRepositoryHelper = OutputPlanRepositoryHelper(repository, this@PlanEditorActivity)
+                    Log.e("PlanEditor", "Background thread: Repository initialized")
 
-                    // Load AnkiDroid data off main thread
+                    // Load AnkiDroid data off main thread - this MUST complete before UI update
                     loadDecksAndModels()
+                    Log.e("PlanEditor", "Background thread: loadDecksAndModels complete")
 
-                    // Update UI on main thread
+                    // Update UI on main thread - ONLY after data is loaded
                     runOnUiThread {
+                        Log.e("PlanEditor", "UI thread: Starting UI population...")
                         handleIntent()
                         populateDictionary()
-                        populateDecksAndModels()
+                        // Only populate if we have data
+                        if (deckList != null && modelList != null && deckList!!.isNotEmpty() && modelList!!.isNotEmpty()) {
+                            Log.e("PlanEditor", "UI thread: Calling populateDecksAndModels")
+                            populateDecksAndModels()
+                        } else {
+                            Log.e("PlanEditor", "UI thread: NO DATA - deckList=${deckList?.size}, modelList=${modelList?.size}")
+                            Toast.makeText(
+                                this@PlanEditorActivity,
+                                "Failed to load decks or models from AnkiDroid. Please ensure AnkiDroid is running.",
+                                Toast.LENGTH_LONG
+                            ).show()
+                        }
                     }
                 } catch (e: Exception) {
+                    Log.e("PlanEditor", "Background thread: EXCEPTION", e)
                     runOnUiThread {
                         Toast.makeText(
                             this@PlanEditorActivity,
                             "Failed to initialize: ${e.message}",
-                            Toast.LENGTH_SHORT
+                            Toast.LENGTH_LONG
                         ).show()
                     }
                 }
             }.start()
         } catch (e: Exception) {
+            Log.e("PlanEditor", "initializeViews: EXCEPTION in main try block", e)
             Toast.makeText(this, e.localizedMessage, Toast.LENGTH_SHORT).show()
         }
+        Log.e("PlanEditor", "########## initializeViews: END ##########")
     }
 
     override fun setupListeners() {
@@ -312,8 +335,25 @@ class PlanEditorActivity : BaseEditorActivity() {
     }
 
     private fun loadDecksAndModels() {
-        deckList = Utils.hashMap2LinkedHashMap(mAnkiDroid.api.getDeckList() ?: emptyMap())
-        modelList = Utils.hashMap2LinkedHashMap(mAnkiDroid.api.getModelList() ?: emptyMap())
+        Log.e("PlanEditor", "========== loadDecksAndModels: Starting ==========")
+
+        val rawDeckList = mAnkiDroid.api.getDeckList()
+        Log.e("PlanEditor", "rawDeckList = $rawDeckList")
+        Log.e("PlanEditor", "rawDeckList size = ${rawDeckList?.size ?: -1}")
+
+        deckList = Utils.hashMap2LinkedHashMap(rawDeckList ?: emptyMap())
+        Log.e("PlanEditor", "deckList = $deckList")
+        Log.e("PlanEditor", "deckList size = ${deckList?.size ?: -1}")
+
+        val rawModelList = mAnkiDroid.api.getModelList()
+        Log.e("PlanEditor", "rawModelList = $rawModelList")
+        Log.e("PlanEditor", "rawModelList size = ${rawModelList?.size ?: -1}")
+
+        modelList = Utils.hashMap2LinkedHashMap(rawModelList ?: emptyMap())
+        Log.e("PlanEditor", "modelList = $modelList")
+        Log.e("PlanEditor", "modelList size = ${modelList?.size ?: -1}")
+
+        Log.e("PlanEditor", "========== loadDecksAndModels: Completed ==========")
     }
 
     private fun populateDictionary() {
@@ -366,6 +406,16 @@ class PlanEditorActivity : BaseEditorActivity() {
     }
 
     private fun populateDecksAndModels() {
+        // Safety checks
+        if (deckList == null || deckList!!.isEmpty()) {
+            Log.e("PlanEditor", "populateDecksAndModels: deckList is null or empty")
+            return
+        }
+        if (modelList == null || modelList!!.isEmpty()) {
+            Log.e("PlanEditor", "populateDecksAndModels: modelList is null or empty")
+            return
+        }
+
         val deckSpinnerAdapter = ArrayAdapter(
             this,
             android.R.layout.simple_spinner_dropdown_item,
@@ -385,6 +435,10 @@ class PlanEditorActivity : BaseEditorActivity() {
             val savedModelId = plan.outputModelId
 
             val deckIdList = Utils.getMapKeyArray(deckList!!)
+            if (deckIdList.isEmpty()) {
+                Log.e("PlanEditor", "No decks available")
+                return
+            }
             var deckPos = Utils.getArrayIndex(deckIdList, savedDeckId)
             if (deckPos == -1) {
                 deckPos = 0
@@ -393,6 +447,10 @@ class PlanEditorActivity : BaseEditorActivity() {
             deckSpinner.setSelection(deckPos)
 
             val modelIdList = Utils.getMapKeyArray(modelList!!)
+            if (modelIdList.isEmpty()) {
+                Log.e("PlanEditor", "No models available")
+                return
+            }
             var modelPos = Utils.getArrayIndex(modelIdList, savedModelId)
             if (modelPos == -1) {
                 modelPos = 0
@@ -402,8 +460,20 @@ class PlanEditorActivity : BaseEditorActivity() {
 
             refreshFieldSpinners()
         } ?: run {
-            currentDeckId = Utils.getMapKeyArray(deckList!!)[0]
-            currentModelId = Utils.getMapKeyArray(modelList!!)[0]
+            val deckIdList = Utils.getMapKeyArray(deckList!!)
+            if (deckIdList.isEmpty()) {
+                Log.e("PlanEditor", "No decks available")
+                return
+            }
+            currentDeckId = deckIdList[0]
+
+            val modelIdList = Utils.getMapKeyArray(modelList!!)
+            if (modelIdList.isEmpty()) {
+                Log.e("PlanEditor", "No models available")
+                return
+            }
+            currentModelId = modelIdList[0]
+
             refreshFieldSpinners()
         }
 
@@ -426,7 +496,20 @@ class PlanEditorActivity : BaseEditorActivity() {
     }
 
     private fun refreshFieldSpinners() {
+        // Safety check for model ID
+        if (currentModelId == 0L) {
+            Log.e("PlanEditor", "refreshFieldSpinners: currentModelId is 0")
+            return
+        }
+
         val fields = mAnkiDroid.api.getFieldList(currentModelId) ?: emptyArray()
+
+        // Check if we got valid fields
+        if (fields.isEmpty()) {
+            Log.w("PlanEditor", "refreshFieldSpinners: No fields returned for model $currentModelId")
+            // Don't return - still set up empty adapter
+        }
+
         val dictionaryElements = currentDictionary?.getExportElementsList() ?: emptyArray()
         val sharedElements = Constant.getSharedExportElements()
         val allElements = Utils.concatenate(sharedElements, dictionaryElements)

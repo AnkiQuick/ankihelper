@@ -400,7 +400,15 @@ class AddContentApi(context: Context) {
      * @return map of (id, name) pairs or null if there was a problem
      */
     fun getModelList(minNumFields: Int): Map<Long, String>? {
-        val allModelsCursor = mResolver.query(Model.CONTENT_URI, null, null, null, null) ?: return null
+        android.util.Log.e("AddContentApi", "getModelList: Starting query with minNumFields=$minNumFields...")
+        val allModelsCursor = mResolver.query(Model.CONTENT_URI, null, null, null, null)
+
+        if (allModelsCursor == null) {
+            android.util.Log.e("AddContentApi", "getModelList: Cursor is NULL - permission issue?")
+            return null
+        }
+
+        android.util.Log.e("AddContentApi", "getModelList: Cursor count = ${allModelsCursor.count}")
         val models = mutableMapOf<Long, String>()
 
         allModelsCursor.use { cursor ->
@@ -415,12 +423,15 @@ class AddContentApi(context: Context) {
                     val flds = cursor.getString(fieldNamesIndex)
                     val numFlds = Utils.splitFields(flds)?.size ?: 0
 
+                    android.util.Log.e("AddContentApi", "getModelList: Found model: id=$modelId, name=$name, numFields=$numFlds")
+
                     if (numFlds >= minNumFields) {
                         models[modelId] = name
                     }
                 }
             }
         }
+        android.util.Log.e("AddContentApi", "getModelList: Returning ${models.size} models")
         return models
     }
 
@@ -471,7 +482,15 @@ class AddContentApi(context: Context) {
      * @return Map of (id, name) pairs, or null if there was a problem
      */
     fun getDeckList(): Map<Long, String>? {
-        val allDecksCursor = mResolver.query(Deck.CONTENT_ALL_URI, null, null, null, null) ?: return null
+        android.util.Log.e("AddContentApi", "getDeckList: Starting query...")
+        val allDecksCursor = mResolver.query(Deck.CONTENT_ALL_URI, null, null, null, null)
+
+        if (allDecksCursor == null) {
+            android.util.Log.e("AddContentApi", "getDeckList: Cursor is NULL - permission issue?")
+            return null
+        }
+
+        android.util.Log.e("AddContentApi", "getDeckList: Cursor count = ${allDecksCursor.count}")
         val decks = mutableMapOf<Long, String>()
 
         allDecksCursor.use { cursor ->
@@ -483,9 +502,11 @@ class AddContentApi(context: Context) {
                     val deckId = cursor.getLong(deckIdIndex)
                     val name = cursor.getString(nameIndex)
                     decks[deckId] = name
+                    android.util.Log.e("AddContentApi", "getDeckList: Found deck: id=$deckId, name=$name")
                 }
             }
         }
+        android.util.Log.e("AddContentApi", "getDeckList: Returning ${decks.size} decks")
         return decks
     }
 
