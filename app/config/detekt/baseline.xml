@@ -1,5 +1,644 @@
 <?xml version="1.0" ?>
 <SmellBaseline>
   <ManuallySuppressedIssues></ManuallySuppressedIssues>
-  <CurrentIssues></CurrentIssues>
+  <CurrentIssues>
+    <ID>ArgumentListWrapping:AICacheRepository.kt$AICacheRepository$( sourceText, sourceLanguage, targetLanguage, llmConfigId )</ID>
+    <ID>ArgumentListWrapping:AIDictionary.kt$AIDictionary$("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt;&amp;nbsp; &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt; &amp;nbsp; &lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>ArgumentListWrapping:AIDictionary.kt$AIDictionary$("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt; &amp;nbsp;&lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>ArgumentListWrapping:AIDictionaryCacheDao.kt$AIDictionaryCacheDao$("DELETE FROM aidictionarycache WHERE id IN (SELECT id FROM aidictionarycache ORDER BY timestamp ASC LIMIT :count)")</ID>
+    <ID>ArgumentListWrapping:AITranslatorCacheDao.kt$AITranslatorCacheDao$("DELETE FROM aitranslatorcache WHERE id IN (SELECT id FROM aitranslatorcache ORDER BY timestamp ASC LIMIT :count)")</ID>
+    <ID>ArgumentListWrapping:AITranslatorCacheDao.kt$AITranslatorCacheDao$("SELECT * FROM aitranslatorcache WHERE sourceText = :sourceText AND sourceLanguage = :sourceLang AND targetLanguage = :targetLang AND llmConfigId = :llmConfigId LIMIT 1")</ID>
+    <ID>ArgumentListWrapping:AITranslatorCacheDao.kt$AITranslatorCacheDao$("SELECT * FROM aitranslatorcache WHERE sourceText = :sourceText AND sourceLanguage = :sourceLang AND targetLanguage = :targetLang LIMIT 1")</ID>
+    <ID>ArgumentListWrapping:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$("CREATE INDEX IF NOT EXISTS index_aidictionarycache_llmConfigId ON aidictionarycache(llmConfigId)")</ID>
+    <ID>ArgumentListWrapping:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$("CREATE INDEX IF NOT EXISTS index_aidictionaryconfig_llmId ON aidictionaryconfig(llmId)")</ID>
+    <ID>ArgumentListWrapping:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$("CREATE INDEX IF NOT EXISTS index_aitranslatorcache_llmConfigId ON aitranslatorcache(llmConfigId)")</ID>
+    <ID>ArgumentListWrapping:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$("CREATE INDEX IF NOT EXISTS index_aitranslatorcache_sourceText ON aitranslatorcache(sourceText)")</ID>
+    <ID>ArgumentListWrapping:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$("CREATE INDEX IF NOT EXISTS index_aitranslatorconfig_llmId ON aitranslatorconfig(llmId)")</ID>
+    <ID>ArgumentListWrapping:BaseDatabaseHelper.kt$BaseDatabaseHelper$("CREATE TABLE IF NOT EXISTS dict (hwd TEXT PRIMARY KEY, phrase TEXT, sense TEXT, phonetics TEXT, def_en TEXT, def_cn TEXT)")</ID>
+    <ID>ArgumentListWrapping:Cdepe4.kt$Cdepe4$( context, layout, null, arrayOf(FIELD_HWD), intArrayOf(android.R.id.text1), 0 )</ID>
+    <ID>ArgumentListWrapping:Cdepe4.kt$Cdepe4$("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt;&amp;nbsp; &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt;&amp;nbsp; &lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>ArgumentListWrapping:Cdepe4.kt$Cdepe4$("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt;&amp;nbsp; &lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>ArgumentListWrapping:DatabaseManager.kt$DatabaseManager$( DBContract.Book.COLUMN_ID, DBContract.Book.COLUMN_LAST_OPEN_TIME, DBContract.Book.COLUMN_BOOK_NAME, DBContract.Book.COLUMN_AUTHOR, DBContract.Book.COLUMN_BOOK_PATH, DBContract.Book.COLUMN_READ_POSITION )</ID>
+    <ID>ArgumentListWrapping:DatabaseManager.kt$DatabaseManager$( DBContract.Book.TABLE_NAME, arrayOf( DBContract.Book.COLUMN_ID, DBContract.Book.COLUMN_LAST_OPEN_TIME, DBContract.Book.COLUMN_BOOK_NAME, DBContract.Book.COLUMN_AUTHOR, DBContract.Book.COLUMN_BOOK_PATH, DBContract.Book.COLUMN_READ_POSITION ), "id=${oldbook.id}", null, null, null, null )</ID>
+    <ID>ArgumentListWrapping:DatabaseManager.kt$DatabaseManager$( DBContract.Book.TABLE_NAME, arrayOf( DBContract.Book.COLUMN_ID, DBContract.Book.COLUMN_LAST_OPEN_TIME, DBContract.Book.COLUMN_BOOK_NAME, DBContract.Book.COLUMN_AUTHOR, DBContract.Book.COLUMN_BOOK_PATH, DBContract.Book.COLUMN_READ_POSITION ), null, null, null, null, "${DBContract.Book.COLUMN_LAST_OPEN_TIME} desc" )</ID>
+    <ID>ArgumentListWrapping:DatabaseManager.kt$DatabaseManager$( DBContract.Plan.TABLE_NAME, contentValues, "${DBContract.Plan.COLUMN_PLAN_NAME}='$oldPlanName'", null )</ID>
+    <ID>ArgumentListWrapping:DatabaseManager.kt$DatabaseManager$( TB_ENTRY, arrayOf(CL_ENTRY_TEXTS), "$CL_DICT_ID=? AND $CL_HEADWORD=?", arrayOf(dictId.toString(), query), null, null, null )</ID>
+    <ID>ArgumentListWrapping:DatabaseManager.kt$DatabaseManager$( TB_ENTRY, arrayOf(CL_HEADWORD, CL_ENTRY_TEXTS), "$CL_DICT_ID= ? AND $CL_HEADWORD= ? COLLATE NOCASE", arrayOf(dictId.toString(), word), null, null, null, "50" )</ID>
+    <ID>ArgumentListWrapping:DatabaseManager.kt$DatabaseManager$("CREATE TABLE IF NOT EXISTS $TB_DICT " + "(id integer, name text, lang text, elements text, description text, tmpl text)")</ID>
+    <ID>ArgumentListWrapping:DatabaseManager.kt$DatabaseManager$("CREATE TABLE IF NOT EXISTS $TB_ENTRY " + "(dict_id integer, headword text, entry_texts text)")</ID>
+    <ID>ArgumentListWrapping:FileUtils.kt$FileUtils$( Uri.parse("content://downloads/public_downloads"), id.toLong() )</ID>
+    <ID>ArgumentListWrapping:HistoryRepository.kt$HistoryRepository$(Dispatchers.IO)</ID>
+    <ID>ArgumentListWrapping:Maldpe.kt$Maldpe$( context, layout, null, arrayOf(FIELD_HWD), intArrayOf(android.R.id.text1), 0 )</ID>
+    <ID>ArgumentListWrapping:Maldpe.kt$Maldpe$("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt;&amp;nbsp; &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt;&amp;nbsp; &lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>ArgumentListWrapping:Maldpe.kt$Maldpe$("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt;&amp;nbsp; &lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>ArgumentListWrapping:Oalde10.kt$Oalde10$( context, layout, null, arrayOf(FIELD_HWD), intArrayOf(android.R.id.text1), 0 )</ID>
+    <ID>ArgumentListWrapping:Oalde10.kt$Oalde10$("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt;&amp;nbsp; &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt;&amp;nbsp; &lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>ArgumentListWrapping:Oalde10.kt$Oalde10$("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt;&amp;nbsp; &lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>ArgumentListWrapping:Utils.kt$Utils$( activity.applicationInfo.theme, intArrayOf(attr) )</ID>
+    <ID>ArgumentListWrapping:WanaKanaJava.kt$WanaKanaJava$("[bcdfghjklmnpqrstvwxyz]")</ID>
+    <ID>ArgumentListWrapping:WanaKanaJava.kt$WanaKanaJava$("[bcdfghjklmnpqrstvwxz]")</ID>
+    <ID>ChainWrapping:AnkiDroidHelper.kt$AnkiDroidHelper$&amp;&amp;</ID>
+    <ID>CommentSpacing:Constant.kt$Constant$//"FBReader跳转链接"</ID>
+    <ID>CommentSpacing:Constant.kt$Constant$//replace;append;</ID>
+    <ID>CommentSpacing:ConstantUtil.kt$ConstantUtil$//FeedBackAndUpdateCard</ID>
+    <ID>CommentSpacing:ConstantUtil.kt$ConstantUtil$//FloatwhiteListActivity</ID>
+    <ID>CommentSpacing:ConstantUtil.kt$ConstantUtil$//FunctionSettingCard</ID>
+    <ID>CommentSpacing:ConstantUtil.kt$ConstantUtil$//MonitorSettingCard</ID>
+    <ID>CommentSpacing:ConstantUtil.kt$ConstantUtil$//SettingBigBangActivity</ID>
+    <ID>CommentSpacing:ConstantUtil.kt$ConstantUtil$//copyActivity</ID>
+    <ID>CommentSpacing:ConstantUtil.kt$ConstantUtil$//feedback</ID>
+    <ID>CommentSpacing:ConstantUtil.kt$ConstantUtil$//floatview</ID>
+    <ID>CommentSpacing:ConstantUtil.kt$ConstantUtil$//shareCard</ID>
+    <ID>CommentSpacing:ConstantUtil.kt$ConstantUtil$//whiteListActivity</ID>
+    <ID>CommentSpacing:ConstantUtil.kt$ConstantUtil$//xp全局复制</ID>
+    <ID>CommentSpacing:DatabaseManager.kt$DatabaseManager$//assume first column is headword</ID>
+    <ID>CommentSpacing:DatabaseManager.kt$DatabaseManager$//book operations</ID>
+    <ID>CommentSpacing:DatabaseManager.kt$DatabaseManager$//if we want to change the plan's name</ID>
+    <ID>CommentSpacing:DatabaseManager.kt$DatabaseManager$//must have at least 2 columns, enforced in manager</ID>
+    <ID>CommentSpacing:DatabaseManager.kt$DatabaseManager$//original file is splitted by \t, so it's safe.</ID>
+    <ID>CommentSpacing:DatabaseManager.kt$DatabaseManager$//the plan name don't change</ID>
+    <ID>ComplexCondition:BigBangLayout.kt$BigBangLayout$items != null &amp;&amp; nextItems != null &amp;&amp; items.isNotEmpty() &amp;&amp; nextItems.isNotEmpty()</ID>
+    <ID>ComplexCondition:BigBangLayout.kt$BigBangLayout$mLines.isEmpty() || currentLineWidth &gt; contentWidthSize || (isEnter &amp;&amp; showSection)</ID>
+    <ID>ComplexCondition:CBWatcherService.kt$CBWatcherService.Companion$!((c in 'a'..'z') || (c in 'A'..'Z') || (c in '0'..'9') || isPunctuationOrBlank(c))</ID>
+    <ID>ComplexCondition:PopupActivity.kt$PopupActivity$event.action == MotionEvent.ACTION_UP &amp;&amp; (x &lt; currentFocus.left || x &gt;= currentFocus.right || y &lt; currentFocus.top || y &gt; currentFocus.bottom)</ID>
+    <ID>ComplexCondition:ScrollAwareFABBehaviour.kt$ScrollAwareFABBehaviour$(dyConsumed &gt; 0 || dyUnconsumed &lt; 0) &amp;&amp; !mIsAnimatingOut &amp;&amp; child.visibility == View.VISIBLE</ID>
+    <ID>ComplexCondition:WanaKanaJava.kt$WanaKanaJava$chunk.length &gt; 1 &amp;&amp; chunkLC[0].toString() != "n" &amp;&amp; _isCharConsonant(chunkLC[0], true) &amp;&amp; chunk[0] == chunk[1]</ID>
+    <ID>ConstructorParameterNaming:Quote.kt$Quote$var Author: String = ""</ID>
+    <ID>ConstructorParameterNaming:Quote.kt$Quote$var Caption: String = ""</ID>
+    <ID>ConstructorParameterNaming:Quote.kt$Quote$var Quote: String = ""</ID>
+    <ID>CyclomaticComplexMethod:AIService.kt$AIService$@Throws(IOException::class, AIException::class) fun callLLMWithRetry( config: LLMConfig, systemMessage: String, userMessage: String, maxRetries: Int ): String</ID>
+    <ID>CyclomaticComplexMethod:BigBangLayout.kt$BigBangLayout$override fun onLayout(changed: Boolean, l: Int, t: Int, r: Int, b: Int)</ID>
+    <ID>CyclomaticComplexMethod:BigBangLayout.kt$BigBangLayout$override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int)</ID>
+    <ID>CyclomaticComplexMethod:BigBangLayout.kt$BigBangLayout$override fun onTouchEvent(event: MotionEvent): Boolean</ID>
+    <ID>CyclomaticComplexMethod:BigBangLayout.kt$BigBangLayout$private fun findItemIndexByPoint(x: Int, y: Int): Item?</ID>
+    <ID>CyclomaticComplexMethod:BigBangLayout.kt$BigBangLayout$private fun initView(attrs: AttributeSet?)</ID>
+    <ID>CyclomaticComplexMethod:FileUtils.kt$FileUtils$@JvmStatic fun getPath(context: Context, uri: Uri): String?</ID>
+    <ID>CyclomaticComplexMethod:PopupActivity.kt$PopupActivity$private fun getCardFromDefinition(def: Definition): View</ID>
+    <ID>CyclomaticComplexMethod:TextSplitter.kt$TextSplitter$@JvmStatic fun getLocalSegments(str: String?): List&lt;String&gt;</ID>
+    <ID>CyclomaticComplexMethod:WanaKanaJava.kt$WanaKanaJava$fun _hiraganaToRomaji(hira: String): String</ID>
+    <ID>CyclomaticComplexMethod:WanaKanaJava.kt$WanaKanaJava$private fun _romajiToKana(roma: String, ignoreCase: Boolean?): String</ID>
+    <ID>EmptyFunctionBlock:PlanEditorActivity.kt$PlanEditorActivity.&lt;no name provided&gt;${}</ID>
+    <ID>EmptyFunctionBlock:PopupActivity.kt$PopupActivity${}</ID>
+    <ID>EmptyFunctionBlock:PopupActivity.kt$PopupActivity.&lt;no name provided&gt;${}</ID>
+    <ID>EmptyFunctionBlock:ScrollAwareFABBehaviour.kt$ScrollAwareFABBehaviour.&lt;no name provided&gt;${}</ID>
+    <ID>ExplicitGarbageCollectionCall:PopupActivity.kt$PopupActivity$gc()</ID>
+    <ID>FunctionNaming:FileUtils.kt$FileUtils$@JvmStatic fun EnsureAnkiImageDirectory(context: Context)</ID>
+    <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$fun _hiraganaToRomaji(hira: String): String</ID>
+    <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$private fun _allTrue(checkStr: String, func: Command): Boolean</ID>
+    <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$private fun _convertPunctuation(input: String): String</ID>
+    <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$private fun _hiraganaToKatakana(hira: String): String</ID>
+    <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$private fun _isCharConsonant(chr: Char, includeY: Boolean): Boolean</ID>
+    <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$private fun _isCharHiragana(chr: Char): Boolean</ID>
+    <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$private fun _isCharInRange(chr: Char, start: Int, end: Int): Boolean</ID>
+    <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$private fun _isCharKana(chr: Char): Boolean</ID>
+    <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$private fun _isCharKatakana(chr: Char): Boolean</ID>
+    <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$private fun _isCharVowel(chr: Char, includeY: Boolean): Boolean</ID>
+    <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$private fun _katakanaToHiragana(kata: String): String</ID>
+    <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$private fun _romajiToHiragana(roma: String): String</ID>
+    <ID>FunctionNaming:WanaKanaJava.kt$WanaKanaJava$private fun _romajiToKana(roma: String, ignoreCase: Boolean?): String</ID>
+    <ID>ImplicitDefaultLocale:AIDictionary.kt$AIDictionary$String.format("[sound:https://dict.youdao.com/dictvoice?audio=%s&amp;type=%d]", word, type)</ID>
+    <ID>ImplicitDefaultLocale:DatabaseHelper.kt$DatabaseHelper.Companion$String.format( "create table if not exists %s (%s integer primary key, %s integer, %s text, %s text, %s text, %s text, %s text, %s text, %s text)", DBContract.History.TABLE_NAME, DBContract.History.COLUMN_TIME_STAMP, DBContract.History.COLUMN_TYPE, DBContract.History.COLUMN_WORD, DBContract.History.COLUMN_SENTENCE, DBContract.History.COLUMN_DICTIONARY, DBContract.History.COLUMN_DEFINITION, DBContract.History.COLUMN_TRANSLATION, DBContract.History.COLUMN_NOTE, DBContract.History.COLUMN_TAG )</ID>
+    <ID>ImplicitDefaultLocale:DatabaseHelper.kt$DatabaseHelper.Companion$String.format( "create table if not exists %s (%s integer, %s integer, %s text, %s text, %s text, %s text)", DBContract.Book.TABLE_NAME, DBContract.Book.COLUMN_ID, DBContract.Book.COLUMN_LAST_OPEN_TIME, DBContract.Book.COLUMN_BOOK_NAME, DBContract.Book.COLUMN_AUTHOR, DBContract.Book.COLUMN_BOOK_PATH, DBContract.Book.COLUMN_READ_POSITION )</ID>
+    <ID>ImplicitDefaultLocale:DatabaseHelper.kt$DatabaseHelper.Companion$String.format( "create table if not exists %s (%s text, %s text, %s integer, %s integer, %s text)", DBContract.Plan.TABLE_NAME, DBContract.Plan.COLUMN_PLAN_NAME, DBContract.Plan.COLUMN_DICTIONARY_KEY, DBContract.Plan.COLUMN_OUTPUT_DECK_ID, DBContract.Plan.COLUMN_OUTPUT_MODEL_ID, DBContract.Plan.COLUMN_FIELDS_MAP )</ID>
+    <ID>ImplicitDefaultLocale:PopupActivity.kt$PopupActivity$String.format( "方案\"%s\"所选词典\"%s\"不存在，请检查是否需要重新导入自定义词典", currentOutputPlan!!.planName, currentOutputPlan!!.dictionaryKey )</ID>
+    <ID>ImplicitDefaultLocale:StorageMigrationActivity.kt$StorageMigrationActivity$String.format("%.2f %s", unitValue, units[unitIndex])</ID>
+    <ID>ImportOrdering:AIDictionary.kt$import android.content.Context import android.util.Log import android.widget.ArrayAdapter import android.widget.ListAdapter import com.lmyby.ankihelper.MyApplication import com.lmyby.ankihelper.R import com.lmyby.ankihelper.data.ai.AIDictionaryConfig import com.lmyby.ankihelper.data.ai.AIConfigRepository import com.lmyby.ankihelper.data.ai.AIException import com.lmyby.ankihelper.data.ai.service.AIDictionaryService</ID>
+    <ID>ImportOrdering:Cdepe4Dao.kt$import androidx.room.Dao import androidx.room.Query import androidx.room.SkipQueryVerification import android.database.Cursor</ID>
+    <ID>ImportOrdering:Oalde10Dao.kt$import androidx.room.Dao import androidx.room.Query import androidx.room.SkipQueryVerification import android.database.Cursor</ID>
+    <ID>ImportOrdering:PopupActivity.kt$import android.annotation.SuppressLint import android.app.AlertDialog import android.content.ClipData import android.content.ClipboardManager import android.content.Context import android.content.Intent import android.graphics.Bitmap import android.graphics.drawable.BitmapDrawable import android.media.AudioAttributes import android.media.AudioManager import android.media.MediaPlayer import android.net.Uri import android.os.Build import android.os.Bundle import android.os.Handler import android.os.Looper import android.os.Message import android.os.VibrationEffect import android.os.Vibrator import android.text.Editable import android.text.TextWatcher import android.util.Log import android.view.ActionMode import android.view.KeyEvent import android.view.LayoutInflater import android.view.Menu import android.view.MenuItem import android.view.MotionEvent import android.view.View import android.view.ViewGroup import android.view.inputmethod.EditorInfo import android.view.inputmethod.InputMethodManager import android.widget.* import androidx.appcompat.app.AppCompatActivity import androidx.cardview.widget.CardView import androidx.core.content.ContextCompat import androidx.core.text.HtmlCompat import com.bumptech.glide.Glide import com.ichi2.anki.api.NoteInfo import com.lmyby.ankihelper.MyApplication import com.lmyby.ankihelper.R import com.lmyby.ankihelper.anki.AnkiDroidHelper import com.lmyby.ankihelper.data.Settings import com.lmyby.ankihelper.data.ai.AIManager import com.lmyby.ankihelper.data.database.AppDatabase import com.lmyby.ankihelper.data.dict.Definition import com.lmyby.ankihelper.data.dict.DictionaryRegister import com.lmyby.ankihelper.data.dict.IDictionary import com.lmyby.ankihelper.data.dict.UrbanAutoCompleteAdapter import com.lmyby.ankihelper.data.history.HistoryUtil import com.lmyby.ankihelper.data.plan.OutputPlanEntity import com.lmyby.ankihelper.data.plan.OutputPlanPOJO import com.lmyby.ankihelper.data.plan.OutputPlanRepository import com.lmyby.ankihelper.data.plan.OutputPlanRepositoryHelper import com.lmyby.ankihelper.domain.CBWatcherService import com.lmyby.ankihelper.domain.PlayAudioManager import com.lmyby.ankihelper.domain.PronounceManager import com.lmyby.ankihelper.ui.widget.BigBangLayout import com.lmyby.ankihelper.ui.widget.BigBangLayoutWrapper import com.lmyby.ankihelper.util.* import com.tonyodev.fetch2.* import com.tonyodev.fetch2.Error import com.tonyodev.fetch2core.DownloadBlock import com.tonyodev.fetch2core.Func import me.everything.android.ui.overscroll.OverScrollDecoratorHelper import java.io.File import java.io.FileOutputStream import java.io.IOException import java.lang.ref.WeakReference import android.widget.SimpleCursorAdapter</ID>
+    <ID>ImportOrdering:StatActivity.kt$import android.graphics.Color import android.os.Bundle import android.view.MenuItem import android.view.View import android.widget.AdapterView import android.widget.Spinner import androidx.appcompat.app.AppCompatActivity import androidx.core.app.NavUtils import androidx.lifecycle.lifecycleScope import kotlinx.coroutines.Dispatchers import kotlinx.coroutines.launch import kotlinx.coroutines.withContext import com.github.mikephil.charting.charts.BarChart import com.github.mikephil.charting.charts.LineChart import com.github.mikephil.charting.components.Legend import com.github.mikephil.charting.components.XAxis import com.github.mikephil.charting.data.* import com.github.mikephil.charting.formatter.ValueFormatter import com.github.mikephil.charting.interfaces.datasets.ILineDataSet import com.google.android.material.chip.ChipGroup import com.lmyby.ankihelper.R import com.lmyby.ankihelper.data.Settings import com.lmyby.ankihelper.data.history.HistoryStat</ID>
+    <ID>Indentation:AIDictionaryService.kt$AIDictionaryService$ </ID>
+    <ID>Indentation:AIService.kt$AIService$ </ID>
+    <ID>Indentation:AITranslatorService.kt$AITranslatorService$ </ID>
+    <ID>Indentation:AppTheme.kt$AppTheme.Companion$ </ID>
+    <ID>Indentation:BigBangLayout.kt$BigBangLayout$ </ID>
+    <ID>Indentation:BigBangLayout.kt$BigBangLayout.Item$ </ID>
+    <ID>Indentation:BigBangLayoutWrapper.kt$BigBangLayoutWrapper$ </ID>
+    <ID>Indentation:CBWatcherService.kt$CBWatcherService.Companion$ </ID>
+    <ID>Indentation:Constant.kt$Constant$ </ID>
+    <ID>Indentation:Content.kt$Content$ </ID>
+    <ID>Indentation:DatabaseHelper.kt$DatabaseHelper.Companion$ </ID>
+    <ID>Indentation:DatabaseManager.kt$DatabaseManager$ </ID>
+    <ID>Indentation:FileUtils.kt$FileUtils$ </ID>
+    <ID>Indentation:NetworkUtil.kt$NetworkUtil$ </ID>
+    <ID>Indentation:PopupActivity.kt$PopupActivity$ </ID>
+    <ID>Indentation:ScrollAwareFABBehaviour.kt$ScrollAwareFABBehaviour$ </ID>
+    <ID>Indentation:SettingsActivity.kt$SettingsActivity$ </ID>
+    <ID>Indentation:SettingsFragment.kt$SettingsFragment$ </ID>
+    <ID>Indentation:StorageMigrationActivity.kt$StorageMigrationActivity$ </ID>
+    <ID>Indentation:TextSplitter.kt$TextSplitter$ </ID>
+    <ID>Indentation:ThemeManager.kt$ThemeManager$ </ID>
+    <ID>LargeClass:BigBangLayout.kt$BigBangLayout : ViewGroupActionListenerNestedScrollingChild</ID>
+    <ID>LargeClass:PopupActivity.kt$PopupActivity : AppCompatActivityActionListener</ID>
+    <ID>LargeClass:WanaKanaJava.kt$WanaKanaJava</ID>
+    <ID>LongMethod:AIDictionary.kt$AIDictionary$override fun wordLookup(key: String): List&lt;Definition&gt;</ID>
+    <ID>LongMethod:AIDictionaryService.kt$AIDictionaryService$@Throws(IOException::class, AIException::class) private fun parseDictionaryResponse(response: String, word: String, llmConfigId: Long): List&lt;AIDictionaryCache&gt;</ID>
+    <ID>LongMethod:AIService.kt$AIService$@Throws(IOException::class, AIException::class) fun callLLMWithRetry( config: LLMConfig, systemMessage: String, userMessage: String, maxRetries: Int ): String</ID>
+    <ID>LongMethod:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$override fun migrate(database: SupportSQLiteDatabase)</ID>
+    <ID>LongMethod:BigBangLayout.kt$BigBangLayout$override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int)</ID>
+    <ID>LongMethod:BigBangLayout.kt$BigBangLayout$override fun onTouchEvent(event: MotionEvent): Boolean</ID>
+    <ID>LongMethod:BigBangLayout.kt$BigBangLayout$private fun initView(attrs: AttributeSet?)</ID>
+    <ID>LongMethod:LauncherActivity.kt$LauncherActivity$override fun onCreate(savedInstanceState: Bundle?)</ID>
+    <ID>LongMethod:PopupActivity.kt$PopupActivity$private fun getCardFromDefinition(def: Definition): View</ID>
+    <ID>LongMethod:PopupActivity.kt$PopupActivity$private fun populatePlanSpinner()</ID>
+    <ID>LongMethod:PopupActivity.kt$PopupActivity$private fun setEventListener()</ID>
+    <ID>LongMethod:PopupDialogManager.kt$PopupDialogManager$fun showTagDialog()</ID>
+    <ID>LongMethod:TextSplitter.kt$TextSplitter$@JvmStatic fun getLocalSegments(str: String?): List&lt;String&gt;</ID>
+    <ID>LongMethod:WanaKanaJava.kt$WanaKanaJava$private fun _romajiToKana(roma: String, ignoreCase: Boolean?): String</ID>
+    <ID>LongMethod:WanaKanaJava.kt$WanaKanaJava$private fun prepareJtoR()</ID>
+    <ID>LongMethod:WanaKanaJava.kt$WanaKanaJava$private fun prepareRtoJ()</ID>
+    <ID>LongParameterList:DatabaseManager.kt$DatabaseManager$(id: Int, name: String, lang: String, elements: Array&lt;String&gt;, description: String, tmpl: String)</ID>
+    <ID>LongParameterList:HistoryUtil.kt$HistoryUtil$( sentence: String, word: String, dictionary: String, definition: String, translation: String, note: String, tag: String )</ID>
+    <ID>LoopWithTooManyJumpStatements:BigBangLayout.kt$BigBangLayout$for</ID>
+    <ID>LoopWithTooManyJumpStatements:PlansManagerActivity.kt$PlansManagerActivity$for</ID>
+    <ID>LoopWithTooManyJumpStatements:TextSplitter.kt$TextSplitter$for</ID>
+    <ID>LoopWithTooManyJumpStatements:WanaKanaJava.kt$WanaKanaJava$while</ID>
+    <ID>MagicNumber:AIDictionary.kt$AIDictionary$3</ID>
+    <ID>MagicNumber:AIDictionary.kt$AIDictionary$4</ID>
+    <ID>MagicNumber:AIDictionary.kt$AIDictionary$5</ID>
+    <ID>MagicNumber:AIDictionary.kt$AIDictionary$6</ID>
+    <ID>MagicNumber:AIDictionaryService.kt$AIDictionaryService$200</ID>
+    <ID>MagicNumber:AIDictionaryService.kt$AIDictionaryService$3</ID>
+    <ID>MagicNumber:AIDictionaryService.kt$AIDictionaryService$5</ID>
+    <ID>MagicNumber:AIDictionaryService.kt$AIDictionaryService$7</ID>
+    <ID>MagicNumber:AIService.kt$AIService$0.3</ID>
+    <ID>MagicNumber:AIService.kt$AIService$1000</ID>
+    <ID>MagicNumber:AIService.kt$AIService$4</ID>
+    <ID>MagicNumber:AIService.kt$AIService$400</ID>
+    <ID>MagicNumber:AIService.kt$AIService$401</ID>
+    <ID>MagicNumber:AIService.kt$AIService$404</ID>
+    <ID>MagicNumber:AIService.kt$AIService$429</ID>
+    <ID>MagicNumber:AIService.kt$AIService$500</ID>
+    <ID>MagicNumber:AIService.kt$AIService$599</ID>
+    <ID>MagicNumber:AITranslatorService.kt$AITranslatorService$3</ID>
+    <ID>MagicNumber:AITranslatorService.kt$AITranslatorService$7</ID>
+    <ID>MagicNumber:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$3</ID>
+    <ID>MagicNumber:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$4</ID>
+    <ID>MagicNumber:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$5</ID>
+    <ID>MagicNumber:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$6</ID>
+    <ID>MagicNumber:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$7</ID>
+    <ID>MagicNumber:BaseDatabaseHelper.kt$BaseDatabaseHelper$1000</ID>
+    <ID>MagicNumber:BaseDatabaseHelper.kt$BaseDatabaseHelper$8192</ID>
+    <ID>MagicNumber:BigBangBottom.kt$BigBangBottom$10f</ID>
+    <ID>MagicNumber:BigBangBottom.kt$BigBangBottom$3</ID>
+    <ID>MagicNumber:BigBangBottom.kt$BigBangBottom$5f</ID>
+    <ID>MagicNumber:BigBangHeader.kt$BigBangHeader$10f</ID>
+    <ID>MagicNumber:BigBangHeader.kt$BigBangHeader$200</ID>
+    <ID>MagicNumber:BigBangHeader.kt$BigBangHeader$3</ID>
+    <ID>MagicNumber:BigBangHeader.kt$BigBangHeader$5f</ID>
+    <ID>MagicNumber:BigBangLayout.kt$BigBangLayout$100.0f</ID>
+    <ID>MagicNumber:BigBangLayout.kt$BigBangLayout$200</ID>
+    <ID>MagicNumber:BigBangLayout.kt$BigBangLayout$255</ID>
+    <ID>MagicNumber:BigBangLayout.kt$BigBangLayout$500</ID>
+    <ID>MagicNumber:BigBangLayout.kt$BigBangLayout$5f</ID>
+    <ID>MagicNumber:BigBangLayoutWrapper.kt$BigBangLayoutWrapper$100.0f</ID>
+    <ID>MagicNumber:BigBangLayoutWrapper.kt$BigBangLayoutWrapper$255</ID>
+    <ID>MagicNumber:BigBangLayoutWrapper.kt$BigBangLayoutWrapper$3</ID>
+    <ID>MagicNumber:BigBangLayoutWrapper.kt$BigBangLayoutWrapper$3.0</ID>
+    <ID>MagicNumber:CBWatcherService.kt$CBWatcherService.Companion$0.2</ID>
+    <ID>MagicNumber:Cdepe4.kt$Cdepe4$3</ID>
+    <ID>MagicNumber:Cdepe4.kt$Cdepe4$4</ID>
+    <ID>MagicNumber:Cdepe4.kt$Cdepe4$5</ID>
+    <ID>MagicNumber:Cdepe4.kt$Cdepe4$6</ID>
+    <ID>MagicNumber:Content.kt$Content$3</ID>
+    <ID>MagicNumber:DatabaseHelper.kt$DatabaseHelper$3</ID>
+    <ID>MagicNumber:DatabaseManager.kt$DatabaseManager$3</ID>
+    <ID>MagicNumber:DatabaseManager.kt$DatabaseManager$4</ID>
+    <ID>MagicNumber:DatabaseManager.kt$DatabaseManager$5</ID>
+    <ID>MagicNumber:DatabaseManager.kt$DatabaseManager$6</ID>
+    <ID>MagicNumber:DatabaseManager.kt$DatabaseManager$7</ID>
+    <ID>MagicNumber:FieldUtil.kt$FieldUtil$3</ID>
+    <ID>MagicNumber:FieldUtil.kt$FieldUtil$4</ID>
+    <ID>MagicNumber:FileUtils.kt$FileUtils$1024</ID>
+    <ID>MagicNumber:HistoryStat.kt$HistoryStat$24</ID>
+    <ID>MagicNumber:HistoryStat.kt$HistoryStat$3</ID>
+    <ID>MagicNumber:LauncherActivity.kt$LauncherActivity$23</ID>
+    <ID>MagicNumber:Maldpe.kt$Maldpe$3</ID>
+    <ID>MagicNumber:Maldpe.kt$Maldpe$4</ID>
+    <ID>MagicNumber:Maldpe.kt$Maldpe$5</ID>
+    <ID>MagicNumber:Maldpe.kt$Maldpe$6</ID>
+    <ID>MagicNumber:Oalde10.kt$Oalde10$3</ID>
+    <ID>MagicNumber:Oalde10.kt$Oalde10$4</ID>
+    <ID>MagicNumber:Oalde10.kt$Oalde10$5</ID>
+    <ID>MagicNumber:Oalde10.kt$Oalde10$6</ID>
+    <ID>MagicNumber:PlansManagerActivity.kt$PlansManagerActivity$3</ID>
+    <ID>MagicNumber:PlansManagerActivity.kt$PlansManagerActivity$4</ID>
+    <ID>MagicNumber:PlansManagerActivity.kt$PlansManagerActivity$5</ID>
+    <ID>MagicNumber:PopupActivity.kt$PopupActivity$100</ID>
+    <ID>MagicNumber:PopupActivity.kt$PopupActivity$21</ID>
+    <ID>MagicNumber:PopupActivity.kt$PopupActivity$3</ID>
+    <ID>MagicNumber:PopupActivity.kt$PopupActivity$4</ID>
+    <ID>MagicNumber:PopupActivity.kt$PopupActivity$5</ID>
+    <ID>MagicNumber:PopupActivity.kt$PopupActivity$500</ID>
+    <ID>MagicNumber:PopupActivity.kt$PopupActivity$6</ID>
+    <ID>MagicNumber:PopupActivity.kt$PopupActivity$7</ID>
+    <ID>MagicNumber:PopupActivity.kt$PopupActivity$8</ID>
+    <ID>MagicNumber:PopupDialogManager.kt$PopupDialogManager$4</ID>
+    <ID>MagicNumber:PopupIntentHandler.kt$PopupIntentHandler$200</ID>
+    <ID>MagicNumber:RegexUtil.kt$RegexUtil$0.5</ID>
+    <ID>MagicNumber:RegexUtil.kt$RegexUtil$171941</ID>
+    <ID>MagicNumber:RegexUtil.kt$RegexUtil$19968</ID>
+    <ID>MagicNumber:StatActivity.kt$StatActivity$0.5f</ID>
+    <ID>MagicNumber:StatActivity.kt$StatActivity$23.5f</ID>
+    <ID>MagicNumber:StatActivity.kt$StatActivity$24</ID>
+    <ID>MagicNumber:StatActivity.kt$StatActivity$3</ID>
+    <ID>MagicNumber:StatActivity.kt$StatActivity$30</ID>
+    <ID>MagicNumber:StatActivity.kt$StatActivity$365</ID>
+    <ID>MagicNumber:StatActivity.kt$StatActivity$3650</ID>
+    <ID>MagicNumber:StatActivity.kt$StatActivity$7</ID>
+    <ID>MagicNumber:StorageMigrationActivity.kt$StorageMigrationActivity$1000</ID>
+    <ID>MagicNumber:StorageMigrationActivity.kt$StorageMigrationActivity$1024</ID>
+    <ID>MagicNumber:StorageMigrationActivity.kt$StorageMigrationActivity$1024.0</ID>
+    <ID>MagicNumber:StorageMigrationActivity.kt$StorageMigrationActivity$8192</ID>
+    <ID>MagicNumber:TextSplitter.kt$TextSplitter$0.9</ID>
+    <ID>MagicNumber:Utils.kt$Utils$16</ID>
+    <ID>MagicNumber:ViewUtil.kt$ViewUtil$0x00FFFFFF</ID>
+    <ID>MagicNumber:VocabularyCardModel.kt$VocabularyCardModel$3</ID>
+    <ID>MagicNumber:VocabularyCardModel.kt$VocabularyCardModel$4</ID>
+    <ID>MagicNumber:VocabularyCardModel.kt$VocabularyCardModel$5</ID>
+    <ID>MagicNumber:WanaKanaJava.kt$WanaKanaJava$3</ID>
+    <ID>MagicNumber:WanaKanaJava.kt$WanaKanaJava$4</ID>
+    <ID>MaxLineLength:AIDictionary.kt$AIDictionary$"&lt;b&gt;AI Dictionary Error&lt;/b&gt;&lt;br/&gt;${e.message}&lt;br/&gt;&lt;br/&gt;Please check your LLM configuration and ensure the API is accessible."</ID>
+    <ID>MaxLineLength:AIDictionary.kt$AIDictionary$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:AIDictionary.kt$AIDictionary$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:AIDictionary.kt$AIDictionary$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:AIDictionary.kt$AIDictionary$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:AIDictionary.kt$AIDictionary$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:AIDictionary.kt$AIDictionary$append("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt;&amp;nbsp; &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt; &amp;nbsp; &lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>MaxLineLength:AIDictionary.kt$AIDictionary$append("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt; &amp;nbsp;&lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>MaxLineLength:AIDictionaryCacheDao.kt$AIDictionaryCacheDao$@Query("DELETE FROM aidictionarycache WHERE id IN (SELECT id FROM aidictionarycache ORDER BY timestamp ASC LIMIT :count)")</ID>
+    <ID>MaxLineLength:AIDictionaryService.kt$AIDictionaryService$"Each definition object should have: 'hwd', 'phrase', 'sense', 'phonetics', 'def_en', 'def_cn', and 'example' fields."</ID>
+    <ID>MaxLineLength:AIDictionaryService.kt$AIDictionaryService$"phonetics: contains both English and American English phonetics in a string, not map, like 'UK/kaɪnd/ US/kaɪnd/',"</ID>
+    <ID>MaxLineLength:AIDictionaryService.kt$AIDictionaryService$"phrase: the phase that the word belong to. if not empty, the definition_cn and definition_en wiil be definition of the phase. "</ID>
+    <ID>MaxLineLength:AIDictionaryService.kt$AIDictionaryService$"sense: is the Part of Speech, which refers to the grammatical category a word belongs to based on its function within a sentence, Common POS categories in English include nouns, verbs, adjectives, adverbs, pronouns, prepositions, conjunctions, and interjections"</ID>
+    <ID>MaxLineLength:AIDictionaryService.kt$AIDictionaryService$private</ID>
+    <ID>MaxLineLength:AITranslatorCacheDao.kt$AITranslatorCacheDao$@Query("DELETE FROM aitranslatorcache WHERE id IN (SELECT id FROM aitranslatorcache ORDER BY timestamp ASC LIMIT :count)")</ID>
+    <ID>MaxLineLength:AITranslatorCacheDao.kt$AITranslatorCacheDao$@Query("SELECT * FROM aitranslatorcache WHERE sourceText = :sourceText AND sourceLanguage = :sourceLang AND targetLanguage = :targetLang AND llmConfigId = :llmConfigId LIMIT 1")</ID>
+    <ID>MaxLineLength:AITranslatorCacheDao.kt$AITranslatorCacheDao$@Query("SELECT * FROM aitranslatorcache WHERE sourceText = :sourceText AND sourceLanguage = :sourceLang AND targetLanguage = :targetLang LIMIT 1")</ID>
+    <ID>MaxLineLength:AITranslatorCacheDao.kt$AITranslatorCacheDao$suspend</ID>
+    <ID>MaxLineLength:AITranslatorService.kt$AITranslatorService$val userMessage = "Please provide the translation of the text \"$text\" from $sourceLanguage to $targetLanguage."</ID>
+    <ID>MaxLineLength:AnkiDroidHelper.kt$AnkiDroidHelper$*</ID>
+    <ID>MaxLineLength:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$database.execSQL("CREATE INDEX IF NOT EXISTS index_aidictionarycache_llmConfigId ON aidictionarycache(llmConfigId)")</ID>
+    <ID>MaxLineLength:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$database.execSQL("CREATE INDEX IF NOT EXISTS index_aidictionaryconfig_llmId ON aidictionaryconfig(llmId)")</ID>
+    <ID>MaxLineLength:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$database.execSQL("CREATE INDEX IF NOT EXISTS index_aitranslatorcache_llmConfigId ON aitranslatorcache(llmConfigId)")</ID>
+    <ID>MaxLineLength:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$database.execSQL("CREATE INDEX IF NOT EXISTS index_aitranslatorcache_sourceText ON aitranslatorcache(sourceText)")</ID>
+    <ID>MaxLineLength:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$database.execSQL("CREATE INDEX IF NOT EXISTS index_aitranslatorconfig_llmId ON aitranslatorconfig(llmId)")</ID>
+    <ID>MaxLineLength:BaseDatabaseHelper.kt$BaseDatabaseHelper$db.execSQL("CREATE TABLE IF NOT EXISTS dict (hwd TEXT PRIMARY KEY, phrase TEXT, sense TEXT, phonetics TEXT, def_en TEXT, def_cn TEXT)")</ID>
+    <ID>MaxLineLength:Cdepe4.kt$Cdepe4$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Cdepe4.kt$Cdepe4$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Cdepe4.kt$Cdepe4$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Cdepe4.kt$Cdepe4$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Cdepe4.kt$Cdepe4$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Cdepe4.kt$Cdepe4$append("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt;&amp;nbsp; &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt;&amp;nbsp; &lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>MaxLineLength:Cdepe4.kt$Cdepe4$append("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt;&amp;nbsp; &lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>MaxLineLength:Constant.kt$Constant$const val FBREADER_URL_TMPL = "&lt;a href=\"intent:#Intent;action=android.fbreader.action.VIEW;category=android.intent.category.DEFAULT;type=text/plain;component=org.geometerplus.zlibrary.ui.android/org.geometerplus.android.fbreader.FBReader;S.fbreader.bookmarkid.from.external=%s;end;\"&gt;查看原文&lt;/a&gt;"</ID>
+    <ID>MaxLineLength:DatabaseHelper.kt$DatabaseHelper.Companion$"create table if not exists %s (%s integer primary key, %s integer, %s text, %s text, %s text, %s text, %s text, %s text, %s text)"</ID>
+    <ID>MaxLineLength:DatabaseManager.kt$DatabaseManager$fun</ID>
+    <ID>MaxLineLength:FieldUtil.kt$FieldUtil$if</ID>
+    <ID>MaxLineLength:HistoryRepository.kt$HistoryRepository$suspend</ID>
+    <ID>MaxLineLength:Maldpe.kt$Maldpe$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Maldpe.kt$Maldpe$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Maldpe.kt$Maldpe$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Maldpe.kt$Maldpe$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Maldpe.kt$Maldpe$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Maldpe.kt$Maldpe$append("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt;&amp;nbsp; &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt;&amp;nbsp; &lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>MaxLineLength:Maldpe.kt$Maldpe$append("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt;&amp;nbsp; &lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>MaxLineLength:Oalde10.kt$Oalde10$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Oalde10.kt$Oalde10$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Oalde10.kt$Oalde10$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Oalde10.kt$Oalde10$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Oalde10.kt$Oalde10$"&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense&lt;/span&gt;"</ID>
+    <ID>MaxLineLength:Oalde10.kt$Oalde10$append("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$phrase &lt;/span&gt;&amp;nbsp; &lt;/span&gt; &lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt;&amp;nbsp; &lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>MaxLineLength:Oalde10.kt$Oalde10$append("&lt;span style='text-transform:lowercase; font-size:0.9em; margin-right:5px; padding:2px 4px; color:white; background-color:#42A5F5; border-radius:3px;'&gt;$sense &lt;/span&gt;&amp;nbsp; &lt;span&gt; $phonetics&lt;/span&gt; &lt;span style=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defEn&lt;/span&gt; &lt;span sytle=margin-right:3px; padding:0;margin:0; padding:0;&gt;$defCn&lt;/span&gt;")</ID>
+    <ID>MaxLineLength:ScrollAwareFABBehaviour.kt$ScrollAwareFABBehaviour$super.onNestedScroll(coordinatorLayout, child, target, dxConsumed, dyConsumed, dxUnconsumed, dyUnconsumed, type, consumed)</ID>
+    <ID>MaxLineLength:WanaKanaJava.kt$WanaKanaJava$// I removed the "n"-&gt;"ん" mapping because the IME wouldn't let me type "na" for "な" without returning "んあ",</ID>
+    <ID>MaxLineLength:WanaKanaJava.kt$WanaKanaJava$// Pass every character of a string through a function and return TRUE if every character passes the function's check</ID>
+    <ID>MaxLineLength:WanaKanaJava.kt$WanaKanaJava$if</ID>
+    <ID>MaxLineLength:WanaKanaJava.kt$WanaKanaJava$val regexp = if (includeY) Pattern.compile("[bcdfghjklmnpqrstvwxyz]") else Pattern.compile("[bcdfghjklmnpqrstvwxz]")</ID>
+    <ID>MaximumLineLength:AIDictionary.kt$AIDictionary$ </ID>
+    <ID>MaximumLineLength:AIDictionaryCacheDao.kt$AIDictionaryCacheDao$ </ID>
+    <ID>MaximumLineLength:AIDictionaryService.kt$AIDictionaryService$ </ID>
+    <ID>MaximumLineLength:AITranslatorCacheDao.kt$AITranslatorCacheDao$ </ID>
+    <ID>MaximumLineLength:AITranslatorService.kt$AITranslatorService$ </ID>
+    <ID>MaximumLineLength:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$ </ID>
+    <ID>MaximumLineLength:BaseDatabaseHelper.kt$BaseDatabaseHelper$ </ID>
+    <ID>MaximumLineLength:Cdepe4.kt$Cdepe4$ </ID>
+    <ID>MaximumLineLength:Constant.kt$Constant$ </ID>
+    <ID>MaximumLineLength:DatabaseHelper.kt$DatabaseHelper.Companion$ </ID>
+    <ID>MaximumLineLength:DatabaseManager.kt$DatabaseManager$ </ID>
+    <ID>MaximumLineLength:FieldUtil.kt$FieldUtil$ </ID>
+    <ID>MaximumLineLength:HistoryRepository.kt$HistoryRepository$ </ID>
+    <ID>MaximumLineLength:Maldpe.kt$Maldpe$ </ID>
+    <ID>MaximumLineLength:Oalde10.kt$Oalde10$ </ID>
+    <ID>MaximumLineLength:ScrollAwareFABBehaviour.kt$ScrollAwareFABBehaviour$ </ID>
+    <ID>MaximumLineLength:WanaKanaJava.kt$WanaKanaJava$ </ID>
+    <ID>MayBeConst:RegexUtil.kt$RegexUtil$@JvmField val SYMBOL_REX_WITHOUT_BLANK = """[,\./:"\\\[\]\|`~!! @#\$%\^&amp;\*\(\)_\+=&lt;\-&gt;\?;'，。、；：''""【】《》？\{\}！￥…（）—=]"""</ID>
+    <ID>MayBeConst:RegexUtil.kt$RegexUtil$@JvmField val SYMBOL_REX_WITH_BLANK = """[ ,\./:"\\\[\]\|`~!@#\$%\^&amp;\*\(\)_\+=&lt;\-&gt;\?;'，。、；：''""【】《》？\{\}！￥…（）—=]"""</ID>
+    <ID>MultiLineIfElse:FileUtils.kt$FileUtils$DatabaseUtils.dumpCursor(cursor)</ID>
+    <ID>MultiLineIfElse:FileUtils.kt$FileUtils$Log.d( "$TAG File -", "Authority: ${uri.authority}" + ", Fragment: ${uri.fragment}" + ", Port: ${uri.port}" + ", Query: ${uri.query}" + ", Scheme: ${uri.scheme}" + ", Host: ${uri.host}" + ", Segments: ${uri.pathSegments}" )</ID>
+    <ID>MultiLineIfElse:FileUtils.kt$FileUtils$Log.d(TAG, "Attempting to get thumbnail")</ID>
+    <ID>MultiLineIfElse:FileUtils.kt$FileUtils$Log.d(TAG, "Got thumb ID: $id")</ID>
+    <ID>MultiLineIfElse:FileUtils.kt$FileUtils$Log.e(TAG, "getThumbnail", e)</ID>
+    <ID>MultiLineIfElse:FileUtils.kt$FileUtils$return MimeTypeMap.getSingleton().getMimeTypeFromExtension(extension.substring(1)) ?: "application/octet-stream"</ID>
+    <ID>MultiLineIfElse:FileUtils.kt$FileUtils$return uri.lastPathSegment</ID>
+    <ID>MultiLineIfElse:Utils.kt$Utils$return key</ID>
+    <ID>MultiLineIfElse:ViewUtil.kt$ViewUtil$@Suppress("DEPRECATION") v.setBackgroundDrawable(drawable)</ID>
+    <ID>MultiLineIfElse:ViewUtil.kt$ViewUtil$newValue = 1</ID>
+    <ID>MultiLineIfElse:ViewUtil.kt$ViewUtil$return false</ID>
+    <ID>MultiLineIfElse:ViewUtil.kt$ViewUtil$return result</ID>
+    <ID>MultiLineIfElse:ViewUtil.kt$ViewUtil$return true</ID>
+    <ID>MultiLineIfElse:ViewUtil.kt$ViewUtil$v.background = drawable</ID>
+    <ID>NestedBlockDepth:AIDictionaryConfigEditorActivity.kt$AIDictionaryConfigEditorActivity$private fun populateFields()</ID>
+    <ID>NestedBlockDepth:AIDictionaryService.kt$AIDictionaryService$@Throws(IOException::class, AIException::class) private fun parseDictionaryResponse(response: String, word: String, llmConfigId: Long): List&lt;AIDictionaryCache&gt;</ID>
+    <ID>NestedBlockDepth:AIService.kt$AIService$@Throws(IOException::class, AIException::class) fun callLLMWithRetry( config: LLMConfig, systemMessage: String, userMessage: String, maxRetries: Int ): String</ID>
+    <ID>NestedBlockDepth:AITranslatorConfigEditorActivity.kt$AITranslatorConfigEditorActivity$private fun populateFields()</ID>
+    <ID>NestedBlockDepth:AITranslatorService.kt$AITranslatorService$@Throws(IOException::class, AIException::class) private fun parseTranslationResponse(response: String): JSONObject</ID>
+    <ID>NestedBlockDepth:BaseDatabaseHelper.kt$BaseDatabaseHelper$private fun copyDatabaseFromAssets(context: Context)</ID>
+    <ID>NestedBlockDepth:BigBangLayout.kt$BigBangLayout$override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int)</ID>
+    <ID>NestedBlockDepth:BigBangLayout.kt$BigBangLayout$override fun onTouchEvent(event: MotionEvent): Boolean</ID>
+    <ID>NestedBlockDepth:BigBangLayout.kt$BigBangLayout$private fun makeSelectedText(): String</ID>
+    <ID>NestedBlockDepth:BigBangLayout.kt$BigBangLayout$private fun setSelectionByRect(rect: Rect)</ID>
+    <ID>NestedBlockDepth:CBWatcherService.kt$CBWatcherService$private fun performClipboardCheck()</ID>
+    <ID>NestedBlockDepth:FileUtils.kt$FileUtils$@JvmStatic fun getThumbnail(context: Context, uri: Uri?, mimeType: String): Bitmap?</ID>
+    <ID>NestedBlockDepth:PlanEditorActivity.kt$PlanEditorActivity$private fun refreshFieldSpinners()</ID>
+    <ID>NestedBlockDepth:PlansManagerActivity.kt$PlansManagerActivity$private fun processPlanString(plansString: String)</ID>
+    <ID>NestedBlockDepth:PopupActivity.kt$PopupActivity$override fun onWindowFocusChanged(hasFocus: Boolean)</ID>
+    <ID>NestedBlockDepth:PopupActivity.kt$PopupActivity$private fun setTargetWord()</ID>
+    <ID>NestedBlockDepth:StorageMigrationActivity.kt$StorageMigrationActivity$private fun copyBuiltInDictionaries(externalDbDir: File): Boolean</ID>
+    <ID>NestedBlockDepth:StorageMigrationActivity.kt$StorageMigrationActivity$private fun migrateDatabases(): Boolean</ID>
+    <ID>NestedBlockDepth:WanaKanaJava.kt$WanaKanaJava$private fun _romajiToKana(roma: String, ignoreCase: Boolean?): String</ID>
+    <ID>NoMultipleSpaces:DatabaseManager.kt$DatabaseManager$ </ID>
+    <ID>NoMultipleSpaces:Settings.kt$Settings$ </ID>
+    <ID>NoUnusedImports:BaseActivity.kt$com.lmyby.ankihelper.ui.base.BaseActivity.kt</ID>
+    <ID>NoUnusedImports:BigBangBottom.kt$com.lmyby.ankihelper.ui.widget.BigBangBottom.kt</ID>
+    <ID>NoUnusedImports:CBWatcherService.kt$com.lmyby.ankihelper.domain.CBWatcherService.kt</ID>
+    <ID>NoUnusedImports:FileUtils.kt$com.lmyby.ankihelper.util.FileUtils.kt</ID>
+    <ID>NoUnusedImports:MyApplication.kt$com.lmyby.ankihelper.MyApplication.kt</ID>
+    <ID>NoUnusedImports:PlanEditorActivity.kt$com.lmyby.ankihelper.ui.plan.PlanEditorActivity.kt</ID>
+    <ID>NoUnusedImports:PopupActivity.kt$com.lmyby.ankihelper.ui.popup.PopupActivity.kt</ID>
+    <ID>NoUnusedImports:PopupDialogManager.kt$com.lmyby.ankihelper.ui.popup.PopupDialogManager.kt</ID>
+    <ID>NoUnusedImports:PopupIntentHandler.kt$com.lmyby.ankihelper.ui.popup.PopupIntentHandler.kt</ID>
+    <ID>NoUnusedImports:PopupSearchManager.kt$com.lmyby.ankihelper.ui.popup.PopupSearchManager.kt</ID>
+    <ID>NoUnusedImports:PopupTranslationManager.kt$com.lmyby.ankihelper.ui.popup.PopupTranslationManager.kt</ID>
+    <ID>NoUnusedImports:ScrollAwareFABBehaviour.kt$com.lmyby.ankihelper.ui.behaviour.ScrollAwareFABBehaviour.kt</ID>
+    <ID>NoUnusedImports:StorageMigrationActivity.kt$com.lmyby.ankihelper.ui.storage.StorageMigrationActivity.kt</ID>
+    <ID>NoUnusedImports:Utils.kt$com.lmyby.ankihelper.util.Utils.kt</ID>
+    <ID>NoUnusedImports:ViewUtil.kt$com.lmyby.ankihelper.util.ViewUtil.kt</ID>
+    <ID>NoWildcardImports:AIDictionaryCacheDao.kt$import androidx.room.*</ID>
+    <ID>NoWildcardImports:AIDictionaryConfigDao.kt$import androidx.room.*</ID>
+    <ID>NoWildcardImports:AITranslatorCacheDao.kt$import androidx.room.*</ID>
+    <ID>NoWildcardImports:AITranslatorConfigDao.kt$import androidx.room.*</ID>
+    <ID>NoWildcardImports:BookDao.kt$import androidx.room.*</ID>
+    <ID>NoWildcardImports:HistoryDao.kt$import androidx.room.*</ID>
+    <ID>NoWildcardImports:LLMConfigDao.kt$import androidx.room.*</ID>
+    <ID>NoWildcardImports:OutputPlanDao.kt$import androidx.room.*</ID>
+    <ID>NoWildcardImports:PopupActivity.kt$import android.widget.*</ID>
+    <ID>NoWildcardImports:PopupActivity.kt$import com.lmyby.ankihelper.util.*</ID>
+    <ID>NoWildcardImports:PopupActivity.kt$import com.tonyodev.fetch2.*</ID>
+    <ID>NoWildcardImports:SettingsFragment.kt$import androidx.preference.*</ID>
+    <ID>NoWildcardImports:StatActivity.kt$import com.github.mikephil.charting.data.*</ID>
+    <ID>NoWildcardImports:TTSConfigDao.kt$import androidx.room.*</ID>
+    <ID>NoWildcardImports:UserTagDao.kt$import androidx.room.*</ID>
+    <ID>ParameterListWrapping:AIDictionaryService.kt$AIDictionaryService$(content: String, results: MutableList&lt;AIDictionaryCache&gt;, word: String, llmConfigId: Long)</ID>
+    <ID>ParameterListWrapping:AITranslatorCacheDao.kt$AITranslatorCacheDao$(sourceText: String, sourceLang: String, targetLang: String, llmConfigId: Long)</ID>
+    <ID>ParameterListWrapping:DatabaseManager.kt$DatabaseManager$(id: Int, name: String, lang: String, elements: Array&lt;String&gt;, description: String, tmpl: String)</ID>
+    <ID>ParameterListWrapping:FileUtils.kt$FileUtils$( context: Context, uri: Uri, selection: String?, selectionArgs: Array&lt;String&gt;? )</ID>
+    <ID>ParameterListWrapping:HistoryRepository.kt$HistoryRepository$(beforeTimestamp: Long, limit: Int = 50)</ID>
+    <ID>PrintStackTrace:AIDictionary.kt$AIDictionary$e</ID>
+    <ID>PrintStackTrace:Cdepe4.kt$Cdepe4$e</ID>
+    <ID>PrintStackTrace:EncryptionUtil.kt$EncryptionUtil$e</ID>
+    <ID>PrintStackTrace:LauncherActivity.kt$LauncherActivity$e</ID>
+    <ID>PrintStackTrace:Maldpe.kt$Maldpe$e</ID>
+    <ID>PrintStackTrace:Oalde10.kt$Oalde10$e</ID>
+    <ID>PrintStackTrace:VocabularyCardModel.kt$VocabularyCardModel$e</ID>
+    <ID>ReturnCount:AnkiDroidHelper.kt$AnkiDroidHelper$fun findDeckIdByName(deckName: String): Long?</ID>
+    <ID>ReturnCount:AnkiDroidHelper.kt$AnkiDroidHelper$fun findModelIdByName(modelName: String, numFields: Int): Long?</ID>
+    <ID>ReturnCount:BigBangLayout.kt$BigBangLayout$private fun findItemIndexByPoint(x: Int, y: Int): Item?</ID>
+    <ID>ReturnCount:CBWatcherService.kt$CBWatcherService$private fun hasClipboardPermission(): Boolean</ID>
+    <ID>ReturnCount:CBWatcherService.kt$CBWatcherService.Companion$@JvmStatic fun isEnglish(content: String): Boolean</ID>
+    <ID>ReturnCount:Content.kt$Content$fun getCountAt(index: Int): List&lt;Long&gt;?</ID>
+    <ID>ReturnCount:Content.kt$Content$fun getRandomContentAt(index: Int, filterRead: Boolean): ContentEntity?</ID>
+    <ID>ReturnCount:FileUtils.kt$FileUtils$@JvmStatic fun getPath(context: Context, uri: Uri): String?</ID>
+    <ID>ReturnCount:FileUtils.kt$FileUtils$@JvmStatic fun getPathWithoutFilename(file: File?): File?</ID>
+    <ID>ReturnCount:LLMConfigEditorActivity.kt$LLMConfigEditorActivity$private fun findProviderByBaseUrl(baseUrl: String?): String</ID>
+    <ID>ReturnCount:LLMConfigEditorActivity.kt$LLMConfigEditorActivity$private fun saveConfig()</ID>
+    <ID>ReturnCount:LanguageManager.kt$LanguageManager$@JvmStatic fun getCurrentAppLanguage(): AppLanguage</ID>
+    <ID>ReturnCount:NetworkUtil.kt$NetworkUtil$@JvmStatic fun isNetworkAvailable(context: Context): Boolean</ID>
+    <ID>ReturnCount:PlanEditorActivity.kt$PlanEditorActivity$override fun validateInput(): Boolean</ID>
+    <ID>ReturnCount:PopupActivity.kt$PopupActivity$private fun populatePlanSpinner()</ID>
+    <ID>ReturnCount:PopupIntentHandler.kt$PopupIntentHandler$fun processIntent(intent: Intent?): IntentData</ID>
+    <ID>ReturnCount:StorageManager.kt$StorageManager$fun copyDirectory(source: File, destination: File): Boolean</ID>
+    <ID>ReturnCount:StorageManager.kt$StorageManager$fun getDirectorySize(directory: File): Long</ID>
+    <ID>ReturnCount:StorageMigrationActivity.kt$StorageMigrationActivity$private fun getDirectorySize(directory: File): Long</ID>
+    <ID>ReturnCount:StorageMigrationActivity.kt$StorageMigrationActivity$private fun migrateDatabases(): Boolean</ID>
+    <ID>ReturnCount:StorageMigrationActivity.kt$StorageMigrationActivity$private fun migrateMediaFiles(): Boolean</ID>
+    <ID>ReturnCount:StorageMigrationActivity.kt$StorageMigrationActivity$private fun performMigration(): Boolean</ID>
+    <ID>ReturnCount:StringUtil.kt$StringUtil$@JvmStatic fun isSpace(s: String?): Boolean</ID>
+    <ID>ReturnCount:TTSConfigEditorActivity.kt$TTSConfigEditorActivity$private fun saveConfig()</ID>
+    <ID>ReturnCount:Utils.kt$Utils$@JvmStatic fun containsTranslationField(outputPlan: OutputPlanPOJO?): Boolean</ID>
+    <ID>ReturnCount:ViewUtil.kt$ViewUtil$@JvmStatic fun hasState(states: IntArray?, state: Int): Boolean</ID>
+    <ID>ReturnCount:WanaKanaJava.kt$WanaKanaJava$fun toHiragana(input: String): String</ID>
+    <ID>ReturnCount:WanaKanaJava.kt$WanaKanaJava$fun toKatakana(input: String): String</ID>
+    <ID>ReturnCount:WanaKanaJava.kt$WanaKanaJava$private fun _convertPunctuation(input: String): String</ID>
+    <ID>SpacingBetweenDeclarationsWithAnnotations:PronounceManager.kt$PronounceManager$@Deprecated("Use LANGUAGE_GERMAN instead") const val LANGUAGE_GERMANY = LANGUAGE_GERMAN</ID>
+    <ID>SpacingBetweenDeclarationsWithAnnotations:PronounceManager.kt$PronounceManager$@Deprecated("Use getAvailablePronounceLanguage(Context) instead") const val LANGUAGE_FRENCH = "法语发音"</ID>
+    <ID>SpacingBetweenDeclarationsWithAnnotations:PronounceManager.kt$PronounceManager$@Deprecated("Use getAvailablePronounceLanguage(Context) instead") const val LANGUAGE_GERMAN = "德语发音"</ID>
+    <ID>SpacingBetweenDeclarationsWithAnnotations:PronounceManager.kt$PronounceManager$@Deprecated("Use getAvailablePronounceLanguage(Context) instead") const val LANGUAGE_JAPANESE = "日语发音"</ID>
+    <ID>SpacingBetweenDeclarationsWithAnnotations:PronounceManager.kt$PronounceManager$@Deprecated("Use getAvailablePronounceLanguage(Context) instead") const val LANGUAGE_KOREAN = "韩语发音"</ID>
+    <ID>SwallowedException:AIDictionaryService.kt$AIDictionaryService$e: IllegalArgumentException</ID>
+    <ID>SwallowedException:AIException.kt$AIException$e: Exception</ID>
+    <ID>SwallowedException:AITranslatorService.kt$AITranslatorService$e: IllegalArgumentException</ID>
+    <ID>SwallowedException:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$e: Exception</ID>
+    <ID>SwallowedException:BigBangLayout.kt$BigBangLayout$e: Throwable</ID>
+    <ID>SwallowedException:Cdepe4.kt$Cdepe4$e: Exception</ID>
+    <ID>SwallowedException:Content.kt$Content$e: Exception</ID>
+    <ID>SwallowedException:DictionaryRegister.kt$DictionaryRegister$ie: IllegalAccessException</ID>
+    <ID>SwallowedException:DictionaryRegister.kt$DictionaryRegister$ie: InstantiationException</ID>
+    <ID>SwallowedException:DictionaryRegister.kt$DictionaryRegister$ite: java.lang.reflect.InvocationTargetException</ID>
+    <ID>SwallowedException:DictionaryRegister.kt$DictionaryRegister$nsme: NoSuchMethodException</ID>
+    <ID>SwallowedException:Maldpe.kt$Maldpe$e: Exception</ID>
+    <ID>SwallowedException:Oalde10.kt$Oalde10$e: Exception</ID>
+    <ID>SwallowedException:PlansManagerActivity.kt$PlansManagerActivity$e: Exception</ID>
+    <ID>SwallowedException:PopupActivity.kt$PopupActivity$e: Exception</ID>
+    <ID>SwallowedException:PopupActivity.kt$PopupActivity$e: IllegalStateException</ID>
+    <ID>SwallowedException:StorageMigrationActivity.kt$StorageMigrationActivity$e: Exception</ID>
+    <ID>SwallowedException:UrbanAutoCompleteAdapter.kt$UrbanAutoCompleteAdapter$ioe: IOException</ID>
+    <ID>SwallowedException:UrbanAutoCompleteAdapter.kt$UrbanAutoCompleteAdapter$je: JSONException</ID>
+    <ID>SwallowedException:UserTagRepositoryHelper.kt$UserTagRepositoryHelper$e: Exception</ID>
+    <ID>ThrowsCount:AIManager.kt$AIManager$@Throws(IOException::class, AIException::class) fun getWordDefinition(word: String, dictionaryConfigId: Long): List&lt;AIDictionaryCache&gt;</ID>
+    <ID>ThrowsCount:AIManager.kt$AIManager$@Throws(IOException::class, AIException::class) fun translateText(text: String, translatorConfigId: Long): String</ID>
+    <ID>ThrowsCount:AIManager.kt$AIManager$@Throws(IOException::class, AIException::class) fun translateTextWithDefaultTranslator(text: String): String</ID>
+    <ID>ThrowsCount:AIService.kt$AIService$@Throws(IOException::class, AIException::class) fun callLLMWithRetry( config: LLMConfig, systemMessage: String, userMessage: String, maxRetries: Int ): String</ID>
+    <ID>TooGenericExceptionCaught:AICacheRepository.kt$AICacheRepository$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:AIDictionary.kt$AIDictionary$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:AIDictionaryService.kt$AIDictionaryService$arrayE: Exception</ID>
+    <ID>TooGenericExceptionCaught:AIDictionaryService.kt$AIDictionaryService$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:AIDictionaryService.kt$AIDictionaryService$fallbackE: Exception</ID>
+    <ID>TooGenericExceptionCaught:AIException.kt$AIException$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:AITranslatorService.kt$AITranslatorService$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:AppDatabase.kt$AppDatabase.Companion.&lt;no name provided&gt;$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:BigBangLayout.kt$BigBangLayout$e: Throwable</ID>
+    <ID>TooGenericExceptionCaught:Cdepe4.kt$Cdepe4$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:CleanAIHistoryActivity.kt$CleanAIHistoryActivity$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:Content.kt$Content$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:CoroutineHelper.kt$CoroutineHelper$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:DatabaseHelper.kt$DatabaseHelper$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:DatabaseManager.kt$DatabaseManager$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:EncryptionUtil.kt$EncryptionUtil$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:FileUtils.kt$FileUtils$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:FormsUtil.kt$FormsUtil$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:HistoryRepositoryHelper.kt$HistoryRepositoryHelper$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:HistoryStat.kt$HistoryStat$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:Maldpe.kt$Maldpe$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:Oalde10.kt$Oalde10$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:OutputPlanRepositoryHelper.kt$OutputPlanRepositoryHelper$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PlanEditorActivity.kt$PlanEditorActivity$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PlansManagerActivity.kt$PlansManagerActivity$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PlayAudioManager.kt$PlayAudioManager$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PopupActivity.kt$PopupActivity$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PopupDialogManager.kt$PopupDialogManager$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PopupIntentHandler.kt$PopupIntentHandler$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PopupSearchManager.kt$PopupSearchManager$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:PopupTranslationManager.kt$PopupTranslationManager$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:StorageMigrationActivity.kt$StorageMigrationActivity$e: Exception</ID>
+    <ID>TooGenericExceptionCaught:UserTagRepositoryHelper.kt$UserTagRepositoryHelper$e: Exception</ID>
+    <ID>TooManyFunctions:AICacheRepository.kt$AICacheRepository</ID>
+    <ID>TooManyFunctions:AIConfigRepository.kt$AIConfigRepository</ID>
+    <ID>TooManyFunctions:BaseActivity.kt$BaseActivity : AppCompatActivity</ID>
+    <ID>TooManyFunctions:BaseEditorActivity.kt$BaseEditorActivity : BaseActivity</ID>
+    <ID>TooManyFunctions:BigBangBottom.kt$BigBangBottom : ViewGroupOnClickListener</ID>
+    <ID>TooManyFunctions:BigBangHeader.kt$BigBangHeader : ViewGroupOnClickListener</ID>
+    <ID>TooManyFunctions:BigBangLayout.kt$BigBangLayout : ViewGroupActionListenerNestedScrollingChild</ID>
+    <ID>TooManyFunctions:BigBangLayoutWrapper.kt$BigBangLayoutWrapper : FrameLayout</ID>
+    <ID>TooManyFunctions:BigBangLayoutWrapper.kt$BigBangLayoutWrapper$ActionListener</ID>
+    <ID>TooManyFunctions:BookDao.kt$BookDao</ID>
+    <ID>TooManyFunctions:BookRepository.kt$BookRepository</ID>
+    <ID>TooManyFunctions:Cdepe4.kt$Cdepe4 : IDictionary</ID>
+    <ID>TooManyFunctions:DatabaseManager.kt$DatabaseManager</ID>
+    <ID>TooManyFunctions:DialogHelper.kt$DialogHelper</ID>
+    <ID>TooManyFunctions:FileUtils.kt$FileUtils</ID>
+    <ID>TooManyFunctions:HistoryDao.kt$HistoryDao</ID>
+    <ID>TooManyFunctions:HistoryRepository.kt$HistoryRepository</ID>
+    <ID>TooManyFunctions:LLMConfigEditorActivity.kt$LLMConfigEditorActivity : AppCompatActivity</ID>
+    <ID>TooManyFunctions:LauncherActivity.kt$LauncherActivity : AppCompatActivity</ID>
+    <ID>TooManyFunctions:Maldpe.kt$Maldpe : IDictionary</ID>
+    <ID>TooManyFunctions:Oalde10.kt$Oalde10 : IDictionary</ID>
+    <ID>TooManyFunctions:OutputPlanDao.kt$OutputPlanDao</ID>
+    <ID>TooManyFunctions:OutputPlanRepository.kt$OutputPlanRepository</ID>
+    <ID>TooManyFunctions:PlanEditorActivity.kt$PlanEditorActivity : BaseEditorActivity</ID>
+    <ID>TooManyFunctions:PopupActivity.kt$PopupActivity : AppCompatActivityActionListener</ID>
+    <ID>TooManyFunctions:RegexUtil.kt$RegexUtil</ID>
+    <ID>TooManyFunctions:Settings.kt$Settings</ID>
+    <ID>TooManyFunctions:StorageManager.kt$StorageManager</ID>
+    <ID>TooManyFunctions:StorageMigrationActivity.kt$StorageMigrationActivity : AppCompatActivity</ID>
+    <ID>TooManyFunctions:UserTagDao.kt$UserTagDao</ID>
+    <ID>TooManyFunctions:UserTagRepository.kt$UserTagRepository</ID>
+    <ID>TooManyFunctions:Utils.kt$Utils</ID>
+    <ID>TooManyFunctions:ViewUtil.kt$ViewUtil</ID>
+    <ID>TooManyFunctions:WanaKanaJava.kt$WanaKanaJava</ID>
+    <ID>UnusedParameter:AIDictionaryService.kt$AIDictionaryService$config: AIDictionaryConfig</ID>
+    <ID>UnusedParameter:AITranslatorService.kt$AITranslatorService$config: AITranslatorConfig</ID>
+    <ID>UnusedParameter:AppLanguage.kt$AppLanguage$context: Context</ID>
+    <ID>UnusedParameter:DialogHelper.kt$DialogHelper$message: String</ID>
+    <ID>UnusedPrivateMember:BigBangLayout.kt$BigBangLayout$private fun findChildByPoint(x: Int, y: Int): View?</ID>
+    <ID>UnusedPrivateMember:Cdepe4.kt$Cdepe4$private fun decodeHtmlContent(encodedText: String): String?</ID>
+    <ID>UnusedPrivateMember:Cdepe4.kt$Cdepe4$private fun toDefinition(word: String, phonetic: String, definitionHtml: String): Definition</ID>
+    <ID>UnusedPrivateMember:LauncherActivity.kt$LauncherActivity$private fun showNoPlansGuidance()</ID>
+    <ID>UnusedPrivateMember:Maldpe.kt$Maldpe$private fun decodeHtmlContent(encodedText: String): String?</ID>
+    <ID>UnusedPrivateMember:Maldpe.kt$Maldpe$private fun toDefinition(word: String, phonetic: String, definitionHtml: String): Definition</ID>
+    <ID>UnusedPrivateMember:Oalde10.kt$Oalde10$private fun decodeHtmlContent(encodedText: String): String?</ID>
+    <ID>UnusedPrivateMember:Oalde10.kt$Oalde10$private fun toDefinition(word: String, phonetic: String, definitionHtml: String): Definition</ID>
+    <ID>UnusedPrivateMember:PlansManagerActivity.kt$PlansManagerActivity$private fun convertPOJOToEntity(pojo: OutputPlanPOJO): OutputPlanEntity</ID>
+    <ID>UnusedPrivateMember:PlayAudioManager.kt$PlayAudioManager$private fun killMediaPlayer()</ID>
+    <ID>UnusedPrivateMember:PopupActivity.kt$PopupActivity$private fun vibarate(ms: Int)</ID>
+    <ID>UnusedPrivateMember:WanaKanaJava.kt$WanaKanaJava$private fun _isCharKana(chr: Char): Boolean</ID>
+    <ID>UnusedPrivateProperty:BigBangHeader.kt$BigBangHeader$private var dragMode = false</ID>
+    <ID>UnusedPrivateProperty:BookEntity.kt$BookEntity$dummy: Boolean</ID>
+    <ID>UnusedPrivateProperty:CBWatcherService.kt$CBWatcherService.Companion$private const val REQUEST_CODE_CBW = 0</ID>
+    <ID>UnusedPrivateProperty:Cdepe4.kt$Cdepe4.Companion$private const val DATABASE_NAME = "cdepe4.db"</ID>
+    <ID>UnusedPrivateProperty:Cdepe4.kt$Cdepe4.Companion$private const val DATABASE_VERSION = 1</ID>
+    <ID>UnusedPrivateProperty:Cdepe4.kt$Cdepe4.Companion$private const val FIELD_DEF_CN = "def_cn"</ID>
+    <ID>UnusedPrivateProperty:Cdepe4.kt$Cdepe4.Companion$private const val FIELD_DEF_EN = "def_en"</ID>
+    <ID>UnusedPrivateProperty:Cdepe4.kt$Cdepe4.Companion$private const val FIELD_PHONETICS = "phonetics"</ID>
+    <ID>UnusedPrivateProperty:Cdepe4.kt$Cdepe4.Companion$private const val FIELD_PHRASE = "phrase"</ID>
+    <ID>UnusedPrivateProperty:Cdepe4.kt$Cdepe4.Companion$private const val FIELD_SENSE = "sense"</ID>
+    <ID>UnusedPrivateProperty:Cdepe4.kt$Cdepe4.Companion$private const val TABLE_DICT = "dict"</ID>
+    <ID>UnusedPrivateProperty:ContentDatabaseHelper.kt$ContentDatabaseHelper$private val mContext: Context = context</ID>
+    <ID>UnusedPrivateProperty:DatabaseHelper.kt$DatabaseHelper$private val mContext: Context = context</ID>
+    <ID>UnusedPrivateProperty:DatabaseHelper.kt$DatabaseHelper.Companion$private const val SQL_CHECK_DICT_EXIST = "SELECT name FROM sqlite_master WHERE type='table' AND name='dict'"</ID>
+    <ID>UnusedPrivateProperty:DatabaseHelper.kt$DatabaseHelper.Companion$private const val SQL_CHECK_ENTRY_EXIST = "SELECT name FROM sqlite_master WHERE type='table' AND name='entry'"</ID>
+    <ID>UnusedPrivateProperty:DatabaseHelper.kt$DatabaseHelper.Companion$private const val SQL_DROP_INDEX = "DROP INDEX IF EXISTS headword_index"</ID>
+    <ID>UnusedPrivateProperty:DefaultBook.kt$DefaultBook$val book2 = Book( id = System.currentTimeMillis(), lastOpenTime = System.currentTimeMillis(), bookName = "Moon over Manifest", author = "Clare Vanderpool", bookPath = "file:///android_asset/book/moon.epub", readPosition = "" )</ID>
+    <ID>UnusedPrivateProperty:DialogHelper.kt$DialogHelper$val value = input.text.toString().trim()</ID>
+    <ID>UnusedPrivateProperty:HistoryEntity.kt$HistoryEntity$dummy: Boolean</ID>
+    <ID>UnusedPrivateProperty:Maldpe.kt$Maldpe.Companion$private const val DATABASE_NAME = "maldpe.db"</ID>
+    <ID>UnusedPrivateProperty:Maldpe.kt$Maldpe.Companion$private const val DATABASE_VERSION = 1</ID>
+    <ID>UnusedPrivateProperty:Maldpe.kt$Maldpe.Companion$private const val FIELD_DEF_CN = "def_cn"</ID>
+    <ID>UnusedPrivateProperty:Maldpe.kt$Maldpe.Companion$private const val FIELD_DEF_EN = "def_en"</ID>
+    <ID>UnusedPrivateProperty:Maldpe.kt$Maldpe.Companion$private const val FIELD_PHONETICS = "phonetics"</ID>
+    <ID>UnusedPrivateProperty:Maldpe.kt$Maldpe.Companion$private const val FIELD_PHRASE = "phrase"</ID>
+    <ID>UnusedPrivateProperty:Maldpe.kt$Maldpe.Companion$private const val FIELD_SENSE = "sense"</ID>
+    <ID>UnusedPrivateProperty:Maldpe.kt$Maldpe.Companion$private const val TABLE_DICT = "dict"</ID>
+    <ID>UnusedPrivateProperty:Oalde10.kt$Oalde10.Companion$private const val DATABASE_NAME = "oaldpe10.db"</ID>
+    <ID>UnusedPrivateProperty:Oalde10.kt$Oalde10.Companion$private const val DATABASE_VERSION = 1</ID>
+    <ID>UnusedPrivateProperty:Oalde10.kt$Oalde10.Companion$private const val FIELD_DEF_CN = "def_cn"</ID>
+    <ID>UnusedPrivateProperty:Oalde10.kt$Oalde10.Companion$private const val FIELD_DEF_EN = "def_en"</ID>
+    <ID>UnusedPrivateProperty:Oalde10.kt$Oalde10.Companion$private const val FIELD_PHONETICS = "phonetics"</ID>
+    <ID>UnusedPrivateProperty:Oalde10.kt$Oalde10.Companion$private const val FIELD_PHRASE = "phrase"</ID>
+    <ID>UnusedPrivateProperty:Oalde10.kt$Oalde10.Companion$private const val FIELD_SENSE = "sense"</ID>
+    <ID>UnusedPrivateProperty:Oalde10.kt$Oalde10.Companion$private const val TABLE_DICT = "dict"</ID>
+    <ID>UnusedPrivateProperty:PlansManagerActivity.kt$PlansManagerActivity.Companion$private const val ERROR_FORMAT = 1</ID>
+    <ID>UnusedPrivateProperty:PopupActivity.kt$PopupActivity$private var needTranslation: Boolean = false</ID>
+    <ID>UnusedPrivateProperty:PopupActivity.kt$PopupActivity.Companion$private const val TAG_NOTE_ID_LONG = 5</ID>
+    <ID>UnusedPrivateProperty:PopupSearchManager.kt$PopupSearchManager.Companion$private const val TAG = "PopupSearchManager"</ID>
+    <ID>UnusedPrivateProperty:PopupTranslationManager.kt$PopupTranslationManager.Companion$private const val TAG = "PopupTranslationManager"</ID>
+    <ID>UnusedPrivateProperty:QuoteDb.kt$QuoteDb$private val mContext: Context = context</ID>
+    <ID>UnusedPrivateProperty:QuoteDb.kt$QuoteDb.Companion$private const val DATABASE_NAME = "quote.db"</ID>
+    <ID>UnusedPrivateProperty:QuoteDb.kt$QuoteDb.Companion$private const val DATABASE_VERSION = 1</ID>
+    <ID>UnusedPrivateProperty:ScrollAwareFABBehaviour.kt$ScrollAwareFABBehaviour$attrs: AttributeSet</ID>
+    <ID>UnusedPrivateProperty:ScrollAwareFABBehaviour.kt$ScrollAwareFABBehaviour$context: Context</ID>
+    <ID>UnusedPrivateProperty:StorageMigrationActivity.kt$StorageMigrationActivity.Companion$private const val REQUEST_MANAGE_EXTERNAL_STORAGE = 1001</ID>
+    <ID>UnusedPrivateProperty:UserTagEntity.kt$UserTagEntity$dummy: Boolean</ID>
+    <ID>UseCheckOrError:AnkiDroidHelper.kt$AnkiDroidHelper$throw IllegalStateException("List of tags must be the same length as the list of fields")</ID>
+    <ID>UseCheckOrError:AnkiDroidHelper.kt$AnkiDroidHelper$throw IllegalStateException("The array of duplicates goes outside the bounds of the original lists")</ID>
+    <ID>UseCheckOrError:MyApplication.kt$MyApplication.Companion$throw IllegalStateException("Application context is not initialized")</ID>
+    <ID>UseCheckOrError:MyApplication.kt$MyApplication.Companion$throw IllegalStateException("Application is not initialized")</ID>
+    <ID>VariableNaming:VocabularyCardModel.kt$VocabularyCardModel$private val CODING = "UTF-8"</ID>
+    <ID>VariableNaming:VocabularyCardModel.kt$VocabularyCardModel$private val MODEL_FILE = "vocabulary_card_model.html"</ID>
+    <ID>VariableNaming:VocabularyCardModel.kt$VocabularyCardModel$private val MODEL_SPLITTER = "@@@"</ID>
+    <ID>VariableNaming:VocabularyCardModel.kt$VocabularyCardModel$private val NUMBER_OF_MODEL_STRING = 5</ID>
+    <ID>VariableNaming:VocabularyCardModel.kt$VocabularyCardModel$val AFMT = Array(2) { "" }</ID>
+    <ID>VariableNaming:VocabularyCardModel.kt$VocabularyCardModel$val Cards = arrayOf("recite", "type")</ID>
+    <ID>VariableNaming:VocabularyCardModel.kt$VocabularyCardModel$val QFMT = Array(2) { "" }</ID>
+    <ID>VariableNaming:VocabularyCardModel.kt$VocabularyCardModel$var CSS: String = ""</ID>
+    <ID>WildcardImport:AIDictionaryCacheDao.kt$import androidx.room.*</ID>
+    <ID>WildcardImport:AIDictionaryConfigDao.kt$import androidx.room.*</ID>
+    <ID>WildcardImport:AITranslatorCacheDao.kt$import androidx.room.*</ID>
+    <ID>WildcardImport:AITranslatorConfigDao.kt$import androidx.room.*</ID>
+    <ID>WildcardImport:BookDao.kt$import androidx.room.*</ID>
+    <ID>WildcardImport:HistoryDao.kt$import androidx.room.*</ID>
+    <ID>WildcardImport:LLMConfigDao.kt$import androidx.room.*</ID>
+    <ID>WildcardImport:OutputPlanDao.kt$import androidx.room.*</ID>
+    <ID>WildcardImport:PopupActivity.kt$import android.widget.*</ID>
+    <ID>WildcardImport:PopupActivity.kt$import com.lmyby.ankihelper.util.*</ID>
+    <ID>WildcardImport:PopupActivity.kt$import com.tonyodev.fetch2.*</ID>
+    <ID>WildcardImport:SettingsFragment.kt$import androidx.preference.*</ID>
+    <ID>WildcardImport:StatActivity.kt$import com.github.mikephil.charting.data.*</ID>
+    <ID>WildcardImport:TTSConfigDao.kt$import androidx.room.*</ID>
+    <ID>WildcardImport:UserTagDao.kt$import androidx.room.*</ID>
+    <ID>Wrapping:AIDictionaryConfig.kt$AIDictionaryConfig$[</ID>
+    <ID>Wrapping:AITranslatorConfig.kt$AITranslatorConfig$[</ID>
+    <ID>Wrapping:BaseEditorActivity.kt$BaseEditorActivity$(</ID>
+    <ID>Wrapping:BaseEditorActivity.kt$BaseEditorActivity$(this, object : OnBackPressedCallback(true) { override fun handleOnBackPressed() { if (hasUnsavedChanges) { showUnsavedChangesDialog() } else { // Disable this callback and let the default behavior handle back isEnabled = false onBackPressedDispatcher.onBackPressed() } } })</ID>
+    <ID>Wrapping:BigBangLayout.kt$BigBangLayout$ViewGroup(context, attrs, defStyleAttr, defStyleRes), BigBangHeader.ActionListener, NestedScrollingChild</ID>
+    <ID>Wrapping:BigBangLayoutWrapper.kt$BigBangLayoutWrapper$(</ID>
+    <ID>Wrapping:DatabaseManager.kt$DatabaseManager$(</ID>
+    <ID>Wrapping:PlanEditorActivity.kt$PlanEditorActivity$(</ID>
+    <ID>Wrapping:PlanEditorActivity.kt$PlanEditorActivity$(planName, object : OutputPlanRepositoryHelper.PlanCallback { override fun onSuccess(existingPlan: OutputPlanEntity?) { // Check if there's a conflict val isConflict = if (planForEdit != null) { // Editing: conflict only if name changed and new name exists planName != planNameToEdit &amp;&amp; existingPlan != null } else { // Creating: conflict if name already exists existingPlan != null } if (isConflict) { runOnUiThread { Toast.makeText( this@PlanEditorActivity, R.string.plan_already_exists, Toast.LENGTH_SHORT ).show() // Re-enable UI planNameEditText.isEnabled = true dictionarySpinner.isEnabled = true deckSpinner.isEnabled = true modelSpinner.isEnabled = true } } else { // No conflict - proceed with save performSave(planName) } } override fun onError(error: Throwable) { // Error checking for conflicts - proceed with save anyway performSave(planName) } })</ID>
+    <ID>Wrapping:PlansManagerActivity.kt$PlansManagerActivity$(</ID>
+    <ID>Wrapping:PlansManagerActivity.kt$PlansManagerActivity$(outputPlanEntity, object : OutputPlanRepositoryHelper.OperationCallback { override fun onSuccess() { // Plan saved successfully } override fun onError(error: Throwable) { Toast.makeText( this@PlansManagerActivity, "Failed to save plan: ${error.message}", Toast.LENGTH_SHORT ).show() } })</ID>
+    <ID>Wrapping:PopupActivity.kt$PopupActivity$(</ID>
+    <ID>Wrapping:SpinnerNoSwipe.kt$SpinnerNoSwipe$(</ID>
+    <ID>Wrapping:SpinnerNoSwipe.kt$SpinnerNoSwipe$(context, object : GestureDetector.SimpleOnGestureListener() { override fun onSingleTapUp(e: MotionEvent): Boolean { return performClick() } })</ID>
+  </CurrentIssues>
 </SmellBaseline>
