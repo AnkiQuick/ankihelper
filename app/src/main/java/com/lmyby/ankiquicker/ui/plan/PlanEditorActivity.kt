@@ -17,9 +17,9 @@ import com.lmyby.ankiquicker.MyApplication
 import com.lmyby.ankiquicker.R
 import com.lmyby.ankiquicker.anki.AnkiDroidHelper
 import com.lmyby.ankiquicker.data.database.AppDatabase
+import com.lmyby.ankiquicker.data.dict.DictFieldElement
 import com.lmyby.ankiquicker.data.dict.DictionaryRegister
 import com.lmyby.ankiquicker.data.dict.IDictionary
-import com.lmyby.ankiquicker.data.dict.DictFieldElement
 import com.lmyby.ankiquicker.data.plan.FieldElement
 import com.lmyby.ankiquicker.data.plan.OutputPlanEntity
 import com.lmyby.ankiquicker.data.plan.OutputPlanPOJO
