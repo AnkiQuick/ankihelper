@@ -19,6 +19,7 @@ import com.lmyby.ankiquicker.anki.AnkiDroidHelper
 import com.lmyby.ankiquicker.data.database.AppDatabase
 import com.lmyby.ankiquicker.data.dict.DictionaryRegister
 import com.lmyby.ankiquicker.data.dict.IDictionary
+import com.lmyby.ankiquicker.data.dict.DictFieldElement
 import com.lmyby.ankiquicker.data.plan.FieldElement
 import com.lmyby.ankiquicker.data.plan.OutputPlanEntity
 import com.lmyby.ankiquicker.data.plan.OutputPlanPOJO
@@ -228,7 +229,12 @@ class PlanEditorActivity : BaseEditorActivity() {
             val k = item.field
             val displayName = item.exportedElementNames[item.selectedFieldPos]
             // Convert display name to language-neutral ID before saving
-            val id = FieldElement.displayNameToId(displayName, this@PlanEditorActivity)
+            // Try FieldElement first, then DictFieldElement
+            var id = FieldElement.displayNameToId(displayName, this@PlanEditorActivity)
+            if (id == displayName) {
+                // Not a shared field element, try dictionary field element
+                id = DictFieldElement.displayNameToId(displayName, this@PlanEditorActivity)
+            }
             Log.e("PlanEditor", "SAVE: field=$k, displayName=$displayName, id=$id")
             map[k] = id
         }
@@ -575,7 +581,12 @@ class PlanEditorActivity : BaseEditorActivity() {
                 if (fldMap.containsKey(fld)) {
                     val savedId = fldMap[fld]!!
                     // Convert ID to display name for UI display
-                    val displayName = FieldElement.idToDisplayName(savedId, this@PlanEditorActivity)
+                    // Try FieldElement first, then DictFieldElement
+                    var displayName = FieldElement.idToDisplayName(savedId, this@PlanEditorActivity)
+                    if (displayName == savedId) {
+                        // Not a shared field element, try dictionary field element
+                        displayName = DictFieldElement.idToDisplayName(savedId, this@PlanEditorActivity)
+                    }
                     Log.e("PlanEditor", "LOAD: field=$fld, savedId=$savedId, displayName=$displayName")
                     var pos = allElements.toList().indexOf(displayName)
                     Log.e("PlanEditor", "LOAD: field=$fld, indexOf(displayName)=$pos")
