@@ -8,8 +8,8 @@
         android:shortcutLongLabel="@string/shortcut_add_to_anki_long">
         <intent
             android:action="android.intent.action.PROCESS_TEXT"
-            android:targetPackage="com.lmyby.ankihelper"
-            android:targetClass="com.lmyby.ankihelper.ui.popup.PopupActivity" />
+            android:targetPackage="com.lmyby.ankiquicker"
+            android:targetClass="com.lmyby.ankiquicker.ui.popup.PopupActivity" />
         <categories android:name="android.shortcut.conversation" />
     </shortcut>
 </shortcuts>

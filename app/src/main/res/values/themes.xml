@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Primary Material3 theme -->
-    <style name="Theme.AnkiHelper" parent="Theme.Material3.Light">
+    <style name="Theme.AnkiQuicker" parent="Theme.Material3.Light">
         <!-- Primary brand color -->
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorOnPrimary">@android:color/white</item>
@@ -45,7 +45,7 @@
     </style>
 
     <!-- Pink theme variant -->
-    <style name="Theme.AnkiHelperPink" parent="Theme.Material3.Light">
+    <style name="Theme.AnkiQuickerPink" parent="Theme.Material3.Light">
         <item name="colorPrimary">@color/colorPrimaryPink</item>
         <item name="colorOnPrimary">@android:color/white</item>
         <item name="colorPrimaryContainer">@color/colorPrimaryPink</item>
@@ -87,19 +87,19 @@
     </style>
 
     <!-- No Action Bar pink theme variant -->
-    <style name="Theme.AnkiHelperPink.NoActionBar" parent="Theme.AnkiHelperPink">
+    <style name="Theme.AnkiQuickerPink.NoActionBar" parent="Theme.AnkiQuickerPink">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
     </style>
 
-    <!-- Legacy compatibility - maps to Theme.AnkiHelper -->
-    <style name="AppTheme" parent="Theme.AnkiHelper" />
+    <!-- Legacy compatibility - maps to Theme.AnkiQuicker -->
+    <style name="AppTheme" parent="Theme.AnkiQuicker" />
 
-    <!-- Legacy pink compatibility - maps to Theme.AnkiHelperPink -->
-    <style name="AppThemePink" parent="Theme.AnkiHelperPink" />
+    <!-- Legacy pink compatibility - maps to Theme.AnkiQuickerPink -->
+    <style name="AppThemePink" parent="Theme.AnkiQuickerPink" />
 
     <!-- E-ink theme variant -->
-    <style name="Theme.AnkiHelperEink" parent="Theme.Material3.Light">
+    <style name="Theme.AnkiQuickerEink" parent="Theme.Material3.Light">
         <item name="colorPrimary">@color/color_eink_primary</item>
         <item name="colorOnPrimary">@color/color_eink_on_primary</item>
         <item name="colorPrimaryContainer">@color/color_eink_primary_container</item>
@@ -144,10 +144,10 @@
     </style>
 
     <!-- Legacy e-ink compatibility -->
-    <style name="AppThemeEink" parent="Theme.AnkiHelperEink" />
+    <style name="AppThemeEink" parent="Theme.AnkiQuickerEink" />
 
     <!-- Dark theme variant -->
-    <style name="Theme.AnkiHelperDark" parent="Theme.Material3.DayNight">
+    <style name="Theme.AnkiQuickerDark" parent="Theme.Material3.DayNight">
         <!-- Use Material3 dark colors -->
         <item name="colorPrimary">@color/md_theme_dark_primary</item>
         <item name="colorOnPrimary">@color/md_theme_dark_onPrimary</item>
@@ -275,7 +275,7 @@
     </style>
 
     <!-- Legacy dark compatibility -->
-    <style name="AppThemeDark" parent="Theme.AnkiHelperDark" />
+    <style name="AppThemeDark" parent="Theme.AnkiQuickerDark" />
 
     <!-- Transparent Activity theme - properly extended for CardView and all required attributes -->
     <style name="Transparent" parent="Theme.Material3.Light.NoActionBar">

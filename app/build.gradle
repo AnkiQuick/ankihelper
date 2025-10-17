@@ -6,7 +6,7 @@ apply plugin: 'io.gitlab.arturbosch.detekt'
 
 android {
     compileSdkVersion 34
-    namespace 'com.lmyby.ankihelper'
+    namespace 'com.lmyby.ankiquicker'
 
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_17
@@ -15,14 +15,14 @@ android {
     }
 
     defaultConfig {
-        applicationId "com.lmyby.ankihelper"
+        applicationId "com.lmyby.ankiquicker"
         minSdkVersion 34
         targetSdkVersion 34
         versionCode 1
         versionName "0.1.0"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         multiDexEnabled true
-        setProperty("archivesBaseName", "ankihelper" + "-" + versionName)
+        setProperty("archivesBaseName", "ankiquicker" + "-" + versionName)
     }
 
     buildTypes {

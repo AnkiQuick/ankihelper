@@ -33,7 +33,7 @@
         android:networkSecurityConfig="@xml/network"
         android:roundIcon="@drawable/icon_light"
         android:supportsRtl="true"
-        android:theme="@style/Theme.AnkiHelper"
+        android:theme="@style/Theme.AnkiQuicker"
         android:forceDarkAllowed="false">
         <meta-data android:name="android.service.chooser.chooser_target_service"
            android:value="androidx.sharetarget.ChooserTargetServiceCompat" />
@@ -43,7 +43,7 @@
             android:parentActivityName=".ui.LauncherActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.LauncherActivity" />
+                android:value="com.lmyby.ankiquicker.ui.LauncherActivity" />
         </activity>
 
         <activity
@@ -69,11 +69,11 @@
         <activity
             android:name=".ui.plan.PlansManagerActivity"
             android:label="@string/title_activity_plans_manager"
-            android:theme="@style/Theme.AnkiHelper">
+            android:theme="@style/Theme.AnkiQuicker">
 
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.LauncherActivity" />
+                android:value="com.lmyby.ankiquicker.ui.LauncherActivity" />
         </activity>
 
         <activity
@@ -82,7 +82,7 @@
             android:windowSoftInputMode="stateAlwaysHidden">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.plan.PlansManagerActivity" />
+                android:value="com.lmyby.ankiquicker.ui.plan.PlansManagerActivity" />
         </activity>
 
         <service
@@ -93,7 +93,7 @@
 
         <activity
             android:name=".ui.LauncherActivity"
-            android:theme="@style/Theme.AnkiHelper"
+            android:theme="@style/Theme.AnkiQuicker"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -110,106 +110,106 @@
             android:theme="@style/AppTheme">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.LauncherActivity" />
+                android:value="com.lmyby.ankiquicker.ui.LauncherActivity" />
         </activity>
 
         <activity android:name=".ui.ai.AIConfigActivity"
             android:label="@string/title_activity_ai_manager"
-            android:theme="@style/Theme.AnkiHelper"
+            android:theme="@style/Theme.AnkiQuicker"
             android:parentActivityName=".ui.LauncherActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.LauncherActivity" />
+                android:value="com.lmyby.ankiquicker.ui.LauncherActivity" />
         </activity>
 
         <activity android:name=".ui.ai.LLMConfigListActivity"
             android:label="@string/title_activity_llm_configurations"
-            android:theme="@style/Theme.AnkiHelper"
+            android:theme="@style/Theme.AnkiQuicker"
             android:parentActivityName=".ui.ai.AIConfigActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.ai.AIConfigActivity" />
+                android:value="com.lmyby.ankiquicker.ui.ai.AIConfigActivity" />
         </activity>
 
         <activity android:name=".ui.ai.LLMConfigEditorActivity"
             android:label="@string/title_activity_llm_editor"
-            android:theme="@style/Theme.AnkiHelper"
+            android:theme="@style/Theme.AnkiQuicker"
             android:parentActivityName=".ui.ai.LLMConfigListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.ai.LLMConfigListActivity" />
+                android:value="com.lmyby.ankiquicker.ui.ai.LLMConfigListActivity" />
         </activity>
 
         <activity android:name=".ui.ai.TTSConfigListActivity"
             android:label="@string/title_activity_tts_configurations"
-            android:theme="@style/Theme.AnkiHelper"
+            android:theme="@style/Theme.AnkiQuicker"
             android:parentActivityName=".ui.ai.AIConfigActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.ai.AIConfigActivity" />
+                android:value="com.lmyby.ankiquicker.ui.ai.AIConfigActivity" />
         </activity>
 
         <activity android:name=".ui.ai.TTSConfigEditorActivity"
             android:label="@string/title_activity_tts_editor"
-            android:theme="@style/Theme.AnkiHelper"
+            android:theme="@style/Theme.AnkiQuicker"
             android:parentActivityName=".ui.ai.TTSConfigListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.ai.TTSConfigListActivity" />
+                android:value="com.lmyby.ankiquicker.ui.ai.TTSConfigListActivity" />
         </activity>
 
         <activity android:name=".ui.ai.AIDictionaryConfigListActivity"
             android:label="@string/title_activity_ai_dictionary_configurations"
-            android:theme="@style/Theme.AnkiHelper"
+            android:theme="@style/Theme.AnkiQuicker"
             android:parentActivityName=".ui.ai.AIConfigActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.ai.AIConfigActivity" />
+                android:value="com.lmyby.ankiquicker.ui.ai.AIConfigActivity" />
         </activity>
 
         <activity android:name=".ui.ai.AIDictionaryConfigEditorActivity"
             android:label="@string/title_activity_ai_dictionary_editor"
-            android:theme="@style/Theme.AnkiHelper"
+            android:theme="@style/Theme.AnkiQuicker"
             android:parentActivityName=".ui.ai.AIDictionaryConfigListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.ai.AIDictionaryConfigListActivity" />
+                android:value="com.lmyby.ankiquicker.ui.ai.AIDictionaryConfigListActivity" />
         </activity>
 
         <activity android:name=".ui.ai.AITranslatorConfigListActivity"
             android:label="@string/title_activity_ai_translator_configurations"
-            android:theme="@style/Theme.AnkiHelper"
+            android:theme="@style/Theme.AnkiQuicker"
             android:parentActivityName=".ui.ai.AIConfigActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.ai.AIConfigActivity" />
+                android:value="com.lmyby.ankiquicker.ui.ai.AIConfigActivity" />
         </activity>
 
         <activity android:name=".ui.ai.AITranslatorConfigEditorActivity"
             android:label="@string/title_activity_ai_translator_editor"
-            android:theme="@style/Theme.AnkiHelper"
+            android:theme="@style/Theme.AnkiQuicker"
             android:parentActivityName=".ui.ai.AITranslatorConfigListActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.ai.AITranslatorConfigListActivity" />
+                android:value="com.lmyby.ankiquicker.ui.ai.AITranslatorConfigListActivity" />
         </activity>
 
         <activity android:name=".ui.ai.CleanAIHistoryActivity"
             android:label="@string/title_clean_ai_history"
-            android:theme="@style/Theme.AnkiHelper"
+            android:theme="@style/Theme.AnkiQuicker"
             android:parentActivityName=".ui.LauncherActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.LauncherActivity" />
+                android:value="com.lmyby.ankiquicker.ui.LauncherActivity" />
         </activity>
 
         <activity android:name=".ui.storage.StorageMigrationActivity"
             android:label="@string/title_storage_migration"
-            android:theme="@style/Theme.AnkiHelper"
+            android:theme="@style/Theme.AnkiQuicker"
             android:parentActivityName=".ui.LauncherActivity">
             <meta-data
                 android:name="android.support.PARENT_ACTIVITY"
-                android:value="com.lmyby.ankihelper.ui.LauncherActivity" />
+                android:value="com.lmyby.ankiquicker.ui.LauncherActivity" />
         </activity>
 
     </application>

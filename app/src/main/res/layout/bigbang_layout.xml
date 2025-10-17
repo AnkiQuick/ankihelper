@@ -4,7 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <com.lmyby.ankihelper.ui.widget.BigBangHeader
+    <com.lmyby.ankiquicker.ui.widget.BigBangHeader
         android:id="@+id/header"
         android:layout_width="match_parent"
         android:layout_alignParentTop="true"
@@ -28,7 +28,7 @@
             android:clipToPadding="false"
             android:layout_height="match_parent">
 
-            <com.lmyby.ankihelper.ui.widget.BigBangLayout
+            <com.lmyby.ankiquicker.ui.widget.BigBangLayout
                 android:id="@+id/bigbang"
                 android:paddingTop="4dp"
                 android:paddingBottom="4dp"
@@ -42,7 +42,7 @@
 
     </ScrollView>
 
-    <com.lmyby.ankihelper.ui.widget.BigBangBottom
+    <com.lmyby.ankiquicker.ui.widget.BigBangBottom
         android:id="@+id/bottom"
         android:layout_width="match_parent"
         android:layout_alignParentBottom="true"
