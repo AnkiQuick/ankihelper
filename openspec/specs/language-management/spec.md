@@ -1,5 +1,8 @@
-## MODIFIED Requirements
+# language-management Specification
 
+## Purpose
+TBD - created by archiving change fix-system-language-detection. Update Purpose after archive.
+## Requirements
 ### Requirement: System Language Detection
 The app SHALL dynamically detect and apply the device's system language when the user selects the "System" language option. The system language SHALL be queried at runtime rather than cached at initialization to ensure the app reflects the current device locale.
 
@@ -28,3 +31,4 @@ The app SHALL dynamically detect and apply the device's system language when the
 - **WHEN** `getEffectiveLocale()` is called
 - **THEN** it SHALL return the current value of `Locale.getDefault()`
 - **AND** it SHALL NOT return a cached locale from initialization time
+
