@@ -22,20 +22,15 @@ class AIDictionaryService {
     fun getWordDefinition(word: String, config: AIDictionaryConfig, llmConfig: LLMConfig): List<AIDictionaryCache> {
         Log.d(TAG, "Starting word definition lookup for: $word")
 
-        try {
-            // Check cache first
-            val cachedResults = AICacheRepository.getDictionaryCache(word, llmConfig.id)
-            if (cachedResults.isNotEmpty()) {
-                Log.d(TAG, "Returning cached results for word: $word, count: ${cachedResults.size}")
-                return cachedResults
-            }
-        } catch (e: Exception) {
-            Log.w(TAG, "Error checking cache for word: $word, continuing with LLM call", e)
+        // Check cache first
+        val cachedResults = checkCache(word, llmConfig.id)
+        if (cachedResults != null) {
+            return cachedResults
         }
 
         Log.d(TAG, "No cached results found for word: $word, calling LLM")
 
-        // Get language names from codes
+        // Get language configuration
         val sourceLanguage = config.sourceLanguage ?: "en"
         val targetLanguage = config.targetLanguage ?: "zh"
         val sourceLanguageName = getLanguageName(sourceLanguage)
@@ -47,7 +42,52 @@ class AIDictionaryService {
                 "target=$targetLanguageName ($targetLanguage)"
         )
 
-        // Prepare the system and user messages with configurable languages
+        // Build prompts and call LLM
+        val (systemMessage, userMessage) = buildDictionaryPrompts(word, sourceLanguageName, targetLanguageName)
+
+        Log.d(TAG, "Calling LLM with system message: $systemMessage")
+        Log.d(TAG, "Calling LLM with user message: $userMessage")
+
+        val response = aiService.callLLM(llmConfig, systemMessage, userMessage)
+
+        Log.d(TAG, "Received response from LLM: $response")
+
+        // Parse and cache results
+        val results = parseDictionaryResponse(response, word, llmConfig.id)
+
+        Log.d(TAG, "Parsed ${results.size} results from response")
+
+        cacheResults(results, word)
+
+        return results
+    }
+
+    /**
+     * Check cache for existing results
+     */
+    private fun checkCache(word: String, llmConfigId: Long): List<AIDictionaryCache>? {
+        return try {
+            val cachedResults = AICacheRepository.getDictionaryCache(word, llmConfigId)
+            if (cachedResults.isNotEmpty()) {
+                Log.d(TAG, "Returning cached results for word: $word, count: ${cachedResults.size}")
+                cachedResults
+            } else {
+                null
+            }
+        } catch (e: Exception) {
+            Log.w(TAG, "Error checking cache for word: $word, continuing with LLM call", e)
+            null
+        }
+    }
+
+    /**
+     * Build system and user prompts for dictionary lookup
+     */
+    private fun buildDictionaryPrompts(
+        word: String,
+        sourceLanguageName: String,
+        targetLanguageName: String
+    ): Pair<String, String> {
         val systemMessage = "You are an experienced dictionary assistant. " +
                 "Your task is to provide accurate and comprehensive definitions for words " +
                 "and phrases in $sourceLanguageName. " +
@@ -77,21 +117,14 @@ class AIDictionaryService {
                 "'def_en' ($sourceLanguageName definition), " +
                 "'def_cn' ($targetLanguageName translation), and 'example' fields."
 
-        Log.d(TAG, "Calling LLM with system message: $systemMessage")
-        Log.d(TAG, "Calling LLM with user message: $userMessage")
+        return Pair(systemMessage, userMessage)
+    }
 
-        // Call the LLM with system and user messages
-        val response = aiService.callLLM(llmConfig, systemMessage, userMessage)
-
-        Log.d(TAG, "Received response from LLM: $response")
-
-        // Parse the response
-        val results = parseDictionaryResponse(response, word, llmConfig.id)
-
-        Log.d(TAG, "Parsed ${results.size} results from response")
-
+    /**
+     * Cache dictionary results
+     */
+    private fun cacheResults(results: List<AIDictionaryCache>, word: String) {
         try {
-            // Cache the results
             for (result in results) {
                 result.timestamp = System.currentTimeMillis()
                 AICacheRepository.saveDictionaryCache(result)
@@ -100,8 +133,6 @@ class AIDictionaryService {
         } catch (e: Exception) {
             Log.w(TAG, "Error saving results to cache for word: $word, continuing without caching", e)
         }
-
-        return results
     }
 
     @Throws(IOException::class, AIException::class)
