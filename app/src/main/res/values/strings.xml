@@ -95,7 +95,8 @@
     <string name="provider_custom">Custom</string>
     <string name="provider_deepseek">DeepSeek</string>
     <string name="provider_openai">OpenAI</string>
-    <string name="provider_aliyun">Aliyun</string>
+    <string name="provider_moonshot">Moonshot</string>
+    <string name="provider_bigmodel">BigModel</string>
 
     <string name="history_manager">History Manager</string>
     <!-- Clean AI History -->

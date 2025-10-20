@@ -58,7 +58,10 @@ class LLMConfigEditorActivity : AppCompatActivity() {
         providerUrls[getString(R.string.provider_custom)] = ""
         providerUrls[getString(R.string.provider_deepseek)] = "https://api.deepseek.com"
         providerUrls[getString(R.string.provider_openai)] = "https://api.openai.com"
-        providerUrls[getString(R.string.provider_aliyun)] = "https://dashscope.aliyuncs.com"
+        // Moonshot: Base URL without /v1, as getChatCompletionUrl() appends /v1/chat/completions
+        providerUrls[getString(R.string.provider_moonshot)] = "https://api.moonshot.ai"
+        // BigModel: Uses OpenAI-compatible /v1/chat/completions endpoint structure
+        providerUrls[getString(R.string.provider_bigmodel)] = "https://open.bigmodel.cn/api/paas/v4"
 
         // Create list of provider names
         providerNames.addAll(providerUrls.keys)

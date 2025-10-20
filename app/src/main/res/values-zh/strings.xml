@@ -126,7 +126,8 @@
     <string name="provider_custom">自定义</string>
     <string name="provider_deepseek">DeepSeek</string>
     <string name="provider_openai">OpenAI</string>
-    <string name="provider_aliyun">阿里云</string>
+    <string name="provider_moonshot">月之暗面</string>
+    <string name="provider_bigmodel">智谱</string>
 
     <!-- Dialog Strings -->
     <string name="loading">加载中...</string>
